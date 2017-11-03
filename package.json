@@ -59,9 +59,7 @@
     "rc-test": "6.x",
     "rc-tools": "6.x",
     "react": "^16.0.0",
-    "react-dom": "^16.0.0",
-    "react-router": "~4.1.0",
-    "react-router-dom": "^4.1.0"
+    "react-dom": "^16.0.0"
   },
   "precommit": [
     "lint"
