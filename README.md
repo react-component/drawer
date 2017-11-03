@@ -25,8 +25,6 @@
 
 http://ant-motion.github.io/drawer/examples/
 
-![](https://t.alipayobjects.com/images/rmsweb/T12PliXjXgXXXXXXXX.gif)
-
 ## Usage
 
 ```js
