@@ -1,21 +1,21 @@
 {
-  "name": "rc-drawer",
+  "name": "rc-drawer-menu",
   "version": "0.1.0",
   "description": "Quick animation component for react",
   "keywords": [
     "react",
     "react-component",
-    "react-drawer",
-    "drawer"
+    "react-drawer-menu",
+    "drawer-menu"
   ],
-  "homepage": "https://github.com/ant-motion/drawer",
+  "homepage": "https://github.com/ant-motion/drawer-menu",
   "author": "155259966@qq.com",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ant-motion/drawer.git"
+    "url": "https://github.com/ant-motion/drawer-menu.git"
   },
   "bugs": {
-    "url": "https://github.com/ant-motion/drawer/issues"
+    "url": "https://github.com/ant-motion/drawer-menu/issues"
   },
   "files": [
     "lib",
@@ -29,7 +29,7 @@
   "config": {
     "port": 8009,
     "entry": {
-      "rc-drawer": [
+      "rc-drawer-menu": [
         "./assets/index.less",
         "./src/index.js"
       ]

@@ -1,4 +1,4 @@
-# rc-drawer
+# rc-drawer-menu
 ---
 
 [![NPM version][npm-image]][npm-url]
@@ -8,27 +8,27 @@
 [![node version][node-image]][node-url]
 [![npm download][download-image]][download-url]
 
-[npm-image]: http://img.shields.io/npm/v/rc-drawer.svg?style=flat-square
-[npm-url]: http://npmjs.org/package/rc-drawer
-[travis-image]: https://img.shields.io/travis/ant-motion/drawer.svg?style=flat-square
-[travis-url]: https://travis-ci.org/ant-motion/drawer
-[coveralls-image]: https://img.shields.io/coveralls/ant-motion/drawer.svg?style=flat-square
-[coveralls-url]: https://coveralls.io/r/ant-motion/drawer?branch=master
-[gemnasium-image]: http://img.shields.io/gemnasium/ant-motion/drawer.svg?style=flat-square
-[gemnasium-url]: https://gemnasium.com/ant-motion/drawer
+[npm-image]: http://img.shields.io/npm/v/rc-drawer-menu.svg?style=flat-square
+[npm-url]: http://npmjs.org/package/rc-drawer-menu
+[travis-image]: https://img.shields.io/travis/ant-motion/drawer-menu.svg?style=flat-square
+[travis-url]: https://travis-ci.org/ant-motion/drawer-menu
+[coveralls-image]: https://img.shields.io/coveralls/ant-motion/drawer-menu.svg?style=flat-square
+[coveralls-url]: https://coveralls.io/r/ant-motion/drawer-menu?branch=master
+[gemnasium-image]: http://img.shields.io/gemnasium/ant-motion/drawer-menu.svg?style=flat-square
+[gemnasium-url]: https://gemnasium.com/ant-motion/drawer-menu
 [node-image]: https://img.shields.io/badge/node.js-%3E=_0.10-green.svg?style=flat-square
 [node-url]: http://nodejs.org/download/
-[download-image]: https://img.shields.io/npm/dm/rc-drawer.svg?style=flat-square
-[download-url]: https://npmjs.org/package/rc-drawer
+[download-image]: https://img.shields.io/npm/dm/rc-drawer-menu.svg?style=flat-square
+[download-url]: https://npmjs.org/package/rc-drawer-menu
 
 ## Example
 
-http://ant-motion.github.io/drawer/examples/
+http://ant-motion.github.io/drawer-menu/examples/
 
 ## Usage
 
 ```js
-import Drawer from 'rc-drawer';
+import Drawer from 'rc-drawer-menu';
 import React from 'react';
 import ReactDom from 'react-dom';
 
@@ -41,7 +41,7 @@ ReactDom.render(
 
 ## Install
 
-[![rc-drawer](https://nodei.co/npm/rc-drawer.png)](https://npmjs.org/package/rc-drawer)
+[![rc-drawer-menu](https://nodei.co/npm/rc-drawer-menu.png)](https://npmjs.org/package/rc-drawer-menu)
 
 ## Browser Support
 
