@@ -1,5 +1,5 @@
 /* eslint-disable no-console,react/no-multi-comp */
-import Drawer from 'rc-drawer';
+import Drawer from 'rc-drawer-menu';
 import React from 'react';
 import ReactDom from 'react-dom';
 import { Menu, Icon } from 'antd';
@@ -7,7 +7,7 @@ import { Menu, Icon } from 'antd';
 import 'antd/lib/style';
 import 'antd/lib/menu/style';
 
-import 'rc-drawer/assets/index.less';
+import 'rc-drawer-menu/assets/index.less';
 import './assets/index.less';
 
 const SubMenu = Menu.SubMenu;
@@ -59,7 +59,7 @@ ReactDom.render((
     </Drawer>
     <div
       style={{
-        width: '100%', height: 667, background: '#ff0000',
+        width: '100%', height: 667, background: '#fff000',
         color: '#fff', textAlign: 'center', lineHeight: '667px',
       }}
     >
