@@ -3684,6 +3684,7 @@ samp {
   height: 100%;
   overflow: auto;
   z-index: 1;
+  position: relative;
 }
 .drawer-button {
   position: absolute;
