@@ -1,7 +1,7 @@
 {
   "name": "rc-drawer-menu",
   "version": "0.1.0",
-  "description": "Quick animation component for react",
+  "description": "drawer menu animation component for react",
   "keywords": [
     "react",
     "react-component",
