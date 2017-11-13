@@ -67,4 +67,4 @@ ReactDom.render((
     >
       内容区块
     </div>
-  </div >), document.getElementById('__react-content'));
+  </div>), document.getElementById('__react-content'));

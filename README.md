@@ -56,11 +56,16 @@ ReactDom.render(
 | className       | string | `drawer` | - |
 | openClassName | string | `drawer-open` | open className |
 | wrapperClassName | string | null | wrapper class name |
+| iconChild   | boolean / ReactElement | true | true or false or ReactElement |
+| open        | boolean  |  open or close menu  |
+| defaultOpen | boolean  | default open menu |
 | width       |  string   |  `60vw` | children width |
 | placement  | string   |  `left` | `left` or `right` |
 | level     | string or array | `all` | With the drawer level element. `all` / className / id / tagName / array |
 | levelTransition | string | `transform .3s cubic-bezier(0.78, 0.14, 0.15, 0.86)` | level css transition |
 | parent    | string | `body` | parent element. | 
+| onChange  | function | null | change callback(open) |
+| onIconClick | function | null | icon click function |
 
 
 ## Development

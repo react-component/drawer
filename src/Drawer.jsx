@@ -6,10 +6,12 @@ import { dataToArray, transitionEnd, getRequestAnimationFrame } from './utils';
 
 const raf = getRequestAnimationFrame();
 
-class MobileMenu extends React.PureComponent {
+class Drawer extends React.PureComponent {
   static propTypes = {
     wrapperClassName: PropTypes.string,
     width: PropTypes.string,
+    open: PropTypes.bool,
+    defaultOpen: PropTypes.bool,
     placement: PropTypes.string,
     level: PropTypes.oneOfType([
       PropTypes.string,
@@ -18,6 +20,9 @@ class MobileMenu extends React.PureComponent {
     levelTransition: PropTypes.string,
     parent: PropTypes.string,
     openClassName: PropTypes.string,
+    iconChild: PropTypes.any,
+    onChange: PropTypes.func,
+    onIconClick: PropTypes.func,
   }
   static defaultProps = {
     className: 'drawer',
@@ -27,13 +32,18 @@ class MobileMenu extends React.PureComponent {
     parent: 'body',
     level: 'all',
     levelTransition: 'transform .3s cubic-bezier(0.78, 0.14, 0.15, 0.86)',
+    onChange: () => { },
+    onIconClick: () => { },
   }
 
   levelDom = [];
 
-  state = {
-    open: false,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: props.open !== undefined ? props.open : !!props.defaultOpen,
+    };
+  }
 
   componentDidMount() {
     raf(() => {
@@ -42,9 +52,21 @@ class MobileMenu extends React.PureComponent {
       this.componentDidUpdate();
     });
   }
+
+  componentWillReceiveProps(nextProps) {
+    const { open } = nextProps;
+    if (open !== undefined && open !== this.props.open) {
+      this.isOpenChange = true;
+      this.setState({
+        open,
+      });
+    }
+  }
+
   componentDidUpdate() {
     this.renderPickerComponent(this.getChildToRender());
   }
+
   componentWillUnmount() {
     if (this.container) {
       ReactDOM.unmountComponentAtNode(this.container);
@@ -87,37 +109,57 @@ class MobileMenu extends React.PureComponent {
   }
 
   onTouchEnd = (e, close) => {
-    e.preventDefault();
-    const { placement, levelTransition, width } = this.props;
+    this.props.onIconClick(e);
+    if (this.props.open !== undefined) {
+      return;
+    }
+    if (e) {
+      e.preventDefault();
+    }
     const open = close || this.state.open;
-    this.levelDom.forEach(dom => {
-      dom.style.transition = levelTransition;
-      if (open) {
-        dom.style.transform = '';
-      } else {
-        dom.style.transform = `translateX(${placement === 'left' ? width : `-${width}`})`;
-      }
-      dom.addEventListener(transitionEnd, this.trnasitionEnd);
-    });
-
+    this.isOpenChange = true;
     this.setState({
       open: !open,
     });
   }
 
+  setLevelDomTransform = (open) => {
+    const { placement, levelTransition, width, onChange } = this.props;
+    this.levelDom.forEach(dom => {
+      if (this.isOpenChange) {
+        dom.style.transition = levelTransition;
+        dom.addEventListener(transitionEnd, this.trnasitionEnd);
+      }
+      if (!open) {
+        dom.style.transform = '';
+      } else {
+        dom.style.transform = `translateX(${placement === 'left' ? width : `-${width}`})`;
+      }
+    });
+    if (onChange && this.isOpenChange) {
+      onChange(open);
+      this.isOpenChange = false;
+    }
+  }
+
   getChildToRender = () => {
-    const { open } = this.state;
+    let open;
+    open = this.props.open !== undefined ? this.props.open : this.state.open;
     const { className, openClassName, placement, children, width } = this.props;
     const wrapperClassname = classnames(this.props.className, {
       [`${className}-${placement}`]: true,
       [openClassName]: open,
     });
     const placementPos = placement === 'left' ? width : `-${width}`;
+    const transform = open ? `translateX(${placementPos})` : '';
     const contentStyle = {
       width,
       [placement]: `-${width}`,
-      transform: open ? `translateX(${placementPos})` : '',
+      transform,
     };
+    if (this.isOpenChange === undefined || this.isOpenChange) {
+      this.setLevelDomTransform(open);
+    }
     const iconChild = this.props.iconChild || (
       <i className={`${className}-button-icon`} />
     );
@@ -161,4 +203,4 @@ class MobileMenu extends React.PureComponent {
   }
 }
 
-export default MobileMenu;
+export default Drawer;
