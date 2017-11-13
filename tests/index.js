@@ -81,7 +81,6 @@ describe('rc-drawer-menu', () => {
   it('default open drawer', (done) => {
     instance = createDrawerInstance({
       defaultOpen: true,
-      level: [],
     });
     raf(() => {
       const drawer = document.getElementsByClassName('drawer-wrapper')[0];
