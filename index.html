@@ -7,7 +7,7 @@
   <meta charset="utf-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css" rel="stylesheet"/>
-  <title>rc-drawer-menu@0.1.3 - drawer menu animation component for react</title>
+  <title>rc-drawer-menu@0.2.0 - drawer menu animation component for react</title>
   <style>
     @font-face {
       font-family: octicons-anchor;
@@ -737,12 +737,14 @@
 
 <body>
 <div class="header">
-  <h1>rc-drawer-menu@0.1.3</h1>
+  <h1>rc-drawer-menu@0.2.0</h1>
 </div>
 <div class="examples">
   <h3>EXAMPLES</h3>
   <div class="examples-body">
     <ul>
+      
+      <li><a href="examples/change.html">change</a></li>
       
       <li><a href="examples/level.html">level</a></li>
       
@@ -824,6 +826,22 @@ ReactDom.render(
 <td>wrapper class name</td>
 </tr>
 <tr>
+<td>iconChild</td>
+<td>boolean / ReactElement</td>
+<td>true</td>
+<td>true or false or ReactElement</td>
+</tr>
+<tr>
+<td>open</td>
+<td>boolean</td>
+<td>open or close menu</td>
+</tr>
+<tr>
+<td>defaultOpen</td>
+<td>boolean</td>
+<td>default open menu</td>
+</tr>
+<tr>
 <td>width</td>
 <td>string</td>
 <td><code>60vw</code></td>
@@ -852,6 +870,18 @@ ReactDom.render(
 <td>string</td>
 <td><code>body</code></td>
 <td>parent element.</td>
+</tr>
+<tr>
+<td>onChange</td>
+<td>function</td>
+<td>null</td>
+<td>change callback(open)</td>
+</tr>
+<tr>
+<td>onIconClick</td>
+<td>function</td>
+<td>null</td>
+<td>icon click function</td>
 </tr>
 </tbody>
 </table>
