@@ -4,8 +4,11 @@ import React from 'react';
 import ReactDom from 'react-dom';
 import expect from 'expect.js';
 import Drawer from '../src';
+import { getRequestAnimationFrame } from '../src/utils';
 
 import '../assets/index.less';
+
+const raf = getRequestAnimationFrame();
 
 describe('rc-drawer-menu', () => {
   let div;
@@ -30,6 +33,7 @@ describe('rc-drawer-menu', () => {
             width={this.props.width}
             open={this.state.open}
             defaultOpen={this.props.defaultOpen}
+            level={this.props.level}
           >
             <div>
               test
@@ -63,7 +67,7 @@ describe('rc-drawer-menu', () => {
     instance = createDrawerInstance({
       width: '200px',
     });
-    setTimeout(() => {
+    raf(() => {
       const drawer = document.getElementsByClassName('drawer');
       console.log(drawer.length);
       expect(drawer.length).to.be(1);
@@ -71,24 +75,27 @@ describe('rc-drawer-menu', () => {
       console.log(drawerDom.style.left);
       expect(getFloat(drawerDom.style.left)).to.be(-200);
       done();
-    }, 60);
+    });
   });
 
   it('default open drawer', (done) => {
     instance = createDrawerInstance({
       defaultOpen: true,
+      level: [],
     });
-    setTimeout(() => {
+    raf(() => {
       const drawer = document.getElementsByClassName('drawer-wrapper')[0];
       console.log(drawer.style.transform);
       expect(drawer.style.transform).to.eql('translateX(60vw)');
       done();
-    }, 60);
+    });
   });
 
   it('switch open drawer', (done) => {
-    instance = createDrawerInstance({});
-    setTimeout(() => {
+    instance = createDrawerInstance({
+      level: [],
+    });
+    raf(() => {
       const drawer = document.getElementsByClassName('drawer-wrapper')[0];
       console.log(drawer.style.transform);
       expect(drawer.style.transform).to.eql('');
@@ -103,6 +110,6 @@ describe('rc-drawer-menu', () => {
           done();
         }, 500);
       }, 500);
-    }, 60);
+    });
   });
 });
