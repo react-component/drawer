@@ -57,8 +57,8 @@ ReactDom.render(
 | openClassName | string | `drawer-open` | open className |
 | wrapperClassName | string | null | wrapper class name |
 | iconChild   | boolean / ReactElement / Array | true | true or false or ReactElement or Array(ReactElement, ReactElement) => [ close, open ] |
-| open        | boolean  |  open or close menu  |
-| defaultOpen | boolean  | default open menu |
+| open        | boolean  | false |  open or close menu  |
+| defaultOpen | boolean  | false | default open menu |
 | width       |  string   |  `60vw` | children width |
 | placement  | string   |  `left` | `left` or `right` |
 | level     | string or array | `all` | With the drawer level element. `all` / className / id / tagName / array |
