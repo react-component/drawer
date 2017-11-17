@@ -153,9 +153,19 @@ class Drawer extends React.PureComponent {
     return doms[doms.length - 1];
   }
 
+  getIsButtonDom = (dom) => {
+    if (dom.className === `${this.props.className}-button`) {
+      return true;
+    }
+    if (dom.parentNode) {
+      return this.getIsButtonDom(dom.parentNode);
+    }
+    return false;
+  }
+
   removeScroll = (e) => {
     const dom = e.target;
-    if (dom.className === `${this.props.className}-bg`) {
+    if (dom.className === `${this.props.className}-bg` || this.getIsButtonDom(dom)) {
       e.preventDefault();
       e.returnValue = false;
       return;
