@@ -38,6 +38,10 @@ class Drawer extends React.PureComponent {
 
   levelDom = [];
 
+  contextDom = null;
+
+  mousePos = null;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -65,6 +69,8 @@ class Drawer extends React.PureComponent {
 
   componentDidUpdate() {
     this.renderPickerComponent(this.getChildToRender());
+    this.contextDom = this.container.getElementsByClassName(`${
+      this.props.className}-content`)[0];
   }
 
   componentWillUnmount() {
@@ -123,6 +129,78 @@ class Drawer extends React.PureComponent {
     });
   }
 
+  touchStart = (e) => {
+    if (e.touches.length > 1) {
+      return;
+    }
+    const touchs = e.touches[0];
+    this.mousePos = {
+      x: touchs.pageX,
+      y: touchs.pageY,
+    };
+  }
+  touchEnd = () => {
+    this.mousePos = null;
+  }
+
+  getScollDom = (dom) => {
+    const doms = [];
+    const setScrollDom = (d) => {
+      if ((d.scrollHeight > d.clientHeight || d.scrollWidth > d.clientWidth)) {
+        doms.push(d);
+      }
+      if (d !== this.contextDom) {
+        setScrollDom(d.parentNode);
+      }
+    };
+    setScrollDom(dom);
+    return doms[doms.length - 1];
+  }
+
+  removeScroll = (e) => {
+    const dom = e.target;
+    if (dom.className === `${this.props.className}-bg`) {
+      e.preventDefault();
+      e.returnValue = false;
+      return;
+    }
+
+    let y = e.deltaY;
+    let x = e.deltaX;
+    if (e.type === 'touchmove') {
+      if (e.touches.length > 1 || !this.mousePos) {
+        return;
+      }
+      const touches = e.touches[0];
+      // 上滑为正，下滑为负
+      y = this.mousePos.y - touches.pageY;
+      x = this.mousePos.x - touches.pageX;
+    }
+    const scrollDom = this.getScollDom(dom);
+    if (!scrollDom) {
+      return;
+    }
+    // 竖向
+    const scrollTop = scrollDom.scrollTop;
+    const height = scrollDom.clientHeight;
+    const scrollHeight = scrollDom.scrollHeight;
+    const isScrollY = scrollHeight - height > 2;
+    const maxOrMinScrollY = isScrollY &&
+      ((scrollTop <= 0 && y < 0) || (scrollTop + height >= scrollHeight && y > 0));
+    // 横向
+    const width = scrollDom.clientWidth;
+    const scrollLeft = scrollDom.scrollLeft;
+    const scrollWidth = scrollDom.scrollWidth;
+    const isScrollX = scrollWidth - width > 2;
+    const maxOrMinScrollX = scrollWidth - width > 2 &&
+      ((scrollLeft <= 0 && x < 0) || (scrollLeft + width >= scrollWidth && x > 0));
+    if (!isScrollY && !isScrollX || (maxOrMinScrollY || maxOrMinScrollX)) {
+      e.preventDefault();
+      e.returnValue = false;
+      return;
+    }
+  }
+
   setLevelDomTransform = (open) => {
     const { placement, levelTransition, width, onChange } = this.props;
     this.levelDom.forEach(dom => {
@@ -136,6 +214,14 @@ class Drawer extends React.PureComponent {
         dom.style.transform = `translateX(${placement === 'left' ? width : `-${width}`})`;
       }
     });
+    // 处理 body 滚动
+    if (open) {
+      document.body.addEventListener('mousewheel', this.removeScroll);
+      document.body.addEventListener('touchmove', this.removeScroll);
+    } else {
+      document.body.removeEventListener('mousewheel', this.removeScroll);
+      document.body.removeEventListener('touchmove', this.removeScroll);
+    }
     if (onChange && this.isOpenChange) {
       onChange(open);
       this.isOpenChange = false;
@@ -143,9 +229,8 @@ class Drawer extends React.PureComponent {
   }
 
   getChildToRender = () => {
-    let open;
-    open = this.props.open !== undefined ? this.props.open : this.state.open;
-    const { className, openClassName, placement, children, width } = this.props;
+    const open = this.props.open !== undefined ? this.props.open : this.state.open;
+    const { className, openClassName, placement, children, width, iconChild } = this.props;
     const wrapperClassname = classnames(this.props.className, {
       [`${className}-${placement}`]: true,
       [openClassName]: open,
@@ -160,9 +245,18 @@ class Drawer extends React.PureComponent {
     if (this.isOpenChange === undefined || this.isOpenChange) {
       this.setLevelDomTransform(open);
     }
-    const iconChild = this.props.iconChild || (
-      <i className={`${className}-button-icon`} />
-    );
+    let iconChildToRender = (<i className={`${className}-button-icon`} />);
+    if (iconChild) {
+      if (Array.isArray(iconChild)) {
+        if (iconChild.length === 2) {
+          iconChildToRender = open ? iconChild[1] : iconChild[0];
+        } else {
+          iconChildToRender = iconChild[0];
+        }
+      } else {
+        iconChildToRender = iconChild;
+      }
+    }
     return (
       <div className={wrapperClassname}>
         <div
@@ -170,15 +264,19 @@ class Drawer extends React.PureComponent {
           onTouchEnd={(e) => { this.onTouchEnd(e, true); }}
           onClick={(e) => { this.onTouchEnd(e, true); }}
         />
-        <div className={`${className}-wrapper`} style={contentStyle}>
-          <div className={`${className}-content`}>
+        <div className={`${className}-content-wrapper`} style={contentStyle}>
+          <div
+            className={`${className}-content`}
+            onTouchStart={this.touchStart}
+            onTouchEnd={this.touchEnd}
+          >
             {children}
           </div>
           <div
             className={`${className}-button`}
             onClick={(e) => { this.onTouchEnd(e); }}
           >
-            {iconChild}
+            {iconChildToRender}
           </div>
         </div>
       </div>

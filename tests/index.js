@@ -34,6 +34,7 @@ describe('rc-drawer-menu', () => {
             open={this.state.open}
             defaultOpen={this.props.defaultOpen}
             level={this.props.level}
+            iconChild={props.iconChild}
           >
             <div>
               test
@@ -82,10 +83,10 @@ describe('rc-drawer-menu', () => {
     instance = createDrawerInstance({
       defaultOpen: true,
       level: [],
+      iconChild: (<i className="a">a</i>),
     });
     raf(() => {
-      const drawer = document.getElementsByClassName('drawer-wrapper')[0];
-      console.log(drawer.style.transform);
+      const drawer = document.getElementsByClassName('drawer-content-wrapper')[0];
       expect(drawer.style.transform).to.eql('translateX(60vw)');
       done();
     });
@@ -94,7 +95,7 @@ describe('rc-drawer-menu', () => {
   it('switch open drawer', (done) => {
     instance = createDrawerInstance({});
     raf(() => {
-      const drawer = document.getElementsByClassName('drawer-wrapper')[0];
+      const drawer = document.getElementsByClassName('drawer-content-wrapper')[0];
       console.log(drawer.style.transform);
       expect(drawer.style.transform).to.eql('');
       instance.switchMenu();
@@ -108,6 +109,23 @@ describe('rc-drawer-menu', () => {
           done();
         }, 500);
       }, 500);
+    });
+  });
+
+  it('icon child is array', (done) => {
+    instance = createDrawerInstance({
+      iconChild: [<i className="a">a</i>, <i className="b">b</i>],
+    });
+    raf(() => {
+      const icon = document.getElementsByClassName('drawer-button')[0];
+      const iconChild = icon.children[0];
+      expect(iconChild.className).to.eql('a');
+      instance.switchMenu();
+      raf(() => {
+        expect(iconChild.className).to.eql('b');
+        instance.switchMenu();
+        done();
+      });
     });
   });
 });
