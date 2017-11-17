@@ -4,11 +4,7 @@ import React from 'react';
 import ReactDom from 'react-dom';
 import expect from 'expect.js';
 import Drawer from '../src';
-import { getRequestAnimationFrame } from '../src/utils';
-
 import '../assets/index.less';
-
-const raf = getRequestAnimationFrame();
 
 describe('rc-drawer-menu', () => {
   let div;
@@ -64,68 +60,58 @@ describe('rc-drawer-menu', () => {
     return parseFloat(str);
   }
 
-  it('single drawer', (done) => {
+  it('single drawer', () => {
     instance = createDrawerInstance({
       width: '200px',
     });
-    raf(() => {
-      const drawer = document.getElementsByClassName('drawer');
-      console.log(drawer.length);
-      expect(drawer.length).to.be(1);
-      const drawerDom = drawer[0].children[1];
-      console.log(drawerDom.style.left);
-      expect(getFloat(drawerDom.style.left)).to.be(-200);
-      done();
-    });
+    const drawer = document.getElementsByClassName('drawer');
+    console.log(drawer.length);
+    expect(drawer.length).to.be(1);
+    const drawerDom = drawer[0].children[1];
+    console.log(drawerDom.style.left);
+    expect(getFloat(drawerDom.style.left)).to.be(-200);
   });
 
-  it('default open drawer', (done) => {
+  it('default open drawer', () => {
     instance = createDrawerInstance({
       defaultOpen: true,
       level: [],
       iconChild: (<i className="a">a</i>),
     });
-    raf(() => {
-      const drawer = document.getElementsByClassName('drawer-content-wrapper')[0];
-      expect(drawer.style.transform).to.eql('translateX(60vw)');
-      done();
-    });
+    const drawer = document.getElementsByClassName('drawer-content-wrapper')[0];
+    expect(drawer.style.transform).to.eql('translateX(60vw)');
   });
 
   it('switch open drawer', (done) => {
     instance = createDrawerInstance({});
-    raf(() => {
-      const drawer = document.getElementsByClassName('drawer-content-wrapper')[0];
+    const drawer = document.getElementsByClassName('drawer-content-wrapper')[0];
+    console.log(drawer.style.transform);
+    expect(drawer.style.transform).to.eql('');
+    instance.switchMenu();
+    setTimeout(() => {
       console.log(drawer.style.transform);
-      expect(drawer.style.transform).to.eql('');
+      expect(drawer.style.transform).to.eql('translateX(60vw)');
       instance.switchMenu();
       setTimeout(() => {
         console.log(drawer.style.transform);
-        expect(drawer.style.transform).to.eql('translateX(60vw)');
-        instance.switchMenu();
-        setTimeout(() => {
-          console.log(drawer.style.transform);
-          expect(drawer.style.transform).to.eql('');
-          done();
-        }, 500);
+        expect(drawer.style.transform).to.eql('');
+        done();
       }, 500);
-    });
+    }, 500);
   });
 
   it('icon child is array', (done) => {
     instance = createDrawerInstance({
       iconChild: [<i className="a">a</i>, <i className="b">b</i>],
     });
-    raf(() => {
-      const icon = document.getElementsByClassName('drawer-button')[0];
-      const iconChild = icon.children[0];
-      expect(iconChild.className).to.eql('a');
+    const icon = document.getElementsByClassName('drawer-button')[0];
+    const iconChild = icon.children[0];
+    expect(iconChild.className).to.eql('a');
+    instance.switchMenu();
+    setTimeout(() => {
+      expect(iconChild.className).to.eql('b');
       instance.switchMenu();
-      raf(() => {
-        expect(iconChild.className).to.eql('b');
-        instance.switchMenu();
-        done();
-      });
+      done();
     });
   });
 });

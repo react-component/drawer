@@ -2,9 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { dataToArray, transitionEnd, getRequestAnimationFrame } from './utils';
-
-const raf = getRequestAnimationFrame();
+import { dataToArray, transitionEnd } from './utils';
 
 class Drawer extends React.PureComponent {
   static propTypes = {
@@ -50,11 +48,9 @@ class Drawer extends React.PureComponent {
   }
 
   componentDidMount() {
-    raf(() => {
-      this.getParentAndLevelDom();
-      this.container = this.defaultGetContainer();
-      this.componentDidUpdate();
-    });
+    this.getParentAndLevelDom();
+    this.container = this.defaultGetContainer();
+    this.componentDidUpdate();
   }
 
   componentWillReceiveProps(nextProps) {
