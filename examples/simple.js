@@ -43,7 +43,7 @@ __WEBPACK_IMPORTED_MODULE_2_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
       __WEBPACK_IMPORTED_MODULE_3_antd__["a" /* Menu */],
       {
-        style: { width: 240 },
+        style: { width: 240, height: '200%' },
         defaultSelectedKeys: ['1'],
         defaultOpenKeys: ['sub1'],
         mode: 'inline'
