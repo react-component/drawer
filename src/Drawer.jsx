@@ -73,6 +73,7 @@ class Drawer extends React.PureComponent {
       this.setLevelDomTransform(false, true);
       this.contextWrapDom.style.transform = '';
       this.container.style.opacity = 0;
+      this.container.style.pointerEvents = 'none';
       this.container.style.transition = 'opacity .3s';
       const removeElemetFunc = () => {
         this.container.removeEventListener(transitionEnd, removeElemetFunc);
