@@ -3778,5 +3778,30 @@ samp {
   left: 0;
   right: auto;
 }
+.drawer-wrapper .drawer {
+  -webkit-animation: AlphaTo 0.3s ease-out 0.3s;
+          animation: AlphaTo 0.3s ease-out 0.3s;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+  opacity: 0;
+  -webkit-transform: translateX(-40px);
+          transform: translateX(-40px);
+}
+@-webkit-keyframes AlphaTo {
+  to {
+    opacity: 1;
+    left: 0;
+    -webkit-transform: translateX(0px);
+            transform: translateX(0px);
+  }
+}
+@keyframes AlphaTo {
+  to {
+    opacity: 1;
+    left: 0;
+    -webkit-transform: translateX(0px);
+            transform: translateX(0px);
+  }
+}
 
 /*# sourceMappingURL=common.css.map*/
