@@ -1,14 +1,33 @@
-.drawer{
-  .ant-menu-inline, .ant-menu-vertical{
+.drawer {
+  .ant-menu-inline,
+  .ant-menu-vertical {
     border-right: none;
   }
-  &-content{
+  &-content {
     padding-top: 40px;
   }
-  &-left{
-    .ant-menu-inline .ant-menu-item:after, .ant-menu-vertical .ant-menu-item:after{
+  &-left {
+    .ant-menu-inline .ant-menu-item:after,
+    .ant-menu-vertical .ant-menu-item:after {
       left: 0;
       right: auto;
     }
+  }
+}
+
+.drawer-wrapper {
+  .drawer {
+    animation: AlphaTo .3s ease-out .3s;
+    animation-fill-mode: forwards;
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+}
+
+@keyframes AlphaTo {
+  to {
+    opacity: 1;
+    left: 0;
+    transform: translateX(0px);
   }
 }

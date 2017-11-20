@@ -37,6 +37,7 @@ class Drawer extends React.PureComponent {
   levelDom = [];
 
   contextDom = null;
+  contextWrapDom = null;
 
   mousePos = null;
 
@@ -65,15 +66,24 @@ class Drawer extends React.PureComponent {
 
   componentDidUpdate() {
     this.renderPickerComponent(this.getChildToRender());
-    this.contextDom = this.container.getElementsByClassName(`${
-      this.props.className}-content`)[0];
   }
 
   componentWillUnmount() {
     if (this.container) {
-      ReactDOM.unmountComponentAtNode(this.container);
-      this.container.parentNode.removeChild(this.container);
-      this.container = null;
+      this.setLevelDomTransform(false, true);
+      this.contextWrapDom.style.transform = '';
+      this.container.style.opacity = 0;
+      this.container.style.transition = 'opacity .3s';
+      const removeElemetFunc = () => {
+        this.container.removeEventListener(transitionEnd, removeElemetFunc);
+        this.levelDom.forEach(dom => {
+          dom.style.transition = '';
+        });
+        ReactDOM.unmountComponentAtNode(this.container);
+        this.container.parentNode.removeChild(this.container);
+        this.container = null;
+      };
+      this.container.addEventListener(transitionEnd, removeElemetFunc);
     }
   }
 
@@ -207,10 +217,10 @@ class Drawer extends React.PureComponent {
     }
   }
 
-  setLevelDomTransform = (open) => {
+  setLevelDomTransform = (open, openTransition) => {
     const { placement, levelTransition, width, onChange } = this.props;
     this.levelDom.forEach(dom => {
-      if (this.isOpenChange) {
+      if (this.isOpenChange || openTransition) {
         dom.style.transition = levelTransition;
         dom.addEventListener(transitionEnd, this.trnasitionEnd);
       }
@@ -270,11 +280,20 @@ class Drawer extends React.PureComponent {
           onTouchEnd={(e) => { this.onTouchEnd(e, true); }}
           onClick={(e) => { this.onTouchEnd(e, true); }}
         />
-        <div className={`${className}-content-wrapper`} style={contentStyle}>
+        <div
+          className={`${className}-content-wrapper`}
+          style={contentStyle}
+          ref={(c) => {
+            this.contextWrapDom = c;
+          }}
+        >
           <div
             className={`${className}-content`}
             onTouchStart={this.touchStart}
             onTouchEnd={this.touchEnd}
+            ref={(c) => {
+              this.contextDom = c;
+            }}
           >
             {children}
           </div>

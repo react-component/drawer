@@ -5,6 +5,7 @@ import ReactDom from 'react-dom';
 import expect from 'expect.js';
 import Drawer from '../src';
 import '../assets/index.less';
+import { setTimeout } from 'timers';
 
 describe('rc-drawer-menu', () => {
   let div;
@@ -31,6 +32,7 @@ describe('rc-drawer-menu', () => {
             defaultOpen={this.props.defaultOpen}
             level={this.props.level}
             iconChild={props.iconChild}
+            wrapperClassName={props.wrapperClassName}
           >
             <div>
               test
@@ -77,14 +79,17 @@ describe('rc-drawer-menu', () => {
       defaultOpen: true,
       level: [],
       iconChild: (<i className="a">a</i>),
+      wrapperClassName: 'drawer-1',
     });
-    const drawer = document.getElementsByClassName('drawer-content-wrapper')[0];
+    const drawer = document.querySelectorAll('.drawer-1 .drawer-content-wrapper')[0];
     expect(drawer.style.transform).to.eql('translateX(60vw)');
   });
 
   it('switch open drawer', (done) => {
-    instance = createDrawerInstance({});
-    const drawer = document.getElementsByClassName('drawer-content-wrapper')[0];
+    instance = createDrawerInstance({
+      wrapperClassName: 'drawer-2',
+    });
+    const drawer = document.querySelectorAll('.drawer-2 .drawer-content-wrapper')[0];
     console.log(drawer.style.transform);
     expect(drawer.style.transform).to.eql('');
     instance.switchMenu();
@@ -103,8 +108,9 @@ describe('rc-drawer-menu', () => {
   it('icon child is array', (done) => {
     instance = createDrawerInstance({
       iconChild: [<i className="a">a</i>, <i className="b">b</i>],
+      wrapperClassName: 'drawer-3',
     });
-    const icon = document.getElementsByClassName('drawer-button')[0];
+    const icon = document.querySelectorAll('.drawer-3 .drawer-button')[0];
     const iconChild = icon.children[0];
     expect(iconChild.className).to.eql('a');
     instance.switchMenu();
