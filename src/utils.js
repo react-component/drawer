@@ -13,7 +13,10 @@ const trnasitionEndObject = {
   MozTransition: 'transitionend',
   OTransition: 'oTransitionEnd otransitionend',
 };
-const trnasitionStr = Object.keys(trnasitionEndObject).filter(key =>
-  key in (document && document.body.style)
-)[0];
+const trnasitionStr = Object.keys(trnasitionEndObject).filter(key => {
+  if (typeof document === 'undefined') {
+    return false;
+  }
+  return key in (document.body && document.body.style);
+})[0];
 export const transitionEnd = trnasitionEndObject[trnasitionStr];
