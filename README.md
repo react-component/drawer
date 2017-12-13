@@ -61,9 +61,9 @@ ReactDom.render(
 | defaultOpen | boolean  | false | default open menu |
 | width       |  string   |  `60vw` | children width |
 | placement  | string   |  `left` | `left` or `right` |
-| level     | string or array | `all` | With the drawer level element. `all` / className / id / tagName / array |
+| level     | string or array | `all` | With the drawer level element. `all`/ null / className / id / tagName / array |
 | levelTransition | string | `transform .3s cubic-bezier(0.78, 0.14, 0.15, 0.86)` | level css transition |
-| parent    | string | `body` | parent element. | 
+| parent    | string | `body` | parent element. if is `null` use React.creactElement  | 
 | onChange  | function | null | change callback(open) |
 | onSwitch | function | null | icon or bg click function |
 

@@ -49,8 +49,9 @@ class Drawer extends React.PureComponent {
     };
   }
   componentDidMount() {
-    this.container = this.props.parent ? this.defaultGetContainer() : ReactDOM.findDOMNode(this);
+    this.dom = ReactDOM.findDOMNode(this);
     this.getParentAndLevelDom();
+    this.container = this.props.parent ? this.defaultGetContainer() : this.dom;
     this.forceUpdate();
   }
 
@@ -95,7 +96,7 @@ class Drawer extends React.PureComponent {
     }
     const { level, parent } = this.props;
     this.levelDom = [];
-    this.parent = parent && document.querySelectorAll(parent)[0] || this.container.parentNode;
+    this.parent = parent && document.querySelectorAll(parent)[0] || this.dom.parentNode;
     if (level === 'all') {
       const children = Array.prototype.slice.call(this.parent.children);
       children.forEach(child => {
