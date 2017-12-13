@@ -41,7 +41,7 @@ __WEBPACK_IMPORTED_MODULE_2_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
   null,
   __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
     __WEBPACK_IMPORTED_MODULE_0_rc_drawer_menu__["a" /* default */],
-    { parent: '#__react-content', width: '240px' },
+    { parent: null, width: '240px' },
     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
       __WEBPACK_IMPORTED_MODULE_3_antd__["a" /* Menu */],
       {

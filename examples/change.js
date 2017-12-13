@@ -94,7 +94,9 @@ var Demo = function (_React$Component) {
             width: '240px',
             onChange: this.onChange,
             open: this.state.open,
-            onIconClick: this.onTouchEnd
+            onSwitch: this.onTouchEnd,
+            iconChild: false,
+            level: null
           },
           __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
             __WEBPACK_IMPORTED_MODULE_7_antd__["a" /* Menu */],
@@ -234,7 +236,15 @@ var Demo = function (_React$Component) {
               color: '#fff', textAlign: 'center', lineHeight: '667px'
             }
           },
-          '\u5185\u5BB9\u533A\u5757'
+          '\u5185\u5BB9\u533A\u5757',
+          __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+            'button',
+            {
+              onClick: this.onTouchEnd,
+              style: { height: 24, width: 100, marginLeft: 20, color: '#000', lineHeight: '24px' }
+            },
+            !this.state.open ? '打开' : '关闭'
+          )
         )
       );
     }
