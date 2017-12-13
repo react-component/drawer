@@ -65,7 +65,7 @@ ReactDom.render(
 | levelTransition | string | `transform .3s cubic-bezier(0.78, 0.14, 0.15, 0.86)` | level css transition |
 | parent    | string | `body` | parent element. | 
 | onChange  | function | null | change callback(open) |
-| onIconClick | function | null | icon click function |
+| onSwitch | function | null | icon or bg click function |
 
 
 ## Development

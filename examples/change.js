@@ -38,7 +38,9 @@ class Demo extends React.Component {
           width="240px"
           onChange={this.onChange}
           open={this.state.open}
-          onIconClick={this.onTouchEnd}
+          onSwitch={this.onTouchEnd}
+          iconChild={null}
+          level={null}
         >
           <Menu
             style={{ width: 240 }}
@@ -88,6 +90,12 @@ class Demo extends React.Component {
           }}
         >
           内容区块
+          <button
+            onClick={this.onTouchEnd}
+            style={{ height: 24, width: 100, marginLeft: 20, color: '#000', lineHeight: '24px' }}
+          >
+            {!this.state.open ? '打开' : '关闭'}
+          </button>
         </div>
       </div>
     );

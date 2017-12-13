@@ -20,7 +20,7 @@ class Drawer extends React.PureComponent {
     openClassName: PropTypes.string,
     iconChild: PropTypes.any,
     onChange: PropTypes.func,
-    onIconClick: PropTypes.func,
+    onSwitch: PropTypes.func,
   }
   static defaultProps = {
     className: 'drawer',
@@ -31,7 +31,8 @@ class Drawer extends React.PureComponent {
     level: 'all',
     levelTransition: 'transform .3s cubic-bezier(0.78, 0.14, 0.15, 0.86)',
     onChange: () => { },
-    onIconClick: () => { },
+    onSwitch: () => { },
+    iconChild: (<i className="drawer-button-icon" />),
   }
 
   levelDom = [];
@@ -47,11 +48,10 @@ class Drawer extends React.PureComponent {
       open: props.open !== undefined ? props.open : !!props.defaultOpen,
     };
   }
-
   componentDidMount() {
+    this.container = this.props.parent ? this.defaultGetContainer() : ReactDOM.findDOMNode(this);
     this.getParentAndLevelDom();
-    this.container = this.defaultGetContainer();
-    this.componentDidUpdate();
+    this.forceUpdate();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -64,17 +64,18 @@ class Drawer extends React.PureComponent {
     }
   }
 
-  componentDidUpdate() {
-    this.renderPickerComponent(this.getChildToRender());
-  }
-
   componentWillUnmount() {
     if (this.container) {
       this.setLevelDomTransform(false, true);
-      this.contextWrapDom.style.transform = '';
+      // 拦不住。。直接删除；
+      if (this.props.parent) {
+        this.container.parentNode.removeChild(this.container);
+      }
+      /* this.contextWrapDom.style.transform = '';
       this.container.style.opacity = 0;
       this.container.style.pointerEvents = 'none';
-      this.container.style.transition = 'opacity .3s';
+      this.container.style.transition = 'opacity 11.3s';
+      console.log(this.container)
       const removeElemetFunc = () => {
         this.container.removeEventListener(transitionEnd, removeElemetFunc);
         this.levelDom.forEach(dom => {
@@ -84,7 +85,7 @@ class Drawer extends React.PureComponent {
         this.container.parentNode.removeChild(this.container);
         this.container = null;
       };
-      this.container.addEventListener(transitionEnd, removeElemetFunc);
+      this.container.addEventListener(transitionEnd, removeElemetFunc); */
     }
   }
 
@@ -94,7 +95,7 @@ class Drawer extends React.PureComponent {
     }
     const { level, parent } = this.props;
     this.levelDom = [];
-    this.parent = document.querySelectorAll(parent)[0];
+    this.parent = parent && document.querySelectorAll(parent)[0] || this.container.parentNode;
     if (level === 'all') {
       const children = Array.prototype.slice.call(this.parent.children);
       children.forEach(child => {
@@ -105,7 +106,7 @@ class Drawer extends React.PureComponent {
           this.levelDom.push(child);
         }
       });
-    } else {
+    } else if (level) {
       dataToArray(this.props.level).forEach(key => {
         document.querySelectorAll(key)
           .forEach(item => {
@@ -122,7 +123,7 @@ class Drawer extends React.PureComponent {
   }
 
   onTouchEnd = (e, close) => {
-    this.props.onIconClick(e);
+    this.props.onSwitch(e);
     if (this.props.open !== undefined) {
       return;
     }
@@ -262,7 +263,7 @@ class Drawer extends React.PureComponent {
     if (this.isOpenChange === undefined || this.isOpenChange) {
       this.setLevelDomTransform(open);
     }
-    let iconChildToRender = (<i className={`${className}-button-icon`} />);
+    let iconChildToRender;
     if (iconChild) {
       if (Array.isArray(iconChild)) {
         if (iconChild.length === 2) {
@@ -298,12 +299,14 @@ class Drawer extends React.PureComponent {
           >
             {children}
           </div>
-          <div
-            className={`${className}-button`}
-            onClick={(e) => { this.onTouchEnd(e); }}
-          >
-            {iconChildToRender}
-          </div>
+          {iconChildToRender && (
+            <div
+              className={`${className}-button`}
+              onClick={(e) => { this.onTouchEnd(e); }}
+            >
+              {iconChildToRender}
+            </div>
+          )}
         </div>
       </div>
     );
@@ -318,12 +321,17 @@ class Drawer extends React.PureComponent {
     return container;
   };
 
-  renderPickerComponent = (children) => {
-    ReactDOM.unstable_renderSubtreeIntoContainer(this, children, this.container);
-  }
-
   render() {
-    return null;
+    const children = this.getChildToRender();
+    if (!this.props.parent) {
+      return (<div className={this.props.wrapperClassName}>
+        {children}
+      </div>);
+    }
+    if (!this.container) {
+      return null;
+    }
+    return ReactDOM.createPortal(children, this.container);
   }
 }
 
