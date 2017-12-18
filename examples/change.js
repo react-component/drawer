@@ -28,6 +28,11 @@ class Demo extends React.Component {
   }
   onTouchEnd = () => {
     this.setState({
+      open: false,
+    });
+  }
+  onSwitch = () => {
+    this.setState({
       open: !this.state.open,
     });
   }
@@ -38,7 +43,7 @@ class Demo extends React.Component {
           width="240px"
           onChange={this.onChange}
           open={this.state.open}
-          onSwitch={this.onTouchEnd}
+          onMaskClick={this.onTouchEnd}
           iconChild={false}
           level={null}
         >
@@ -91,7 +96,7 @@ class Demo extends React.Component {
         >
           内容区块
           <button
-            onClick={this.onTouchEnd}
+            onClick={this.onSwitch}
             style={{ height: 24, width: 100, marginLeft: 20, color: '#000', lineHeight: '24px' }}
           >
             {!this.state.open ? '打开' : '关闭'}

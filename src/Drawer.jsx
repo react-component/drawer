@@ -20,7 +20,8 @@ class Drawer extends React.PureComponent {
     openClassName: PropTypes.string,
     iconChild: PropTypes.any,
     onChange: PropTypes.func,
-    onSwitch: PropTypes.func,
+    onMaskClick: PropTypes.func,
+    onIconClick: PropTypes.func,
   }
   static defaultProps = {
     className: 'drawer',
@@ -31,7 +32,8 @@ class Drawer extends React.PureComponent {
     level: 'all',
     levelTransition: 'transform .3s cubic-bezier(0.78, 0.14, 0.15, 0.86)',
     onChange: () => { },
-    onSwitch: () => { },
+    onMaskClick: () => { },
+    onIconClick: () => { },
     iconChild: (<i className="drawer-button-icon" />),
   }
 
@@ -109,7 +111,6 @@ class Drawer extends React.PureComponent {
   }
 
   onTouchEnd = (e, close) => {
-    this.props.onSwitch(e);
     if (this.props.open !== undefined) {
       return;
     }
@@ -123,7 +124,17 @@ class Drawer extends React.PureComponent {
     });
   }
 
-  touchStart = (e) => {
+  onMaskTouchEnd = (e) => {
+    this.props.onMaskClick(e);
+    this.onTouchEnd(e, true);
+  }
+
+  onIconTouchEnd = (e) => {
+    this.props.onSwitch(e);
+    this.onTouchEnd(e);
+  }
+
+  onScrollTouchStart = (e) => {
     if (e.touches.length > 1) {
       return;
     }
@@ -133,7 +144,8 @@ class Drawer extends React.PureComponent {
       y: touchs.pageY,
     };
   }
-  touchEnd = () => {
+
+  onScrollTouchEnd = () => {
     this.mousePos = null;
   }
 
@@ -234,7 +246,7 @@ class Drawer extends React.PureComponent {
 
   getChildToRender = () => {
     const open = this.props.open !== undefined ? this.props.open : this.state.open;
-    const { className, openClassName, placement, children, width, iconChild } = this.props;
+    const { className, style, openClassName, placement, children, width, iconChild } = this.props;
     const wrapperClassname = classnames(this.props.className, {
       [`${className}-${placement}`]: true,
       [openClassName]: open,
@@ -262,11 +274,10 @@ class Drawer extends React.PureComponent {
       }
     }
     return (
-      <div className={wrapperClassname}>
+      <div className={wrapperClassname} style={style}>
         <div
           className={`${className}-bg`}
-          onTouchEnd={(e) => { this.onTouchEnd(e, true); }}
-          onClick={(e) => { this.onTouchEnd(e, true); }}
+          onClick={this.onMaskTouchEnd}
         />
         <div
           className={`${className}-content-wrapper`}
@@ -277,8 +288,8 @@ class Drawer extends React.PureComponent {
         >
           <div
             className={`${className}-content`}
-            onTouchStart={this.touchStart}
-            onTouchEnd={this.touchEnd}
+            onTouchStart={this.onScrollTouchStart}
+            onTouchEnd={this.onScrollTouchEnd}
             ref={(c) => {
               this.contextDom = c;
             }}
@@ -288,7 +299,7 @@ class Drawer extends React.PureComponent {
           {iconChildToRender && (
             <div
               className={`${className}-button`}
-              onClick={(e) => { this.onTouchEnd(e); }}
+              onClick={this.onIconTouchEnd}
             >
               {iconChildToRender}
             </div>

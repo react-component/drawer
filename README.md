@@ -64,9 +64,11 @@ ReactDom.render(
 | level     | string or array | `all` | With the drawer level element. `all`/ null / className / id / tagName / array |
 | levelTransition | string | `transform .3s cubic-bezier(0.78, 0.14, 0.15, 0.86)` | level css transition |
 | parent    | string | `body` | parent element. if is `null` use React.creactElement  | 
-| onChange  | function | null | change callback(open) |
-| onSwitch | function | null | icon or bg click function |
+| onChange  | func | null | change callback(open) |
+| onMaskClick | func | null | mask close click function |
+| onIconClick | func | nul  | icon click function |
 
+> 0.5 onSwitch split into `onMaskClick` `onIconClick`;
 
 ## Development
 
