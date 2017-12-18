@@ -66,6 +66,10 @@ var Demo = function (_React$Component) {
       console.log(bool);
     }, _this.onTouchEnd = function () {
       _this.setState({
+        open: false
+      });
+    }, _this.onSwitch = function () {
+      _this.setState({
         open: !_this.state.open
       });
     }, _temp), __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(_this, _ret);
@@ -94,7 +98,7 @@ var Demo = function (_React$Component) {
             width: '240px',
             onChange: this.onChange,
             open: this.state.open,
-            onSwitch: this.onTouchEnd,
+            onMaskClick: this.onTouchEnd,
             iconChild: false,
             level: null
           },
@@ -240,7 +244,7 @@ var Demo = function (_React$Component) {
           __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
             'button',
             {
-              onClick: this.onTouchEnd,
+              onClick: this.onSwitch,
               style: { height: 24, width: 100, marginLeft: 20, color: '#000', lineHeight: '24px' }
             },
             !this.state.open ? '打开' : '关闭'
