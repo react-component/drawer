@@ -41,6 +41,7 @@ class Drawer extends React.PureComponent {
 
   contextDom = null;
   contextWrapDom = null;
+  maskDom = null;
 
   mousePos = null;
 
@@ -155,7 +156,7 @@ class Drawer extends React.PureComponent {
       if ((d.scrollHeight > d.clientHeight || d.scrollWidth > d.clientWidth)) {
         doms.push(d);
       }
-      if (d !== this.contextDom) {
+      if (d !== this.contextDom && d !== this.maskDom) {
         setScrollDom(d.parentNode);
       }
     };
@@ -176,7 +177,7 @@ class Drawer extends React.PureComponent {
   removeScroll = (e) => {
     const dom = e.target;
     const scrollDom = this.getScollDom(dom);
-    if (dom.className === `${this.props.className}-bg` || this.getIsButtonDom(dom) || !scrollDom) {
+    if (dom === this.maskDom || this.getIsButtonDom(dom) || !scrollDom) {
       e.preventDefault();
       e.returnValue = false;
       return;
@@ -275,6 +276,9 @@ class Drawer extends React.PureComponent {
         <div
           className={`${className}-bg`}
           onClick={this.onMaskTouchEnd}
+          ref={(c) => {
+            this.maskDom = c;
+          }}
         />
         <div
           className={`${className}-content-wrapper`}
