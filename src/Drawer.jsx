@@ -72,21 +72,6 @@ class Drawer extends React.PureComponent {
       if (this.props.parent) {
         this.container.parentNode.removeChild(this.container);
       }
-      /* this.contextWrapDom.style.transform = '';
-      this.container.style.opacity = 0;
-      this.container.style.pointerEvents = 'none';
-      this.container.style.transition = 'opacity 11.3s';
-      console.log(this.container)
-      const removeElemetFunc = () => {
-        this.container.removeEventListener(transitionEnd, removeElemetFunc);
-        this.levelDom.forEach(dom => {
-          dom.style.transition = '';
-        });
-        ReactDOM.unmountComponentAtNode(this.container);
-        this.container.parentNode.removeChild(this.container);
-        this.container = null;
-      };
-      this.container.addEventListener(transitionEnd, removeElemetFunc); */
     }
   }
 
