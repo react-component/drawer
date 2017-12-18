@@ -175,7 +175,8 @@ class Drawer extends React.PureComponent {
 
   removeScroll = (e) => {
     const dom = e.target;
-    if (dom.className === `${this.props.className}-bg` || this.getIsButtonDom(dom)) {
+    const scrollDom = this.getScollDom(dom);
+    if (dom.className === `${this.props.className}-bg` || this.getIsButtonDom(dom) || !scrollDom) {
       e.preventDefault();
       e.returnValue = false;
       return;
@@ -191,10 +192,6 @@ class Drawer extends React.PureComponent {
       // 上滑为正，下滑为负
       y = this.mousePos.y - touches.pageY;
       x = this.mousePos.x - touches.pageX;
-    }
-    const scrollDom = this.getScollDom(dom);
-    if (!scrollDom) {
-      return;
     }
     // 竖向
     const scrollTop = scrollDom.scrollTop;
