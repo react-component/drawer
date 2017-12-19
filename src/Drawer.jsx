@@ -131,7 +131,7 @@ class Drawer extends React.PureComponent {
   }
 
   onIconTouchEnd = (e) => {
-    this.props.onSwitch(e);
+    this.props.onIconClick(e);
     this.onTouchEnd(e);
   }
 
