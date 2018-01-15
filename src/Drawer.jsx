@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { dataToArray, transitionEnd } from './utils';
 
+const windowIsUndefined = typeof window === 'undefined';
 class Drawer extends React.PureComponent {
   static propTypes = {
     wrapperClassName: PropTypes.string,
@@ -79,7 +80,7 @@ class Drawer extends React.PureComponent {
   }
 
   getParentAndLevelDom = () => {
-    if (typeof document === 'undefined') {
+    if (windowIsUndefined) {
       return;
     }
     const { level, parent } = this.props;
@@ -229,12 +230,14 @@ class Drawer extends React.PureComponent {
       }
     });
     // 处理 body 滚动
-    if (open) {
-      document.body.addEventListener('mousewheel', this.removeScroll);
-      document.body.addEventListener('touchmove', this.removeScroll);
-    } else {
-      document.body.removeEventListener('mousewheel', this.removeScroll);
-      document.body.removeEventListener('touchmove', this.removeScroll);
+    if (!windowIsUndefined) {
+      if (open) {
+        document.body.addEventListener('mousewheel', this.removeScroll);
+        document.body.addEventListener('touchmove', this.removeScroll);
+      } else {
+        document.body.removeEventListener('mousewheel', this.removeScroll);
+        document.body.removeEventListener('touchmove', this.removeScroll);
+      }
     }
     if (onChange && this.isOpenChange) {
       onChange(open);
@@ -311,6 +314,9 @@ class Drawer extends React.PureComponent {
   }
 
   defaultGetContainer = () => {
+    if (windowIsUndefined) {
+      return null;
+    }
     const container = document.createElement('div');
     this.parent.appendChild(container);
     if (this.props.wrapperClassName) {
