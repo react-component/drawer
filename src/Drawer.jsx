@@ -154,6 +154,9 @@ class Drawer extends React.PureComponent {
   getScollDom = (dom) => {
     const doms = [];
     const setScrollDom = (d) => {
+      if (!d) {
+        return;
+      }
       if ((d.scrollHeight > d.clientHeight || d.scrollWidth > d.clientWidth)) {
         doms.push(d);
       }
