@@ -38,7 +38,7 @@ var MenuItemGroup = __WEBPACK_IMPORTED_MODULE_3_antd__["a" /* Menu */].ItemGroup
 
 __WEBPACK_IMPORTED_MODULE_2_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
   'div',
-  null,
+  { className: 'parent-demo' },
   __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
     __WEBPACK_IMPORTED_MODULE_0_rc_drawer_menu__["a" /* default */],
     { parent: null, width: '240px' },
