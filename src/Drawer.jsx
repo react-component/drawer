@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { dataToArray, transitionEnd } from './utils';
@@ -53,9 +53,10 @@ class Drawer extends React.PureComponent {
     };
   }
   componentDidMount() {
-    this.dom = ReactDOM.findDOMNode(this);
+    if (this.props.parent) {
+      this.container = this.defaultGetContainer();
+    }
     this.getParentAndLevelDom();
-    this.container = this.props.parent ? this.defaultGetContainer() : this.dom;
     this.forceUpdate();
   }
 
@@ -85,7 +86,7 @@ class Drawer extends React.PureComponent {
     }
     const { level, parent } = this.props;
     this.levelDom = [];
-    this.parent = parent && document.querySelectorAll(parent)[0] || this.dom.parentNode;
+    this.parent = parent && document.querySelectorAll(parent)[0] || this.container.parentNode;
     if (level === 'all') {
       const children = Array.prototype.slice.call(this.parent.children);
       children.forEach(child => {
@@ -331,14 +332,14 @@ class Drawer extends React.PureComponent {
   render() {
     const children = this.getChildToRender();
     if (!this.props.parent) {
-      return (<div className={this.props.wrapperClassName}>
+      return (<div className={this.props.wrapperClassName} ref={(c) => { this.container = c; }}>
         {children}
       </div>);
     }
     if (!this.container) {
       return null;
     }
-    return ReactDOM.createPortal(children, this.container);
+    return createPortal(children, this.container);
   }
 }
 

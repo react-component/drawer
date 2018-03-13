@@ -16,7 +16,7 @@ const MenuItemGroup = Menu.ItemGroup;
 // 父级的 transform 距阵必须为 none; 否则将影响 fixed;
 
 ReactDom.render((
-  <div >
+  <div className="parent-demo">
     <Drawer parent={null} width="240px">
       <Menu
         style={{ width: 240 }}
