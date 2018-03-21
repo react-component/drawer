@@ -53,10 +53,10 @@ class Drawer extends React.PureComponent {
     };
   }
   componentDidMount() {
+    this.getParentAndLevelDom();
     if (this.props.parent) {
       this.container = this.defaultGetContainer();
     }
-    this.getParentAndLevelDom();
     this.forceUpdate();
   }
 
