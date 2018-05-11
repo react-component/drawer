@@ -10,12 +10,12 @@
 
 [npm-image]: http://img.shields.io/npm/v/rc-drawer-menu.svg?style=flat-square
 [npm-url]: http://npmjs.org/package/rc-drawer-menu
-[travis-image]: https://img.shields.io/travis/ant-motion/drawer-menu.svg?style=flat-square
-[travis-url]: https://travis-ci.org/ant-motion/drawer-menu
-[coveralls-image]: https://img.shields.io/coveralls/ant-motion/drawer-menu.svg?style=flat-square
-[coveralls-url]: https://coveralls.io/r/ant-motion/drawer-menu?branch=master
-[gemnasium-image]: http://img.shields.io/gemnasium/ant-motion/drawer-menu.svg?style=flat-square
-[gemnasium-url]: https://gemnasium.com/ant-motion/drawer-menu
+[travis-image]: https://img.shields.io/travis/react-component/drawer-menu.svg?style=flat-square
+[travis-url]: https://travis-ci.org/react-component/drawer-menu
+[coveralls-image]: https://img.shields.io/coveralls/react-component/drawer-menu.svg?style=flat-square
+[coveralls-url]: https://coveralls.io/r/react-component/drawer-menu?branch=master
+[gemnasium-image]: http://img.shields.io/gemnasium/react-component/drawer-menu.svg?style=flat-square
+[gemnasium-url]: https://gemnasium.com/react-component/drawer-menu
 [node-image]: https://img.shields.io/badge/node.js-%3E=_0.10-green.svg?style=flat-square
 [node-url]: http://nodejs.org/download/
 [download-image]: https://img.shields.io/npm/dm/rc-drawer-menu.svg?style=flat-square
@@ -23,7 +23,7 @@
 
 ## Example
 
-http://ant-motion.github.io/drawer-menu/examples/
+http://react-component.github.io/drawer-menu/examples/
 
 ## Usage
 
