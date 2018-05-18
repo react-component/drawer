@@ -9,10 +9,10 @@
   pointer-events: none;
   > * {
     transition: transform .3s @ease-in-out-circ, 
-                opacity .3s @ease-in-out-circ, 
-                box-shaow .3s @ease-in-out-circ;
+    opacity .3s @ease-in-out-circ, 
+    box-shaow .3s @ease-in-out-circ;
   }
-  &-bg {
+  &-mask {
     background: #000;
     opacity: 0;
     width: 100%;
@@ -21,17 +21,15 @@
     top: 0;
   }
   &-content-wrapper {
-   position: absolute; 
-   height: 100%;
+    position: absolute;
   }
   &-content {
     background: #fff;
-    height: 100%;
-    overflow: auto; 
+    overflow: auto;
     z-index: 1;
     position: relative;
   }
-  &-button {
+  &-handle {
     position: absolute;
     top: 72px;
     width: 41px;
@@ -52,7 +50,8 @@
       background: #333;
       position: relative;
       transition: background .3s @ease-in-out-circ;
-      &:before, &:after {
+      &:before,
+      &:after {
         content: '';
         display: block;
         position: absolute;
@@ -64,39 +63,98 @@
       &:before {
         top: -5px;
       }
-      &:after{
+      &:after {
         top: 5px;
       }
     }
   }
-  &-left{
-    & .@{drawer} {
-      &-button {
+  &-left,
+  &-right {
+    .@{drawer}-content-wrapper,
+    .@{drawer}-content {
+      height: 100%;
+    }
+  }
+  &-left {
+    .@{drawer} {
+      &-handle {
         right: -40px;
-        box-shadow: 2px 2px 8px rgba(0,0,0,.15);
+        box-shadow: 2px 0 8px rgba(0, 0, 0, .15);
         border-radius: 0 4px 4px 0;
       }
     }
-    &.@{drawer}-open{
-      & .@{drawer}{
+    &.@{drawer}-open {
+      .@{drawer} {
         &-wrapper {
-          box-shadow: 2px 2px 8px rgba(0,0,0,.15);
+          box-shadow: 2px 0 8px rgba(0, 0, 0, .15);
         }
       }
     }
   }
   &-right {
-    & .@{drawer} {
-      &-button {
+    .@{drawer} {
+      &-content-wrapper {
+        right: 0;
+      }
+      &-handle {
         left: -40px;
-        box-shadow: -2px 2px 8px rgba(0,0,0,.15);
+        box-shadow: -2px 0 8px rgba(0, 0, 0, .15);
         border-radius: 4px 0 0 4px;
       }
     }
-    &.@{drawer}-open{
-      & .@{drawer}{
-        &-wrapper{
-          box-shadow: -2px 2px 8px rgba(0,0,0,.15);
+    &.@{drawer}-open {
+      & .@{drawer} {
+        &-wrapper {
+          box-shadow: -2px 0 8px rgba(0, 0, 0, .15);
+        }
+      }
+    }
+  }
+  &-top,
+  &-bottom {
+    .@{drawer}-content-wrapper,
+    .@{drawer}-content {
+      width: 100%;
+    }
+    .@{drawer} {
+      &-handle {
+        left: 50%;
+        margin-left: -20px;
+      }
+    }
+  }
+  &-top {
+    .@{drawer} {
+      &-handle {
+        top: auto;
+        bottom: -40px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, .15);
+        border-radius: 0 0 4px 4px;
+      }
+    }
+    &.@{drawer}-open {
+      .@{drawer} {
+        &-wrapper {
+          box-shadow: 0 2px 8px rgba(0, 0, 0, .15);
+        }
+      }
+    }
+  }
+  &-bottom {
+    .@{drawer} {
+      &-content-wrapper {
+        bottom: 0;
+      }
+      &-handle {
+        top: -40px;
+        box-shadow: 0 -2px 8px rgba(0, 0, 0, .15);
+        border-radius: 4px 4px 0 0;
+      }
+    }
+    &.@{drawer}-open {
+      .@{drawer} {
+        &-wrapper {
+          box-shadow: 0 -2px 8px rgba(0, 0, 0, .15);
         }
       }
     }
@@ -104,16 +162,16 @@
   &.@{drawer}-open {
     pointer-events: auto;
     .@{drawer} {
-      &-bg {
+      &-mask {
         opacity: .3;
       }
-      &-button {
+      &-handle {
         &-icon {
           background: transparent;
-          &:before{
+          &:before {
             transform: translateY(5px) rotate(45deg);
           }
-          &:after{
+          &:after {
             transform: translateY(-5px) rotate(-45deg);
           }
         }
@@ -121,4 +179,3 @@
     }
   }
 }
-  

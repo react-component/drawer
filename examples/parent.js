@@ -17,7 +17,7 @@ const MenuItemGroup = Menu.ItemGroup;
 
 ReactDom.render((
   <div className="parent-demo">
-    <Drawer parent={null} width="240px">
+    <Drawer parent={null}>
       <Menu
         style={{ width: 240 }}
         defaultSelectedKeys={['1']}

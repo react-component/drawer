@@ -27,7 +27,6 @@ class Demo extends React.Component {
     return (
       <div >
         {this.state.show && <Drawer
-          width="240px"
           wrapperClassName="drawer-wrapper"
         >
           <Menu

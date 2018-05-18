@@ -4,7 +4,6 @@
 [![NPM version][npm-image]][npm-url]
 [![build status][travis-image]][travis-url]
 [![Test coverage][coveralls-image]][coveralls-url]
-[![gemnasium deps][gemnasium-image]][gemnasium-url]
 [![node version][node-image]][node-url]
 [![npm download][download-image]][download-url]
 
@@ -14,8 +13,6 @@
 [travis-url]: https://travis-ci.org/react-component/drawer-menu
 [coveralls-image]: https://img.shields.io/coveralls/react-component/drawer-menu.svg?style=flat-square
 [coveralls-url]: https://coveralls.io/r/react-component/drawer-menu?branch=master
-[gemnasium-image]: http://img.shields.io/gemnasium/react-component/drawer-menu.svg?style=flat-square
-[gemnasium-url]: https://gemnasium.com/react-component/drawer-menu
 [node-image]: https://img.shields.io/badge/node.js-%3E=_0.10-green.svg?style=flat-square
 [node-url]: http://nodejs.org/download/
 [download-image]: https://img.shields.io/npm/dm/rc-drawer-menu.svg?style=flat-square
@@ -53,22 +50,23 @@ ReactDom.render(
 
 | props      | type           | default | description    |
 |------------|----------------|---------|----------------|
-| className       | string | `drawer` | - |
-| openClassName | string | `drawer-open` | open className |
+| className       | string | null | - |
+| prefixCls     |  string  | 'drawer' | prefix class |
 | wrapperClassName | string | null | wrapper class name |
-| iconChild   | boolean / ReactElement / Array | true | true or false or ReactElement or Array(ReactElement, ReactElement) => [ close, open ] |
 | open        | boolean  | false |  open or close menu  |
 | defaultOpen | boolean  | false | default open menu |
-| width       |  string   |  `60vw` | children width |
-| placement  | string   |  `left` | `left` or `right` |
+| handleChild   | boolean / ReactElement | true | true or false or ReactElement |
+| handleStyle   | object | null | handle style |
+| placement  | string   |  `left` | `left` `top` `right` `bottom` |
 | level     | string or array | `all` | With the drawer level element. `all`/ null / className / id / tagName / array |
 | levelTransition | string | `transform .3s cubic-bezier(0.78, 0.14, 0.15, 0.86)` | level css transition |
-| parent    | string | `body` | parent element. if is `null` use React.creactElement  | 
+| getContainer    | string | `body` | Return the mount node for Drawer. if is `null` use React.creactElement  |
+| showMask    |  boolean  | true | mask is show |
 | onChange  | func | null | change callback(open) |
 | onMaskClick | func | null | mask close click function |
-| onIconClick | func | nul  | icon click function |
+| onHandleClick | func | nul  | handle icon click function |
 
-> 0.5 onSwitch split into `onMaskClick` `onIconClick`;
+> 1.0 remove `openClassName` `width`, update `iconChild` -> `handleChild` `onIconClick` -> `onHandleClick`, add `handleStyle` `showMask`.
 
 ## Development
 

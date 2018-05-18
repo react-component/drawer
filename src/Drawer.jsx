@@ -8,8 +8,8 @@ const windowIsUndefined = typeof window === 'undefined';
 class Drawer extends React.PureComponent {
   static propTypes = {
     wrapperClassName: PropTypes.string,
-    width: PropTypes.string,
     open: PropTypes.bool,
+    bodyStyle: PropTypes.object,
     defaultOpen: PropTypes.bool,
     placement: PropTypes.string,
     level: PropTypes.oneOfType([
@@ -17,56 +17,65 @@ class Drawer extends React.PureComponent {
       PropTypes.array,
     ]),
     levelTransition: PropTypes.string,
-    parent: PropTypes.string,
-    openClassName: PropTypes.string,
-    iconChild: PropTypes.any,
+    getContainer: PropTypes.string,
+    handleChild: PropTypes.element,
+    handleStyle: PropTypes.object,
     onChange: PropTypes.func,
     onMaskClick: PropTypes.func,
-    onIconClick: PropTypes.func,
+    onHandleClick: PropTypes.func,
+    showMask: PropTypes.bool,
   }
   static defaultProps = {
-    className: 'drawer',
-    width: '60vw',
+    className: '',
+    prefixCls: 'drawer',
     placement: 'left',
-    openClassName: 'drawer-open',
-    parent: 'body',
+    getContainer: 'body',
     level: 'all',
     levelTransition: 'transform .3s cubic-bezier(0.78, 0.14, 0.15, 0.86)',
     onChange: () => { },
     onMaskClick: () => { },
-    onIconClick: () => { },
-    iconChild: (<i className="drawer-button-icon" />),
+    onHandleClick: () => { },
+    handleChild: (<i className="drawer-handle-icon" />),
+    handleStyle: {},
+    showMask: true,
   }
 
   levelDom = [];
 
   contextDom = null;
-  contextWrapDom = null;
   maskDom = null;
 
   mousePos = null;
 
   constructor(props) {
     super(props);
+    if (props.onIconClick || props.parent || props.iconChild || props.width) {
+      console.warn('rc-drawer-menu API has been changed, please look at the releases, ' +
+        'https://github.com/react-component/drawer-menu/releases');
+    }
     this.state = {
       open: props.open !== undefined ? props.open : !!props.defaultOpen,
     };
   }
   componentDidMount() {
     this.getParentAndLevelDom();
-    if (this.props.parent) {
+    if (this.props.getContainer || this.props.parent) {
       this.container = this.defaultGetContainer();
     }
     this.forceUpdate();
   }
 
   componentWillReceiveProps(nextProps) {
-    const { open } = nextProps;
+    const { open, placement, children } = nextProps;
     if (open !== undefined && open !== this.props.open) {
       this.isOpenChange = true;
       this.setState({
         open,
       });
+    }
+    if (placement !== this.props.placement || children !== this.props.children) {
+      // test 的 bug, 有动画过场，删除 dom
+      this.contextDom = null;
     }
   }
 
@@ -74,7 +83,7 @@ class Drawer extends React.PureComponent {
     if (this.container) {
       this.setLevelDomTransform(false, true);
       // 拦不住。。直接删除；
-      if (this.props.parent) {
+      if (this.props.getContainer) {
         this.container.parentNode.removeChild(this.container);
       }
     }
@@ -84,9 +93,10 @@ class Drawer extends React.PureComponent {
     if (windowIsUndefined) {
       return;
     }
-    const { level, parent } = this.props;
+    const { level, getContainer } = this.props;
     this.levelDom = [];
-    this.parent = parent && document.querySelectorAll(parent)[0] || this.container.parentNode;
+    this.parent = getContainer && document.querySelectorAll(getContainer)[0]
+      || this.container.parentNode;
     if (level === 'all') {
       const children = Array.prototype.slice.call(this.parent.children);
       children.forEach(child => {
@@ -133,7 +143,7 @@ class Drawer extends React.PureComponent {
   }
 
   onIconTouchEnd = (e) => {
-    this.props.onIconClick(e);
+    this.props.onHandleClick(e);
     this.onTouchEnd(e);
   }
 
@@ -169,20 +179,23 @@ class Drawer extends React.PureComponent {
     return doms[doms.length - 1];
   }
 
-  getIsButtonDom = (dom) => {
-    if (dom.className === `${this.props.className}-button`) {
+  getIsHandleDom = (dom) => {
+    if (dom.className === `${this.props.className}-handle`) {
       return true;
     }
     if (dom.parentNode) {
-      return this.getIsButtonDom(dom.parentNode);
+      return this.getIsHandleDom(dom.parentNode);
     }
     return false;
   }
 
   removeScroll = (e) => {
+    if (!this.props.showMask) {
+      return;
+    }
     const dom = e.target;
     const scrollDom = this.getScollDom(dom);
-    if (dom === this.maskDom || this.getIsButtonDom(dom) || !scrollDom) {
+    if (dom === this.maskDom || this.getIsHandleDom(dom) || !scrollDom) {
       e.preventDefault();
       e.returnValue = false;
       return;
@@ -220,18 +233,16 @@ class Drawer extends React.PureComponent {
     }
   }
 
-  setLevelDomTransform = (open, openTransition) => {
-    const { placement, levelTransition, width, onChange } = this.props;
+  setLevelDomTransform = (open, openTransition, placementName, value) => {
+    const { placement, levelTransition, onChange } = this.props;
     this.levelDom.forEach(dom => {
       if (this.isOpenChange || openTransition) {
         dom.style.transition = levelTransition;
         dom.addEventListener(transitionEnd, this.trnasitionEnd);
       }
-      if (!open) {
-        dom.style.transform = '';
-      } else {
-        dom.style.transform = `translateX(${placement === 'left' ? width : `-${width}`})`;
-      }
+      const placementPos = placement === 'left' || placement === 'top'
+        ? value : -value;
+      dom.style.transform = open ? `${placementName}(${placementPos}px)` : '';
     });
     // 处理 body 滚动
     if (!windowIsUndefined) {
@@ -251,51 +262,42 @@ class Drawer extends React.PureComponent {
 
   getChildToRender = () => {
     const open = this.props.open !== undefined ? this.props.open : this.state.open;
-    const { className, style, openClassName, placement, children, width, iconChild } = this.props;
-    const wrapperClassname = classnames(this.props.className, {
-      [`${className}-${placement}`]: true,
-      [openClassName]: open,
+    const {
+      className, prefixCls, style, placement,
+      children, handleChild, handleStyle, showMask,
+    } = this.props;
+    const wrapperClassname = classnames(prefixCls, {
+      [`${prefixCls}-${placement}`]: true,
+      [`${prefixCls}-open`]: open,
+      [className]: !!className,
     });
-    const placementPos = placement === 'left' ? width : `-${width}`;
-    const transform = open ? `translateX(${placementPos})` : '';
-    const contentStyle = {
-      width,
-      [placement]: `-${width}`,
-      transform,
-    };
+    const value = this.contextDom ? this.contextDom.getBoundingClientRect()[
+      placement === 'left' || placement === 'right' ? 'width' : 'height'
+    ] : 0;
+    const placementName = `translate${placement === 'left' || placement === 'right' ? 'X' : 'Y'}`;
+    // 百分比与像素动画不同步，第一次打用后全用像素动画。
+    const defaultValue = !this.contextDom ? '100%' : `${value}px`;
+    const placementPos = placement === 'left' || placement === 'top'
+      ? `-${defaultValue}` : defaultValue;
+    const transform = open ? '' : `${placementName}(${placementPos})`;
     if (this.isOpenChange === undefined || this.isOpenChange) {
-      this.setLevelDomTransform(open);
-    }
-    let iconChildToRender;
-    if (iconChild) {
-      if (Array.isArray(iconChild)) {
-        if (iconChild.length === 2) {
-          iconChildToRender = open ? iconChild[1] : iconChild[0];
-        } else {
-          iconChildToRender = iconChild[0];
-        }
-      } else {
-        iconChildToRender = iconChild;
-      }
+      this.setLevelDomTransform(open, false, placementName, value);
     }
     return (
       <div className={wrapperClassname} style={style}>
-        <div
-          className={`${className}-bg`}
+        {showMask && <div
+          className={`${prefixCls}-mask`}
           onClick={this.onMaskTouchEnd}
           ref={(c) => {
             this.maskDom = c;
           }}
-        />
+        />}
         <div
-          className={`${className}-content-wrapper`}
-          style={contentStyle}
-          ref={(c) => {
-            this.contextWrapDom = c;
-          }}
+          className={`${prefixCls}-content-wrapper`}
+          style={{ transform }}
         >
           <div
-            className={`${className}-content`}
+            className={`${prefixCls}-content`}
             onTouchStart={this.onScrollTouchStart}
             onTouchEnd={this.onScrollTouchEnd}
             ref={(c) => {
@@ -304,12 +306,13 @@ class Drawer extends React.PureComponent {
           >
             {children}
           </div>
-          {iconChildToRender && (
+          {handleChild && (
             <div
-              className={`${className}-button`}
+              className={`${prefixCls}-handle`}
               onClick={this.onIconTouchEnd}
+              style={handleStyle}
             >
-              {iconChildToRender}
+              {handleChild}
             </div>
           )}
         </div>
@@ -331,7 +334,7 @@ class Drawer extends React.PureComponent {
 
   render() {
     const children = this.getChildToRender();
-    if (!this.props.parent) {
+    if (!this.props.getContainer) {
       return (<div className={this.props.wrapperClassName} ref={(c) => { this.container = c; }}>
         {children}
       </div>);

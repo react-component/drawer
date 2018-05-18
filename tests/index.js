@@ -27,14 +27,13 @@ describe('rc-drawer-menu', () => {
       render() {
         return (
           <Drawer
-            width={this.props.width}
             open={this.state.open}
             defaultOpen={this.props.defaultOpen}
             level={this.props.level}
-            iconChild={props.iconChild}
+            handleChild={props.handleChild}
             wrapperClassName={props.wrapperClassName}
           >
-            <div>
+            <div style={{ width: 200 }}>
               test
             </div>
           </Drawer>
@@ -58,31 +57,35 @@ describe('rc-drawer-menu', () => {
     }
   });
 
-  function getFloat(str) {
-    return parseFloat(str);
-  }
-
   it('single drawer', () => {
-    instance = createDrawerInstance({
-      width: '200px',
-    });
+    instance = createDrawerInstance({});
     const drawer = document.getElementsByClassName('drawer');
     console.log(drawer.length);
     expect(drawer.length).to.be(1);
     const drawerDom = drawer[0].children[1];
-    console.log(drawerDom.style.left);
-    expect(getFloat(drawerDom.style.left)).to.be(-200);
+    console.log(drawerDom.style.transform);
+    expect(drawerDom.style.transform).to.eql('translateX(-100%)');
+  });
+
+  it('icon child is element', () => {
+    instance = createDrawerInstance({
+      handleChild: <i className="a">a</i>,
+      wrapperClassName: 'drawer-3',
+    });
+    const icon = document.querySelectorAll('.drawer-3 .drawer-handle')[0];
+    const handleChild = icon.children[0];
+    expect(handleChild.className).to.eql('a');
   });
 
   it('default open drawer', () => {
     instance = createDrawerInstance({
       defaultOpen: true,
       level: [],
-      iconChild: (<i className="a">a</i>),
+      handleChild: (<i className="a">a</i>),
       wrapperClassName: 'drawer-1',
     });
     const drawer = document.querySelectorAll('.drawer-1 .drawer-content-wrapper')[0];
-    expect(drawer.style.transform).to.eql('translateX(60vw)');
+    expect(drawer.style.transform).to.eql('');
   });
 
   it('switch open drawer', (done) => {
@@ -91,33 +94,17 @@ describe('rc-drawer-menu', () => {
     });
     const drawer = document.querySelectorAll('.drawer-2 .drawer-content-wrapper')[0];
     console.log(drawer.style.transform);
-    expect(drawer.style.transform).to.eql('');
+    expect(drawer.style.transform).to.eql('translateX(-100%)');
     instance.switchMenu();
     setTimeout(() => {
       console.log(drawer.style.transform);
-      expect(drawer.style.transform).to.eql('translateX(60vw)');
+      expect(drawer.style.transform).to.eql('');
       instance.switchMenu();
       setTimeout(() => {
         console.log(drawer.style.transform);
-        expect(drawer.style.transform).to.eql('');
+        expect(drawer.style.transform).to.eql('translateX(-100%)');
         done();
       }, 500);
     }, 500);
-  });
-
-  it('icon child is array', (done) => {
-    instance = createDrawerInstance({
-      iconChild: [<i className="a">a</i>, <i className="b">b</i>],
-      wrapperClassName: 'drawer-3',
-    });
-    const icon = document.querySelectorAll('.drawer-3 .drawer-button')[0];
-    const iconChild = icon.children[0];
-    expect(iconChild.className).to.eql('a');
-    instance.switchMenu();
-    setTimeout(() => {
-      expect(iconChild.className).to.eql('b');
-      instance.switchMenu();
-      done();
-    });
   });
 });

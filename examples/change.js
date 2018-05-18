@@ -40,7 +40,6 @@ class Demo extends React.Component {
     return (
       <div >
         <Drawer
-          width="240px"
           onChange={this.onChange}
           open={this.state.open}
           onMaskClick={this.onTouchEnd}
