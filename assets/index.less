@@ -7,10 +7,8 @@
   height: 100%;
   z-index: 9999;
   pointer-events: none;
-  > * {
-    transition: transform .3s @ease-in-out-circ, 
-    opacity .3s @ease-in-out-circ, 
-    box-shaow .3s @ease-in-out-circ;
+  >* {
+    transition: transform .3s @ease-in-out-circ, opacity .3s @ease-in-out-circ, box-shaow .3s @ease-in-out-circ;
   }
   &-mask {
     background: #000;
@@ -160,7 +158,9 @@
     }
   }
   &.@{drawer}-open {
-    pointer-events: auto;
+    > * {
+        pointer-events: auto;
+    }
     .@{drawer} {
       &-mask {
         opacity: .3;
