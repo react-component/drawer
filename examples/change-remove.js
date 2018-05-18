@@ -13,19 +13,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rc_drawer_menu__ = __webpack_require__(60);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rc_drawer_menu__ = __webpack_require__(62);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_dom__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_antd__ = __webpack_require__(56);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_antd_lib_style__ = __webpack_require__(59);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_antd__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_antd_lib_style__ = __webpack_require__(61);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_antd_lib_style___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_antd_lib_style__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_antd_lib_menu_style__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_antd_lib_menu_style__ = __webpack_require__(60);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_antd_lib_menu_style___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_antd_lib_menu_style__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_rc_drawer_menu_assets_index_less__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_rc_drawer_menu_assets_index_less__ = __webpack_require__(69);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_rc_drawer_menu_assets_index_less___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10_rc_drawer_menu_assets_index_less__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__assets_index_less__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__assets_index_less__ = __webpack_require__(70);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__assets_index_less___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__assets_index_less__);
 
 
@@ -85,7 +85,6 @@ var Demo = function (_React$Component) {
         this.state.show && __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
           __WEBPACK_IMPORTED_MODULE_4_rc_drawer_menu__["a" /* default */],
           {
-            width: '240px',
             wrapperClassName: 'drawer-wrapper'
           },
           __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
@@ -239,7 +238,7 @@ __WEBPACK_IMPORTED_MODULE_6_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
 
 /***/ }),
 
-/***/ 836:
+/***/ 842:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(302);
@@ -247,5 +246,5 @@ module.exports = __webpack_require__(302);
 
 /***/ })
 
-},[836]);
+},[842]);
 //# sourceMappingURL=change-remove.js.map
