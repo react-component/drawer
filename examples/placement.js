@@ -87,7 +87,7 @@ var Demo = function (_React$Component) {
         null,
         this.state.childShow && __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
           __WEBPACK_IMPORTED_MODULE_4_rc_drawer_menu__["a" /* default */],
-          { placement: this.state.placement, showMask: false },
+          { placement: this.state.placement },
           __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
             __WEBPACK_IMPORTED_MODULE_7_antd__["a" /* Menu */],
             {
