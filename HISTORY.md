@@ -7,7 +7,7 @@ History
 ### API
 
 1. remove `openClassName` `width`;
-2. update `iconChild` -> `handleChild` `onIconClick` -> `onHandleClick`;
+2. update `iconChild` -> `handleChild` `onIconClick` -> `onHandleClick` `parent` -> `getContainer`;
 3. add `handleStyle` `showMask`;
 
 ### Func
