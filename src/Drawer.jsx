@@ -18,7 +18,7 @@ class Drawer extends React.PureComponent {
     ]),
     levelTransition: PropTypes.string,
     getContainer: PropTypes.string,
-    handleChild: PropTypes.element,
+    handleChild: PropTypes.any,
     handleStyle: PropTypes.object,
     onChange: PropTypes.func,
     onMaskClick: PropTypes.func,
