@@ -24,6 +24,7 @@ class Drawer extends React.PureComponent {
     onMaskClick: PropTypes.func,
     onHandleClick: PropTypes.func,
     showMask: PropTypes.bool,
+    maskStyle: PropTypes.object,
   }
   static defaultProps = {
     className: '',
@@ -38,6 +39,7 @@ class Drawer extends React.PureComponent {
     handleChild: (<i className="drawer-handle-icon" />),
     handleStyle: {},
     showMask: true,
+    maskStyle: {},
   }
 
   levelDom = [];
@@ -288,6 +290,7 @@ class Drawer extends React.PureComponent {
         {showMask && <div
           className={`${prefixCls}-mask`}
           onClick={this.onMaskTouchEnd}
+          style={this.props.maskStyle}
           ref={(c) => {
             this.maskDom = c;
           }}
