@@ -2,6 +2,10 @@ History
 
 ---
 
+## 1.1.0
+
+add `maskStyle`;
+
 ## 1.0.0
 
 ### API

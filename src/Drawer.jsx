@@ -266,7 +266,7 @@ class Drawer extends React.PureComponent {
     const open = this.props.open !== undefined ? this.props.open : this.state.open;
     const {
       className, prefixCls, style, placement,
-      children, handleChild, handleStyle, showMask,
+      children, handleChild, handleStyle, showMask, maskStyle,
     } = this.props;
     const wrapperClassname = classnames(prefixCls, {
       [`${prefixCls}-${placement}`]: true,
@@ -290,7 +290,7 @@ class Drawer extends React.PureComponent {
         {showMask && <div
           className={`${prefixCls}-mask`}
           onClick={this.onMaskTouchEnd}
-          style={this.props.maskStyle}
+          style={maskStyle}
           ref={(c) => {
             this.maskDom = c;
           }}

@@ -62,6 +62,7 @@ ReactDom.render(
 | levelTransition | string | `transform .3s cubic-bezier(0.78, 0.14, 0.15, 0.86)` | level css transition |
 | getContainer    | string | `body` | Return the mount node for Drawer. if is `null` use React.creactElement  |
 | showMask    |  boolean  | true | mask is show |
+| maskStyle | object | null | mask style |
 | onChange  | func | null | change callback(open) |
 | onMaskClick | func | null | mask close click function |
 | onHandleClick | func | nul  | handle icon click function |
