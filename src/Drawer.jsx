@@ -68,14 +68,14 @@ class Drawer extends React.PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { open, placement, children } = nextProps;
+    const { open, placement } = nextProps;
     if (open !== undefined && open !== this.props.open) {
       this.isOpenChange = true;
       this.setState({
         open,
       });
     }
-    if (placement !== this.props.placement || children !== this.props.children) {
+    if (placement !== this.props.placement) {
       // test 的 bug, 有动画过场，删除 dom
       this.contextDom = null;
     }
