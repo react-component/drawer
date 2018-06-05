@@ -102,7 +102,7 @@ describe('rc-drawer-menu', () => {
       instance.switchMenu();
       setTimeout(() => {
         console.log(drawer.style.transform);
-        expect(drawer.style.transform).to.eql('translateX(-100%)');
+        expect(drawer.style.transform).to.eql('translateX(-200px)');
         done();
       }, 500);
     }, 500);
