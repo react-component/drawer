@@ -43,12 +43,10 @@ class Drawer extends React.PureComponent {
   }
 
   levelDom = [];
-
   contextDom = null;
   maskDom = null;
-
+  handleDom = null;
   mousePos = null;
-
   constructor(props) {
     super(props);
     if (props.onIconClick || props.parent || props.iconChild || props.width) {
@@ -129,9 +127,6 @@ class Drawer extends React.PureComponent {
     if (this.props.open !== undefined) {
       return;
     }
-    if (e) {
-      e.preventDefault();
-    }
     const open = close || this.state.open;
     this.isOpenChange = true;
     this.setState({
@@ -173,7 +168,7 @@ class Drawer extends React.PureComponent {
       if ((d.scrollHeight > d.clientHeight || d.scrollWidth > d.clientWidth)) {
         doms.push(d);
       }
-      if (d !== this.contextDom && d !== this.maskDom) {
+      if (d !== this.contextDom && d !== this.handleDom && d !== this.maskDom) {
         setScrollDom(d.parentNode);
       }
     };
@@ -198,7 +193,9 @@ class Drawer extends React.PureComponent {
     const dom = e.target;
     const scrollDom = this.getScollDom(dom);
     if (dom === this.maskDom || this.getIsHandleDom(dom) || !scrollDom) {
-      e.preventDefault();
+      if (e.preventDefault) {
+        e.preventDefault();
+      }
       e.returnValue = false;
       return;
     }
@@ -229,7 +226,9 @@ class Drawer extends React.PureComponent {
     const maxOrMinScrollX = scrollWidth - width > 2 &&
       ((scrollLeft <= 0 && x < 0) || (scrollLeft + width >= scrollWidth && x > 0));
     if (!isScrollY && !isScrollX || (maxOrMinScrollY || maxOrMinScrollX)) {
-      e.preventDefault();
+      if (e.preventDefault) {
+        e.preventDefault();
+      }
       e.returnValue = false;
       return;
     }
@@ -248,12 +247,26 @@ class Drawer extends React.PureComponent {
     });
     // 处理 body 滚动
     if (!windowIsUndefined) {
+      let passiveSupported = false;
+      try {
+        window.addEventListener('test', null,
+          Object.defineProperty({}, 'passive',
+            {
+              get: () => {
+                passiveSupported = true;
+              },
+            })
+        );
+      } catch (err) {
+        console.log(err);
+      }
+      const passive = passiveSupported ? { passive: false } : false;
       if (open) {
         document.body.addEventListener('mousewheel', this.removeScroll);
-        document.body.addEventListener('touchmove', this.removeScroll);
+        document.body.addEventListener('touchmove', this.removeScroll, passive);
       } else {
         document.body.removeEventListener('mousewheel', this.removeScroll);
-        document.body.removeEventListener('touchmove', this.removeScroll);
+        document.body.removeEventListener('touchmove', this.removeScroll, passive);
       }
     }
     if (onChange && this.isOpenChange) {
@@ -314,6 +327,9 @@ class Drawer extends React.PureComponent {
               className={`${prefixCls}-handle`}
               onClick={this.onIconTouchEnd}
               style={handleStyle}
+              ref={(c) => {
+                this.handleDom = c;
+              }}
             >
               {handleChild}
             </div>
