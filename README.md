@@ -1,4 +1,4 @@
-# rc-drawer-menu
+# rc-drawer
 ---
 
 [![NPM version][npm-image]][npm-url]
@@ -7,25 +7,25 @@
 [![node version][node-image]][node-url]
 [![npm download][download-image]][download-url]
 
-[npm-image]: http://img.shields.io/npm/v/rc-drawer-menu.svg?style=flat-square
-[npm-url]: http://npmjs.org/package/rc-drawer-menu
-[travis-image]: https://img.shields.io/travis/react-component/drawer-menu.svg?style=flat-square
-[travis-url]: https://travis-ci.org/react-component/drawer-menu
-[coveralls-image]: https://img.shields.io/coveralls/react-component/drawer-menu.svg?style=flat-square
-[coveralls-url]: https://coveralls.io/r/react-component/drawer-menu?branch=master
+[npm-image]: http://img.shields.io/npm/v/rc-drawer.svg?style=flat-square
+[npm-url]: http://npmjs.org/package/rc-drawer
+[travis-image]: https://img.shields.io/travis/react-component/drawer.svg?style=flat-square
+[travis-url]: https://travis-ci.org/react-component/drawer
+[coveralls-image]: https://img.shields.io/coveralls/react-component/drawer.svg?style=flat-square
+[coveralls-url]: https://coveralls.io/r/react-component/drawer?branch=master
 [node-image]: https://img.shields.io/badge/node.js-%3E=_0.10-green.svg?style=flat-square
 [node-url]: http://nodejs.org/download/
-[download-image]: https://img.shields.io/npm/dm/rc-drawer-menu.svg?style=flat-square
-[download-url]: https://npmjs.org/package/rc-drawer-menu
+[download-image]: https://img.shields.io/npm/dm/rc-drawer.svg?style=flat-square
+[download-url]: https://npmjs.org/package/rc-drawer
 
 ## Example
 
-http://react-component.github.io/drawer-menu/examples/
+http://react-component.github.io/drawer/examples/
 
 ## Usage
 
 ```js
-import Drawer from 'rc-drawer-menu';
+import Drawer from 'rc-drawer';
 import React from 'react';
 import ReactDom from 'react-dom';
 
@@ -38,7 +38,7 @@ ReactDom.render(
 
 ## Install
 
-[![rc-drawer-menu](https://nodei.co/npm/rc-drawer-menu.png)](https://npmjs.org/package/rc-drawer-menu)
+[![rc-drawer](https://nodei.co/npm/rc-drawer.png)](https://npmjs.org/package/rc-drawer)
 
 ## Browser Support
 
