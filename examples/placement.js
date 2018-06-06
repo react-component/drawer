@@ -1,5 +1,5 @@
 /* eslint-disable no-console,react/no-multi-comp */
-import Drawer from 'rc-drawer-menu';
+import Drawer from 'rc-drawer';
 import React from 'react';
 import ReactDom from 'react-dom';
 import { Menu, Icon, Select } from 'antd';
@@ -8,7 +8,7 @@ import 'antd/lib/style';
 import 'antd/lib/menu/style';
 import 'antd/lib/select/style';
 
-import 'rc-drawer-menu/assets/index.less';
+import 'rc-drawer/assets/index.less';
 import './assets/index.less';
 
 const SubMenu = Menu.SubMenu;

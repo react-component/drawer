@@ -58,7 +58,7 @@ class Drawer extends React.PureComponent {
     };
   }
   componentDidMount() {
-    this.getParentAndLevelDom();
+    this.getParentAndLevelDom(this.props);
     if (this.props.getContainer || this.props.parent) {
       this.container = this.defaultGetContainer();
     }
@@ -77,6 +77,9 @@ class Drawer extends React.PureComponent {
       // test 的 bug, 有动画过场，删除 dom
       this.contextDom = null;
     }
+    if (this.props.level !== nextProps.level) {
+      this.getParentAndLevelDom(nextProps);
+    }
   }
 
   componentWillUnmount() {
@@ -89,11 +92,11 @@ class Drawer extends React.PureComponent {
     }
   }
 
-  getParentAndLevelDom = () => {
+  getParentAndLevelDom = (props) => {
     if (windowIsUndefined) {
       return;
     }
-    const { level, getContainer } = this.props;
+    const { level, getContainer } = props;
     this.levelDom = [];
     this.parent = getContainer && document.querySelectorAll(getContainer)[0]
       || this.container.parentNode;
@@ -108,7 +111,7 @@ class Drawer extends React.PureComponent {
         }
       });
     } else if (level) {
-      dataToArray(this.props.level).forEach(key => {
+      dataToArray(level).forEach(key => {
         document.querySelectorAll(key)
           .forEach(item => {
             this.levelDom.push(item);
