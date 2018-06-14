@@ -52,7 +52,7 @@
     "karma": "rc-test run karma",
     "saucelabs": "rc-test run saucelabs",
     "test": "jest",
-    "coverage": "rc-test run coverage"
+    "coverage": "jest --coverage"
   },
   "devDependencies": {
     "antd": "^2.13.8",
@@ -63,7 +63,8 @@
     "expect.js": "0.3.x",
     "jest": "^23.1.0",
     "pre-commit": "1.x",
-    "rc-tools": "6.x",
+    "raf": "^3.4.0",
+    "rc-tools": "7.x",
     "react": "^16.0.0",
     "react-dom": "^16.0.0"
   },
@@ -80,7 +81,7 @@
       "./tests/setup.js"
     ],
     "collectCoverageFrom": [
-      "src/**/*"
+      "src/*"
     ],
     "snapshotSerializers": [
       "enzyme-to-json/serializer"
