@@ -5,7 +5,6 @@ import classnames from 'classnames';
 import { dataToArray, transitionEnd } from './utils';
 
 const windowIsUndefined = typeof window === 'undefined';
-
 class Drawer extends React.PureComponent {
   static propTypes = {
     wrapperClassName: PropTypes.string,
