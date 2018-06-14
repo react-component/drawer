@@ -47,7 +47,7 @@ describe('rc-drawer-menu', () => {
   });
 
   it('switch open drawer', () => {
-    instance = mount(<Drawer />);
+    instance = mount(<Drawer level={null}/>);
     jest.useFakeTimers();
     const drawer = instance.find('.drawer-content-wrapper').instance();
 
@@ -70,8 +70,7 @@ describe('rc-drawer-menu', () => {
   it('getContainer is null', () => {
     instance = mount(<div className="react-wrapper">
       <div id="a" style={{ position: 'absolute', top: 0, left: 0 }}>test1</div>
-      <div id="b" style={{ position: 'absolute', top: 0, left: 110 }}>test1</div>
-      <Drawer getContainer={null} level={['#a', '#b']} wrapperClassName="drawer-wrapper" />
+      <Drawer getContainer={null} level="#a" wrapperClassName="drawer-wrapper" />
     </div>);
     const drawer = instance.find('.drawer').instance();
     const a = instance.find('#a').instance();
@@ -82,7 +81,7 @@ describe('rc-drawer-menu', () => {
     expect(drawer.parentNode.parentNode.className).to.be('react-wrapper');
   });
   it('click open close', () => {
-    instance = mount(<Drawer />);
+    instance = mount(<Drawer level="b"/>);
     const content = instance.find('.drawer-content-wrapper').instance();
     console.log(content.style.transform);
     expect(content.style.transform).to.be('translateX(-100%)');
@@ -105,5 +104,17 @@ describe('rc-drawer-menu', () => {
       show: false,
     });
     expect(divWrapper.children.length).to.be(0);
+  });
+  it('placement change', () => {
+    instance = mount(<Drawer level={null}/>);
+    const content = instance.find('.drawer-content-wrapper').instance();
+    console.log(content.style.transform);
+    expect(content.style.transform).to.be('translateX(-100%)');
+    instance.setProps({
+      placement: 'top',
+      level: ['a', 'b'],
+    });
+    console.log(content.style.transform);
+    expect(content.style.transform).to.be('translateY(-100%)');
   });
 });

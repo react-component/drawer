@@ -1,7 +1,4 @@
 export function dataToArray(vars) {
-  if (!vars && vars !== 0) {
-    return [];
-  }
   if (Array.isArray(vars)) {
     return vars;
   }

@@ -112,10 +112,9 @@ class Drawer extends React.PureComponent {
       });
     } else if (level) {
       dataToArray(level).forEach(key => {
-        document.querySelectorAll(key)
-          .forEach(item => {
-            this.levelDom.push(item);
-          });
+        document.querySelectorAll(key).forEach(item => {
+          this.levelDom.push(item);
+        });
       });
     }
   }
