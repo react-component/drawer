@@ -1,7 +1,19 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import expect from 'expect.js';
 import { mount } from 'enzyme';
 import Drawer from '../src';
+
+function Div(props) {
+  return (
+    <div className="div-wrapper">
+      {props.show && <Drawer wrapperClassName="drawer-wrapper" defaultOpen />}
+    </div>
+  );
+}
+Div.propTypes = {
+  show: PropTypes.bool,
+};
 
 describe('rc-drawer-menu', () => {
   let instance;
@@ -57,9 +69,14 @@ describe('rc-drawer-menu', () => {
   });
   it('getContainer is null', () => {
     instance = mount(<div className="react-wrapper">
-      <Drawer getContainer={null} wrapperClassName="drawer-wrapper"/>
+      <div id="a" style={{ position: 'absolute', top: 0, left: 0 }}>test1</div>
+      <div id="b" style={{ position: 'absolute', top: 0, left: 110 }}>test1</div>
+      <Drawer getContainer={null} level={['#a', '#b']} wrapperClassName="drawer-wrapper" />
     </div>);
     const drawer = instance.find('.drawer').instance();
+    const a = instance.find('#a').instance();
+    console.log('a transform:', a.style.transform);
+    expect(a.style.transform).to.be('');
     console.log(drawer.parentNode.parentNode.className);
     expect(drawer.parentNode.className).to.be('drawer-wrapper');
     expect(drawer.parentNode.parentNode.className).to.be('react-wrapper');
@@ -77,5 +94,16 @@ describe('rc-drawer-menu', () => {
     mask.simulate('click');
     console.log(content.style.transform);
     expect(content.style.transform).to.be('translateX(-0px)');
+  });
+  it('will unmount', () => {
+    instance = mount(<Div show/>);
+    const divWrapper = instance.find('.div-wrapper').instance();
+    const content = instance.find('.drawer-content-wrapper').instance();
+    console.log(content.style.transform);
+    expect(content.style.transform).to.be('');
+    instance.setProps({
+      show: false,
+    });
+    expect(divWrapper.children.length).to.be(0);
   });
 });
