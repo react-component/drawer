@@ -147,96 +147,6 @@ class Drawer extends React.PureComponent {
     this.onTouchEnd(e);
   }
 
-  onScrollTouchStart = (e) => {
-    if (e.touches.length > 1) {
-      return;
-    }
-    const touchs = e.touches[0];
-    this.mousePos = {
-      x: touchs.pageX,
-      y: touchs.pageY,
-    };
-  }
-
-  onScrollTouchEnd = () => {
-    this.mousePos = null;
-  }
-
-  getScollDom = (dom) => {
-    const doms = [];
-    const setScrollDom = (d) => {
-      if (!d) {
-        return;
-      }
-      if ((d.scrollHeight > d.clientHeight || d.scrollWidth > d.clientWidth)) {
-        doms.push(d);
-      }
-      if (d !== this.contextDom && d !== this.handleDom && d !== this.maskDom) {
-        setScrollDom(d.parentNode);
-      }
-    };
-    setScrollDom(dom);
-    return doms[doms.length - 1];
-  }
-
-  getIsHandleDom = (dom) => {
-    if (dom.className === `${this.props.className}-handle`) {
-      return true;
-    }
-    if (dom.parentNode) {
-      return this.getIsHandleDom(dom.parentNode);
-    }
-    return false;
-  }
-
-  removeScroll = (e) => {
-    if (!this.props.showMask) {
-      return;
-    }
-    const dom = e.target;
-    const scrollDom = this.getScollDom(dom);
-    if (dom === this.maskDom || this.getIsHandleDom(dom) || !scrollDom) {
-      if (e.preventDefault) {
-        e.preventDefault();
-      }
-      e.returnValue = false;
-      return;
-    }
-
-    let y = e.deltaY;
-    let x = e.deltaX;
-    if (e.type === 'touchmove') {
-      if (e.touches.length > 1 || !this.mousePos) {
-        return;
-      }
-      const touches = e.touches[0];
-      // 上滑为正，下滑为负
-      y = this.mousePos.y - touches.pageY;
-      x = this.mousePos.x - touches.pageX;
-    }
-    // 竖向
-    const scrollTop = scrollDom.scrollTop;
-    const height = scrollDom.clientHeight;
-    const scrollHeight = scrollDom.scrollHeight;
-    const isScrollY = scrollHeight - height > 2;
-    const maxOrMinScrollY = isScrollY &&
-      ((scrollTop <= 0 && y < 0) || (scrollTop + height >= scrollHeight && y > 0));
-    // 横向
-    const width = scrollDom.clientWidth;
-    const scrollLeft = scrollDom.scrollLeft;
-    const scrollWidth = scrollDom.scrollWidth;
-    const isScrollX = scrollWidth - width > 2;
-    const maxOrMinScrollX = scrollWidth - width > 2 &&
-      ((scrollLeft <= 0 && x < 0) || (scrollLeft + width >= scrollWidth && x > 0));
-    if (!isScrollY && !isScrollX || (maxOrMinScrollY || maxOrMinScrollX)) {
-      if (e.preventDefault) {
-        e.preventDefault();
-      }
-      e.returnValue = false;
-      return;
-    }
-  }
-
   setLevelDomTransform = (open, openTransition, placementName, value) => {
     const { placement, levelTransition, onChange } = this.props;
     this.levelDom.forEach(dom => {
@@ -250,26 +160,12 @@ class Drawer extends React.PureComponent {
     });
     // 处理 body 滚动
     if (!windowIsUndefined) {
-      let passiveSupported = false;
-      try {
-        window.addEventListener('test', null,
-          Object.defineProperty({}, 'passive',
-            {
-              get: () => {
-                passiveSupported = true;
-              },
-            })
-        );
-      } catch (err) {
-        console.log(err);
-      }
-      const passive = passiveSupported ? { passive: false } : false;
       if (open) {
-        document.body.addEventListener('mousewheel', this.removeScroll);
-        document.body.addEventListener('touchmove', this.removeScroll, passive);
+        this.bodyDefaultOverflow = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
       } else {
-        document.body.removeEventListener('mousewheel', this.removeScroll);
-        document.body.removeEventListener('touchmove', this.removeScroll, passive);
+        document.body.style.overflow = this.bodyDefaultOverflow;
+        delete this.bodyDefaultOverflow;
       }
     }
     if (onChange && this.isOpenChange) {
@@ -317,8 +213,6 @@ class Drawer extends React.PureComponent {
         >
           <div
             className={`${prefixCls}-content`}
-            onTouchStart={this.onScrollTouchStart}
-            onTouchEnd={this.onScrollTouchEnd}
             ref={(c) => {
               this.contextDom = c;
             }}
