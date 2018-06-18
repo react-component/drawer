@@ -8,8 +8,11 @@ const windowIsUndefined = typeof window === 'undefined';
 class Drawer extends React.PureComponent {
   static propTypes = {
     wrapperClassName: PropTypes.string,
+    className: PropTypes.string,
     open: PropTypes.bool,
+    prefixCls: PropTypes.string,
     bodyStyle: PropTypes.object,
+    style: PropTypes.object,
     defaultOpen: PropTypes.bool,
     placement: PropTypes.string,
     level: PropTypes.oneOfType([
@@ -17,7 +20,11 @@ class Drawer extends React.PureComponent {
       PropTypes.array,
     ]),
     levelTransition: PropTypes.string,
-    getContainer: PropTypes.string,
+    getContainer: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.func,
+      PropTypes.object,
+    ]),
     handleChild: PropTypes.any,
     handleStyle: PropTypes.object,
     onChange: PropTypes.func,
@@ -27,7 +34,6 @@ class Drawer extends React.PureComponent {
     maskStyle: PropTypes.object,
   }
   static defaultProps = {
-    className: '',
     prefixCls: 'drawer',
     placement: 'left',
     getContainer: 'body',
@@ -98,8 +104,20 @@ class Drawer extends React.PureComponent {
     }
     const { level, getContainer } = props;
     this.levelDom = [];
-    this.parent = getContainer && document.querySelectorAll(getContainer)[0]
-      || this.container.parentNode;
+    if(getContainer){
+      if(typeof getContainer === "string"){
+        this.parent = document.querySelectorAll(getContainer)[0];
+      }
+      if(typeof getContainer === "function"){
+        this.parent = getContainer();;
+      }
+      if(typeof getContainer === "object" && getContainer instanceof HTMLElement){
+        this.parent = getContainer;;
+      }
+    }
+    if(!getContainer && this.container){
+      this.parent = this.container.parentNode;
+    }
     if (level === 'all') {
       const children = Array.prototype.slice.call(this.parent.children);
       children.forEach(child => {

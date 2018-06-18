@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Drawer render correctly 1`] = `
+<div>
+  <div>
+    <div>
+      <div
+        class="drawer drawer-left drawer-open"
+      >
+        <div
+          class="drawer-mask"
+        />
+        <div
+          class="drawer-content-wrapper"
+        >
+          <div
+            class="drawer-content"
+          >
+            Here is content of Drawer
+          </div>
+          <div
+            class="drawer-handle"
+          >
+            <i
+              class="drawer-handle-icon"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

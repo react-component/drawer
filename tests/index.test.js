@@ -17,7 +17,7 @@ Div.propTypes = {
 
 describe('rc-drawer-menu', () => {
   let instance;
-  it('single drawer', () => {
+  fit('single drawer', () => {
     instance = mount(<Drawer />);
     const drawer = instance.find('.drawer');
     const drawerContent = instance.find('.drawer-content-wrapper');
@@ -117,4 +117,5 @@ describe('rc-drawer-menu', () => {
     console.log(content.style.transform);
     expect(content.style.transform).to.be('translateY(-100%)');
   });
+  
 });
