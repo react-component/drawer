@@ -10,7 +10,7 @@ import 'antd/lib/menu/style';
 import 'rc-drawer/assets/index.less';
 import './assets/index.less';
 
-const SubMenu = Menu.SubMenu;
+const { SubMenu } = Menu;
 const MenuItemGroup = Menu.ItemGroup;
 
 class DrawerTester extends React.Component {
