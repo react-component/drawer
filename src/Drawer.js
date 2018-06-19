@@ -112,7 +112,6 @@ class Drawer extends React.PureComponent {
     }
     const open = close || this.state.open;
     this.isOpenChange = true;
-    console.log(open)
     this.setState({
       open: !open,
     });
