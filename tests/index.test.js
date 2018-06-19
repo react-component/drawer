@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import PropTypes from 'prop-types';
 import expect from 'expect.js';
@@ -117,4 +118,5 @@ describe('rc-drawer-menu', () => {
     console.log(content.style.transform);
     expect(content.style.transform).to.be('translateY(-100%)');
   });
+  
 });

@@ -64,7 +64,7 @@
     "jest": "^23.1.0",
     "pre-commit": "1.x",
     "raf": "^3.4.0",
-    "rc-tools": "7.x",
+    "rc-tools": "^8.1.1",
     "react": "^16.0.0",
     "react-dom": "^16.0.0"
   },

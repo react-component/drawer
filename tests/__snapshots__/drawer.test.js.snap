@@ -1,0 +1,117 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Drawer render dom 1`] = `
+<div>
+  <div
+    class="main"
+  >
+    <div>
+      <div
+        class="drawer drawer-left drawer-open"
+      >
+        <div
+          class="drawer-mask"
+        />
+        <div
+          class="drawer-content-wrapper"
+        >
+          <div
+            class="drawer-content"
+          >
+            <p
+              class="text"
+            >
+              Here is content of Drawer
+            </p>
+          </div>
+          <div
+            class="drawer-handle"
+          >
+            <i
+              class="drawer-handle-icon"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Drawer render function 1`] = `
+<div>
+  <div
+    class="main"
+  >
+    <div>
+      <div
+        class="drawer drawer-left drawer-open"
+      >
+        <div
+          class="drawer-mask"
+        />
+        <div
+          class="drawer-content-wrapper"
+        >
+          <div
+            class="drawer-content"
+          >
+            <p
+              class="text"
+            >
+              Here is content of Drawer
+            </p>
+          </div>
+          <div
+            class="drawer-handle"
+          >
+            <i
+              class="drawer-handle-icon"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Drawer render string 1`] = `
+<div>
+  <div
+    id="test"
+    style="transform: translateX(0px);"
+  />
+  <div
+    class=""
+  >
+    <div
+      class="drawer drawer-left drawer-open"
+    >
+      <div
+        class="drawer-mask"
+      />
+      <div
+        class="drawer-content-wrapper"
+      >
+        <div
+          class="drawer-content"
+        >
+          <p
+            class="text"
+          >
+            Here is content of Drawer
+          </p>
+        </div>
+        <div
+          class="drawer-handle"
+        >
+          <i
+            class="drawer-handle-icon"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
