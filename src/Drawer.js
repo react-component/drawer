@@ -9,6 +9,9 @@ class Drawer extends React.PureComponent {
   static propTypes = {
     wrapperClassName: PropTypes.string,
     className: PropTypes.string,
+    children: PropTypes.node,
+    style: PropTypes.object,
+    defaultOpen: PropTypes.bool,
     open: PropTypes.bool,
     prefixCls: PropTypes.string,
     placement: PropTypes.string,
@@ -22,13 +25,6 @@ class Drawer extends React.PureComponent {
     onHandleClick: PropTypes.func,
     showMask: PropTypes.bool,
     maskStyle: PropTypes.object,
-    onIconClick: PropTypes.func,
-    iconChild: PropTypes.object,
-    width: PropTypes.number,
-    children: PropTypes.node,
-    style: PropTypes.object,
-    defaultOpen: PropTypes.bool,
-    parent: PropTypes.object
   };
   static defaultProps = {
     prefixCls: 'drawer',
@@ -36,25 +32,29 @@ class Drawer extends React.PureComponent {
     getContainer: 'body',
     level: 'all',
     levelTransition: 'transform .3s cubic-bezier(0.78, 0.14, 0.15, 0.86)',
-    onChange: () => {},
-    onMaskClick: () => {},
-    onHandleClick: () => {},
+    onChange: () => { },
+    onMaskClick: () => { },
+    onHandleClick: () => { },
     handleChild: <i className="drawer-handle-icon" />,
     handleStyle: {},
     showMask: true,
     maskStyle: {},
-    open: false,
     wrapperClassName: '',
     className: '',
   };
 
   constructor(props) {
     super(props);
-    if (props.onIconClick || props.parent || props.iconChild || props.width) {
+    this.levelDom = [];
+    this.contextDom = null;
+    this.maskDom = null;
+    this.handleDom = null;
+    this.mousePos = null;
+    if (props.onIconClick || props.parent || props.iconChild || props.width) { // eslint-disable-line react/prop-types
       /* eslint-disable  no-console */
       console.warn(
         'rc-drawer-menu API has been changed, please look at the releases, ' +
-          'https://github.com/react-component/drawer-menu/releases'
+        'https://github.com/react-component/drawer-menu/releases'
       );
     }
     this.state = {
@@ -102,6 +102,7 @@ class Drawer extends React.PureComponent {
   };
 
   onIconTouchEnd = e => {
+    
     this.props.onHandleClick(e);
     this.onTouchEnd(e);
   };
@@ -111,6 +112,7 @@ class Drawer extends React.PureComponent {
     }
     const open = close || this.state.open;
     this.isOpenChange = true;
+    console.log(open)
     this.setState({
       open: !open,
     });
@@ -249,12 +251,6 @@ class Drawer extends React.PureComponent {
       </div>
     );
   };
-
-  levelDom = [];
-  contextDom = null;
-  maskDom = null;
-  handleDom = null;
-  mousePos = null;
 
   trnasitionEnd = e => {
     const dom = e.target;

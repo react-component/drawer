@@ -58,7 +58,7 @@ ReactDom.render(
 | placement  | string   |  `left` | `left` `top` `right` `bottom` |
 | level     | string or array | `all` | With the drawer level element. `all`/ null / className / id / tagName / array |
 | levelTransition | string | `transform .3s cubic-bezier(0.78, 0.14, 0.15, 0.86)` | level css transition |
-| getContainer    | string | `body` | Return the mount node for Drawer. if is `null` use React.creactElement  |
+| getContainer    | string or func or HTMLElement | `body` | Return the mount node for Drawer. if is `null` use React.creactElement  |
 | showMask    |  boolean  | true | mask is show |
 | maskStyle | object | null | mask style |
 | onChange  | func | null | change callback(open) |

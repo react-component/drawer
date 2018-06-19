@@ -18,7 +18,7 @@ Div.propTypes = {
 
 describe('rc-drawer-menu', () => {
   let instance;
-  fit('single drawer', () => {
+  it('single drawer', () => {
     instance = mount(<Drawer />);
     const drawer = instance.find('.drawer');
     const drawerContent = instance.find('.drawer-content-wrapper');
