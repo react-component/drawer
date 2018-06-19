@@ -1,8 +1,11 @@
 import React from 'react';
-import { createPortal } from 'react-dom';
+import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import ContainerRender from 'rc-util/lib/ContainerRender';
 import { dataToArray, transitionEnd } from './utils';
+
+const IS_REACT_16 = 'createPortal' in ReactDOM;
 
 const windowIsUndefined = typeof window === 'undefined';
 class Drawer extends React.PureComponent {
@@ -32,9 +35,9 @@ class Drawer extends React.PureComponent {
     getContainer: 'body',
     level: 'all',
     levelTransition: 'transform .3s cubic-bezier(0.78, 0.14, 0.15, 0.86)',
-    onChange: () => { },
-    onMaskClick: () => { },
-    onHandleClick: () => { },
+    onChange: () => {},
+    onMaskClick: () => {},
+    onHandleClick: () => {},
     handleChild: <i className="drawer-handle-icon" />,
     handleStyle: {},
     showMask: true,
@@ -50,11 +53,12 @@ class Drawer extends React.PureComponent {
     this.maskDom = null;
     this.handleDom = null;
     this.mousePos = null;
-    if (props.onIconClick || props.parent || props.iconChild || props.width) { // eslint-disable-line react/prop-types
+    if (props.onIconClick || props.parent || props.iconChild || props.width) {  // eslint-disable-line react/prop-types
       /* eslint-disable  no-console */
+
       console.warn(
         'rc-drawer-menu API has been changed, please look at the releases, ' +
-        'https://github.com/react-component/drawer-menu/releases'
+          'https://github.com/react-component/drawer-menu/releases'
       );
     }
     this.state = {
@@ -94,6 +98,16 @@ class Drawer extends React.PureComponent {
         this.container.parentNode.removeChild(this.container);
       }
     }
+    // suppport react15
+    if (IS_REACT_16) {
+      return;
+    }
+    this.renderComponent({
+      afterClose: this.removeContainer,
+      onClose() {
+      },
+      visible: false,
+    });
   }
 
   onMaskTouchEnd = e => {
@@ -102,7 +116,6 @@ class Drawer extends React.PureComponent {
   };
 
   onIconTouchEnd = e => {
-    
     this.props.onHandleClick(e);
     this.onTouchEnd(e);
   };
@@ -116,7 +129,9 @@ class Drawer extends React.PureComponent {
       open: !open,
     });
   };
-
+  getContainer = () => {
+    return this.container;
+  };
   getParentAndLevelDom = props => {
     if (windowIsUndefined) {
       return;
@@ -286,7 +301,28 @@ class Drawer extends React.PureComponent {
     if (!this.container) {
       return null;
     }
-    return createPortal(children, this.container);
+    // suppport react15
+    if (!IS_REACT_16) {
+      return (
+        <ContainerRender
+          parent={this}
+          visible
+          autoMount
+          autoDestroy={false}
+          getComponent={()=>{
+            return this.getChildToRender();
+          }}
+          getContainer={this.getContainer}
+        >
+          {({ renderComponent, removeContainer }) => {
+            this.renderComponent = renderComponent;
+            this.removeContainer = removeContainer;
+            return null;
+          }}
+        </ContainerRender>
+      );
+    }
+    return ReactDOM.createPortal(children, this.container);
   }
 }
 
