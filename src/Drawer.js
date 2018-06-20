@@ -102,7 +102,7 @@ class Drawer extends React.PureComponent {
   };
 
   onIconTouchEnd = e => {
-    
+
     this.props.onHandleClick(e);
     this.onTouchEnd(e);
   };
@@ -167,11 +167,30 @@ class Drawer extends React.PureComponent {
     });
     // 处理 body 滚动
     if (!windowIsUndefined) {
+      const eventArray = ['touchstart'];
+      const domArray = [this.maskDom, this.handleDom, this.contextDom];
       if (open) {
         this.bodyDefaultOverflow = document.body.style.overflow;
         document.body.style.overflow = 'hidden';
+        // 手机禁滚
+        if (document.body.addEventListener) {
+          domArray.forEach((item, i) => {
+            if (!item) {
+              return;
+            }
+            item.addEventListener(eventArray[i] || 'touchmove', this.removeMoveHandler);
+          });
+        }
       } else {
         document.body.style.overflow = this.bodyDefaultOverflow;
+        if (document.body.removeEventListener) {
+          domArray.forEach((item, i) => {
+            if (!item) {
+              return;
+            }
+            item.removeEventListener(eventArray[i] || 'touchmove', this.removeMoveHandler);
+          });
+        }
         delete this.bodyDefaultOverflow;
       }
     }
@@ -251,10 +270,38 @@ class Drawer extends React.PureComponent {
     );
   };
 
+  removeStartHandler = (e) => {
+    if (e.touches.length > 1) { return; }
+    this.startPos = {
+      x: e.touches[0].clientX,
+      y: e.touches[0].clientY,
+    };
+  }
+
+  removeMoveHandler = (e) => {
+    if (e.changedTouches.length > 1) { return; }
+    const currentTarget = e.currentTarget;
+    const differX = e.changedTouches[0].clientX - this.startPos.x;
+    const differY = e.changedTouches[0].clientY - this.startPos.y;
+    if (currentTarget === this.maskDom ||
+      currentTarget === this.handleDom ||
+      (currentTarget === this.contextDom &&
+        (
+          ((currentTarget.scrollTop + currentTarget.offsetHeight >= currentTarget.scrollHeight
+            && differY < 0 ||
+            currentTarget.scrollTop <= 0 && differY > 0)
+            && Math.max(Math.abs(differX), Math.abs(differY)) === differY) ||
+          ((currentTarget.scrollLeft + currentTarget.offsetWidth >= currentTarget.scrollWidth
+            && differX < 0 ||
+            currentTarget.scrollLeft <= 0 && differX > 0)
+            && Math.max(Math.abs(differX), Math.abs(differY)) === differX)
+        ))
+    ) { e.preventDefault(); }
+  };
+
   trnasitionEnd = e => {
-    const dom = e.target;
-    dom.removeEventListener(transitionEnd, this.trnasitionEnd);
-    dom.style.transition = '';
+    e.target.removeEventListener(transitionEnd, this.trnasitionEnd);
+    e.target.style.transition = '';
   };
 
   defaultGetContainer = () => {
