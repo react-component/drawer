@@ -74,7 +74,8 @@
   "dependencies": {
     "babel-runtime": "6.x",
     "classnames": "^2.2.5",
-    "prop-types": "^15.5.0"
+    "prop-types": "^15.5.0",
+    "rc-util": "^4.5.1"
   },
   "jest": {
     "setupFiles": [
