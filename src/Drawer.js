@@ -35,9 +35,9 @@ class Drawer extends React.PureComponent {
     getContainer: 'body',
     level: 'all',
     levelTransition: 'transform .3s cubic-bezier(0.78, 0.14, 0.15, 0.86)',
-    onChange: () => {},
-    onMaskClick: () => {},
-    onHandleClick: () => {},
+    onChange: () => { },
+    onMaskClick: () => { },
+    onHandleClick: () => { },
     handleChild: <i className="drawer-handle-icon" />,
     handleStyle: {},
     showMask: true,
@@ -58,7 +58,7 @@ class Drawer extends React.PureComponent {
 
       console.warn(
         'rc-drawer-menu API has been changed, please look at the releases, ' +
-          'https://github.com/react-component/drawer-menu/releases'
+        'https://github.com/react-component/drawer-menu/releases'
       );
     }
     this.state = {
@@ -183,7 +183,22 @@ class Drawer extends React.PureComponent {
     // 处理 body 滚动
     if (!windowIsUndefined) {
       const eventArray = ['touchstart'];
-      const domArray = [this.maskDom, this.handleDom, this.contextDom];
+      const domArray = [document.body, this.maskDom, this.handleDom, this.contextDom];
+      let passiveSupported = false;
+      try {
+        window.addEventListener('test', null,
+          Object.defineProperty({}, 'passive',
+            {
+              get: () => {
+                passiveSupported = true;
+                return null;
+              },
+            })
+        );
+      } catch (err) {
+        console.log(err);
+      }
+      const passive = passiveSupported ? { passive: false } : false;
       if (open) {
         this.bodyDefaultOverflow = document.body.style.overflow;
         document.body.style.overflow = 'hidden';
@@ -193,7 +208,8 @@ class Drawer extends React.PureComponent {
             if (!item) {
               return;
             }
-            item.addEventListener(eventArray[i] || 'touchmove', this.removeMoveHandler);
+            item.addEventListener(eventArray[i] || 'touchmove',
+              i ? this.removeMoveHandler : this.removeStartHandler, passive);
           });
         }
       } else {
@@ -203,7 +219,8 @@ class Drawer extends React.PureComponent {
             if (!item) {
               return;
             }
-            item.removeEventListener(eventArray[i] || 'touchmove', this.removeMoveHandler);
+            item.removeEventListener(eventArray[i] || 'touchmove',
+              i ? this.removeMoveHandler : this.removeStartHandler, passive);
           });
         }
         delete this.bodyDefaultOverflow;
@@ -356,7 +373,7 @@ class Drawer extends React.PureComponent {
           visible
           autoMount
           autoDestroy={false}
-          getComponent={()=>{
+          getComponent={() => {
             return this.getChildToRender();
           }}
           getContainer={this.getContainer}
