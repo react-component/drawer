@@ -35,9 +35,9 @@ class Drawer extends React.PureComponent {
     getContainer: 'body',
     level: 'all',
     levelTransition: 'transform .3s cubic-bezier(0.78, 0.14, 0.15, 0.86)',
-    onChange: () => { },
-    onMaskClick: () => { },
-    onHandleClick: () => { },
+    onChange: () => {},
+    onMaskClick: () => {},
+    onHandleClick: () => {},
     handleChild: <i className="drawer-handle-icon" />,
     handleStyle: {},
     showMask: true,
@@ -58,7 +58,7 @@ class Drawer extends React.PureComponent {
       /* eslint-disable  no-console */
       console.warn(
         'rc-drawer-menu API has been changed, please look at the releases, ' +
-        'https://github.com/react-component/drawer-menu/releases'
+          'https://github.com/react-component/drawer-menu/releases'
       );
     }
     this.state = {
@@ -117,8 +117,7 @@ class Drawer extends React.PureComponent {
     }
     this.renderComponent({
       afterClose: this.removeContainer,
-      onClose() {
-      },
+      onClose() {},
       visible: false,
     });
   }
@@ -143,12 +142,12 @@ class Drawer extends React.PureComponent {
     });
   };
 
-  getDefault = (props) => {
+  getDefault = props => {
     this.getParentAndLevelDom(props);
     if (props.getContainer || props.parent) {
       this.container = this.defaultGetContainer();
     }
-  }
+  };
 
   getContainer = () => {
     return this.container;
@@ -206,14 +205,15 @@ class Drawer extends React.PureComponent {
       const eventArray = ['touchstart'];
       const domArray = [document.body, this.maskDom, this.handleDom, this.contextDom];
       let passiveSupported = false;
-      window.addEventListener('test', null,
-        Object.defineProperty({}, 'passive',
-          {
-            get: () => {
-              passiveSupported = true;
-              return null;
-            },
-          })
+      window.addEventListener(
+        'test',
+        null,
+        Object.defineProperty({}, 'passive', {
+          get: () => {
+            passiveSupported = true;
+            return null;
+          },
+        })
       );
       const passive = passiveSupported ? { passive: false } : false;
       if (open) {
@@ -225,8 +225,11 @@ class Drawer extends React.PureComponent {
             if (!item) {
               return;
             }
-            item.addEventListener(eventArray[i] || 'touchmove',
-              i ? this.removeMoveHandler : this.removeStartHandler, passive);
+            item.addEventListener(
+              eventArray[i] || 'touchmove',
+              i ? this.removeMoveHandler : this.removeStartHandler,
+              passive
+            );
           });
         }
       } else {
@@ -236,8 +239,11 @@ class Drawer extends React.PureComponent {
             if (!item) {
               return;
             }
-            item.removeEventListener(eventArray[i] || 'touchmove',
-              i ? this.removeMoveHandler : this.removeStartHandler, passive);
+            item.removeEventListener(
+              eventArray[i] || 'touchmove',
+              i ? this.removeMoveHandler : this.removeStartHandler,
+              passive
+            );
           });
         }
         delete this.bodyDefaultOverflow;
@@ -249,7 +255,7 @@ class Drawer extends React.PureComponent {
     }
   };
 
-  getChildToRender = (open) => {
+  getChildToRender = open => {
     const {
       className,
       prefixCls,
@@ -267,8 +273,9 @@ class Drawer extends React.PureComponent {
       [className]: !!className,
     });
     const value = this.contextDom
-      ? this.contextDom.getBoundingClientRect()[placement === 'left' || placement === 'right'
-        ? 'width' : 'height']
+      ? this.contextDom.getBoundingClientRect()[
+        placement === 'left' || placement === 'right' ? 'width' : 'height'
+      ]
       : 0;
     const placementName = `translate${placement === 'left' || placement === 'right' ? 'X' : 'Y'}`;
     // 百分比与像素动画不同步，第一次打用后全用像素动画。
@@ -322,33 +329,38 @@ class Drawer extends React.PureComponent {
     );
   };
 
-  removeStartHandler = (e) => {
-    if (e.touches.length > 1) { return; }
+  removeStartHandler = e => {
+    if (e.touches.length > 1) {
+      return;
+    }
     this.startPos = {
       x: e.touches[0].clientX,
       y: e.touches[0].clientY,
     };
-  }
+  };
 
-  removeMoveHandler = (e) => {
-    if (e.changedTouches.length > 1) { return; }
+  removeMoveHandler = e => {
+    if (e.changedTouches.length > 1) {
+      return;
+    }
     const currentTarget = e.currentTarget;
     const differX = e.changedTouches[0].clientX - this.startPos.x;
     const differY = e.changedTouches[0].clientY - this.startPos.y;
-    if (currentTarget === this.maskDom ||
+    if (
+      currentTarget === this.maskDom ||
       currentTarget === this.handleDom ||
       (currentTarget === this.contextDom &&
-        (
-          ((currentTarget.scrollTop + currentTarget.offsetHeight >= currentTarget.scrollHeight
-            && differY < 0 ||
-            currentTarget.scrollTop <= 0 && differY > 0)
-            && Math.max(Math.abs(differX), Math.abs(differY)) === differY) ||
-          ((currentTarget.scrollLeft + currentTarget.offsetWidth >= currentTarget.scrollWidth
-            && differX < 0 ||
-            currentTarget.scrollLeft <= 0 && differX > 0)
-            && Math.max(Math.abs(differX), Math.abs(differY)) === differX)
-        ))
-    ) { e.preventDefault(); }
+        ((((currentTarget.scrollTop + currentTarget.offsetHeight >= currentTarget.scrollHeight &&
+          differY < 0) ||
+          (currentTarget.scrollTop <= 0 && differY > 0)) &&
+          Math.max(Math.abs(differX), Math.abs(differY)) === differY) ||
+          (((currentTarget.scrollLeft + currentTarget.offsetWidth >= currentTarget.scrollWidth &&
+            differX < 0) ||
+            (currentTarget.scrollLeft <= 0 && differX > 0)) &&
+            Math.max(Math.abs(differX), Math.abs(differY)) === differX)))
+    ) {
+      e.preventDefault();
+    }
   };
 
   trnasitionEnd = e => {

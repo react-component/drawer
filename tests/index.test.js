@@ -1,7 +1,6 @@
 /* eslint-disable */
 import React from 'react';
 import PropTypes from 'prop-types';
-import expect from 'expect.js';
 import { mount } from 'enzyme';
 import Drawer from '../src';
 
@@ -43,10 +42,10 @@ describe('rc-drawer-menu', () => {
     instance = mount(<Drawer onIconClick={() => { }} />);
     const drawer = instance.find('.drawer');
     const drawerContent = instance.find('.drawer-content-wrapper');
-    expect(!!drawer).to.be(true);
-    expect(drawer.instance().parentNode.parentNode.tagName).to.be('BODY');
+    expect(!!drawer).toBe(true);
+    expect(drawer.instance().parentNode.parentNode.tagName).toBe('BODY');
     console.log('clientWidth:', drawerContent.instance().clientWidth);
-    expect(drawerContent.instance().style.transform).to.be('translateX(-100%)');
+    expect(drawerContent.instance().style.transform).toBe('translateX(-100%)');
   });
 
   it('icon child is element', () => {
@@ -54,7 +53,7 @@ describe('rc-drawer-menu', () => {
     const icon = instance.find('.drawer-handle');
     const handleChild = icon.instance().children[0];
     console.log('icon className is a: ', handleChild.className);
-    expect(handleChild.className).to.be('a');
+    expect(handleChild.className).toBe('a');
   });
 
   it('default open drawer', () => {
@@ -72,27 +71,43 @@ describe('rc-drawer-menu', () => {
     mask.simulate('touchEnd',
       createMoveTouchEventObject({ x: 200, y: 0 }));
     console.log('transform is empty:', drawer.style.transform);
-    expect(drawer.style.transform).to.eql('');
+    expect(drawer.style.transform).toEqual('');
   });
 
+  it('handleChild is null，open=true', () => {
+    const instance = mount(<Drawer
+      handleChild={false}
+      open
+      level={null}
+    />);
+    expect(instance.render()).toMatchSnapshot();
+  });
+  it('handleChild is null，open=false', () => {
+    const instance = mount(<Drawer
+      handleChild={false}
+      open={false}
+      level={null}
+    />);
+    expect(instance.render()).toMatchSnapshot();
+  });
   it('switch open drawer', () => {
     instance = mount(<DrawerComp />);
     jest.useFakeTimers();
     const drawer = instance.find('.drawer-content-wrapper').instance();
     console.log('第一次：', drawer.style.transform);
-    expect(drawer.style.transform).to.be('translateX(-0px)');
+    expect(drawer.style.transform).toBe('translateX(-0px)');
     instance.setProps({
       open: true,
     });
     jest.runAllTimers();
     console.log(drawer.style.transform);
-    expect(drawer.style.transform).to.eql('');
+    expect(drawer.style.transform).toEqual('');
     instance.setProps({
       open: false,
     });
     console.log('第二次：', drawer.style.transform);
     jest.runAllTimers();
-    expect(drawer.style.transform).to.be('translateX(-0px)');
+    expect(drawer.style.transform).toBe('translateX(-0px)');
     jest.useRealTimers();
   });
   it('getContainer is null', () => {
@@ -103,56 +118,56 @@ describe('rc-drawer-menu', () => {
     const drawer = instance.find('.drawer').instance();
     const a = instance.find('#a').instance();
     console.log('a transform:', a.style.transform);
-    expect(a.style.transform).to.be('');
+    expect(a.style.transform).toBe('');
     console.log(drawer.parentNode.parentNode.className);
-    expect(drawer.parentNode.className).to.be('drawer-wrapper');
-    expect(drawer.parentNode.parentNode.className).to.be('react-wrapper');
+    expect(drawer.parentNode.className).toBe('drawer-wrapper');
+    expect(drawer.parentNode.parentNode.className).toBe('react-wrapper');
   });
   it('click open close', () => {
     instance = mount(<Drawer level="b" />);
     const content = instance.find('.drawer-content-wrapper').instance();
     console.log(content.style.transform);
-    expect(content.style.transform).to.be('translateX(-100%)');
+    expect(content.style.transform).toBe('translateX(-100%)');
     const handle = instance.find('.drawer-handle');
     handle.simulate('click');
     console.log(content.style.transform);
-    expect(content.style.transform).to.be('');
+    expect(content.style.transform).toBe('');
     const mask = instance.find('.drawer-mask');
     mask.simulate('click');
     console.log(content.style.transform);
-    expect(content.style.transform).to.be('translateX(-0px)');
+    expect(content.style.transform).toBe('translateX(-0px)');
   });
   it('will unmount', () => {
     instance = mount(<Div show />);
     const divWrapper = instance.find('.div-wrapper').instance();
     const content = instance.find('.drawer-content-wrapper').instance();
     console.log(content.style.transform);
-    expect(content.style.transform).to.be('');
+    expect(content.style.transform).toBe('');
     instance.setProps({
       show: false,
     });
-    expect(divWrapper.children.length).to.be(0);
+    expect(divWrapper.children.length).toBe(0);
   });
   it('placement change', () => {
     instance = mount(<Drawer level={null} />);
     const content = instance.find('.drawer-content-wrapper').instance();
     console.log(content.style.transform);
-    expect(content.style.transform).to.be('translateX(-100%)');
+    expect(content.style.transform).toBe('translateX(-100%)');
     instance.setProps({
       placement: 'top',
       level: ['a', 'b'],
     });
     console.log(content.style.transform);
-    expect(content.style.transform).to.be('translateY(-100%)');
+    expect(content.style.transform).toBe('translateY(-100%)');
   });
   it('handleChild is null, render is null', () => {
     instance = mount(<Drawer handleChild={false} />);
     console.log(instance.children())
-    expect(instance.children().length).to.be(0);
+    expect(instance.children().length).toBe(0);
     instance.setProps({
       open: true,
     });
     console.log(instance.children())
-    expect(instance.children().length).to.be(1);
+    expect(instance.children().length).toBe(1);
   });
 });
