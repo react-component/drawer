@@ -53,7 +53,7 @@ class Drawer extends React.PureComponent {
     this.maskDom = null;
     this.handleDom = null;
     this.mousePos = null;
-    this.firstEnter = false;// 记录在没有 handleChild 的时候，是否渲染了 dom.
+    this.firstEnter = false;// 记录首次进入.
     if (props.onIconClick || props.parent || props.iconChild || props.width) {  // eslint-disable-line react/prop-types
       /* eslint-disable  no-console */
       console.warn(
@@ -66,7 +66,7 @@ class Drawer extends React.PureComponent {
     };
   }
   componentDidMount() {
-    if (this.props.handleChild) {
+    if (this.props.handleChild || this.props.open) {
       this.getDefault(this.props);
       this.forceUpdate();
     }
@@ -95,7 +95,7 @@ class Drawer extends React.PureComponent {
 
   componentDidUpdate() {
     // dom 没渲染时，重走一遍。
-    if (!this.firstEnter && !this.props.handleChild) {
+    if (!this.firstEnter) {
       this.forceUpdate();
       if (this.container) {
         this.firstEnter = true;
@@ -280,7 +280,10 @@ class Drawer extends React.PureComponent {
       this.setLevelDomTransform(open, false, placementName, value);
     }
     return (
-      <div className={wrapperClassname} style={style}>
+      <div
+        className={wrapperClassname}
+        style={style}
+      >
         {showMask && (
           <div
             className={`${prefixCls}-mask`}
@@ -289,6 +292,8 @@ class Drawer extends React.PureComponent {
             ref={c => {
               this.maskDom = c;
             }}
+            onTouchStart={open ? this.removeStartHandler : null} // 跑用例用
+            onTouchMove={open ? this.removeMoveHandler : null} // 跑用例用
           />
         )}
         <div className={`${prefixCls}-content-wrapper`} style={{ transform }}>
@@ -364,10 +369,9 @@ class Drawer extends React.PureComponent {
   };
 
   render() {
-    const { getContainer, handleChild, wrapperClassName } = this.props;
+    const { getContainer, wrapperClassName } = this.props;
     const open = this.props.open !== undefined ? this.props.open : this.state.open;
-    const children = this.getChildToRender(this.firstEnter && !handleChild
-      || handleChild ? open : false);
+    const children = this.getChildToRender(this.firstEnter ? open : false);
     if (!getContainer) {
       return (
         <div
@@ -380,7 +384,7 @@ class Drawer extends React.PureComponent {
         </div>
       );
     }
-    if (!this.container || !open && !this.firstEnter && !handleChild) {
+    if (!this.container || !open && !this.firstEnter) {
       return null;
     }
     // suppport react15

@@ -25,6 +25,18 @@ function DrawerComp(props) {
   );
 }
 
+function createClientXY(x, y) {
+  return { clientX: x, clientY: y };
+}
+
+function createStartTouchEventObject({ x = 0, y = 0 }) {
+  return { touches: [createClientXY(x, y)] };
+}
+
+function createMoveTouchEventObject({ x = 0, y = 0 }) {
+  return { touches: [createClientXY(x, y)], changedTouches: [createClientXY(x, y)] };
+}
+
 describe('rc-drawer-menu', () => {
   let instance;
   it('single drawer', () => {
@@ -52,6 +64,13 @@ describe('rc-drawer-menu', () => {
       level={[]}
     />);
     const drawer = instance.find('.drawer-content-wrapper').instance();
+    const mask = instance.childAt(0).childAt(0);
+    mask.simulate('touchStart',
+      createStartTouchEventObject({ x: 100, y: 0 }));
+    mask.simulate('touchMove',
+      createMoveTouchEventObject({ x: 150, y: 0 }));
+    mask.simulate('touchEnd',
+      createMoveTouchEventObject({ x: 200, y: 0 }));
     console.log('transform is empty:', drawer.style.transform);
     expect(drawer.style.transform).to.eql('');
   });

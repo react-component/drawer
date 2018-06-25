@@ -14,6 +14,7 @@ exports[`Drawer render dom 1`] = `
         />
         <div
           class="drawer-content-wrapper"
+          style=""
         >
           <div
             class="drawer-content"
@@ -52,6 +53,7 @@ exports[`Drawer render function 1`] = `
         />
         <div
           class="drawer-content-wrapper"
+          style=""
         >
           <div
             class="drawer-content"
@@ -93,6 +95,7 @@ exports[`Drawer render string 1`] = `
       />
       <div
         class="drawer-content-wrapper"
+        style=""
       >
         <div
           class="drawer-content"
