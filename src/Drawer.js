@@ -9,26 +9,6 @@ const IS_REACT_16 = 'createPortal' in ReactDOM;
 
 const windowIsUndefined = typeof window === 'undefined';
 class Drawer extends React.PureComponent {
-  static propTypes = {
-    wrapperClassName: PropTypes.string,
-    className: PropTypes.string,
-    children: PropTypes.node,
-    style: PropTypes.object,
-    defaultOpen: PropTypes.bool,
-    open: PropTypes.bool,
-    prefixCls: PropTypes.string,
-    placement: PropTypes.string,
-    level: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
-    levelTransition: PropTypes.string,
-    getContainer: PropTypes.oneOfType([PropTypes.string, PropTypes.func, PropTypes.object]),
-    handleChild: PropTypes.any,
-    handleStyle: PropTypes.object,
-    onChange: PropTypes.func,
-    onMaskClick: PropTypes.func,
-    onHandleClick: PropTypes.func,
-    showMask: PropTypes.bool,
-    maskStyle: PropTypes.object,
-  };
   static defaultProps = {
     prefixCls: 'drawer',
     placement: 'left',
@@ -423,5 +403,26 @@ class Drawer extends React.PureComponent {
     return ReactDOM.createPortal(children, this.container);
   }
 }
+
+Drawer.propTypes = {
+  wrapperClassName: PropTypes.string,
+  className: PropTypes.string,
+  children: PropTypes.node,
+  style: PropTypes.object,
+  defaultOpen: PropTypes.bool,
+  open: PropTypes.bool,
+  prefixCls: PropTypes.string,
+  placement: PropTypes.string,
+  level: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+  levelTransition: PropTypes.string,
+  getContainer: PropTypes.oneOfType([PropTypes.string, PropTypes.func, PropTypes.object]),
+  handleChild: PropTypes.any,
+  handleStyle: PropTypes.object,
+  onChange: PropTypes.func,
+  onMaskClick: PropTypes.func,
+  onHandleClick: PropTypes.func,
+  showMask: PropTypes.bool,
+  maskStyle: PropTypes.object,
+};
 
 export default Drawer;
