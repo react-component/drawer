@@ -63,13 +63,19 @@ describe('rc-drawer-menu', () => {
       level={[]}
     />);
     const drawer = instance.find('.drawer-content-wrapper').instance();
-    const mask = instance.childAt(0).childAt(0);
-    mask.simulate('touchStart',
+    const content = instance.childAt(0).childAt(1).childAt(0);
+    content.simulate('touchStart',
       createStartTouchEventObject({ x: 100, y: 0 }));
-    mask.simulate('touchMove',
-      createMoveTouchEventObject({ x: 150, y: 0 }));
-    mask.simulate('touchEnd',
+    content.simulate('touchMove',
+      createMoveTouchEventObject({ x: 150, y: 10 }));
+    content.simulate('touchEnd',
       createMoveTouchEventObject({ x: 200, y: 0 }));
+    content.simulate('touchStart',
+      createStartTouchEventObject({ x: 0, y: 0 }));
+    content.simulate('touchMove',
+      createMoveTouchEventObject({ x: 0, y: 10 }));
+    content.simulate('touchEnd',
+      createMoveTouchEventObject({ x: 0, y: 10 }));
     console.log('transform is empty:', drawer.style.transform);
     expect(drawer.style.transform).toEqual('');
   });

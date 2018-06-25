@@ -279,8 +279,6 @@ class Drawer extends React.PureComponent {
             ref={c => {
               this.maskDom = c;
             }}
-            onTouchStart={open ? this.removeStartHandler : null} // 跑用例用
-            onTouchMove={open ? this.removeMoveHandler : null} // 跑用例用
           />
         )}
         <div className={`${prefixCls}-content-wrapper`} style={{ transform }}>
@@ -289,6 +287,8 @@ class Drawer extends React.PureComponent {
             ref={c => {
               this.contextDom = c;
             }}
+            onTouchStart={open ? this.removeStartHandler : null} // 跑用例用
+            onTouchMove={open ? this.removeMoveHandler : null} // 跑用例用
           >
             {children}
           </div>
