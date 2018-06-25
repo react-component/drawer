@@ -53,9 +53,9 @@ class Drawer extends React.PureComponent {
     this.maskDom = null;
     this.handleDom = null;
     this.mousePos = null;
+    this.firstEnter = false;// 记录在没有 handleChild 的时候，是否渲染了 dom.
     if (props.onIconClick || props.parent || props.iconChild || props.width) {  // eslint-disable-line react/prop-types
       /* eslint-disable  no-console */
-
       console.warn(
         'rc-drawer-menu API has been changed, please look at the releases, ' +
         'https://github.com/react-component/drawer-menu/releases'
@@ -66,17 +66,20 @@ class Drawer extends React.PureComponent {
     };
   }
   componentDidMount() {
-    this.getParentAndLevelDom(this.props);
-    if (this.props.getContainer || this.props.parent) {
-      this.container = this.defaultGetContainer();
+    if (this.props.handleChild) {
+      this.getDefault(this.props);
+      this.forceUpdate();
     }
-    this.forceUpdate();
   }
 
   componentWillReceiveProps(nextProps) {
     const { open, placement } = nextProps;
     if (open !== undefined && open !== this.props.open) {
       this.isOpenChange = true;
+      // 没渲染 dom 时，获取默认数据;
+      if (!this.container) {
+        this.getDefault(nextProps);
+      }
       this.setState({
         open,
       });
@@ -87,6 +90,16 @@ class Drawer extends React.PureComponent {
     }
     if (this.props.level !== nextProps.level) {
       this.getParentAndLevelDom(nextProps);
+    }
+  }
+
+  componentDidUpdate() {
+    // dom 没渲染时，重走一遍。
+    if (!this.firstEnter && !this.props.handleChild) {
+      this.forceUpdate();
+      if (this.container) {
+        this.firstEnter = true;
+      }
     }
   }
 
@@ -129,6 +142,14 @@ class Drawer extends React.PureComponent {
       open: !open,
     });
   };
+
+  getDefault = (props) => {
+    this.getParentAndLevelDom(props);
+    if (props.getContainer || props.parent) {
+      this.container = this.defaultGetContainer();
+    }
+  }
+
   getContainer = () => {
     return this.container;
   };
@@ -185,19 +206,15 @@ class Drawer extends React.PureComponent {
       const eventArray = ['touchstart'];
       const domArray = [document.body, this.maskDom, this.handleDom, this.contextDom];
       let passiveSupported = false;
-      try {
-        window.addEventListener('test', null,
-          Object.defineProperty({}, 'passive',
-            {
-              get: () => {
-                passiveSupported = true;
-                return null;
-              },
-            })
-        );
-      } catch (err) {
-        console.log(err);
-      }
+      window.addEventListener('test', null,
+        Object.defineProperty({}, 'passive',
+          {
+            get: () => {
+              passiveSupported = true;
+              return null;
+            },
+          })
+      );
       const passive = passiveSupported ? { passive: false } : false;
       if (open) {
         this.bodyDefaultOverflow = document.body.style.overflow;
@@ -226,14 +243,13 @@ class Drawer extends React.PureComponent {
         delete this.bodyDefaultOverflow;
       }
     }
-    if (onChange && this.isOpenChange) {
+    if (onChange && this.isOpenChange && this.firstEnter) {
       onChange(open);
       this.isOpenChange = false;
     }
   };
 
-  getChildToRender = () => {
-    const open = this.props.open !== undefined ? this.props.open : this.state.open;
+  getChildToRender = (open) => {
     const {
       className,
       prefixCls,
@@ -251,9 +267,8 @@ class Drawer extends React.PureComponent {
       [className]: !!className,
     });
     const value = this.contextDom
-      ? this.contextDom.getBoundingClientRect()[
-        placement === 'left' || placement === 'right' ? 'width' : 'height'
-      ]
+      ? this.contextDom.getBoundingClientRect()[placement === 'left' || placement === 'right'
+        ? 'width' : 'height']
       : 0;
     const placementName = `translate${placement === 'left' || placement === 'right' ? 'X' : 'Y'}`;
     // 百分比与像素动画不同步，第一次打用后全用像素动画。
@@ -349,11 +364,14 @@ class Drawer extends React.PureComponent {
   };
 
   render() {
-    const children = this.getChildToRender();
-    if (!this.props.getContainer) {
+    const { getContainer, handleChild, wrapperClassName } = this.props;
+    const open = this.props.open !== undefined ? this.props.open : this.state.open;
+    const children = this.getChildToRender(this.firstEnter && !handleChild
+      || handleChild ? open : false);
+    if (!getContainer) {
       return (
         <div
-          className={this.props.wrapperClassName}
+          className={wrapperClassName}
           ref={c => {
             this.container = c;
           }}
@@ -362,7 +380,7 @@ class Drawer extends React.PureComponent {
         </div>
       );
     }
-    if (!this.container) {
+    if (!this.container || !open && !this.firstEnter && !handleChild) {
       return null;
     }
     // suppport react15

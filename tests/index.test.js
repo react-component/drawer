@@ -126,4 +126,14 @@ describe('rc-drawer-menu', () => {
     console.log(content.style.transform);
     expect(content.style.transform).to.be('translateY(-100%)');
   });
+  it('handleChild is null, render is null', () => {
+    instance = mount(<Drawer handleChild={false} />);
+    console.log(instance.children())
+    expect(instance.children().length).to.be(0);
+    instance.setProps({
+      open: true,
+    });
+    console.log(instance.children())
+    expect(instance.children().length).to.be(1);
+  });
 });
