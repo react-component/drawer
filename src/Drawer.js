@@ -38,7 +38,7 @@ class Drawer extends React.PureComponent {
       /* eslint-disable  no-console */
       console.warn(
         'rc-drawer-menu API has been changed, please look at the releases, ' +
-          'https://github.com/react-component/drawer-menu/releases'
+        'https://github.com/react-component/drawer-menu/releases'
       );
     }
     this.state = {
@@ -46,7 +46,8 @@ class Drawer extends React.PureComponent {
     };
   }
   componentDidMount() {
-    if (this.props.handleChild || this.props.open) {
+    const open = this.getOpen();
+    if (this.props.handleChild || open) {
       this.getDefault(this.props);
       this.forceUpdate();
     }
@@ -309,6 +310,10 @@ class Drawer extends React.PureComponent {
     );
   };
 
+  getOpen = () => (
+    this.props.open !== undefined ? this.props.open : this.state.open
+  )
+
   removeStartHandler = e => {
     if (e.touches.length > 1) {
       return;
@@ -362,7 +367,7 @@ class Drawer extends React.PureComponent {
 
   render() {
     const { getContainer, wrapperClassName } = this.props;
-    const open = this.props.open !== undefined ? this.props.open : this.state.open;
+    const open = this.getOpen();
     const children = this.getChildToRender(this.firstEnter ? open : false);
     if (!getContainer) {
       return (
@@ -387,9 +392,7 @@ class Drawer extends React.PureComponent {
           visible
           autoMount
           autoDestroy={false}
-          getComponent={() => {
-            return this.getChildToRender();
-          }}
+          getComponent={this.getChildToRender}
           getContainer={this.getContainer}
         >
           {({ renderComponent, removeContainer }) => {
