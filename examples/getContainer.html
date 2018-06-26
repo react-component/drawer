@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>getContainer.js - example - rc-drawer@1.4.2</title>
+  <title>getContainer.js - example - rc-drawer@1.4.3</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,7 +263,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-drawer@1.4.2</h1>
+      <h1>rc-drawer@1.4.3</h1>
 
       <p>drawer component for react</p>
     </div>
@@ -285,13 +285,6 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <span class="hljs-keyword">const</span> MenuItemGroup = Menu.ItemGroup;
 
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DrawerTester</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
-  constructor(props) {
-    <span class="hljs-keyword">super</span>(props);
-    <span class="hljs-keyword">this</span>.state = { visible: <span class="hljs-literal">false</span> };
-  }
-  componentDidMount() {
-    <span class="hljs-keyword">this</span>.setState({ visible: <span class="hljs-literal">true</span> }); <span class="hljs-comment">// eslint-disable-line react/no-did-mount-set-state</span>
-  }
   getContainer = () =&gt; {
     <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.container;
   };
@@ -304,8 +297,6 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
         <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">ref</span>=<span class="hljs-value">{this.saveContainer}</span> /&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-title">Drawer</span>
           {<span class="hljs-attribute">...this.props</span>}
-          <span class="hljs-attribute">open</span>
-          <span class="hljs-attribute">visible</span>=<span class="hljs-value">{this.state.visible}</span>
           <span class="hljs-attribute">getContainer</span>=<span class="hljs-value">{this.getContainer}</span>
         &gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-title">Menu</span>
