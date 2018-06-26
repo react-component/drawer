@@ -43,7 +43,7 @@ class Demo extends React.Component {
           onChange={this.onChange}
           open={this.state.open}
           onMaskClick={this.onTouchEnd}
-          iconChild={false}
+          handleChild={false}
           level={null}
         >
           <Menu

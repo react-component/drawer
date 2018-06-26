@@ -14,13 +14,6 @@ const { SubMenu } = Menu;
 const MenuItemGroup = Menu.ItemGroup;
 
 class DrawerTester extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { visible: false };
-  }
-  componentDidMount() {
-    this.setState({ visible: true }); // eslint-disable-line react/no-did-mount-set-state
-  }
   getContainer = () => {
     return this.container;
   };
@@ -33,8 +26,6 @@ class DrawerTester extends React.Component {
         <div ref={this.saveContainer} />
         <Drawer
           {...this.props}
-          open
-          visible={this.state.visible}
           getContainer={this.getContainer}
         >
           <Menu

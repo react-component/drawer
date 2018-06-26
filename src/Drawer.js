@@ -76,11 +76,9 @@ class Drawer extends React.PureComponent {
 
   componentDidUpdate() {
     // dom 没渲染时，重走一遍。
-    if (!this.firstEnter) {
+    if (!this.firstEnter && this.container) {
       this.forceUpdate();
-      if (this.container) {
-        this.firstEnter = true;
-      }
+      this.firstEnter = true;
     }
   }
 
