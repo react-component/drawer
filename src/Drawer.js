@@ -415,7 +415,7 @@ Drawer.propTypes = {
   placement: PropTypes.string,
   level: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   levelTransition: PropTypes.string,
-  getContainer: PropTypes.oneOfType([PropTypes.string, PropTypes.func, PropTypes.object]),
+  getContainer: PropTypes.oneOfType([PropTypes.string, PropTypes.func, PropTypes.object, PropTypes.bool]),
   handleChild: PropTypes.any,
   handleStyle: PropTypes.object,
   onChange: PropTypes.func,
