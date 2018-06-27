@@ -65,7 +65,7 @@ ReactDom.render(
 | onMaskClick | func | null | mask close click function |
 | onHandleClick | func | nul  | handle icon click function |
 
-> 1.0 remove `openClassName` `width`, update `iconChild` -> `handleChild` `onIconClick` -> `onHandleClick` `parent` -> `getContainer`, add `handleStyle` `showMask`.
+> 1.0 remove `openClassName` `width`, Rename `iconChild` -> `handleChild` `onIconClick` -> `onHandleClick` `parent` -> `getContainer`, add `handleStyle` `showMask`.
 
 ## Development
 
