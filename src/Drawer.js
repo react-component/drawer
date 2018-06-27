@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import ContainerRender from 'rc-util/lib/ContainerRender';
+import getScrollBarSize from 'rc-util/lib/getScrollBarSize';
 import { dataToArray, transitionEnd } from './utils';
 
 const IS_REACT_16 = 'createPortal' in ReactDOM;
@@ -196,8 +197,11 @@ class Drawer extends React.PureComponent {
       );
       const passive = passiveSupported ? { passive: false } : false;
       if (open) {
-        this.bodyDefaultOverflow = document.body.style.overflow;
         document.body.style.overflow = 'hidden';
+        const right = getScrollBarSize();
+        if (right) {
+          document.body.style.paddingRight = `${right}px`;
+        }
         // 手机禁滚
         if (document.body.addEventListener) {
           domArray.forEach((item, i) => {
@@ -212,7 +216,8 @@ class Drawer extends React.PureComponent {
           });
         }
       } else {
-        document.body.style.overflow = this.bodyDefaultOverflow;
+        document.body.style.overflow = '';
+        document.body.style.paddingRight = '';
         if (document.body.removeEventListener) {
           domArray.forEach((item, i) => {
             if (!item) {
@@ -225,7 +230,6 @@ class Drawer extends React.PureComponent {
             );
           });
         }
-        delete this.bodyDefaultOverflow;
       }
     }
     if (onChange && this.isOpenChange && this.firstEnter) {
