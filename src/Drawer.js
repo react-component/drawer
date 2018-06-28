@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import ContainerRender from 'rc-util/lib/ContainerRender';
 import getScrollBarSize from 'rc-util/lib/getScrollBarSize';
-import { dataToArray, transitionEnd } from './utils';
+import { dataToArray, transitionEnd, addEventListener, removeEventListener } from './utils';
 
 const IS_REACT_16 = 'createPortal' in ReactDOM;
 
@@ -16,9 +16,9 @@ class Drawer extends React.PureComponent {
     getContainer: 'body',
     level: 'all',
     levelTransition: 'transform .3s cubic-bezier(0.78, 0.14, 0.15, 0.86)',
-    onChange: () => {},
-    onMaskClick: () => {},
-    onHandleClick: () => {},
+    onChange: () => { },
+    onMaskClick: () => { },
+    onHandleClick: () => { },
     handleChild: <i className="drawer-handle-icon" />,
     handleStyle: {},
     showMask: true,
@@ -76,6 +76,23 @@ class Drawer extends React.PureComponent {
   }
 
   componentDidUpdate() {
+    addEventListener(
+      document.body,
+      transitionEnd,
+      this.onBodyTransitionEnd
+    );
+    let passiveSupported = false;
+    window.addEventListener(
+      'test',
+      null,
+      Object.defineProperty({}, 'passive', {
+        get: () => {
+          passiveSupported = true;
+          return null;
+        },
+      })
+    );
+    this.passive = passiveSupported ? { passive: false } : false;
     // dom 没渲染时，重走一遍。
     if (!this.firstEnter && this.container) {
       this.forceUpdate();
@@ -97,9 +114,14 @@ class Drawer extends React.PureComponent {
     }
     this.renderComponent({
       afterClose: this.removeContainer,
-      onClose() {},
+      onClose() { },
       visible: false,
     });
+    removeEventListener(
+      document.body,
+      transitionEnd,
+      this.onBodyTransitionEnd
+    );
   }
 
   onMaskTouchEnd = e => {
@@ -121,6 +143,13 @@ class Drawer extends React.PureComponent {
       open: !open,
     });
   };
+
+  onBodyTransitionEnd = (e) => {
+    if (e.target === e.currentTarget) {
+      document.body.style.transform = '';
+      document.body.style.transition = '';
+    }
+  }
 
   getDefault = props => {
     this.getParentAndLevelDom(props);
@@ -175,7 +204,7 @@ class Drawer extends React.PureComponent {
       if (this.isOpenChange || openTransition) {
         /* eslint no-param-reassign: "error" */
         dom.style.transition = levelTransition;
-        dom.addEventListener(transitionEnd, this.trnasitionEnd);
+        addEventListener(dom, transitionEnd, this.trnasitionEnd);
       }
       const placementPos = placement === 'left' || placement === 'top' ? value : -value;
       dom.style.transform = open ? `${placementName}(${placementPos}px)` : '';
@@ -184,23 +213,19 @@ class Drawer extends React.PureComponent {
     if (!windowIsUndefined) {
       const eventArray = ['touchstart'];
       const domArray = [document.body, this.maskDom, this.handleDom, this.contextDom];
-      let passiveSupported = false;
-      window.addEventListener(
-        'test',
-        null,
-        Object.defineProperty({}, 'passive', {
-          get: () => {
-            passiveSupported = true;
-            return null;
-          },
-        })
-      );
-      const passive = passiveSupported ? { passive: false } : false;
+      const right = getScrollBarSize();
       if (open) {
         document.body.style.overflow = 'hidden';
-        const right = getScrollBarSize();
         if (right) {
-          document.body.style.paddingRight = `${right}px`;
+          document.body.style.transition = '';
+          document.body.style.width = `calc(100% - ${right}px)`;
+          // fixed 定位, 加上 matrix 以当前为定位。。。
+          document.body.style.transform = 'translateZ(0px)';
+          setTimeout(() => {
+            document.body.style.transition = 'width .3s';
+            document.body.style.width = '';
+          })
+          // document.body.style.paddingRight = `${right}px`;
         }
         // 手机禁滚
         if (document.body.addEventListener) {
@@ -211,13 +236,21 @@ class Drawer extends React.PureComponent {
             item.addEventListener(
               eventArray[i] || 'touchmove',
               i ? this.removeMoveHandler : this.removeStartHandler,
-              passive
+              this.passive
             );
           });
         }
       } else {
         document.body.style.overflow = '';
-        document.body.style.paddingRight = '';
+        if (this.isOpenChange && right) {
+          document.body.style.transform = 'translateZ(0px)';
+          document.body.style.transition = '';
+          document.body.style.width = `calc(100% + ${right}px)`;
+          setTimeout(() => {
+            document.body.style.transition = 'width .3s';
+            document.body.style.width = '';
+          });
+        }
         if (document.body.removeEventListener) {
           domArray.forEach((item, i) => {
             if (!item) {
@@ -226,12 +259,13 @@ class Drawer extends React.PureComponent {
             item.removeEventListener(
               eventArray[i] || 'touchmove',
               i ? this.removeMoveHandler : this.removeStartHandler,
-              passive
+              this.passive
             );
           });
         }
       }
     }
+
     if (onChange && this.isOpenChange && this.firstEnter) {
       onChange(open);
       this.isOpenChange = false;
@@ -351,7 +385,7 @@ class Drawer extends React.PureComponent {
   };
 
   trnasitionEnd = e => {
-    e.target.removeEventListener(transitionEnd, this.trnasitionEnd);
+    removeEventListener(e.target, transitionEnd, this.trnasitionEnd);
     e.target.style.transition = '';
   };
 
