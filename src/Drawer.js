@@ -214,6 +214,7 @@ class Drawer extends React.PureComponent {
       const eventArray = ['touchstart'];
       const domArray = [document.body, this.maskDom, this.handleDom, this.contextDom];
       const right = getScrollBarSize();
+      const transition = 'width .3s cubic-bezier(0.78, 0.14, 0.15, 0.86)';
       if (open) {
         document.body.style.overflow = 'hidden';
         if (right) {
@@ -222,10 +223,9 @@ class Drawer extends React.PureComponent {
           // fixed 定位, 加上 matrix 以当前为定位。。。
           document.body.style.transform = 'translateZ(0px)';
           setTimeout(() => {
-            document.body.style.transition = 'width .3s';
+            document.body.style.transition = transition;
             document.body.style.width = '';
           })
-          // document.body.style.paddingRight = `${right}px`;
         }
         // 手机禁滚
         if (document.body.addEventListener) {
@@ -247,7 +247,7 @@ class Drawer extends React.PureComponent {
           document.body.style.transition = '';
           document.body.style.width = `calc(100% + ${right}px)`;
           setTimeout(() => {
-            document.body.style.transition = 'width .3s';
+            document.body.style.transition = transition;
             document.body.style.width = '';
           });
         }
