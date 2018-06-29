@@ -59,7 +59,7 @@ class Drawer extends React.PureComponent {
     };
   }
   componentDidMount() {
-    if (windowIsUndefined) {
+    if (!windowIsUndefined) {
       if (!bodyAddTransitionEnd) {
         addEventListener(
           document.body,
@@ -125,7 +125,7 @@ class Drawer extends React.PureComponent {
         this.container.parentNode.removeChild(this.container);
       }
     }
-    if (windowIsUndefined) {
+    if (!windowIsUndefined) {
       removeEventListener(
         document.body,
         transitionEnd,
@@ -167,6 +167,7 @@ class Drawer extends React.PureComponent {
 
   onBodyTransitionEnd = (e) => {
     if (e.target === e.currentTarget) {
+      console.log(e)
       document.body.style.transform = '';
       document.body.style.transition = '';
       document.body.style.position = '';
