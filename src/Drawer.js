@@ -255,7 +255,6 @@ class Drawer extends React.PureComponent {
       const trannsformTransition = `transform ${duration} ${ease}`;
       if (open && document.body.style.overflow !== 'hidden') {
         document.body.style.overflow = 'hidden';
-        console.log(right)
         if (right) {
           document.body.style.position = 'relative';
           document.body.style.width = `calc(100% - ${right}px)`;
