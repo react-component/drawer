@@ -38,6 +38,7 @@ class Drawer extends React.PureComponent {
     this.handleDom = null;
     this.mousePos = null;
     this.firstEnter = false;// 记录首次进入.
+    this.timeout = null;
     this.drawerId = Number((Date.now() + Math.random()).toString()
       .replace('.', Math.round(Math.random() * 9))).toString(16);
 
@@ -129,6 +130,7 @@ class Drawer extends React.PureComponent {
         this.onBodyTransitionEnd
       );
     }
+    clearTimeout(this.timeout);
     delete currentDrawer[this.drawerId];
     // suppport react15
     if (IS_REACT_16) {
@@ -268,7 +270,8 @@ class Drawer extends React.PureComponent {
             default:
               break;
           }
-          setTimeout(() => {
+          clearTimeout(this.timeout);
+          this.timeout = setTimeout(() => {
             document.body.style.transition = widthTransition;
             this.dom.style.transition = `${trannsformTransition},${widthTransition}`;
             document.body.style.width = '';
@@ -312,7 +315,8 @@ class Drawer extends React.PureComponent {
             default:
               break;
           }
-          setTimeout(() => {
+          clearTimeout(this.timeout);
+          this.timeout = setTimeout(() => {
             document.body.style.transition = widthTransition;
             this.dom.style.transition = `${trannsformTransition},${widthTransition}`;
             document.body.style.width = '';
