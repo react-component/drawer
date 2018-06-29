@@ -239,7 +239,6 @@ class Drawer extends React.PureComponent {
           let levelValue = open ? value : 0;
           if (levelMove) {
             const $levelMove = transformArguments(levelMove, { target: dom, open });
-            console.log($levelMove)
             levelValue = open ? $levelMove[0] : $levelMove[1] || 0;
           }
           const placementPos = placement === 'left' || placement === 'top' ? levelValue : -levelValue;
