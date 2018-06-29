@@ -120,8 +120,13 @@ describe('rc-drawer-menu', () => {
   });
   it('getContainer is null', () => {
     instance = mount(<div className="react-wrapper">
-      <div id="a" style={{ position: 'absolute', top: 0, left: 0 }}>test1</div>
-      <Drawer getContainer={null} defaultOpen level="#a" wrapperClassName="drawer-wrapper" />
+      <div id="a" className="a" style={{ position: 'absolute', top: 0, left: 0 }}>test1</div>
+      <Drawer
+        getContainer={null}
+        defaultOpen
+        level="#a"
+        wrapperClassName="drawer-wrapper"
+      />
     </div>);
     const drawer = instance.find('.drawer').instance();
     const a = instance.find('#a').instance();
@@ -132,7 +137,7 @@ describe('rc-drawer-menu', () => {
     expect(drawer.parentNode.parentNode.className).toBe('react-wrapper');
   });
   it('click open close', () => {
-    instance = mount(<Drawer level="b" />);
+    instance = mount(<Drawer level="b" levelMove={200} />);
     const content = instance.find('.drawer-content-wrapper').instance();
     console.log(content.style.transform);
     expect(content.style.transform).toBe('translateX(-100%)');
@@ -168,8 +173,23 @@ describe('rc-drawer-menu', () => {
     console.log(content.style.transform);
     expect(content.style.transform).toBe('translateY(-100%)');
   });
+  it('levelMove is Array', () => {
+    instance = mount(<Drawer handler={false} levelMove={[200, 0]} />);
+    expect(instance.children().length).toBe(0);
+    instance.setProps({
+      open: true,
+    });
+    instance.setProps({
+      open: false,
+      levelMove: () => (200),
+    });
+    instance.setProps({
+      open: true,
+      levelMove: [200],
+    });
+  });
   it('handler is null, render is null', () => {
-    instance = mount(<Drawer handler={false} />);
+    instance = mount(<Drawer handler={false} levelMove={200} />);
     console.log(instance.children())
     expect(instance.children().length).toBe(0);
     instance.setProps({
