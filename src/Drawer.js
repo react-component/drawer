@@ -9,8 +9,8 @@ import { dataToArray, transitionEnd, addEventListener, removeEventListener, tran
 const IS_REACT_16 = 'createPortal' in ReactDOM;
 
 const currentDrawer = {};
-let bodyAddTransitionEnd = false;
 const windowIsUndefined = typeof window === 'undefined';
+
 class Drawer extends React.PureComponent {
   static defaultProps = {
     prefixCls: 'drawer',
@@ -60,14 +60,6 @@ class Drawer extends React.PureComponent {
   }
   componentDidMount() {
     if (!windowIsUndefined) {
-      if (!bodyAddTransitionEnd) {
-        addEventListener(
-          document.body,
-          transitionEnd,
-          this.onBodyTransitionEnd
-        );
-        bodyAddTransitionEnd = true;
-      }
       let passiveSupported = false;
       window.addEventListener(
         'test',
@@ -125,13 +117,6 @@ class Drawer extends React.PureComponent {
         this.container.parentNode.removeChild(this.container);
       }
     }
-    if (!windowIsUndefined) {
-      removeEventListener(
-        document.body,
-        transitionEnd,
-        this.onBodyTransitionEnd
-      );
-    }
     clearTimeout(this.timeout);
     delete currentDrawer[this.drawerId];
     // suppport react15
@@ -165,22 +150,8 @@ class Drawer extends React.PureComponent {
     });
   };
 
-  onBodyTransitionEnd = (e) => {
-    if (e.target === e.currentTarget) {
-      document.body.style.transform = '';
-      document.body.style.transition = '';
-      document.body.style.position = '';
-      if (this.dom) {
-        this.dom.style.transition = '';
-      }
-      if (!this.state.open) {
-        document.body.style.overflow = '';
-        if (this.props.placement === 'right' && this.maskDom) {
-          this.maskDom.style.right = '';
-          this.maskDom.style.width = '';
-        }
-      }
-    }
+  onWrapperTransitionEnd = () => {
+    this.dom.style.transition = '';
   }
 
   getDefault = props => {
@@ -233,6 +204,7 @@ class Drawer extends React.PureComponent {
   setLevelDomTransform = (open, openTransition, placementName, value) => {
     const { placement, levelMove, duration, ease, onChange } = this.props;
     if (!windowIsUndefined) {
+      // self = this;
       this.levelDom.forEach(dom => {
         if (this.isOpenChange || openTransition) {
           /* eslint no-param-reassign: "error" */
@@ -258,7 +230,6 @@ class Drawer extends React.PureComponent {
         if (right) {
           document.body.style.position = 'relative';
           document.body.style.width = `calc(100% - ${right}px)`;
-          document.body.style.transition = 'none';
           this.dom.style.transition = 'none';
           switch (placement) {
             case 'right':
@@ -273,9 +244,7 @@ class Drawer extends React.PureComponent {
           }
           clearTimeout(this.timeout);
           this.timeout = setTimeout(() => {
-            document.body.style.transition = widthTransition;
             this.dom.style.transition = `${trannsformTransition},${widthTransition}`;
-            document.body.style.width = '';
             this.dom.style.width = '';
             this.dom.style.transform = '';
           });
@@ -296,10 +265,8 @@ class Drawer extends React.PureComponent {
       } else if (!Object.keys(currentDrawer).some(key => currentDrawer[key])) {
         document.body.style.overflow = '';
         if (this.isOpenChange && right) {
-          document.body.style.position = 'relative';
-          document.body.style.overflowX = 'hidden'
-          document.body.style.transition = 'none';
-          document.body.style.width = `calc(100% + ${right}px)`;
+          document.body.style.position = '';
+          document.body.style.width = '';
           this.dom.style.transition = 'none';
           switch (placement) {
             case 'right': {
@@ -318,9 +285,7 @@ class Drawer extends React.PureComponent {
           }
           clearTimeout(this.timeout);
           this.timeout = setTimeout(() => {
-            document.body.style.transition = widthTransition;
             this.dom.style.transition = `${trannsformTransition},${widthTransition}`;
-            document.body.style.width = '';
             this.dom.style.transform = '';
             this.dom.style.width = '';
           });
@@ -391,6 +356,7 @@ class Drawer extends React.PureComponent {
         className={wrapperClassname}
         style={style}
         ref={c => { this.dom = c; }}
+        onTransitionEnd={this.onWrapperTransitionEnd}
       >
         {showMask && (
           <div
