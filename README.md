@@ -59,7 +59,7 @@ ReactDom.render(
 | levelMove | number \| array \| func | null |level move value. default is drawer width |
 | duration | string | `.3s` | level animation duration |
 | ease | string | `cubic-bezier(0.78, 0.14, 0.15, 0.86)` | level animation timing function |
-| getContainer    | string or func or HTMLElement | `body` | Return the mount node for Drawer. if is `null` use React.creactElement  |
+| getContainer    | string \| func \| HTMLElement | `body` | Return the mount node for Drawer. if is `null` use React.creactElement  |
 | showMask    |  boolean  | true | mask is show |
 | maskStyle | object | null | mask style |
 | onChange  | func | null | change callback(open) |
