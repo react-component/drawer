@@ -33,3 +33,19 @@ export function removeEventListener(target, eventType, callback, options) {
     target.detachEvent(`on${eventType}`, callback);
   }
 }
+
+export function transformArguments(arg, cb) {
+  let result;
+  if (typeof arg === 'function') {
+    result = arg(cb);
+  } else {
+    result = arg;
+  }
+  if (Array.isArray(result)) {
+    if (result.length === 2) {
+      return result;
+    }
+    return [result[0], result[1]];
+  }
+  return [result];
+}

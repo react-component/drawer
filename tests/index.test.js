@@ -49,16 +49,16 @@ describe('rc-drawer-menu', () => {
   });
 
   it('icon child is element', () => {
-    instance = mount(<Drawer handleChild={<i className="a">a</i>} level={null} />);
+    instance = mount(<Drawer handled={<i className="a">a</i>} level={null} />);
     const icon = instance.find('.drawer-handle');
-    const handleChild = icon.instance().children[0];
-    console.log('icon className is a: ', handleChild.className);
-    expect(handleChild.className).toBe('a');
+    const handled = icon.instance().children[0];
+    console.log('icon className is a: ', handled.className);
+    expect(handled.className).toBe('a');
   });
 
   it('default open drawer', () => {
     instance = mount(<Drawer
-      handleChild={<i className="a">a</i>}
+      handled={<i className="a">a</i>}
       defaultOpen
       level={[]}
     />);
@@ -80,17 +80,17 @@ describe('rc-drawer-menu', () => {
     expect(drawer.style.transform).toEqual('');
   });
 
-  it('handleChild is null，open=true', () => {
+  it('handled is null，open=true', () => {
     const instance = mount(<Drawer
-      handleChild={false}
+      handled={false}
       open
       level={null}
     />);
     expect(instance.render()).toMatchSnapshot();
   });
-  it('handleChild is null，open=false', () => {
+  it('handled is null，open=false', () => {
     const instance = mount(<Drawer
-      handleChild={false}
+      handled={false}
       open={false}
       level={null}
     />);
@@ -166,8 +166,8 @@ describe('rc-drawer-menu', () => {
     console.log(content.style.transform);
     expect(content.style.transform).toBe('translateY(-100%)');
   });
-  it('handleChild is null, render is null', () => {
-    instance = mount(<Drawer handleChild={false} />);
+  it('handled is null, render is null', () => {
+    instance = mount(<Drawer handled={false} />);
     console.log(instance.children())
     expect(instance.children().length).toBe(0);
     instance.setProps({

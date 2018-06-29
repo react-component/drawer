@@ -26,7 +26,7 @@ class Demo extends React.Component {
   render() {
     return (
       <div >
-        <Drawer handleChild={false} open={this.state.open} onMaskClick={this.onClick}>
+        <Drawer handled={false} open={this.state.open} onMaskClick={this.onClick}>
           <Menu
             style={{ width: 240, height: '200%' }}
             defaultSelectedKeys={['1']}
