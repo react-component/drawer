@@ -167,7 +167,6 @@ class Drawer extends React.PureComponent {
 
   onBodyTransitionEnd = (e) => {
     if (e.target === e.currentTarget) {
-      console.log(e)
       document.body.style.transform = '';
       document.body.style.transition = '';
       document.body.style.position = '';
