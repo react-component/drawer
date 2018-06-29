@@ -7,7 +7,7 @@
   <meta charset="utf-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css" rel="stylesheet"/>
-  <title>rc-drawer@1.4.4 - drawer component for react</title>
+  <title>rc-drawer@1.5.0 - drawer component for react</title>
   <style>
     @font-face {
       font-family: octicons-anchor;
@@ -737,7 +737,7 @@
 
 <body>
 <div class="header">
-  <h1>rc-drawer@1.4.4</h1>
+  <h1>rc-drawer@1.5.0</h1>
 </div>
 <div class="examples">
   <h3>EXAMPLES</h3>
@@ -751,6 +751,8 @@
       <li><a href="examples/getContainer.html">getContainer</a></li>
       
       <li><a href="examples/level.html">level</a></li>
+      
+      <li><a href="examples/multiple.html">multiple</a></li>
       
       <li><a href="examples/openRenderDom.html">openRenderDom</a></li>
       
@@ -841,16 +843,11 @@ ReactDom.render(
 <td>default open menu</td>
 </tr>
 <tr>
-<td>handleChild</td>
-<td>boolean / ReactElement</td>
+<td>handler</td>
+<td>boolean \</td>
+<td>ReactElement</td>
 <td>true</td>
-<td>true or false or ReactElement</td>
-</tr>
-<tr>
-<td>handleStyle</td>
-<td>object</td>
-<td>null</td>
-<td>handle style</td>
+<td>true or false or ReactElement, default:  <code>&lt;divclassName=&quot;drawer-handle&quot;&gt;&lt;i className=&quot;drawer-handle-icon&quot; /&gt;&lt;/div&gt;</code>;</td>
 </tr>
 <tr>
 <td>placement</td>
@@ -860,19 +857,36 @@ ReactDom.render(
 </tr>
 <tr>
 <td>level</td>
-<td>string or array</td>
+<td>string \</td>
+<td>array</td>
 <td><code>all</code></td>
 <td>With the drawer level element. <code>all</code>/ null / className / id / tagName / array</td>
 </tr>
 <tr>
-<td>levelTransition</td>
+<td>levelMove</td>
+<td>number \</td>
+<td>array \</td>
+<td>func</td>
+<td>null</td>
+<td>level move value. default is drawer width</td>
+</tr>
+<tr>
+<td>duration</td>
 <td>string</td>
-<td><code>transform .3s cubic-bezier(0.78, 0.14, 0.15, 0.86)</code></td>
-<td>level css transition</td>
+<td><code>.3s</code></td>
+<td>level animation duration</td>
+</tr>
+<tr>
+<td>ease</td>
+<td>string</td>
+<td><code>cubic-bezier(0.78, 0.14, 0.15, 0.86)</code></td>
+<td>level animation timing function</td>
 </tr>
 <tr>
 <td>getContainer</td>
-<td>string or func or HTMLElement</td>
+<td>string \</td>
+<td>func \</td>
+<td>HTMLElement</td>
 <td><code>body</code></td>
 <td>Return the mount node for Drawer. if is <code>null</code> use React.creactElement</td>
 </tr>
@@ -909,7 +923,7 @@ ReactDom.render(
 </tbody>
 </table>
 <blockquote>
-<p>1.0 remove <code>openClassName</code> <code>width</code>, Rename <code>iconChild</code> -&gt; <code>handleChild</code> <code>onIconClick</code> -&gt; <code>onHandleClick</code> <code>parent</code> -&gt; <code>getContainer</code>, add <code>handleStyle</code> <code>showMask</code>.</p>
+<p>1.5 Rename <code>handleChild</code> -&gt; <code>handler</code>, remove <code>handleStyle</code>, remove <code>levelTransition</code> -&gt; <code>duration</code> <code>ease</code>, add <code>levelMove</code>.</p>
 </blockquote>
 <h2>Development<a id="user-content-development" name="development" class="anchor" aria-hidden="true" href="#development"><span class="octicon octicon-link"></span></a></h2><div class="highlight"><pre><code language="undefined">npm install
 npm start</code></pre></div>
