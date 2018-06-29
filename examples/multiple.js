@@ -50,7 +50,7 @@ class Demo extends React.Component {
           <Button onClick={this.onClick}>打开抽屉</Button>
         </div>
         <Drawer
-          handled={false}
+          handler={false}
           open={this.state.open}
           onMaskClick={this.onClick}
           wrapperClassName="drawer1"
@@ -59,7 +59,7 @@ class Demo extends React.Component {
           <div style={{ width: 200 }}>
             <Button onClick={this.onChildClick}>打开子级</Button>
             <Drawer
-              handled={false}
+              handler={false}
               open={this.state.openChild}
               onMaskClick={this.onChildClick}
               wrapperClassName="drawer2"
@@ -71,7 +71,7 @@ class Demo extends React.Component {
                 二级抽屉
                 <Button onClick={this.onChildrenClick}>打开子级</Button>
                 <Drawer
-                  handled={false}
+                  handler={false}
                   open={this.state.openChildren}
                   onMaskClick={this.onChildrenClick}
                   level={['.drawer1', '.drawer2']}

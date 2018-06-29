@@ -22,8 +22,11 @@ class Drawer extends React.PureComponent {
     onChange: () => { },
     onMaskClick: () => { },
     onHandleClick: () => { },
-    handled: <i className="drawer-handle-icon" />,
-    handleStyle: {},
+    handler: (
+      <div className="drawer-handle">
+        <i className="drawer-handle-icon" />
+      </div>
+    ),
     showMask: true,
     maskStyle: {},
     wrapperClassName: '',
@@ -35,7 +38,7 @@ class Drawer extends React.PureComponent {
     this.levelDom = [];
     this.contextDom = null;
     this.maskDom = null;
-    this.handleDom = null;
+    this.handlerdom = null;
     this.mousePos = null;
     this.firstEnter = false;// 记录首次进入.
     this.timeout = null;
@@ -79,7 +82,7 @@ class Drawer extends React.PureComponent {
       this.passive = passiveSupported ? { passive: false } : false;
     }
     const open = this.getOpen();
-    if (this.props.handled || open) {
+    if (this.props.handler || open) {
       this.getDefault(this.props);
       this.forceUpdate();
     }
@@ -246,7 +249,7 @@ class Drawer extends React.PureComponent {
       });
       // 处理 body 滚动
       const eventArray = ['touchstart'];
-      const domArray = [document.body, this.maskDom, this.handleDom, this.contextDom];
+      const domArray = [document.body, this.maskDom, this.handlerdom, this.contextDom];
       const right = getScrollBarSize();
       const widthTransition = `width ${duration} ${ease}`;
       const trannsformTransition = `transform ${duration} ${ease}`;
@@ -350,8 +353,7 @@ class Drawer extends React.PureComponent {
       style,
       placement,
       children,
-      handled,
-      handleStyle,
+      handler,
       showMask,
       maskStyle,
     } = this.props;
@@ -373,6 +375,17 @@ class Drawer extends React.PureComponent {
     if (this.isOpenChange === undefined || this.isOpenChange) {
       this.setLevelDomTransform(open, false, placementName, value);
     }
+    const handlerCildren = handler && React.cloneElement(handler, {
+      onClick: (e) => {
+        if (handler.props.onClick) {
+          handler.props.onClick();
+        }
+        this.onIconTouchEnd(e);
+      },
+      ref: (c) => {
+        this.handlerdom = c;
+      }
+    });
     return (
       <div
         className={wrapperClassname}
@@ -403,18 +416,7 @@ class Drawer extends React.PureComponent {
           >
             {children}
           </div>
-          {handled && (
-            <div
-              className={`${prefixCls}-handle`}
-              onClick={this.onIconTouchEnd}
-              style={handleStyle}
-              ref={c => {
-                this.handleDom = c;
-              }}
-            >
-              {handled}
-            </div>
-          )}
+          {handlerCildren}
         </div>
       </div>
     );
@@ -443,7 +445,7 @@ class Drawer extends React.PureComponent {
     const differY = e.changedTouches[0].clientY - this.startPos.y;
     if (
       currentTarget === this.maskDom ||
-      currentTarget === this.handleDom ||
+      currentTarget === this.handlerdom ||
       (currentTarget === this.contextDom &&
         ((((currentTarget.scrollTop + currentTarget.offsetHeight >= currentTarget.scrollHeight &&
           differY < 0) ||
@@ -532,8 +534,7 @@ Drawer.propTypes = {
   ease: PropTypes.string,
   duration: PropTypes.string,
   getContainer: PropTypes.oneOfType([PropTypes.string, PropTypes.func, PropTypes.object, PropTypes.bool]),
-  handled: PropTypes.any,
-  handleStyle: PropTypes.object,
+  handler: PropTypes.any,
   onChange: PropTypes.func,
   onMaskClick: PropTypes.func,
   onHandleClick: PropTypes.func,

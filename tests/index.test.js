@@ -49,16 +49,18 @@ describe('rc-drawer-menu', () => {
   });
 
   it('icon child is element', () => {
-    instance = mount(<Drawer handled={<i className="a">a</i>} level={null} />);
-    const icon = instance.find('.drawer-handle');
-    const handled = icon.instance().children[0];
-    console.log('icon className is a: ', handled.className);
-    expect(handled.className).toBe('a');
+    instance = mount(<Drawer
+      handler={<div className="a"><i >a</i></div>}
+      level={null}
+    />);
+    const icon = instance.find('.a');
+    console.log('icon.length:', icon.length);
+    expect(icon.length).toBe(1);
   });
 
   it('default open drawer', () => {
     instance = mount(<Drawer
-      handled={<i className="a">a</i>}
+      handler={<i className="a">a</i>}
       defaultOpen
       level={[]}
     />);
@@ -80,17 +82,17 @@ describe('rc-drawer-menu', () => {
     expect(drawer.style.transform).toEqual('');
   });
 
-  it('handled is null，open=true', () => {
+  it('handler is null，open=true', () => {
     const instance = mount(<Drawer
-      handled={false}
+      handler={false}
       open
       level={null}
     />);
     expect(instance.render()).toMatchSnapshot();
   });
-  it('handled is null，open=false', () => {
+  it('handler is null，open=false', () => {
     const instance = mount(<Drawer
-      handled={false}
+      handler={false}
       open={false}
       level={null}
     />);
@@ -166,8 +168,8 @@ describe('rc-drawer-menu', () => {
     console.log(content.style.transform);
     expect(content.style.transform).toBe('translateY(-100%)');
   });
-  it('handled is null, render is null', () => {
-    instance = mount(<Drawer handled={false} />);
+  it('handler is null, render is null', () => {
+    instance = mount(<Drawer handler={false} />);
     console.log(instance.children())
     expect(instance.children().length).toBe(0);
     instance.setProps({

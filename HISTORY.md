@@ -4,8 +4,8 @@ History
 
 ## 1.5.0
 
-1. Rename `handleChild` -> `handled`, 
-2. remove `levelTransition`, split into `duration` `ease`,
+1. Rename `handleChild` -> `handled`, remove `handleStyle`.
+2. remove `levelTransition`, split into `duration` `ease`.
 3. add `levelMove`.
 
 ## 1.1.0

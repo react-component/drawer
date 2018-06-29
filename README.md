@@ -53,8 +53,7 @@ ReactDom.render(
 | wrapperClassName | string | null | wrapper class name |
 | open        | boolean  | false |  open or close menu  |
 | defaultOpen | boolean  | false | default open menu |
-| handled   | boolean \| ReactElement | true | true or false or ReactElement |
-| handleStyle   | object | null | handle style |
+| handler   | boolean \| ReactElement | true | true or false or ReactElement, default:  `<divclassName="drawer-handle"><i className="drawer-handle-icon" /></div>`;  |
 | placement  | string   |  `left` | `left` `top` `right` `bottom` |
 | level     | string \| array | `all` | With the drawer level element. `all`/ null / className / id / tagName / array |
 | levelMove | number \| array \| func | null |level move value. default is drawer width |
@@ -67,7 +66,7 @@ ReactDom.render(
 | onMaskClick | func | null | mask close click function |
 | onHandleClick | func | nul  | handle icon click function |
 
-> 1.5 Rename `handleChild` -> `handled`, remove `levelTransition` -> `duration` `ease`, add `levelMove`.
+> 1.5 Rename `handleChild` -> `handler`, remove `handleStyle`, remove `levelTransition` -> `duration` `ease`, add `levelMove`.
 ## Development
 
 ```
