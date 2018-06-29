@@ -44,8 +44,7 @@ class Drawer extends React.PureComponent {
 
     if (props.onIconClick || props.parent || props.iconChild || props.width // eslint-disable-line react/prop-types
       || props.handleChild) {  // eslint-disable-line react/prop-types
-      /* eslint-disable  no-console */
-      console.warn(
+      console.warn(// eslint-disable-line no-console
         'rc-drawer-menu API has been changed, please look at the releases, ' +
         'https://github.com/react-component/drawer-menu/releases'
       );
