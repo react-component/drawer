@@ -4,7 +4,6 @@ exports[`Drawer render boolean 1`] = `
 <div>
   <div
     id="test"
-    style="transform: translateX(0px);"
   />
   <div
     class=""
@@ -123,7 +122,6 @@ exports[`Drawer render string 1`] = `
 <div>
   <div
     id="test"
-    style="transform: translateX(0px);"
   />
   <div
     class=""
@@ -164,7 +162,6 @@ exports[`Drawer render string 2`] = `
 <div>
   <div
     id="test"
-    style="transform: translateX(0px);"
   />
   <div
     class=""

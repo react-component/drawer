@@ -17,7 +17,7 @@ const Option = Select.Option;
 
 class Demo extends React.Component {
   state = {
-    placement: 'left',
+    placement: 'right',
     childShow: true,
   }
   onChange = (value) => {

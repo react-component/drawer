@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`rc-drawer-menu handleChild is null，open=false 1`] = `null`;
+exports[`rc-drawer-menu handler is null，open=false 1`] = `null`;
 
-exports[`rc-drawer-menu handleChild is null，open=true 1`] = `
+exports[`rc-drawer-menu handler is null，open=true 1`] = `
 <div
   class="drawer drawer-left drawer-open"
 >
