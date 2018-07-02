@@ -2323,7 +2323,7 @@ samp {
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
   border-radius: 0 4px 4px 0;
 }
-.drawer-left.drawer-open .drawer-wrapper {
+.drawer-left.drawer-open .drawer-content-wrapper {
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
 }
 .drawer-right .drawer-content-wrapper {
@@ -2334,7 +2334,7 @@ samp {
   box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15);
   border-radius: 4px 0 0 4px;
 }
-.drawer-right.drawer-open .drawer-wrapper {
+.drawer-right.drawer-open .drawer-content-wrapper {
   box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15);
 }
 .drawer-top .drawer-content-wrapper,
@@ -2365,7 +2365,7 @@ samp {
   box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.15);
   border-radius: 4px 4px 0 0;
 }
-.drawer-bottom.drawer-open .drawer-wrapper {
+.drawer-bottom.drawer-open .drawer-content-wrapper {
   box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.15);
 }
 .drawer.drawer-open > * {
@@ -2399,13 +2399,11 @@ samp {
   animation: AlphaTo 0.3s ease-out 0.3s;
   animation-fill-mode: forwards;
   opacity: 0;
-  transform: translateX(-40px);
 }
 @keyframes AlphaTo {
   to {
     opacity: 1;
     left: 0;
-    transform: translateX(0px);
   }
 }
 .parent-demo {
