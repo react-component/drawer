@@ -76,6 +76,9 @@ class Drawer extends React.PureComponent {
     const open = this.getOpen();
     if (this.props.handler || open) {
       this.getDefault(this.props);
+      if (open) {
+        this.isOpenChange = true;
+      }
       this.forceUpdate();
     }
   }
@@ -110,15 +113,18 @@ class Drawer extends React.PureComponent {
   }
 
   componentWillUnmount() {
+    delete currentDrawer[this.drawerId];
+    delete this.isOpenChange;
     if (this.container) {
       this.setLevelDomTransform(false, true);
+      document.body.style.overflow = '';
       // 拦不住。。直接删除；
       if (this.props.getContainer) {
         this.container.parentNode.removeChild(this.container);
       }
     }
+    this.firstEnter = false;
     clearTimeout(this.timeout);
-    delete currentDrawer[this.drawerId];
     // suppport react15
     if (IS_REACT_16) {
       return;
@@ -152,6 +158,9 @@ class Drawer extends React.PureComponent {
 
   onWrapperTransitionEnd = () => {
     this.dom.style.transition = '';
+    if (!this.state.open && this.getCrrentDrawerSome()) {
+      document.body.style.overflowX = '';
+    }
   }
 
   getDefault = props => {
@@ -160,6 +169,8 @@ class Drawer extends React.PureComponent {
       this.container = this.defaultGetContainer();
     }
   };
+
+  getCrrentDrawerSome = () => !Object.keys(currentDrawer).some(key => currentDrawer[key]);
 
   getContainer = () => {
     return this.container;
@@ -204,7 +215,6 @@ class Drawer extends React.PureComponent {
   setLevelDomTransform = (open, openTransition, placementName, value) => {
     const { placement, levelMove, duration, ease, onChange } = this.props;
     if (!windowIsUndefined) {
-      // self = this;
       this.levelDom.forEach(dom => {
         if (this.isOpenChange || openTransition) {
           /* eslint no-param-reassign: "error" */
@@ -262,11 +272,12 @@ class Drawer extends React.PureComponent {
             );
           });
         }
-      } else if (!Object.keys(currentDrawer).some(key => currentDrawer[key])) {
+      } else if (this.getCrrentDrawerSome()) {
         document.body.style.overflow = '';
-        if (this.isOpenChange && right) {
+        if ((this.isOpenChange || openTransition) && right) {
           document.body.style.position = '';
           document.body.style.width = '';
+          document.body.style.overflowX = 'hidden';
           this.dom.style.transition = 'none';
           switch (placement) {
             case 'right': {
