@@ -160,6 +160,8 @@ class Drawer extends React.PureComponent {
     this.dom.style.transition = '';
     if (!this.state.open && this.getCrrentDrawerSome()) {
       document.body.style.overflowX = '';
+      this.maskDom.style.left = '';
+      this.maskDom.style.width = '';
     }
   }
 
@@ -282,7 +284,7 @@ class Drawer extends React.PureComponent {
           switch (placement) {
             case 'right': {
               this.dom.style.transform = `translateX(${right}px)`;
-              this.maskDom.style.right = `${right}px`;
+              this.maskDom.style.left = `-${right}px`;
               this.maskDom.style.width = `calc(100% + ${right}px)`;
               break;
             }
@@ -339,8 +341,8 @@ class Drawer extends React.PureComponent {
       [className]: !!className,
     });
     const value = this.contextDom
-      ? this.contextDom.getBoundingClientRect()[
-        placement === 'left' || placement === 'right' ? 'width' : 'height'
+      ? this.contextDom.getBoundingClientRect()[placement === 'left' ||
+        placement === 'right' ? 'width' : 'height'
       ] : 0;
     const placementName = `translate${placement === 'left' || placement === 'right' ? 'X' : 'Y'}`;
     // 百分比与像素动画不同步，第一次打用后全用像素动画。
