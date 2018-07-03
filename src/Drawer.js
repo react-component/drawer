@@ -281,6 +281,8 @@ class Drawer extends React.PureComponent {
           this.dom.style.transition = 'none';
           switch (placement) {
             case 'right': {
+              // 修复关闭时左侧出现一个滚动条宽度空白的问题
+              this.maskDom.style.transform = `translateX(${- right}px)`;
               this.dom.style.transform = `translateX(${right}px)`;
               this.maskDom.style.right = `${right}px`;
               this.maskDom.style.width = `calc(100% + ${right}px)`;
