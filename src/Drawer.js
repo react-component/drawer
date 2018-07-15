@@ -27,6 +27,7 @@ class Drawer extends React.PureComponent {
         <i className="drawer-handle-icon" />
       </div>
     ),
+    firstEnter: false,
     showMask: true,
     maskStyle: {},
     wrapperClassName: '',
@@ -40,7 +41,7 @@ class Drawer extends React.PureComponent {
     this.maskDom = null;
     this.handlerdom = null;
     this.mousePos = null;
-    this.firstEnter = false;// 记录首次进入.
+    this.firstEnter = props.firstEnter;// 记录首次进入.
     this.timeout = null;
     this.drawerId = Number((Date.now() + Math.random()).toString()
       .replace('.', Math.round(Math.random() * 9))).toString(16);
@@ -236,7 +237,7 @@ class Drawer extends React.PureComponent {
       // 处理 body 滚动
       const eventArray = ['touchstart'];
       const domArray = [document.body, this.maskDom, this.handlerdom, this.contextDom];
-      const right = getScrollBarSize();
+      const right = getScrollBarSize(1);
       const widthTransition = `width ${duration} ${ease}`;
       const trannsformTransition = `transform ${duration} ${ease}`;
       if (open && document.body.style.overflow !== 'hidden') {
@@ -507,6 +508,7 @@ Drawer.propTypes = {
   children: PropTypes.node,
   style: PropTypes.object,
   defaultOpen: PropTypes.bool,
+  firstEnter: PropTypes.bool,
   open: PropTypes.bool,
   prefixCls: PropTypes.string,
   placement: PropTypes.string,
