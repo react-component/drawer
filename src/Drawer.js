@@ -160,8 +160,10 @@ class Drawer extends React.PureComponent {
     this.dom.style.transition = '';
     if (!this.state.open && this.getCrrentDrawerSome()) {
       document.body.style.overflowX = '';
-      this.maskDom.style.left = '';
-      this.maskDom.style.width = '';
+      if(this.maskDom){
+        this.maskDom.style.left = '';
+        this.maskDom.style.width = '';
+      }
     }
   }
 
