@@ -75,7 +75,7 @@ class Drawer extends React.PureComponent {
       this.passive = passiveSupported ? { passive: false } : false;
     }
     const open = this.getOpen();
-    if (this.props.handler || open) {
+    if (this.props.handler || open || this.firstEnter) {
       this.getDefault(this.props);
       if (open) {
         this.isOpenChange = true;
