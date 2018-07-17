@@ -487,7 +487,7 @@ class Drawer extends React.PureComponent {
           visible
           autoMount
           autoDestroy={false}
-          getComponent={this.getChildToRender}
+          getComponent={() => children}
           getContainer={this.getContainer}
         >
           {({ renderComponent, removeContainer }) => {
