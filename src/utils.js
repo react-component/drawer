@@ -50,3 +50,7 @@ export function transformArguments(arg, cb) {
   }
   return [result];
 }
+
+export const isNumeric = (value) => {
+  return !isNaN(parseFloat(value)) && isFinite(value);// eslint-disable-line
+};
