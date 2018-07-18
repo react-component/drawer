@@ -103,7 +103,7 @@ describe('rc-drawer-menu', () => {
     jest.useFakeTimers();
     const drawer = instance.find('.drawer-content-wrapper').instance();
     console.log('第一次：', drawer.style.transform);
-    expect(drawer.style.transform).toBe('translateX(-0px)');
+    expect(drawer.style.transform).toBe('translateX(-100%)');
     instance.setProps({
       open: true,
     });
@@ -115,7 +115,7 @@ describe('rc-drawer-menu', () => {
     });
     console.log('第二次：', drawer.style.transform);
     jest.runAllTimers();
-    expect(drawer.style.transform).toBe('translateX(-0px)');
+    expect(drawer.style.transform).toBe('translateX(-100%)');
     jest.useRealTimers();
   });
   it('getContainer is null', () => {
@@ -148,7 +148,7 @@ describe('rc-drawer-menu', () => {
     const mask = instance.find('.drawer-mask');
     mask.simulate('click');
     console.log(content.style.transform);
-    expect(content.style.transform).toBe('translateX(-0px)');
+    expect(content.style.transform).toBe('translateX(-100%)');
   });
   it('will unmount', () => {
     instance = mount(<Div show />);
