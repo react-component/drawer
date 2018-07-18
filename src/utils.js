@@ -14,7 +14,8 @@ const trnasitionStr = Object.keys(trnasitionEndObject).filter(key => {
   if (typeof document === 'undefined') {
     return false;
   }
-  return key in (document.body && document.body.style);
+  const html = document.getElementsByTagName('html')[0];
+  return key in (html ? html.style : {});
 })[0];
 export const transitionEnd = trnasitionEndObject[trnasitionStr];
 
