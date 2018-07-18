@@ -17,7 +17,7 @@ ReactDom.render((
   <div >
     <Drawer>
       <Menu
-        style={{ height: '200%' }}
+        style={{ width: 240, height: '200%' }}
         defaultSelectedKeys={['1']}
         defaultOpenKeys={['sub1']}
         mode="inline"
