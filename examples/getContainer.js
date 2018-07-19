@@ -25,11 +25,10 @@ class DrawerTester extends React.Component {
       <div>
         <div ref={this.saveContainer} />
         <Drawer
-          {...this.props}
+          width="20vw"
           getContainer={this.getContainer}
         >
           <Menu
-            style={{ width: 240 }}
             defaultSelectedKeys={['1']}
             defaultOpenKeys={['sub1']}
             mode='inline'

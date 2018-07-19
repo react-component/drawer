@@ -45,9 +45,9 @@ class Demo extends React.Component {
           onMaskClick={this.onTouchEnd}
           handler={false}
           level={null}
+          width="20vw"
         >
           <Menu
-            style={{ width: 240 }}
             defaultSelectedKeys={['1']}
             defaultOpenKeys={['sub1']}
             mode="inline"

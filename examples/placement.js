@@ -19,10 +19,14 @@ class Demo extends React.Component {
   state = {
     placement: 'right',
     childShow: true,
+    width: '20vw',
+    height: null,
   }
   onChange = (value) => {
     this.setState({
       placement: value,
+      width: value === 'right' || value === 'left' ? '20vw' : null,
+      height: value === 'right' || value === 'left' ? null : '20vh',
       childShow: false, // 删除子级，删除切换时的过渡动画。。。
     }, () => {
       this.setState({
@@ -34,9 +38,8 @@ class Demo extends React.Component {
     return (
       <div >
         {this.state.childShow && (
-          <Drawer placement={this.state.placement}>
+          <Drawer placement={this.state.placement} width={this.state.width} hieght={this.state.height}>
             <Menu
-              style={{ width: 240 }}
               defaultSelectedKeys={['1']}
               defaultOpenKeys={['sub1']}
               mode="inline"

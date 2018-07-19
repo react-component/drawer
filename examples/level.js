@@ -25,9 +25,8 @@ class Demo extends React.Component {
   render() {
     return (
       <div >
-        <Drawer level={this.state.level}>
+        <Drawer level={this.state.level} width="20vw">
           <Menu
-            style={{ width: 240 }}
             defaultSelectedKeys={['1']}
             defaultOpenKeys={['sub1']}
             mode="inline"

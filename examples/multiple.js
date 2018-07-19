@@ -50,13 +50,14 @@ class Demo extends React.Component {
           <Button onClick={this.onClick}>打开抽屉</Button>
         </div>
         <Drawer
+          width="20vw"
           handler={false}
           open={this.state.open}
           onMaskClick={this.onClick}
           wrapperClassName="drawer1"
           placement="right"
         >
-          <div style={{ width: 200 }}>
+          <div>
             <Button onClick={this.onChildClick}>打开子级</Button>
             <Drawer
               handler={false}
