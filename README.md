@@ -51,6 +51,8 @@ ReactDom.render(
 | className       | string | null | - |
 | prefixCls     |  string  | 'drawer' | prefix class |
 | wrapperClassName | string | null | wrapper class name |
+| width       |  string \| number  |  null  | drawer content wrapper width, drawer level transition width  |
+| height      |  string \| number  |  null  | drawer content wrapper height, drawer level transition height  |
 | open        | boolean  | false |  open or close menu  |
 | defaultOpen | boolean  | false | default open menu |
 | handler   | boolean \| ReactElement | true | true or false or ReactElement, default:  `<divclassName="drawer-handle"><i className="drawer-handle-icon" /></div>`;  |

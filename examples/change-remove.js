@@ -28,9 +28,9 @@ class Demo extends React.Component {
       <div >
         {this.state.show && <Drawer
           wrapperClassName="drawer-wrapper"
+          width="20vw"
         >
           <Menu
-            style={{ width: 240 }}
             defaultSelectedKeys={['1']}
             defaultOpenKeys={['sub1']}
             mode="inline"

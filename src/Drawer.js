@@ -4,7 +4,14 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import ContainerRender from 'rc-util/lib/ContainerRender';
 import getScrollBarSize from 'rc-util/lib/getScrollBarSize';
-import { dataToArray, transitionEnd, addEventListener, removeEventListener, transformArguments } from './utils';
+import {
+  dataToArray,
+  transitionEnd,
+  addEventListener,
+  removeEventListener,
+  transformArguments,
+  isNumeric,
+} from './utils';
 
 const IS_REACT_16 = 'createPortal' in ReactDOM;
 
@@ -37,7 +44,7 @@ class Drawer extends React.PureComponent {
   constructor(props) {
     super(props);
     this.levelDom = [];
-    this.contextDom = null;
+    this.contentDom = null;
     this.maskDom = null;
     this.handlerdom = null;
     this.mousePos = null;
@@ -98,7 +105,7 @@ class Drawer extends React.PureComponent {
     }
     if (placement !== this.props.placement) {
       // test 的 bug, 有动画过场，删除 dom
-      this.contextDom = null;
+      this.contentDom = null;
     }
     if (this.props.level !== nextProps.level) {
       this.getParentAndLevelDom(nextProps);
@@ -161,7 +168,7 @@ class Drawer extends React.PureComponent {
     this.dom.style.transition = '';
     if (!this.state.open && this.getCrrentDrawerSome()) {
       document.body.style.overflowX = '';
-      if(this.maskDom){
+      if (this.maskDom) {
         this.maskDom.style.left = '';
         this.maskDom.style.width = '';
       }
@@ -230,13 +237,14 @@ class Drawer extends React.PureComponent {
             const $levelMove = transformArguments(levelMove, { target: dom, open });
             levelValue = open ? $levelMove[0] : $levelMove[1] || 0;
           }
-          const placementPos = placement === 'left' || placement === 'top' ? levelValue : -levelValue;
-          dom.style.transform = placementPos ? `${placementName}(${placementPos}px)` : '';
+          const $value = typeof levelValue === 'number' ? `${levelValue}px` : levelValue;
+          const placementPos = placement === 'left' || placement === 'top' ? $value : `-${$value}`;
+          dom.style.transform = levelValue ? `${placementName}(${placementPos})` : '';
         }
       });
       // 处理 body 滚动
       const eventArray = ['touchstart'];
-      const domArray = [document.body, this.maskDom, this.handlerdom, this.contextDom];
+      const domArray = [document.body, this.maskDom, this.handlerdom, this.contentDom];
       const right = getScrollBarSize(1);
       const widthTransition = `width ${duration} ${ease}`;
       const trannsformTransition = `transform ${duration} ${ease}`;
@@ -337,23 +345,26 @@ class Drawer extends React.PureComponent {
       handler,
       showMask,
       maskStyle,
+      width,
+      height,
     } = this.props;
     const wrapperClassname = classnames(prefixCls, {
       [`${prefixCls}-${placement}`]: true,
       [`${prefixCls}-open`]: open,
       [className]: !!className,
     });
-    const value = this.contextDom
-      ? this.contextDom.getBoundingClientRect()[placement === 'left' ||
-        placement === 'right' ? 'width' : 'height'
-      ] : 0;
-    const placementName = `translate${placement === 'left' || placement === 'right' ? 'X' : 'Y'}`;
+    const isHorizontal = placement === 'left' || placement === 'right';
+    const placementName = `translate${isHorizontal ? 'X' : 'Y'}`;
     // 百分比与像素动画不同步，第一次打用后全用像素动画。
-    const defaultValue = !this.contextDom ? '100%' : `${value}px`;
+    // const defaultValue = !this.contentDom || !level ? '100%' : `${value}px`;
     const placementPos =
-      placement === 'left' || placement === 'top' ? `-${defaultValue}` : defaultValue;
+      placement === 'left' || placement === 'top' ? '-100%' : '100%';
     const transform = open ? '' : `${placementName}(${placementPos})`;
     if (this.isOpenChange === undefined || this.isOpenChange) {
+      const contentValue = this.contentDom ? this.contentDom.getBoundingClientRect()[
+        isHorizontal ? 'width' : 'height'
+      ] : 0;
+      const value = (isHorizontal ? width : height) || contentValue;
       this.setLevelDomTransform(open, false, placementName, value);
     }
     const handlerCildren = handler && React.cloneElement(handler, {
@@ -386,12 +397,16 @@ class Drawer extends React.PureComponent {
         )}
         <div
           className={`${prefixCls}-content-wrapper`}
-          style={{ transform }}
+          style={{
+            transform,
+            width: isNumeric(width) ? `${width}px` : width,
+            height: isNumeric(height) ? `${height}px` : height,
+          }}
         >
           <div
             className={`${prefixCls}-content`}
             ref={c => {
-              this.contextDom = c;
+              this.contentDom = c;
             }}
             onTouchStart={open ? this.removeStartHandler : null} // 跑用例用
             onTouchMove={open ? this.removeMoveHandler : null} // 跑用例用
@@ -428,7 +443,7 @@ class Drawer extends React.PureComponent {
     if (
       currentTarget === this.maskDom ||
       currentTarget === this.handlerdom ||
-      (currentTarget === this.contextDom &&
+      (currentTarget === this.contentDom &&
         ((((currentTarget.scrollTop + currentTarget.offsetHeight >= currentTarget.scrollHeight &&
           differY < 0) ||
           (currentTarget.scrollTop <= 0 && differY > 0)) &&
@@ -507,6 +522,8 @@ Drawer.propTypes = {
   className: PropTypes.string,
   children: PropTypes.node,
   style: PropTypes.object,
+  width: PropTypes.any,
+  height: PropTypes.any,
   defaultOpen: PropTypes.bool,
   firstEnter: PropTypes.bool,
   open: PropTypes.bool,
