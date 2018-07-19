@@ -121,11 +121,11 @@ var Demo = function (_React$Component) {
       null,
       __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
         __WEBPACK_IMPORTED_MODULE_3_rc_drawer__["a" /* default */],
-        { handler: false, open: this.state.open, onMaskClick: this.onClick },
+        { width: '20vw', handler: false, open: this.state.open, onMaskClick: this.onClick },
         __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
           __WEBPACK_IMPORTED_MODULE_6_antd__["c" /* Menu */],
           {
-            style: { width: 240, height: '200%' },
+            style: { height: '200%' },
             defaultSelectedKeys: ['1'],
             defaultOpenKeys: ['sub1'],
             mode: 'inline'

@@ -109,10 +109,14 @@ var Demo = function (_React$Component) {
 
     return _ret = (_temp = (_this = __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_possibleConstructorReturn___default()(this, _React$Component.call.apply(_React$Component, [this].concat(args))), _this), _this.state = {
       placement: 'right',
-      childShow: true
+      childShow: true,
+      width: '20vw',
+      height: null
     }, _this.onChange = function (value) {
       _this.setState({
         placement: value,
+        width: value === 'right' || value === 'left' ? '20vw' : null,
+        height: value === 'right' || value === 'left' ? null : '20vh',
         childShow: false // 删除子级，删除切换时的过渡动画。。。
       }, function () {
         _this.setState({
@@ -128,11 +132,10 @@ var Demo = function (_React$Component) {
       null,
       this.state.childShow && __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
         __WEBPACK_IMPORTED_MODULE_3_rc_drawer__["a" /* default */],
-        { placement: this.state.placement },
+        { placement: this.state.placement, width: this.state.width, hieght: this.state.height },
         __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
           __WEBPACK_IMPORTED_MODULE_6_antd__["c" /* Menu */],
           {
-            style: { width: 240 },
             defaultSelectedKeys: ['1'],
             defaultOpenKeys: ['sub1'],
             mode: 'inline'

@@ -140,12 +140,12 @@ var Demo = function (_React$Component) {
           open: this.state.open,
           onMaskClick: this.onTouchEnd,
           handler: false,
-          level: null
+          level: null,
+          width: '20vw'
         },
         __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
           __WEBPACK_IMPORTED_MODULE_6_antd__["c" /* Menu */],
           {
-            style: { width: 240 },
             defaultSelectedKeys: ['1'],
             defaultOpenKeys: ['sub1'],
             mode: 'inline'
