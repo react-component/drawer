@@ -104,6 +104,7 @@ var Demo = function (_React$Component) {
       __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
         __WEBPACK_IMPORTED_MODULE_3_rc_drawer__["a" /* default */],
         {
+          width: '20vw',
           handler: false,
           open: this.state.open,
           onMaskClick: this.onClick,
@@ -112,7 +113,7 @@ var Demo = function (_React$Component) {
         },
         __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
           'div',
-          { style: { width: 200 } },
+          null,
           __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
             __WEBPACK_IMPORTED_MODULE_6_antd__["a" /* Button */],
             { onClick: this.onChildClick },

@@ -106,12 +106,12 @@ var Demo = function (_React$Component) {
       this.state.show && __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
         __WEBPACK_IMPORTED_MODULE_3_rc_drawer__["a" /* default */],
         {
-          wrapperClassName: 'drawer-wrapper'
+          wrapperClassName: 'drawer-wrapper',
+          width: '20vw'
         },
         __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
           __WEBPACK_IMPORTED_MODULE_6_antd__["c" /* Menu */],
           {
-            style: { width: 240 },
             defaultSelectedKeys: ['1'],
             defaultOpenKeys: ['sub1'],
             mode: 'inline'
