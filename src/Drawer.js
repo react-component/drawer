@@ -53,7 +53,7 @@ class Drawer extends React.PureComponent {
     this.drawerId = Number((Date.now() + Math.random()).toString()
       .replace('.', Math.round(Math.random() * 9))).toString(16);
 
-    if (props.onIconClick || props.parent || props.iconChild || props.width // eslint-disable-line react/prop-types
+    if (props.onIconClick || props.parent || props.iconChild // eslint-disable-line react/prop-types
       || props.handleChild) {  // eslint-disable-line react/prop-types
       console.warn(// eslint-disable-line no-console
         'rc-drawer-menu API has been changed, please look at the releases, ' +
@@ -124,7 +124,9 @@ class Drawer extends React.PureComponent {
     delete currentDrawer[this.drawerId];
     delete this.isOpenChange;
     if (this.container) {
-      this.setLevelDomTransform(false, true);
+      if (this.state.open) {
+        this.setLevelDomTransform(false, true);
+      }
       document.body.style.overflow = '';
       // 拦不住。。直接删除；
       if (this.props.getContainer) {
@@ -211,7 +213,8 @@ class Drawer extends React.PureComponent {
     if (level === 'all') {
       const children = Array.prototype.slice.call(this.parent.children);
       children.forEach(child => {
-        if (child.nodeName !== 'SCRIPT' && child.nodeName !== 'STYLE' && child !== this.container) {
+        if (child.nodeName !== 'SCRIPT' && child.nodeName !== 'STYLE'
+          && child.nodeName !== 'LINK' && child !== this.container) {
           this.levelDom.push(child);
         }
       });
