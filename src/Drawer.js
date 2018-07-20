@@ -52,14 +52,6 @@ class Drawer extends React.PureComponent {
     this.timeout = null;
     this.drawerId = Number((Date.now() + Math.random()).toString()
       .replace('.', Math.round(Math.random() * 9))).toString(16);
-
-    if (props.onIconClick || props.parent || props.iconChild // eslint-disable-line react/prop-types
-      || props.handleChild) {  // eslint-disable-line react/prop-types
-      console.warn(// eslint-disable-line no-console
-        'rc-drawer-menu API has been changed, please look at the releases, ' +
-        'https://github.com/react-component/drawer-menu/releases'
-      );
-    }
     const open = props.open !== undefined ? props.open : !!props.defaultOpen;
     currentDrawer[this.drawerId] = open;
     this.state = {
