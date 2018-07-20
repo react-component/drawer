@@ -295,8 +295,10 @@ class Drawer extends React.PureComponent {
           switch (placement) {
             case 'right': {
               this.dom.style.transform = `translateX(${right}px)`;
-              this.maskDom.style.left = `-${right}px`;
-              this.maskDom.style.width = `calc(100% + ${right}px)`;
+              if(this.maskDom){
+                this.maskDom.style.left = `-${right}px`;
+                this.maskDom.style.width = `calc(100% + ${right}px)`;
+              }
               break;
             }
             case 'top':
@@ -475,14 +477,13 @@ class Drawer extends React.PureComponent {
   };
 
   render() {
-    const { getContainer, wrapperClassName } = this.props;
+    const { getContainer } = this.props;
     const open = this.getOpen();
     currentDrawer[this.drawerId] = open ? this.container : open;
     const children = this.getChildToRender(this.firstEnter ? open : false);
     if (!getContainer) {
       return (
         <div
-          className={wrapperClassName}
           ref={c => {
             this.container = c;
           }}
