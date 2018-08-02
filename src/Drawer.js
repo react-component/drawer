@@ -131,11 +131,14 @@ class Drawer extends React.PureComponent {
     if (IS_REACT_16) {
       return;
     }
-    this.renderComponent({
-      afterClose: this.removeContainer,
-      onClose() { },
-      visible: false,
-    });
+    // 需要 didmount 后也会渲染，直接 unmount 将不会渲染，加上判断.
+    if (this.renderComponent) {
+      this.renderComponent({
+        afterClose: this.removeContainer,
+        onClose() { },
+        visible: false,
+      });
+    }
   }
 
   onMaskTouchEnd = e => {
