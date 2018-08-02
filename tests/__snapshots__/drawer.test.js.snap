@@ -13,6 +13,7 @@ exports[`Drawer render boolean 1`] = `
     >
       <div
         class="drawer-mask"
+        style=""
       />
       <div
         class="drawer-content-wrapper"
@@ -131,6 +132,7 @@ exports[`Drawer render string 1`] = `
     >
       <div
         class="drawer-mask"
+        style=""
       />
       <div
         class="drawer-content-wrapper"
@@ -171,6 +173,7 @@ exports[`Drawer render string 2`] = `
     >
       <div
         class="drawer-mask"
+        style=""
       />
       <div
         class="drawer-content-wrapper"
