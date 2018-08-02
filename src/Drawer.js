@@ -128,11 +128,8 @@ class Drawer extends React.PureComponent {
     this.firstEnter = false;
     clearTimeout(this.timeout);
     // suppport react15
-    if (IS_REACT_16) {
-      return;
-    }
     // 需要 didmount 后也会渲染，直接 unmount 将不会渲染，加上判断.
-    if (this.renderComponent) {
+    if (this.renderComponent && !IS_REACT_16) {
       this.renderComponent({
         afterClose: this.removeContainer,
         onClose() { },
