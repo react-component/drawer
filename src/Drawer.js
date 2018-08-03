@@ -454,11 +454,11 @@ class Drawer extends React.PureComponent {
         ((((currentTarget.scrollTop + currentTarget.offsetHeight >= currentTarget.scrollHeight &&
           differY < 0) ||
           (currentTarget.scrollTop <= 0 && differY > 0)) &&
-          Math.max(Math.abs(differX), Math.abs(differY)) === differY) ||
+          Math.max(Math.abs(differX), Math.abs(differY)) === Math.abs(differY)) ||
           (((currentTarget.scrollLeft + currentTarget.offsetWidth >= currentTarget.scrollWidth &&
             differX < 0) ||
             (currentTarget.scrollLeft <= 0 && differX > 0)) &&
-            Math.max(Math.abs(differX), Math.abs(differY)) === differX)))
+            Math.max(Math.abs(differX), Math.abs(differY)) === Math.abs(differX))))
     ) {
       e.preventDefault();
     }
