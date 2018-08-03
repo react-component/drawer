@@ -158,13 +158,16 @@ class Drawer extends React.PureComponent {
     });
   };
 
-  onWrapperTransitionEnd = () => {
-    this.dom.style.transition = '';
-    if (!this.state.open && this.getCrrentDrawerSome()) {
-      document.body.style.overflowX = '';
-      if (this.maskDom) {
-        this.maskDom.style.left = '';
-        this.maskDom.style.width = '';
+  onWrapperTransitionEnd = (e) => {
+    if (e.target === this.contentWrapper) {
+      this.dom.style.transition = '';
+      if (!this.state.open && this.getCrrentDrawerSome()) {
+        document.body.style.overflowX = '';
+        if (this.maskDom) {
+          this.maskDom.style.left = '';
+          this.maskDom.style.width = '';
+          this.maskDom.style.display = 'none';
+        }
       }
     }
   }
@@ -350,6 +353,7 @@ class Drawer extends React.PureComponent {
       [`${prefixCls}-open`]: open,
       [className]: !!className,
     });
+    const isOpenChange = this.isOpenChange;
     const isHorizontal = placement === 'left' || placement === 'right';
     const placementName = `translate${isHorizontal ? 'X' : 'Y'}`;
     // 百分比与像素动画不同步，第一次打用后全用像素动画。
@@ -357,7 +361,7 @@ class Drawer extends React.PureComponent {
     const placementPos =
       placement === 'left' || placement === 'top' ? '-100%' : '100%';
     const transform = open ? '' : `${placementName}(${placementPos})`;
-    if (this.isOpenChange === undefined || this.isOpenChange) {
+    if (isOpenChange === undefined || isOpenChange) {
       const contentValue = this.contentDom ? this.contentDom.getBoundingClientRect()[
         isHorizontal ? 'width' : 'height'
       ] : 0;
@@ -389,6 +393,9 @@ class Drawer extends React.PureComponent {
             style={maskStyle}
             ref={c => {
               this.maskDom = c;
+              if (c) {
+                this.maskDom.style.display = !isOpenChange ? 'none' : '';
+              }
             }}
           />
         )}
@@ -398,6 +405,9 @@ class Drawer extends React.PureComponent {
             transform,
             width: isNumeric(width) ? `${width}px` : width,
             height: isNumeric(height) ? `${height}px` : height,
+          }}
+          ref={c => {
+            this.contentWrapper = c;
           }}
         >
           <div
@@ -444,11 +454,11 @@ class Drawer extends React.PureComponent {
         ((((currentTarget.scrollTop + currentTarget.offsetHeight >= currentTarget.scrollHeight &&
           differY < 0) ||
           (currentTarget.scrollTop <= 0 && differY > 0)) &&
-          Math.max(Math.abs(differX), Math.abs(differY)) === differY) ||
+          Math.max(Math.abs(differX), Math.abs(differY)) === Math.abs(differY)) ||
           (((currentTarget.scrollLeft + currentTarget.offsetWidth >= currentTarget.scrollWidth &&
             differX < 0) ||
             (currentTarget.scrollLeft <= 0 && differX > 0)) &&
-            Math.max(Math.abs(differX), Math.abs(differY)) === differX)))
+            Math.max(Math.abs(differX), Math.abs(differY)) === Math.abs(differX))))
     ) {
       e.preventDefault();
     }
