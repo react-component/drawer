@@ -166,7 +166,6 @@ class Drawer extends React.PureComponent {
         if (this.maskDom) {
           this.maskDom.style.left = '';
           this.maskDom.style.width = '';
-          this.maskDom.style.display = 'none';
         }
       }
     }
@@ -238,6 +237,7 @@ class Drawer extends React.PureComponent {
           const $value = typeof levelValue === 'number' ? `${levelValue}px` : levelValue;
           const placementPos = placement === 'left' || placement === 'top' ? $value : `-${$value}`;
           dom.style.transform = levelValue ? `${placementName}(${placementPos})` : '';
+          dom.style.msTransform = levelValue ? `${placementName}(${placementPos})` : '';
         }
       });
       // 处理 body 滚动
@@ -255,6 +255,7 @@ class Drawer extends React.PureComponent {
           switch (placement) {
             case 'right':
               this.dom.style.transform = `translateX(-${right}px)`;
+              this.dom.style.msTransform = `translateX(-${right}px)`;
               break;
             case 'top':
             case 'bottom':
@@ -268,21 +269,21 @@ class Drawer extends React.PureComponent {
             this.dom.style.transition = `${trannsformTransition},${widthTransition}`;
             this.dom.style.width = '';
             this.dom.style.transform = '';
+            this.dom.style.msTransform = '';
           });
         }
         // 手机禁滚
-        if (document.body.addEventListener) {
-          domArray.forEach((item, i) => {
-            if (!item) {
-              return;
-            }
-            item.addEventListener(
-              eventArray[i] || 'touchmove',
-              i ? this.removeMoveHandler : this.removeStartHandler,
-              this.passive
-            );
-          });
-        }
+        domArray.forEach((item, i) => {
+          if (!item) {
+            return;
+          }
+          addEventListener(
+            item,
+            eventArray[i] || 'touchmove',
+            i ? this.removeMoveHandler : this.removeStartHandler,
+            this.passive
+          );
+        });
       } else if (this.getCrrentDrawerSome()) {
         document.body.style.overflow = '';
         if ((this.isOpenChange || openTransition) && right) {
@@ -293,6 +294,7 @@ class Drawer extends React.PureComponent {
           switch (placement) {
             case 'right': {
               this.dom.style.transform = `translateX(${right}px)`;
+              this.dom.style.msTransform = `translateX(${right}px)`;
               if (this.maskDom) {
                 this.maskDom.style.left = `-${right}px`;
                 this.maskDom.style.width = `calc(100% + ${right}px)`;
@@ -311,21 +313,21 @@ class Drawer extends React.PureComponent {
           this.timeout = setTimeout(() => {
             this.dom.style.transition = `${trannsformTransition},${widthTransition}`;
             this.dom.style.transform = '';
+            this.dom.style.msTransform = '';
             this.dom.style.width = '';
           });
         }
-        if (document.body.removeEventListener) {
-          domArray.forEach((item, i) => {
-            if (!item) {
-              return;
-            }
-            item.removeEventListener(
-              eventArray[i] || 'touchmove',
-              i ? this.removeMoveHandler : this.removeStartHandler,
-              this.passive
-            );
-          });
-        }
+        domArray.forEach((item, i) => {
+          if (!item) {
+            return;
+          }
+          removeEventListener(
+            item,
+            eventArray[i] || 'touchmove',
+            i ? this.removeMoveHandler : this.removeStartHandler,
+            this.passive
+          );
+        });
       }
     }
 
@@ -393,9 +395,6 @@ class Drawer extends React.PureComponent {
             style={maskStyle}
             ref={c => {
               this.maskDom = c;
-              if (c) {
-                this.maskDom.style.display = !isOpenChange ? 'none' : '';
-              }
             }}
           />
         )}
@@ -403,6 +402,7 @@ class Drawer extends React.PureComponent {
           className={`${prefixCls}-content-wrapper`}
           style={{
             transform,
+            msTransform: transform,
             width: isNumeric(width) ? `${width}px` : width,
             height: isNumeric(height) ? `${height}px` : height,
           }}
@@ -430,6 +430,33 @@ class Drawer extends React.PureComponent {
     this.props.open !== undefined ? this.props.open : this.state.open
   )
 
+  getTouchParentScroll = (root, currentTarget, differX, differY) => {
+    /**
+     * 增加 rect。
+     * 当父级 dom 的 overflow 未开启滚动时，scrollLeft 或 scrollTop 为 0, 而 scrollWidth 增加了，
+     * 父级是跟随子级的 rect, 直到父级设定了滚动.
+     */
+    const rect = currentTarget.getBoundingClientRect();
+    if (!currentTarget) {
+      return false;
+    } else if (
+      (((currentTarget.scrollTop + currentTarget.offsetHeight + currentTarget.offsetTop
+        >= currentTarget.scrollHeight + rect.top &&
+        differY < 0) ||
+        (currentTarget.scrollTop <= 0 && differY > 0)) &&
+        Math.max(Math.abs(differX), Math.abs(differY)) === Math.abs(differY)) ||
+      (((currentTarget.scrollLeft + currentTarget.offsetWidth + currentTarget.offsetLeft
+        >= currentTarget.scrollWidth + rect.left &&
+        differX < 0) ||
+        (currentTarget.scrollLeft <= 0 && differX > 0)) &&
+        Math.max(Math.abs(differX), Math.abs(differY)) === Math.abs(differX))
+    ) {
+      return root === currentTarget ||
+        this.getTouchParentScroll(root, currentTarget.parentNode, differX, differY);
+    }
+    return false;
+  }
+
   removeStartHandler = e => {
     if (e.touches.length > 1) {
       return;
@@ -450,15 +477,8 @@ class Drawer extends React.PureComponent {
     if (
       currentTarget === this.maskDom ||
       currentTarget === this.handlerdom ||
-      (currentTarget === this.contentDom &&
-        ((((currentTarget.scrollTop + currentTarget.offsetHeight >= currentTarget.scrollHeight &&
-          differY < 0) ||
-          (currentTarget.scrollTop <= 0 && differY > 0)) &&
-          Math.max(Math.abs(differX), Math.abs(differY)) === Math.abs(differY)) ||
-          (((currentTarget.scrollLeft + currentTarget.offsetWidth >= currentTarget.scrollWidth &&
-            differX < 0) ||
-            (currentTarget.scrollLeft <= 0 && differX > 0)) &&
-            Math.max(Math.abs(differX), Math.abs(differY)) === Math.abs(differX))))
+      currentTarget === this.contentDom &&
+      this.getTouchParentScroll(currentTarget, e.target, differX, differY)
     ) {
       e.preventDefault();
     }
