@@ -2250,13 +2250,14 @@ samp {
 .drawer > * {
   transition: transform 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86), opacity 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86), box-shaow 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
 }
-.drawer-mask {
+.drawer .drawer-mask {
   background: #000;
   opacity: 0;
-  width: 100%;
-  height: 100%;
+  width: 0;
+  height: 0;
   position: fixed;
   top: 0;
+  transition: opacity 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86), width 0s ease 0.3s, height 0s ease 0.3s;
 }
 .drawer-content-wrapper {
   position: fixed;
@@ -2367,6 +2368,8 @@ samp {
 }
 .drawer.drawer-open .drawer-mask {
   opacity: .3;
+  width: 100%;
+  height: 100%;
   animation: fadeIn 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
   transition: none;
 }
