@@ -295,7 +295,7 @@ class Drawer extends React.PureComponent {
             document.body.style.overflowX = 'hidden';
           }
           this.dom.style.transition = 'none';
-          let widthInEnd = '';
+          let heightTransition;
           switch (placement) {
             case 'right': {
               this.dom.style.transform = `translateX(${right}px)`;
@@ -311,8 +311,9 @@ class Drawer extends React.PureComponent {
             case 'top':
             case 'bottom': {
               this.dom.style.width = `calc(100% + ${right}px)`;
+              this.dom.style.height = '100%';
               this.dom.style.transform = 'translateZ(0)';
-              widthInEnd = '100%';
+              heightTransition = `height 0s ${ease} ${duration}`
               break;
             }
             default:
@@ -320,10 +321,12 @@ class Drawer extends React.PureComponent {
           }
           clearTimeout(this.timeout);
           this.timeout = setTimeout(() => {
-            this.dom.style.transition = `${trannsformTransition},${widthTransition}`;
+            this.dom.style.transition = `${trannsformTransition},${
+              heightTransition ? `${heightTransition},` : ''}${widthTransition}`;
             this.dom.style.transform = '';
             this.dom.style.msTransform = '';
-            this.dom.style.width = widthInEnd;
+            this.dom.style.width = '';
+            this.dom.style.height = '';
           });
         }
         domArray.forEach((item, i) => {

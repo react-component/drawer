@@ -4,8 +4,6 @@
 .@{drawer} {
   position: fixed;
   top: 0;
-  width: 0%;
-  height: 100%;
   z-index: 9999;
   >* {
     transition: transform @duration @ease-in-out-circ, opacity @duration @ease-in-out-circ, box-shaow @duration @ease-in-out-circ;
@@ -71,9 +69,14 @@
   }
   &-left,
   &-right {
+    width: 0%;
+    height: 100%;
     .@{drawer}-content-wrapper,
     .@{drawer}-content {
       height: 100%;
+    }
+    &.@{drawer}-open {
+      width: 100%;
     }
   }
   &-left {
@@ -113,6 +116,8 @@
   }
   &-top,
   &-bottom {
+    width: 100%;
+    height: 0%;
     .@{drawer}-content-wrapper,
     .@{drawer}-content {
       width: 100%;
@@ -122,6 +127,9 @@
         left: 50%;
         margin-left: -20px;
       }
+    }
+    &.@{drawer}-open {
+      height: 100%;
     }
   }
   &-top {
@@ -161,7 +169,6 @@
     }
   }
   &.@{drawer}-open {
-    width: 100%;
     .@{drawer} {
       &-mask {
         opacity: .3;
