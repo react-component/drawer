@@ -4,6 +4,8 @@
 .@{drawer} {
   position: fixed;
   top: 0;
+  width: 0%;
+  height: 100%;
   z-index: 9999;
   >* {
     transition: transform @duration @ease-in-out-circ, opacity @duration @ease-in-out-circ, box-shaow @duration @ease-in-out-circ;
@@ -22,7 +24,7 @@
   &-content-wrapper {
     position: fixed;
     background: #fff;
-    height: 100%;
+    
   }
   &-content {
     overflow: auto;
@@ -159,6 +161,7 @@
     }
   }
   &.@{drawer}-open {
+    width: 100%;
     .@{drawer} {
       &-mask {
         opacity: .3;

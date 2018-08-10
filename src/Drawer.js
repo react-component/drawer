@@ -7,6 +7,7 @@ import getScrollBarSize from 'rc-util/lib/getScrollBarSize';
 import {
   dataToArray,
   transitionEnd,
+  trnasitionStr,
   addEventListener,
   removeEventListener,
   transformArguments,
@@ -244,7 +245,7 @@ class Drawer extends React.PureComponent {
       const eventArray = ['touchstart'];
       const domArray = [document.body, this.maskDom, this.handlerdom, this.contentDom];
       const right = getScrollBarSize(1);
-      const widthTransition = `width ${duration} ${ease}`;
+      let widthTransition = `width ${duration} ${ease}`;
       const trannsformTransition = `transform ${duration} ${ease}`;
       if (open && document.body.style.overflow !== 'hidden') {
         document.body.style.overflow = 'hidden';
@@ -260,6 +261,7 @@ class Drawer extends React.PureComponent {
             case 'top':
             case 'bottom':
               this.dom.style.width = `calc(100% - ${right}px)`;
+              this.dom.style.transform = 'translateZ(0)';
               break;
             default:
               break;
@@ -289,12 +291,17 @@ class Drawer extends React.PureComponent {
         if ((this.isOpenChange || openTransition) && right) {
           document.body.style.position = '';
           document.body.style.width = '';
-          document.body.style.overflowX = 'hidden';
+          if (trnasitionStr) {
+            document.body.style.overflowX = 'hidden';
+          }
           this.dom.style.transition = 'none';
+          let widthInEnd = '';
           switch (placement) {
             case 'right': {
               this.dom.style.transform = `translateX(${right}px)`;
               this.dom.style.msTransform = `translateX(${right}px)`;
+              this.dom.style.width = '100%';
+              widthTransition = `width 0s ${ease} ${duration}`
               if (this.maskDom) {
                 this.maskDom.style.left = `-${right}px`;
                 this.maskDom.style.width = `calc(100% + ${right}px)`;
@@ -304,6 +311,8 @@ class Drawer extends React.PureComponent {
             case 'top':
             case 'bottom': {
               this.dom.style.width = `calc(100% + ${right}px)`;
+              this.dom.style.transform = 'translateZ(0)';
+              widthInEnd = '100%';
               break;
             }
             default:
@@ -314,7 +323,7 @@ class Drawer extends React.PureComponent {
             this.dom.style.transition = `${trannsformTransition},${widthTransition}`;
             this.dom.style.transform = '';
             this.dom.style.msTransform = '';
-            this.dom.style.width = '';
+            this.dom.style.width = widthInEnd;
           });
         }
         domArray.forEach((item, i) => {

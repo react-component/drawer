@@ -10,7 +10,7 @@ const trnasitionEndObject = {
   MozTransition: 'transitionend',
   OTransition: 'oTransitionEnd otransitionend',
 };
-const trnasitionStr = Object.keys(trnasitionEndObject).filter(key => {
+export const trnasitionStr = Object.keys(trnasitionEndObject).filter(key => {
   if (typeof document === 'undefined') {
     return false;
   }
