@@ -2245,6 +2245,8 @@ samp {
 .drawer {
   position: fixed;
   top: 0;
+  width: 0%;
+  height: 100%;
   z-index: 9999;
 }
 .drawer > * {
@@ -2262,7 +2264,6 @@ samp {
 .drawer-content-wrapper {
   position: fixed;
   background: #fff;
-  height: 100%;
 }
 .drawer-content {
   overflow: auto;
@@ -2365,6 +2366,9 @@ samp {
 }
 .drawer-bottom.drawer-open .drawer-content-wrapper {
   box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.15);
+}
+.drawer.drawer-open {
+  width: 100%;
 }
 .drawer.drawer-open .drawer-mask {
   opacity: .3;
