@@ -2245,8 +2245,6 @@ samp {
 .drawer {
   position: fixed;
   top: 0;
-  width: 0%;
-  height: 100%;
   z-index: 9999;
 }
 .drawer > * {
@@ -2311,11 +2309,20 @@ samp {
 .drawer-handle-icon:after {
   top: 5px;
 }
+.drawer-left,
+.drawer-right {
+  width: 0%;
+  height: 100%;
+}
 .drawer-left .drawer-content-wrapper,
 .drawer-right .drawer-content-wrapper,
 .drawer-left .drawer-content,
 .drawer-right .drawer-content {
   height: 100%;
+}
+.drawer-left.drawer-open,
+.drawer-right.drawer-open {
+  width: 100%;
 }
 .drawer-left .drawer-handle {
   right: -40px;
@@ -2336,6 +2343,11 @@ samp {
 .drawer-right.drawer-open .drawer-content-wrapper {
   box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15);
 }
+.drawer-top,
+.drawer-bottom {
+  width: 100%;
+  height: 0%;
+}
 .drawer-top .drawer-content-wrapper,
 .drawer-bottom .drawer-content-wrapper,
 .drawer-top .drawer-content,
@@ -2346,6 +2358,10 @@ samp {
 .drawer-bottom .drawer-handle {
   left: 50%;
   margin-left: -20px;
+}
+.drawer-top.drawer-open,
+.drawer-bottom.drawer-open {
+  height: 100%;
 }
 .drawer-top .drawer-handle {
   top: auto;
@@ -2366,9 +2382,6 @@ samp {
 }
 .drawer-bottom.drawer-open .drawer-content-wrapper {
   box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.15);
-}
-.drawer.drawer-open {
-  width: 100%;
 }
 .drawer.drawer-open .drawer-mask {
   opacity: .3;
