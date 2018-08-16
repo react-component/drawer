@@ -30,11 +30,7 @@ class Drawer extends React.PureComponent {
     onChange: () => { },
     onMaskClick: () => { },
     onHandleClick: () => { },
-    handler: (
-      <div className="drawer-handle">
-        <i className="drawer-handle-icon" />
-      </div>
-    ),
+    handler: true,
     firstEnter: false,
     showMask: true,
     maskStyle: {},
@@ -221,6 +217,11 @@ class Drawer extends React.PureComponent {
       });
     }
   };
+  getHandlerDefault = () => (
+    <div className="drawer-handle">
+      <i className="drawer-handle-icon" />
+    </div>
+  );
 
   setLevelDomTransform = (open, openTransition, placementName, value) => {
     const { placement, levelMove, duration, ease, onChange } = this.props;
@@ -382,10 +383,14 @@ class Drawer extends React.PureComponent {
       const value = (isHorizontal ? width : height) || contentValue;
       this.setLevelDomTransform(open, false, placementName, value);
     }
-    const handlerCildren = handler && React.cloneElement(handler, {
+    let handlerElem = handler
+    if(handlerElem && typeof handlerElem === 'boolean') {
+      handlerElem = this.getHandlerDefault()
+    }
+    const handlerCildren = handlerElem && React.cloneElement(handlerElem, {
       onClick: (e) => {
-        if (handler.props.onClick) {
-          handler.props.onClick();
+        if (handlerElem.props.onClick) {
+          handlerElem.props.onClick();
         }
         this.onIconTouchEnd(e);
       },
