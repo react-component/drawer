@@ -24,7 +24,9 @@ class Demo extends React.Component {
     }, 2000);
   }
   onChange = (bool) => {
-    console.log(bool);
+    this.setState({
+      open:bool
+    })
   }
   onTouchEnd = () => {
     this.setState({

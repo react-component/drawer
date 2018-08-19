@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import KeyCode from 'rc-util/lib/KeyCode';
 import ContainerRender from 'rc-util/lib/ContainerRender';
 import getScrollBarSize from 'rc-util/lib/getScrollBarSize';
 import {
@@ -27,9 +28,6 @@ class Drawer extends React.PureComponent {
     level: 'all',
     duration: '.3s',
     ease: 'cubic-bezier(0.78, 0.14, 0.15, 0.86)',
-    onChange: () => { },
-    onMaskClick: () => { },
-    onHandleClick: () => { },
     handler: (
       <div className="drawer-handle">
         <i className="drawer-handle-icon" />
@@ -40,6 +38,7 @@ class Drawer extends React.PureComponent {
     maskStyle: {},
     wrapperClassName: '',
     className: '',
+    keyboard: true,
   };
 
   constructor(props) {
@@ -49,10 +48,11 @@ class Drawer extends React.PureComponent {
     this.maskDom = null;
     this.handlerdom = null;
     this.mousePos = null;
-    this.firstEnter = props.firstEnter;// 记录首次进入.
+    this.firstEnter = props.firstEnter; // 记录首次进入.
     this.timeout = null;
-    this.drawerId = Number((Date.now() + Math.random()).toString()
-      .replace('.', Math.round(Math.random() * 9))).toString(16);
+    this.drawerId = Number(
+      (Date.now() + Math.random()).toString().replace('.', Math.round(Math.random() * 9))
+    ).toString(16);
     const open = props.open !== undefined ? props.open : !!props.defaultOpen;
     currentDrawer[this.drawerId] = open;
     this.state = {
@@ -106,6 +106,9 @@ class Drawer extends React.PureComponent {
   }
 
   componentDidUpdate() {
+    if (this.state.open) {
+      this.dom.focus();
+    }
     // dom 没渲染时，重走一遍。
     if (!this.firstEnter && this.container) {
       this.forceUpdate();
@@ -133,7 +136,7 @@ class Drawer extends React.PureComponent {
     if (this.renderComponent && !IS_REACT_16) {
       this.renderComponent({
         afterClose: this.removeContainer,
-        onClose() { },
+        onClose() {},
         visible: false,
       });
     }
@@ -145,9 +148,13 @@ class Drawer extends React.PureComponent {
   };
 
   onIconTouchEnd = e => {
-    this.props.onHandleClick(e);
+    const { onHandleClick } = this.props;
+    if (onHandleClick) {
+      onHandleClick(e);
+    }
     this.onTouchEnd(e);
   };
+
   onTouchEnd = (e, close) => {
     if (this.props.open !== undefined) {
       return;
@@ -159,7 +166,25 @@ class Drawer extends React.PureComponent {
     });
   };
 
-  onWrapperTransitionEnd = (e) => {
+  onKeyDown = e => {
+    const { onChange, keyboard } = this.props;
+    const { open } = this.state;
+    if (!open) {
+      return;
+    }
+    if (keyboard && e.keyCode === KeyCode.ESC) {
+      e.stopPropagation();
+      if (onChange) {
+        onChange(false);
+      } else {
+        this.setState({
+          open: false,
+        });
+      }
+    }
+  };
+
+  onWrapperTransitionEnd = e => {
     if (e.target === this.contentWrapper) {
       this.dom.style.transition = '';
       if (!this.state.open && this.getCrrentDrawerSome()) {
@@ -170,7 +195,7 @@ class Drawer extends React.PureComponent {
         }
       }
     }
-  }
+  };
 
   getDefault = props => {
     this.getParentAndLevelDom(props);
@@ -208,8 +233,12 @@ class Drawer extends React.PureComponent {
     if (level === 'all') {
       const children = Array.prototype.slice.call(this.parent.children);
       children.forEach(child => {
-        if (child.nodeName !== 'SCRIPT' && child.nodeName !== 'STYLE'
-          && child.nodeName !== 'LINK' && child !== this.container) {
+        if (
+          child.nodeName !== 'SCRIPT' &&
+          child.nodeName !== 'STYLE' &&
+          child.nodeName !== 'LINK' &&
+          child !== this.container
+        ) {
           this.levelDom.push(child);
         }
       });
@@ -301,7 +330,7 @@ class Drawer extends React.PureComponent {
               this.dom.style.transform = `translateX(${right}px)`;
               this.dom.style.msTransform = `translateX(${right}px)`;
               this.dom.style.width = '100%';
-              widthTransition = `width 0s ${ease} ${duration}`
+              widthTransition = `width 0s ${ease} ${duration}`;
               if (this.maskDom) {
                 this.maskDom.style.left = `-${right}px`;
                 this.maskDom.style.width = `calc(100% + ${right}px)`;
@@ -313,7 +342,7 @@ class Drawer extends React.PureComponent {
               this.dom.style.width = `calc(100% + ${right}px)`;
               this.dom.style.height = '100%';
               this.dom.style.transform = 'translateZ(0)';
-              heightTransition = `height 0s ${ease} ${duration}`
+              heightTransition = `height 0s ${ease} ${duration}`;
               break;
             }
             default:
@@ -372,32 +401,37 @@ class Drawer extends React.PureComponent {
     const placementName = `translate${isHorizontal ? 'X' : 'Y'}`;
     // 百分比与像素动画不同步，第一次打用后全用像素动画。
     // const defaultValue = !this.contentDom || !level ? '100%' : `${value}px`;
-    const placementPos =
-      placement === 'left' || placement === 'top' ? '-100%' : '100%';
+    const placementPos = placement === 'left' || placement === 'top' ? '-100%' : '100%';
     const transform = open ? '' : `${placementName}(${placementPos})`;
     if (isOpenChange === undefined || isOpenChange) {
-      const contentValue = this.contentDom ? this.contentDom.getBoundingClientRect()[
-        isHorizontal ? 'width' : 'height'
-      ] : 0;
+      const contentValue = this.contentDom
+        ? this.contentDom.getBoundingClientRect()[isHorizontal ? 'width' : 'height']
+        : 0;
       const value = (isHorizontal ? width : height) || contentValue;
       this.setLevelDomTransform(open, false, placementName, value);
     }
-    const handlerCildren = handler && React.cloneElement(handler, {
-      onClick: (e) => {
-        if (handler.props.onClick) {
-          handler.props.onClick();
-        }
-        this.onIconTouchEnd(e);
-      },
-      ref: (c) => {
-        this.handlerdom = c;
-      }
-    });
+    const handlerCildren =
+      handler &&
+      React.cloneElement(handler, {
+        onClick: e => {
+          if (handler.props.onClick) {
+            handler.props.onClick();
+          }
+          this.onIconTouchEnd(e);
+        },
+        ref: c => {
+          this.handlerdom = c;
+        },
+      });
     return (
       <div
+        onKeyDown={this.onKeyDown}
         className={wrapperClassname}
+        tabIndex="-1"
         style={style}
-        ref={c => { this.dom = c; }}
+        ref={c => {
+          this.dom = c;
+        }}
         onTransitionEnd={this.onWrapperTransitionEnd}
       >
         {showMask && (
@@ -438,9 +472,7 @@ class Drawer extends React.PureComponent {
     );
   };
 
-  getOpen = () => (
-    this.props.open !== undefined ? this.props.open : this.state.open
-  )
+  getOpen = () => (this.props.open !== undefined ? this.props.open : this.state.open);
 
   getTouchParentScroll = (root, currentTarget, differX, differY) => {
     /**
@@ -452,22 +484,24 @@ class Drawer extends React.PureComponent {
     if (!currentTarget) {
       return false;
     } else if (
-      (((currentTarget.scrollTop + currentTarget.offsetHeight + currentTarget.offsetTop
-        >= currentTarget.scrollHeight + rect.top &&
+      (((currentTarget.scrollTop + currentTarget.offsetHeight + currentTarget.offsetTop >=
+        currentTarget.scrollHeight + rect.top &&
         differY < 0) ||
         (currentTarget.scrollTop <= 0 && differY > 0)) &&
         Math.max(Math.abs(differX), Math.abs(differY)) === Math.abs(differY)) ||
-      (((currentTarget.scrollLeft + currentTarget.offsetWidth + currentTarget.offsetLeft
-        >= currentTarget.scrollWidth + rect.left &&
+      (((currentTarget.scrollLeft + currentTarget.offsetWidth + currentTarget.offsetLeft >=
+        currentTarget.scrollWidth + rect.left &&
         differX < 0) ||
         (currentTarget.scrollLeft <= 0 && differX > 0)) &&
         Math.max(Math.abs(differX), Math.abs(differY)) === Math.abs(differX))
     ) {
-      return root === currentTarget ||
-        this.getTouchParentScroll(root, currentTarget.parentNode, differX, differY);
+      return (
+        root === currentTarget ||
+        this.getTouchParentScroll(root, currentTarget.parentNode, differX, differY)
+      );
     }
     return false;
-  }
+  };
 
   removeStartHandler = e => {
     if (e.touches.length > 1) {
@@ -489,8 +523,8 @@ class Drawer extends React.PureComponent {
     if (
       currentTarget === this.maskDom ||
       currentTarget === this.handlerdom ||
-      currentTarget === this.contentDom &&
-      this.getTouchParentScroll(currentTarget, e.target, differX, differY)
+      (currentTarget === this.contentDom &&
+        this.getTouchParentScroll(currentTarget, e.target, differX, differY))
     ) {
       e.preventDefault();
     }
@@ -530,7 +564,7 @@ class Drawer extends React.PureComponent {
         </div>
       );
     }
-    if (!this.container || !open && !this.firstEnter) {
+    if (!this.container || (!open && !this.firstEnter)) {
       return null;
     }
     // suppport react15
@@ -572,13 +606,19 @@ Drawer.propTypes = {
   levelMove: PropTypes.oneOfType([PropTypes.number, PropTypes.func, PropTypes.array]),
   ease: PropTypes.string,
   duration: PropTypes.string,
-  getContainer: PropTypes.oneOfType([PropTypes.string, PropTypes.func, PropTypes.object, PropTypes.bool]),
+  getContainer: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.func,
+    PropTypes.object,
+    PropTypes.bool,
+  ]),
   handler: PropTypes.any,
   onChange: PropTypes.func,
   onMaskClick: PropTypes.func,
   onHandleClick: PropTypes.func,
   showMask: PropTypes.bool,
   maskStyle: PropTypes.object,
+  keyboard: PropTypes.bool,
 };
 
 export default Drawer;
