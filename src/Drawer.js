@@ -143,7 +143,9 @@ class Drawer extends React.PureComponent {
   }
 
   onMaskTouchEnd = e => {
-    this.props.onMaskClick(e);
+    if (this.props.onMaskClick) {
+      this.props.onMaskClick(e);
+    }
     this.onTouchEnd(e, true);
   };
 
@@ -351,7 +353,8 @@ class Drawer extends React.PureComponent {
           clearTimeout(this.timeout);
           this.timeout = setTimeout(() => {
             this.dom.style.transition = `${trannsformTransition},${
-              heightTransition ? `${heightTransition},` : ''}${widthTransition}`;
+              heightTransition ? `${heightTransition},` : ''
+            }${widthTransition}`;
             this.dom.style.transform = '';
             this.dom.style.msTransform = '';
             this.dom.style.width = '';
