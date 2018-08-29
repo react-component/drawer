@@ -65,7 +65,7 @@ describe('rc-drawer-menu', () => {
       level={[]}
     />);
     const drawer = instance.find('.drawer-content-wrapper').instance();
-    const content = instance.childAt(0).childAt(1).childAt(0);
+    const content = instance.find('.drawer-content');
     content.simulate('touchStart',
       createStartTouchEventObject({ x: 100, y: 0 }));
     content.simulate('touchMove',
