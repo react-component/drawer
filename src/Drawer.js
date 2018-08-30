@@ -244,7 +244,7 @@ class Drawer extends React.PureComponent {
       // 处理 body 滚动
       const eventArray = ['touchstart'];
       const domArray = [document.body, this.maskDom, this.handlerdom, this.contentDom];
-      const right = getScrollBarSize(1);
+      const right = document.body.getBoundingClientRect().height <= window.innerHeight ? 0 : getScrollBarSize(1);
       let widthTransition = `width ${duration} ${ease}`;
       const trannsformTransition = `transform ${duration} ${ease}`;
       if (open && document.body.style.overflow !== 'hidden') {
