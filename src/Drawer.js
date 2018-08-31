@@ -223,7 +223,7 @@ class Drawer extends React.PureComponent {
   };
 
   setLevelDomTransform = (open, openTransition, placementName, value) => {
-    const { placement, levelMove, duration, ease, onChange } = this.props;
+    const { placement, levelMove, duration, ease, onChange, getContainer } = this.props;
     if (!windowIsUndefined) {
       this.levelDom.forEach(dom => {
         if (this.isOpenChange || openTransition) {
@@ -242,107 +242,110 @@ class Drawer extends React.PureComponent {
         }
       });
       // 处理 body 滚动
-      const eventArray = ['touchstart'];
-      const domArray = [document.body, this.maskDom, this.handlerdom, this.contentDom];
-      const right = getScrollBarSize(1);
-      let widthTransition = `width ${duration} ${ease}`;
-      const trannsformTransition = `transform ${duration} ${ease}`;
-      if (open && document.body.style.overflow !== 'hidden') {
-        document.body.style.overflow = 'hidden';
-        if (right) {
-          document.body.style.position = 'relative';
-          document.body.style.width = `calc(100% - ${right}px)`;
-          this.dom.style.transition = 'none';
-          switch (placement) {
-            case 'right':
-              this.dom.style.transform = `translateX(-${right}px)`;
-              this.dom.style.msTransform = `translateX(-${right}px)`;
-              break;
-            case 'top':
-            case 'bottom':
-              this.dom.style.width = `calc(100% - ${right}px)`;
-              this.dom.style.transform = 'translateZ(0)';
-              break;
-            default:
-              break;
+      if (getContainer === 'body') {
+        const eventArray = ['touchstart'];
+        const domArray = [document.body, this.maskDom, this.handlerdom, this.contentDom];
+        const right = document.body.scrollHeight > (window.innerHeight || document.documentElement.clientHeight) &&
+          window.innerWidth > document.body.offsetWidth
+          ? getScrollBarSize(1) : 0;
+        let widthTransition = `width ${duration} ${ease}`;
+        const trannsformTransition = `transform ${duration} ${ease}`;
+        if (open && document.body.style.overflow !== 'hidden') {
+          document.body.style.overflow = 'hidden';
+          if (right) {
+            document.body.style.position = 'relative';
+            document.body.style.width = `calc(100% - ${right}px)`;
+            this.dom.style.transition = 'none';
+            switch (placement) {
+              case 'right':
+                this.dom.style.transform = `translateX(-${right}px)`;
+                this.dom.style.msTransform = `translateX(-${right}px)`;
+                break;
+              case 'top':
+              case 'bottom':
+                this.dom.style.width = `calc(100% - ${right}px)`;
+                this.dom.style.transform = 'translateZ(0)';
+                break;
+              default:
+                break;
+            }
+            clearTimeout(this.timeout);
+            this.timeout = setTimeout(() => {
+              this.dom.style.transition = `${trannsformTransition},${widthTransition}`;
+              this.dom.style.width = '';
+              this.dom.style.transform = '';
+              this.dom.style.msTransform = '';
+            });
           }
-          clearTimeout(this.timeout);
-          this.timeout = setTimeout(() => {
-            this.dom.style.transition = `${trannsformTransition},${widthTransition}`;
-            this.dom.style.width = '';
-            this.dom.style.transform = '';
-            this.dom.style.msTransform = '';
+          // 手机禁滚
+          domArray.forEach((item, i) => {
+            if (!item) {
+              return;
+            }
+            addEventListener(
+              item,
+              eventArray[i] || 'touchmove',
+              i ? this.removeMoveHandler : this.removeStartHandler,
+              this.passive
+            );
           });
-        }
-        // 手机禁滚
-        domArray.forEach((item, i) => {
-          if (!item) {
-            return;
-          }
-          addEventListener(
-            item,
-            eventArray[i] || 'touchmove',
-            i ? this.removeMoveHandler : this.removeStartHandler,
-            this.passive
-          );
-        });
-      } else if (this.getCrrentDrawerSome()) {
-        document.body.style.overflow = '';
-        if ((this.isOpenChange || openTransition) && right) {
-          document.body.style.position = '';
-          document.body.style.width = '';
-          if (trnasitionStr) {
-            document.body.style.overflowX = 'hidden';
-          }
-          this.dom.style.transition = 'none';
-          let heightTransition;
-          switch (placement) {
-            case 'right': {
-              this.dom.style.transform = `translateX(${right}px)`;
-              this.dom.style.msTransform = `translateX(${right}px)`;
-              this.dom.style.width = '100%';
-              widthTransition = `width 0s ${ease} ${duration}`
-              if (this.maskDom) {
-                this.maskDom.style.left = `-${right}px`;
-                this.maskDom.style.width = `calc(100% + ${right}px)`;
+        } else if (this.getCrrentDrawerSome()) {
+          document.body.style.overflow = '';
+          if ((this.isOpenChange || openTransition) && right) {
+            document.body.style.position = '';
+            document.body.style.width = '';
+            if (trnasitionStr) {
+              document.body.style.overflowX = 'hidden';
+            }
+            this.dom.style.transition = 'none';
+            let heightTransition;
+            switch (placement) {
+              case 'right': {
+                this.dom.style.transform = `translateX(${right}px)`;
+                this.dom.style.msTransform = `translateX(${right}px)`;
+                this.dom.style.width = '100%';
+                widthTransition = `width 0s ${ease} ${duration}`
+                if (this.maskDom) {
+                  this.maskDom.style.left = `-${right}px`;
+                  this.maskDom.style.width = `calc(100% + ${right}px)`;
+                }
+                break;
               }
-              break;
+              case 'top':
+              case 'bottom': {
+                this.dom.style.width = `calc(100% + ${right}px)`;
+                this.dom.style.height = '100%';
+                this.dom.style.transform = 'translateZ(0)';
+                heightTransition = `height 0s ${ease} ${duration}`
+                break;
+              }
+              default:
+                break;
             }
-            case 'top':
-            case 'bottom': {
-              this.dom.style.width = `calc(100% + ${right}px)`;
-              this.dom.style.height = '100%';
-              this.dom.style.transform = 'translateZ(0)';
-              heightTransition = `height 0s ${ease} ${duration}`
-              break;
-            }
-            default:
-              break;
+            clearTimeout(this.timeout);
+            this.timeout = setTimeout(() => {
+              this.dom.style.transition = `${trannsformTransition},${
+                heightTransition ? `${heightTransition},` : ''}${widthTransition}`;
+              this.dom.style.transform = '';
+              this.dom.style.msTransform = '';
+              this.dom.style.width = '';
+              this.dom.style.height = '';
+            });
           }
-          clearTimeout(this.timeout);
-          this.timeout = setTimeout(() => {
-            this.dom.style.transition = `${trannsformTransition},${
-              heightTransition ? `${heightTransition},` : ''}${widthTransition}`;
-            this.dom.style.transform = '';
-            this.dom.style.msTransform = '';
-            this.dom.style.width = '';
-            this.dom.style.height = '';
+          domArray.forEach((item, i) => {
+            if (!item) {
+              return;
+            }
+            removeEventListener(
+              item,
+              eventArray[i] || 'touchmove',
+              i ? this.removeMoveHandler : this.removeStartHandler,
+              this.passive
+            );
           });
         }
-        domArray.forEach((item, i) => {
-          if (!item) {
-            return;
-          }
-          removeEventListener(
-            item,
-            eventArray[i] || 'touchmove',
-            i ? this.removeMoveHandler : this.removeStartHandler,
-            this.passive
-          );
-        });
       }
     }
-
     if (onChange && this.isOpenChange && this.firstEnter) {
       onChange(open);
       this.isOpenChange = false;
