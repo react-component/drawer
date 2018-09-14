@@ -456,23 +456,25 @@ class Drawer extends React.PureComponent {
     * 设定了 position 的情况， offsetParent 将不能定位到滚动元素
     * 增加判断 parentNode 的 offsetParent 是否有滚动
     */
-    const parentDom = offsetParentDom === root ? null :
+    const parentDom = offsetParentDom === root || !offsetParentDom ? null :
       offsetParentDom.parentNode.offsetParent;
     const isY = Math.max(Math.abs(differX), Math.abs(differY)) === Math.abs(differY);
     const isX = Math.max(Math.abs(differX), Math.abs(differY)) === Math.abs(differX);
     if (!currentTarget) {
       return false;
     } else if (
-      // 竖向滚动锁定。
-      (((offsetParentDom.scrollTop + offsetParentDom.offsetHeight + offsetParentDom.offsetTop
-        >= offsetParentDom.scrollHeight &&
-        differY < 0) ||
-        (offsetParentDom.scrollTop <= 0 && differY > 0)) && isY) ||
-      // 横向滚动锁定。
-      (((offsetParentDom.scrollLeft + offsetParentDom.offsetWidth + offsetParentDom.offsetLeft
-        >= offsetParentDom.scrollWidth &&
-        differX < 0) ||
-        (offsetParentDom.scrollLeft <= 0 && differX > 0)) && isX) ||
+      (offsetParentDom && (
+        ((// 竖向滚动锁定。
+          offsetParentDom.scrollTop + offsetParentDom.offsetHeight + offsetParentDom.offsetTop
+          >= offsetParentDom.scrollHeight &&
+          differY < 0 ||
+          (offsetParentDom.scrollTop <= 0 && differY > 0)) && isY) ||
+        ((// 横向滚动锁定。
+          offsetParentDom.scrollLeft + offsetParentDom.offsetWidth + offsetParentDom.offsetLeft
+          >= offsetParentDom.scrollWidth &&
+          differX < 0 ||
+          (offsetParentDom.scrollLeft <= 0 && differX > 0)) && isX)
+      )) ||
       parentDom && (// position 的下，判断 parentNode 的 offsetParent 是否有滚动
         parentDom.scrollLeft && !offsetParentDom.scrollLeft ||
         parentDom.scrollTop && !offsetParentDom.scrollTop
