@@ -17,7 +17,11 @@ import {
 const IS_REACT_16 = 'createPortal' in ReactDOM;
 
 const currentDrawer = {};
-const windowIsUndefined = typeof window === 'undefined';
+const windowIsUndefined = !(
+  typeof window !== 'undefined' &&
+  window.document &&
+  window.document.createElement
+);
 
 class Drawer extends React.PureComponent {
   static defaultProps = {
@@ -446,28 +450,34 @@ class Drawer extends React.PureComponent {
   )
 
   getTouchParentScroll = (root, currentTarget, differX, differY) => {
+    const offsetParentDom = currentTarget.offsetParent;
     /**
-     * 增加 rect。
-     * 当父级 dom 的 overflow 未开启滚动时，scrollLeft 或 scrollTop 为 0, 而 scrollWidth 增加了，
-     * 父级是跟随子级的 rect, 直到父级设定了滚动.
-     */
-    const rect = currentTarget.getBoundingClientRect();
+    * 设定了 position 的情况， offsetParent 将不能定位到滚动元素
+    * 增加判断 parentNode 的 offsetParent 是否有滚动
+    */
+    const parentDom = offsetParentDom === root ? null :
+      offsetParentDom.parentNode.offsetParent;
     if (!currentTarget) {
       return false;
     } else if (
-      (((currentTarget.scrollTop + currentTarget.offsetHeight + currentTarget.offsetTop
-        >= currentTarget.scrollHeight + rect.top &&
+      (((offsetParentDom.scrollTop + offsetParentDom.offsetHeight + offsetParentDom.offsetTop
+        >= offsetParentDom.scrollHeight &&
         differY < 0) ||
-        (currentTarget.scrollTop <= 0 && differY > 0)) &&
+        (offsetParentDom.scrollTop <= 0 && differY > 0)) &&
         Math.max(Math.abs(differX), Math.abs(differY)) === Math.abs(differY)) ||
-      (((currentTarget.scrollLeft + currentTarget.offsetWidth + currentTarget.offsetLeft
-        >= currentTarget.scrollWidth + rect.left &&
+      (((offsetParentDom.scrollLeft + offsetParentDom.offsetWidth + offsetParentDom.offsetLeft
+        >= offsetParentDom.scrollWidth &&
         differX < 0) ||
-        (currentTarget.scrollLeft <= 0 && differX > 0)) &&
+        (offsetParentDom.scrollLeft <= 0 && differX > 0)) &&
         Math.max(Math.abs(differX), Math.abs(differY)) === Math.abs(differX))
     ) {
-      return root === currentTarget ||
-        this.getTouchParentScroll(root, currentTarget.parentNode, differX, differY);
+      return root === offsetParentDom || root === currentTarget ||
+        this.getTouchParentScroll(root, offsetParentDom.parentNode, differX, differY);
+    } else if (parentDom && (
+      parentDom.scrollLeft && !offsetParentDom.scrollLeft ||
+      parentDom.scrollTop && !offsetParentDom.scrollTop
+    )) {
+      return this.getTouchParentScroll(root, offsetParentDom.parentNode, differX, differY);
     }
     return false;
   }
