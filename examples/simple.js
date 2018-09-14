@@ -88,12 +88,12 @@ __WEBPACK_IMPORTED_MODULE_2_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
   null,
   __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
     __WEBPACK_IMPORTED_MODULE_0_rc_drawer__["a" /* default */],
-    { width: '20vw' },
+    { width: '250px' },
     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
       __WEBPACK_IMPORTED_MODULE_3_antd__["c" /* Menu */],
       {
-        style: { height: '200%' },
-        defaultSelectedKeys: ['1'],
+        style: { height: '200%', width: 'calc(100% - 1px)' } // 选中的线超出
+        , defaultSelectedKeys: ['1'],
         defaultOpenKeys: ['sub1'],
         mode: 'inline'
       },
