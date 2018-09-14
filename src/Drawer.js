@@ -452,32 +452,41 @@ class Drawer extends React.PureComponent {
   getTouchParentScroll = (root, currentTarget, differX, differY) => {
     const offsetParentDom = currentTarget.offsetParent;
     /**
+    * @param parentDom
     * 设定了 position 的情况， offsetParent 将不能定位到滚动元素
     * 增加判断 parentNode 的 offsetParent 是否有滚动
     */
     const parentDom = offsetParentDom === root ? null :
       offsetParentDom.parentNode.offsetParent;
+    const isY = Math.max(Math.abs(differX), Math.abs(differY)) === Math.abs(differY);
+    const isX = Math.max(Math.abs(differX), Math.abs(differY)) === Math.abs(differX);
     if (!currentTarget) {
       return false;
     } else if (
+      // 竖向滚动锁定。
       (((offsetParentDom.scrollTop + offsetParentDom.offsetHeight + offsetParentDom.offsetTop
         >= offsetParentDom.scrollHeight &&
         differY < 0) ||
-        (offsetParentDom.scrollTop <= 0 && differY > 0)) &&
-        Math.max(Math.abs(differX), Math.abs(differY)) === Math.abs(differY)) ||
+        (offsetParentDom.scrollTop <= 0 && differY > 0)) && isY) ||
+      // 横向滚动锁定。
       (((offsetParentDom.scrollLeft + offsetParentDom.offsetWidth + offsetParentDom.offsetLeft
         >= offsetParentDom.scrollWidth &&
         differX < 0) ||
-        (offsetParentDom.scrollLeft <= 0 && differX > 0)) &&
-        Math.max(Math.abs(differX), Math.abs(differY)) === Math.abs(differX))
+        (offsetParentDom.scrollLeft <= 0 && differX > 0)) && isX) ||
+      parentDom && (// position 的下，判断 parentNode 的 offsetParent 是否有滚动
+        parentDom.scrollLeft && !offsetParentDom.scrollLeft ||
+        parentDom.scrollTop && !offsetParentDom.scrollTop
+      )
     ) {
-      return root === offsetParentDom || root === currentTarget ||
+      return root === offsetParentDom ||
         this.getTouchParentScroll(root, offsetParentDom.parentNode, differX, differY);
-    } else if (parentDom && (
-      parentDom.scrollLeft && !offsetParentDom.scrollLeft ||
-      parentDom.scrollTop && !offsetParentDom.scrollTop
-    )) {
-      return this.getTouchParentScroll(root, offsetParentDom.parentNode, differX, differY);
+    } else if (
+      // 判断小于滚动时，往上扒 dom 节点。
+      currentTarget.offsetWidth === currentTarget.scrollWidth ||
+      currentTarget.offsetHeight === currentTarget.scrollHeight
+    ) {
+      return root === currentTarget ||
+        this.getTouchParentScroll(root, currentTarget.parentNode, differX, differY);
     }
     return false;
   }

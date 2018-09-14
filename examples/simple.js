@@ -17,7 +17,7 @@ ReactDom.render((
   <div >
     <Drawer width="250px">
       <Menu
-        style={{ height: '200%' }}
+        style={{ height: '200%', width: 'calc(100% - 1px)' }}// 选中的线超出
         defaultSelectedKeys={['1']}
         defaultOpenKeys={['sub1']}
         mode="inline"
