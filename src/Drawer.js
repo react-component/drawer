@@ -450,45 +450,44 @@ class Drawer extends React.PureComponent {
   )
 
   getTouchParentScroll = (root, currentTarget, differX, differY) => {
-    const offsetParentDom = currentTarget.offsetParent;
-    /**
-    * @param parentDom
-    * 设定了 position 的情况， offsetParent 将不能定位到滚动元素
-    * 增加判断 parentNode 的 offsetParent 是否有滚动
-    */
-    const parentDom = offsetParentDom === root || !offsetParentDom ? null :
-      offsetParentDom.parentNode.offsetParent;
-    const isY = Math.max(Math.abs(differX), Math.abs(differY)) === Math.abs(differY);
-    const isX = Math.max(Math.abs(differX), Math.abs(differY)) === Math.abs(differX);
     if (!currentTarget) {
       return false;
-    } else if (
-      (offsetParentDom && (
-        ((// 竖向滚动锁定。
-          offsetParentDom.scrollTop + offsetParentDom.offsetHeight + offsetParentDom.offsetTop
-          >= offsetParentDom.scrollHeight &&
-          differY < 0 ||
-          (offsetParentDom.scrollTop <= 0 && differY > 0)) && isY) ||
-        ((// 横向滚动锁定。
-          offsetParentDom.scrollLeft + offsetParentDom.offsetWidth + offsetParentDom.offsetLeft
-          >= offsetParentDom.scrollWidth &&
-          differX < 0 ||
-          (offsetParentDom.scrollLeft <= 0 && differX > 0)) && isX)
-      )) ||
-      parentDom && (// position 的下，判断 parentNode 的 offsetParent 是否有滚动
-        parentDom.scrollLeft && !offsetParentDom.scrollLeft ||
-        parentDom.scrollTop && !offsetParentDom.scrollTop
+    }
+    // root 为 drawer-content 设定了 overflow, 判断为 root 的 parent 时结束滚动；
+    if (currentTarget === root.parentNode) {
+      return true;
+    }
+
+    const isY = Math.max(Math.abs(differX), Math.abs(differY)) === Math.abs(differY);
+    const isX = Math.max(Math.abs(differX), Math.abs(differY)) === Math.abs(differX);
+
+    const scrollY = currentTarget.scrollHeight - currentTarget.clientHeight;
+    const scrollX = currentTarget.scrollWidth - currentTarget.clientWidth;
+    /**
+     * <div style="height: 300px">
+     *   <div style="height: 900px"></div>
+     * </div>
+     * 在没设定 overflow: auto 或 scroll 时，currentTarget 里获取不到 scrollTop 或 scrollLeft,
+     * 预先用 scrollTo 来滚动，如果取出的值跟滚动前取出不同，则 currnetTarget 被设定了 overflow; 否则就是上面这种。
+     */
+    const t = currentTarget.scrollTop;
+    const l = currentTarget.scrollLeft;
+    currentTarget.scrollTo(currentTarget.scrollLeft + 1, currentTarget.scrollTop + 1);
+    const currentT = currentTarget.scrollTop;
+    const currentL = currentTarget.scrollLeft;
+    currentTarget.scrollTo(currentTarget.scrollLeft - 1, currentTarget.scrollTop - 1);
+
+    if (
+      isY && (!scrollY || !(currentT - t) ||
+        (scrollY && (currentTarget.scrollTop >= scrollY && differY < 0 ||
+          currentTarget.scrollTop <= 0 && differY > 0))
+      ) ||
+      isX && (!scrollX || !(currentL - l) ||
+        (scrollX && (currentTarget.scrollLeft >= scrollX && differX < 0 ||
+          currentTarget.scrollLeft <= 0 && differX > 0))
       )
     ) {
-      return root === offsetParentDom ||
-        this.getTouchParentScroll(root, offsetParentDom.parentNode, differX, differY);
-    } else if (
-      // 判断小于滚动时，往上扒 dom 节点。
-      currentTarget.offsetWidth === currentTarget.scrollWidth ||
-      currentTarget.offsetHeight === currentTarget.scrollHeight
-    ) {
-      return root === currentTarget ||
-        this.getTouchParentScroll(root, currentTarget.parentNode, differX, differY);
+      return this.getTouchParentScroll(root, currentTarget.parentNode, differX, differY);
     }
     return false;
   }
@@ -516,6 +515,7 @@ class Drawer extends React.PureComponent {
       currentTarget === this.contentDom &&
       this.getTouchParentScroll(currentTarget, e.target, differX, differY)
     ) {
+      console.log(1212)
       e.preventDefault();
     }
   };
