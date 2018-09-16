@@ -515,7 +515,6 @@ class Drawer extends React.PureComponent {
       currentTarget === this.contentDom &&
       this.getTouchParentScroll(currentTarget, e.target, differX, differY)
     ) {
-      console.log(1212)
       e.preventDefault();
     }
   };
