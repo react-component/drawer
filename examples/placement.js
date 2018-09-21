@@ -38,7 +38,7 @@ class Demo extends React.Component {
     return (
       <div >
         {this.state.childShow && (
-          <Drawer placement={this.state.placement} width={this.state.width} hieght={this.state.height}>
+          <Drawer placement={this.state.placement} width={this.state.width} height={this.state.height}>
             <Menu
               defaultSelectedKeys={['1']}
               defaultOpenKeys={['sub1']}
