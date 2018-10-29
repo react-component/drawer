@@ -52,7 +52,6 @@ class Drawer extends React.PureComponent {
     this.contentDom = null;
     this.maskDom = null;
     this.handlerdom = null;
-    this.mousePos = null;
     this.firstEnter = props.firstEnter;// 记录首次进入.
     this.timeout = null;
     this.drawerId = Number((Date.now() + Math.random()).toString()
