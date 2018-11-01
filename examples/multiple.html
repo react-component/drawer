@@ -304,7 +304,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   }
   getLevelMove = (e) =&gt; {
     <span class="hljs-keyword">const</span> target = e.target;
-    <span class="hljs-keyword">if</span> (target.className === <span class="hljs-string">'drawer1'</span>) {
+    <span class="hljs-keyword">if</span> (target.className.indexOf(<span class="hljs-string">'drawer1'</span>) &gt;=<span class="hljs-number">0</span> ) {
       <span class="hljs-keyword">return</span> [<span class="hljs-number">200</span>, <span class="hljs-number">100</span>];
     }
     <span class="hljs-keyword">return</span> <span class="hljs-number">100</span>;
@@ -325,7 +325,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
           <span class="hljs-attribute">handler</span>=<span class="hljs-value">{false}</span>
           <span class="hljs-attribute">open</span>=<span class="hljs-value">{this.state.open}</span>
           <span class="hljs-attribute">onMaskClick</span>=<span class="hljs-value">{this.onClick}</span>
-          <span class="hljs-attribute">wrapperClassName</span>=<span class="hljs-value">"drawer1"</span>
+          <span class="hljs-attribute">className</span>=<span class="hljs-value">"drawer1"</span>
           <span class="hljs-attribute">placement</span>=<span class="hljs-value">"right"</span>
         &gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
@@ -334,7 +334,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
               <span class="hljs-attribute">handler</span>=<span class="hljs-value">{false}</span>
               <span class="hljs-attribute">open</span>=<span class="hljs-value">{this.state.openChild}</span>
               <span class="hljs-attribute">onMaskClick</span>=<span class="hljs-value">{this.onChildClick}</span>
-              <span class="hljs-attribute">wrapperClassName</span>=<span class="hljs-value">"drawer2"</span>
+              <span class="hljs-attribute">className</span>=<span class="hljs-value">"drawer2"</span>
               <span class="hljs-attribute">level</span>=<span class="hljs-value">".drawer1"</span>
               <span class="hljs-attribute">placement</span>=<span class="hljs-value">"right"</span>
               <span class="hljs-attribute">levelMove</span>=<span class="hljs-value">{100}</span>
