@@ -1,4 +1,4 @@
 // export this package's api
-import Drawer from './Drawer';
+import 抽屉 from './Drawer';
 
-export default Drawer;
+export default 抽屉;

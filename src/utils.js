@@ -1,56 +1,56 @@
-export function dataToArray(vars) {
-  if (Array.isArray(vars)) {
-    return vars;
+export function 数据转换成数组(变量们) {
+  if (Array.isArray(变量们)) {
+    return 变量们;
   }
-  return [vars];
+  return [变量们];
 }
-const trnasitionEndObject = {
+const 过渡动画结束对象 = {
   transition: 'transitionend',
   WebkitTransition: 'webkitTransitionEnd',
   MozTransition: 'transitionend',
   OTransition: 'oTransitionEnd otransitionend',
 };
-export const trnasitionStr = Object.keys(trnasitionEndObject).filter(key => {
+export const 过渡动画字符串 = Object.keys(过渡动画结束对象).filter(键 => {
   if (typeof document === 'undefined') {
     return false;
   }
-  const html = document.getElementsByTagName('html')[0];
-  return key in (html ? html.style : {});
+  const 超文本标记语言 = document.getElementsByTagName('html')[0];
+  return 键 in (超文本标记语言 ? 超文本标记语言.style : {});
 })[0];
-export const transitionEnd = trnasitionEndObject[trnasitionStr];
+export const 过渡动画结束 = 过渡动画结束对象[过渡动画字符串];
 
-export function addEventListener(target, eventType, callback, options) {
-  if (target.addEventListener) {
-    target.addEventListener(eventType, callback, options);
-  } else if (target.attachEvent) {
-    target.attachEvent(`on${eventType}`, callback);
+export function 添加事件监听者(目标, 事件类型, 回调, 配置) {
+  if (目标.addEventListener) {
+    目标.addEventListener(事件类型, 回调, 配置);
+  } else if (目标.attachEvent) {
+    目标.attachEvent(`on${事件类型}`, 回调);
   }
 }
 
-export function removeEventListener(target, eventType, callback, options) {
-  if (target.removeEventListener) {
-    target.removeEventListener(eventType, callback, options);
-  } else if (target.attachEvent) {
-    target.detachEvent(`on${eventType}`, callback);
+export function 移除事件监听者(目标, 事件类型, 回调, 配置) {
+  if (目标.removeEventListener) {
+    目标.removeEventListener(事件类型, 回调, 配置);
+  } else if (目标.attachEvent) {
+    目标.detachEvent(`on${事件类型}`, 回调);
   }
 }
 
-export function transformArguments(arg, cb) {
-  let result;
-  if (typeof arg === 'function') {
-    result = arg(cb);
+export function 变换参数(参数, 回调) {
+  let 结果;
+  if (typeof 参数 === 'function') {
+    结果 = 参数(回调);
   } else {
-    result = arg;
+    结果 = 参数;
   }
-  if (Array.isArray(result)) {
-    if (result.length === 2) {
-      return result;
+  if (Array.isArray(结果)) {
+    if (结果.length === 2) {
+      return 结果;
     }
-    return [result[0], result[1]];
+    return [结果[0], 结果[1]];
   }
-  return [result];
+  return [结果];
 }
 
-export const isNumeric = (value) => {
+export const 是数字吗 = (value) => {
   return !isNaN(parseFloat(value)) && isFinite(value);// eslint-disable-line
 };

@@ -1,29 +1,29 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import PropTypes from 'prop-types';
-import classnames from 'classnames';
-import ContainerRender from 'rc-util/lib/ContainerRender';
-import getScrollBarSize from 'rc-util/lib/getScrollBarSize';
+import 瑞哎科特 from 'react';
+import 瑞哎科特文档对象模型 from 'react-dom';
+import 属性类型检查者 from 'prop-types';
+import 类名合并者 from 'classnames';
+import 容器渲染者 from 'rc-util/lib/ContainerRender';
+import 获取滚动条大小 from 'rc-util/lib/getScrollBarSize';
 import {
-  dataToArray,
-  transitionEnd,
-  trnasitionStr,
-  addEventListener,
-  removeEventListener,
-  transformArguments,
-  isNumeric,
+  数据转换成数组,
+  过渡动画结束,
+  过渡动画字符串,
+  添加事件监听者,
+  移除事件监听者,
+  变换参数,
+  是数字吗,
 } from './utils';
 
-const IS_REACT_16 = 'createPortal' in ReactDOM;
+const 是瑞哎科特16 = 'createPortal' in 瑞哎科特文档对象模型;
 
-const currentDrawer = {};
+const 当前抽屉 = {};
 const windowIsUndefined = !(
   typeof window !== 'undefined' &&
   window.document &&
   window.document.createElement
 );
 
-class Drawer extends React.PureComponent {
+class 抽屉 extends 瑞哎科特.PureComponent {
   static defaultProps = {
     prefixCls: 'drawer',
     placement: 'left',
@@ -48,16 +48,16 @@ class Drawer extends React.PureComponent {
 
   constructor(props) {
     super(props);
-    this.levelDom = [];
-    this.contentDom = null;
-    this.maskDom = null;
+    this.层级文档对象模型 = [];
+    this.内容文档对象模型 = null;
+    this.遮罩文档对象模型 = null;
     this.handlerdom = null;
-    this.firstEnter = props.firstEnter;// 记录首次进入.
-    this.timeout = null;
-    this.drawerId = Number((Date.now() + Math.random()).toString()
+    this.第一次进入 = props.firstEnter;// 记录首次进入.
+    this.定时器编号 = null;
+    this.抽屉编号 = Number((Date.now() + Math.random()).toString()
       .replace('.', Math.round(Math.random() * 9))).toString(16);
     const open = props.open !== undefined ? props.open : !!props.defaultOpen;
-    currentDrawer[this.drawerId] = open;
+    当前抽屉[this.抽屉编号] = open;
     this.state = {
       open,
     };
@@ -78,7 +78,7 @@ class Drawer extends React.PureComponent {
       this.passive = passiveSupported ? { passive: false } : false;
     }
     const open = this.getOpen();
-    if (this.props.handler || open || this.firstEnter) {
+    if (this.props.handler || open || this.第一次进入) {
       this.getDefault(this.props);
       if (open) {
         this.isOpenChange = true;
@@ -101,7 +101,7 @@ class Drawer extends React.PureComponent {
     }
     if (placement !== this.props.placement) {
       // test 的 bug, 有动画过场，删除 dom
-      this.contentDom = null;
+      this.内容文档对象模型 = null;
     }
     if (this.props.level !== nextProps.level) {
       this.getParentAndLevelDom(nextProps);
@@ -110,14 +110,14 @@ class Drawer extends React.PureComponent {
 
   componentDidUpdate() {
     // dom 没渲染时，重走一遍。
-    if (!this.firstEnter && this.container) {
+    if (!this.第一次进入 && this.container) {
       this.forceUpdate();
-      this.firstEnter = true;
+      this.第一次进入 = true;
     }
   }
 
   componentWillUnmount() {
-    delete currentDrawer[this.drawerId];
+    delete 当前抽屉[this.抽屉编号];
     delete this.isOpenChange;
     if (this.container) {
       if (this.state.open) {
@@ -129,20 +129,20 @@ class Drawer extends React.PureComponent {
         this.container.parentNode.removeChild(this.container);
       }
     }
-    this.firstEnter = false;
-    clearTimeout(this.timeout);
+    this.第一次进入 = false;
+    clearTimeout(this.定时器编号);
     // suppport react15
     // 需要 didmount 后也会渲染，直接 unmount 将不会渲染，加上判断.
-    if (this.renderComponent && !IS_REACT_16) {
-      this.renderComponent({
-        afterClose: this.removeContainer,
+    if (this.组件渲染者 && !是瑞哎科特16) {
+      this.组件渲染者({
+        afterClose: this.移除容器,
         onClose() { },
         visible: false,
       });
     }
   }
 
-  onMaskTouchEnd = e => {
+  当触摸遮罩层结束 = e => {
     this.props.onMaskClick(e);
     this.onTouchEnd(e, true);
   };
@@ -162,14 +162,14 @@ class Drawer extends React.PureComponent {
     });
   };
 
-  onWrapperTransitionEnd = (e) => {
+  当包裹动画结束 = (e) => {
     if (e.target === this.contentWrapper) {
-      this.dom.style.transition = '';
+      this.文档对象模型.style.transition = '';
       if (!this.state.open && this.getCrrentDrawerSome()) {
         document.body.style.overflowX = '';
-        if (this.maskDom) {
-          this.maskDom.style.left = '';
-          this.maskDom.style.width = '';
+        if (this.遮罩文档对象模型) {
+          this.遮罩文档对象模型.style.left = '';
+          this.遮罩文档对象模型.style.width = '';
         }
       }
     }
@@ -182,7 +182,7 @@ class Drawer extends React.PureComponent {
     }
   };
 
-  getCrrentDrawerSome = () => !Object.keys(currentDrawer).some(key => currentDrawer[key]);
+  getCrrentDrawerSome = () => !Object.keys(当前抽屉).some(key => 当前抽屉[key]);
 
   getContainer = () => {
     return this.container;
@@ -192,92 +192,92 @@ class Drawer extends React.PureComponent {
       return;
     }
     const { level, getContainer } = props;
-    this.levelDom = [];
+    this.层级文档对象模型 = [];
     if (getContainer) {
       if (typeof getContainer === 'string') {
         const dom = document.querySelectorAll(getContainer)[0];
-        this.parent = dom;
+        this.祖先 = dom;
       }
       if (typeof getContainer === 'function') {
-        this.parent = getContainer();
+        this.祖先 = getContainer();
       }
       if (typeof getContainer === 'object' && getContainer instanceof window.HTMLElement) {
-        this.parent = getContainer;
+        this.祖先 = getContainer;
       }
     }
     if (!getContainer && this.container) {
-      this.parent = this.container.parentNode;
+      this.祖先 = this.container.parentNode;
     }
     if (level === 'all') {
-      const children = Array.prototype.slice.call(this.parent.children);
+      const children = Array.prototype.slice.call(this.祖先.children);
       children.forEach(child => {
         if (child.nodeName !== 'SCRIPT' && child.nodeName !== 'STYLE'
           && child.nodeName !== 'LINK' && child !== this.container) {
-          this.levelDom.push(child);
+          this.层级文档对象模型.push(child);
         }
       });
     } else if (level) {
-      dataToArray(level).forEach(key => {
+      数据转换成数组(level).forEach(key => {
         document.querySelectorAll(key).forEach(item => {
-          this.levelDom.push(item);
+          this.层级文档对象模型.push(item);
         });
       });
     }
   };
 
-  setLevelDomTransform = (open, openTransition, placementName, value) => {
+  setLevelDomTransform = (打开的, openTransition, placementName, value) => {
     const { placement, levelMove, duration, ease, onChange, getContainer } = this.props;
     if (!windowIsUndefined) {
-      this.levelDom.forEach(dom => {
+      this.层级文档对象模型.forEach(文档对象模型 => {
         if (this.isOpenChange || openTransition) {
           /* eslint no-param-reassign: "error" */
-          dom.style.transition = `transform ${duration} ${ease}`;
-          addEventListener(dom, transitionEnd, this.trnasitionEnd);
-          let levelValue = open ? value : 0;
+          文档对象模型.style.transition = `transform ${duration} ${ease}`;
+          添加事件监听者(文档对象模型, 过渡动画结束, this.trnasitionEnd);
+          let levelValue = 打开的 ? value : 0;
           if (levelMove) {
-            const $levelMove = transformArguments(levelMove, { target: dom, open });
-            levelValue = open ? $levelMove[0] : $levelMove[1] || 0;
+            const $levelMove = 变换参数(levelMove, { target: 文档对象模型, 打开的 });
+            levelValue = 打开的 ? $levelMove[0] : $levelMove[1] || 0;
           }
           const $value = typeof levelValue === 'number' ? `${levelValue}px` : levelValue;
           const placementPos = placement === 'left' || placement === 'top' ? $value : `-${$value}`;
-          dom.style.transform = levelValue ? `${placementName}(${placementPos})` : '';
-          dom.style.msTransform = levelValue ? `${placementName}(${placementPos})` : '';
+          文档对象模型.style.transform = levelValue ? `${placementName}(${placementPos})` : '';
+          文档对象模型.style.msTransform = levelValue ? `${placementName}(${placementPos})` : '';
         }
       });
       // 处理 body 滚动
       if (getContainer === 'body') {
         const eventArray = ['touchstart'];
-        const domArray = [document.body, this.maskDom, this.handlerdom, this.contentDom];
+        const domArray = [document.body, this.遮罩文档对象模型, this.handlerdom, this.内容文档对象模型];
         const right = document.body.scrollHeight > (window.innerHeight || document.documentElement.clientHeight) &&
           window.innerWidth > document.body.offsetWidth
-          ? getScrollBarSize(1) : 0;
+          ? 获取滚动条大小(1) : 0;
         let widthTransition = `width ${duration} ${ease}`;
         const trannsformTransition = `transform ${duration} ${ease}`;
-        if (open && document.body.style.overflow !== 'hidden') {
+        if (打开的 && document.body.style.overflow !== 'hidden') {
           document.body.style.overflow = 'hidden';
           if (right) {
             document.body.style.position = 'relative';
             document.body.style.width = `calc(100% - ${right}px)`;
-            this.dom.style.transition = 'none';
+            this.文档对象模型.style.transition = 'none';
             switch (placement) {
               case 'right':
-                this.dom.style.transform = `translateX(-${right}px)`;
-                this.dom.style.msTransform = `translateX(-${right}px)`;
+                this.文档对象模型.style.transform = `translateX(-${right}px)`;
+                this.文档对象模型.style.msTransform = `translateX(-${right}px)`;
                 break;
               case 'top':
               case 'bottom':
-                this.dom.style.width = `calc(100% - ${right}px)`;
-                this.dom.style.transform = 'translateZ(0)';
+                this.文档对象模型.style.width = `calc(100% - ${right}px)`;
+                this.文档对象模型.style.transform = 'translateZ(0)';
                 break;
               default:
                 break;
             }
-            clearTimeout(this.timeout);
-            this.timeout = setTimeout(() => {
-              this.dom.style.transition = `${trannsformTransition},${widthTransition}`;
-              this.dom.style.width = '';
-              this.dom.style.transform = '';
-              this.dom.style.msTransform = '';
+            clearTimeout(this.定时器编号);
+            this.定时器编号 = setTimeout(() => {
+              this.文档对象模型.style.transition = `${trannsformTransition},${widthTransition}`;
+              this.文档对象模型.style.width = '';
+              this.文档对象模型.style.transform = '';
+              this.文档对象模型.style.msTransform = '';
             });
           }
           // 手机禁滚
@@ -285,7 +285,7 @@ class Drawer extends React.PureComponent {
             if (!item) {
               return;
             }
-            addEventListener(
+            添加事件监听者(
               item,
               eventArray[i] || 'touchmove',
               i ? this.removeMoveHandler : this.removeStartHandler,
@@ -297,49 +297,49 @@ class Drawer extends React.PureComponent {
           if ((this.isOpenChange || openTransition) && right) {
             document.body.style.position = '';
             document.body.style.width = '';
-            if (trnasitionStr) {
+            if (过渡动画字符串) {
               document.body.style.overflowX = 'hidden';
             }
-            this.dom.style.transition = 'none';
+            this.文档对象模型.style.transition = 'none';
             let heightTransition;
             switch (placement) {
               case 'right': {
-                this.dom.style.transform = `translateX(${right}px)`;
-                this.dom.style.msTransform = `translateX(${right}px)`;
-                this.dom.style.width = '100%';
+                this.文档对象模型.style.transform = `translateX(${right}px)`;
+                this.文档对象模型.style.msTransform = `translateX(${right}px)`;
+                this.文档对象模型.style.width = '100%';
                 widthTransition = `width 0s ${ease} ${duration}`
-                if (this.maskDom) {
-                  this.maskDom.style.left = `-${right}px`;
-                  this.maskDom.style.width = `calc(100% + ${right}px)`;
+                if (this.遮罩文档对象模型) {
+                  this.遮罩文档对象模型.style.left = `-${right}px`;
+                  this.遮罩文档对象模型.style.width = `calc(100% + ${right}px)`;
                 }
                 break;
               }
               case 'top':
               case 'bottom': {
-                this.dom.style.width = `calc(100% + ${right}px)`;
-                this.dom.style.height = '100%';
-                this.dom.style.transform = 'translateZ(0)';
+                this.文档对象模型.style.width = `calc(100% + ${right}px)`;
+                this.文档对象模型.style.height = '100%';
+                this.文档对象模型.style.transform = 'translateZ(0)';
                 heightTransition = `height 0s ${ease} ${duration}`
                 break;
               }
               default:
                 break;
             }
-            clearTimeout(this.timeout);
-            this.timeout = setTimeout(() => {
-              this.dom.style.transition = `${trannsformTransition},${
+            clearTimeout(this.定时器编号);
+            this.定时器编号 = setTimeout(() => {
+              this.文档对象模型.style.transition = `${trannsformTransition},${
                 heightTransition ? `${heightTransition},` : ''}${widthTransition}`;
-              this.dom.style.transform = '';
-              this.dom.style.msTransform = '';
-              this.dom.style.width = '';
-              this.dom.style.height = '';
+              this.文档对象模型.style.transform = '';
+              this.文档对象模型.style.msTransform = '';
+              this.文档对象模型.style.width = '';
+              this.文档对象模型.style.height = '';
             });
           }
           domArray.forEach((item, i) => {
             if (!item) {
               return;
             }
-            removeEventListener(
+            移除事件监听者(
               item,
               eventArray[i] || 'touchmove',
               i ? this.removeMoveHandler : this.removeStartHandler,
@@ -349,8 +349,8 @@ class Drawer extends React.PureComponent {
         }
       }
     }
-    if (onChange && this.isOpenChange && this.firstEnter) {
-      onChange(open);
+    if (onChange && this.isOpenChange && this.第一次进入) {
+      onChange(打开的);
       this.isOpenChange = false;
     }
   };
@@ -368,7 +368,7 @@ class Drawer extends React.PureComponent {
       width,
       height,
     } = this.props;
-    const wrapperClassname = classnames(prefixCls, {
+    const wrapperClassname = 类名合并者(prefixCls, {
       [`${prefixCls}-${placement}`]: true,
       [`${prefixCls}-open`]: open,
       [className]: !!className,
@@ -382,13 +382,13 @@ class Drawer extends React.PureComponent {
       placement === 'left' || placement === 'top' ? '-100%' : '100%';
     const transform = open ? '' : `${placementName}(${placementPos})`;
     if (isOpenChange === undefined || isOpenChange) {
-      const contentValue = this.contentDom ? this.contentDom.getBoundingClientRect()[
+      const contentValue = this.内容文档对象模型 ? this.内容文档对象模型.getBoundingClientRect()[
         isHorizontal ? 'width' : 'height'
       ] : 0;
       const value = (isHorizontal ? width : height) || contentValue;
       this.setLevelDomTransform(open, false, placementName, value);
     }
-    const handlerCildren = handler && React.cloneElement(handler, {
+    const handlerCildren = handler && 瑞哎科特.cloneElement(handler, {
       onClick: (e) => {
         if (handler.props.onClick) {
           handler.props.onClick();
@@ -403,16 +403,16 @@ class Drawer extends React.PureComponent {
       <div
         className={wrapperClassname}
         style={style}
-        ref={c => { this.dom = c; }}
-        onTransitionEnd={this.onWrapperTransitionEnd}
+        ref={被引用的文档对象模型 => { this.文档对象模型 = 被引用的文档对象模型; }}
+        onTransitionEnd={this.当包裹动画结束}
       >
         {showMask && (
           <div
             className={`${prefixCls}-mask`}
-            onClick={this.onMaskTouchEnd}
+            onClick={this.当触摸遮罩层结束}
             style={maskStyle}
-            ref={c => {
-              this.maskDom = c;
+            ref={被引用的文档对象模型 => {
+              this.遮罩文档对象模型 = 被引用的文档对象模型;
             }}
           />
         )}
@@ -421,8 +421,8 @@ class Drawer extends React.PureComponent {
           style={{
             transform,
             msTransform: transform,
-            width: isNumeric(width) ? `${width}px` : width,
-            height: isNumeric(height) ? `${height}px` : height,
+            width: 是数字吗(width) ? `${width}px` : width,
+            height: 是数字吗(height) ? `${height}px` : height,
           }}
           ref={c => {
             this.contentWrapper = c;
@@ -431,7 +431,7 @@ class Drawer extends React.PureComponent {
           <div
             className={`${prefixCls}-content`}
             ref={c => {
-              this.contentDom = c;
+              this.内容文档对象模型 = c;
             }}
             onTouchStart={open ? this.removeStartHandler : null} // 跑用例用
             onTouchMove={open ? this.removeMoveHandler : null} // 跑用例用
@@ -504,25 +504,25 @@ class Drawer extends React.PureComponent {
     };
   };
 
-  removeMoveHandler = e => {
-    if (e.changedTouches.length > 1) {
+  removeMoveHandler = 事件 => {
+    if (事件.changedTouches.length > 1) {
       return;
     }
-    const currentTarget = e.currentTarget;
-    const differX = e.changedTouches[0].clientX - this.startPos.x;
-    const differY = e.changedTouches[0].clientY - this.startPos.y;
+    const 当前目标 = 事件.currentTarget;
+    const differX = 事件.changedTouches[0].clientX - this.startPos.x;
+    const differY = 事件.changedTouches[0].clientY - this.startPos.y;
     if (
-      currentTarget === this.maskDom ||
-      currentTarget === this.handlerdom ||
-      currentTarget === this.contentDom &&
-      this.getTouchParentScroll(currentTarget, e.target, differX, differY)
+      当前目标 === this.遮罩文档对象模型 ||
+      当前目标 === this.handlerdom ||
+      当前目标 === this.内容文档对象模型 &&
+      this.getTouchParentScroll(当前目标, 事件.target, differX, differY)
     ) {
-      e.preventDefault();
+      事件.preventDefault();
     }
   };
 
   trnasitionEnd = e => {
-    removeEventListener(e.target, transitionEnd, this.trnasitionEnd);
+    移除事件监听者(e.target, 过渡动画结束, this.trnasitionEnd);
     e.target.style.transition = '';
   };
 
@@ -531,7 +531,7 @@ class Drawer extends React.PureComponent {
       return null;
     }
     const container = document.createElement('div');
-    this.parent.appendChild(container);
+    this.祖先.appendChild(container);
     if (this.props.wrapperClassName) {
       container.className = this.props.wrapperClassName;
     }
@@ -540,9 +540,9 @@ class Drawer extends React.PureComponent {
 
   render() {
     const { getContainer, wrapperClassName } = this.props;
-    const open = this.getOpen();
-    currentDrawer[this.drawerId] = open ? this.container : open;
-    const children = this.getChildToRender(this.firstEnter ? open : false);
+    const 打开的 = this.getOpen();
+    当前抽屉[this.抽屉编号] = 打开的 ? this.container : 打开的;
+    const children = this.getChildToRender(this.第一次进入 ? 打开的 : false);
     if (!getContainer) {
       return (
         <div
@@ -555,13 +555,13 @@ class Drawer extends React.PureComponent {
         </div>
       );
     }
-    if (!this.container || !open && !this.firstEnter) {
+    if (!this.container || !打开的 && !this.第一次进入) {
       return null;
     }
     // suppport react15
-    if (!IS_REACT_16) {
+    if (!是瑞哎科特16) {
       return (
-        <ContainerRender
+        <容器渲染者
           parent={this}
           visible
           autoMount
@@ -569,41 +569,41 @@ class Drawer extends React.PureComponent {
           getComponent={() => children}
           getContainer={this.getContainer}
         >
-          {({ renderComponent, removeContainer }) => {
-            this.renderComponent = renderComponent;
-            this.removeContainer = removeContainer;
+          {({ 组件渲染者, 移除容器 }) => {
+            this.组件渲染者 = 组件渲染者;
+            this.移除容器 = 移除容器;
             return null;
           }}
-        </ContainerRender>
+        </容器渲染者>
       );
     }
-    return ReactDOM.createPortal(children, this.container);
+    return 瑞哎科特文档对象模型.createPortal(children, this.container);
   }
 }
 
-Drawer.propTypes = {
-  wrapperClassName: PropTypes.string,
-  className: PropTypes.string,
-  children: PropTypes.node,
-  style: PropTypes.object,
-  width: PropTypes.any,
-  height: PropTypes.any,
-  defaultOpen: PropTypes.bool,
-  firstEnter: PropTypes.bool,
-  open: PropTypes.bool,
-  prefixCls: PropTypes.string,
-  placement: PropTypes.string,
-  level: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
-  levelMove: PropTypes.oneOfType([PropTypes.number, PropTypes.func, PropTypes.array]),
-  ease: PropTypes.string,
-  duration: PropTypes.string,
-  getContainer: PropTypes.oneOfType([PropTypes.string, PropTypes.func, PropTypes.object, PropTypes.bool]),
-  handler: PropTypes.any,
-  onChange: PropTypes.func,
-  onMaskClick: PropTypes.func,
-  onHandleClick: PropTypes.func,
-  showMask: PropTypes.bool,
-  maskStyle: PropTypes.object,
+抽屉.propTypes = {
+  wrapperClassName: 属性类型检查者.string,
+  className: 属性类型检查者.string,
+  children: 属性类型检查者.node,
+  style: 属性类型检查者.object,
+  width: 属性类型检查者.any,
+  height: 属性类型检查者.any,
+  defaultOpen: 属性类型检查者.bool,
+  firstEnter: 属性类型检查者.bool,
+  open: 属性类型检查者.bool,
+  prefixCls: 属性类型检查者.string,
+  placement: 属性类型检查者.string,
+  level: 属性类型检查者.oneOfType([属性类型检查者.string, 属性类型检查者.array]),
+  levelMove: 属性类型检查者.oneOfType([属性类型检查者.number, 属性类型检查者.func, 属性类型检查者.array]),
+  ease: 属性类型检查者.string,
+  duration: 属性类型检查者.string,
+  getContainer: 属性类型检查者.oneOfType([属性类型检查者.string, 属性类型检查者.func, 属性类型检查者.object, 属性类型检查者.bool]),
+  handler: 属性类型检查者.any,
+  onChange: 属性类型检查者.func,
+  onMaskClick: 属性类型检查者.func,
+  onHandleClick: 属性类型检查者.func,
+  showMask: 属性类型检查者.bool,
+  maskStyle: 属性类型检查者.object,
 };
 
-export default Drawer;
+export default 抽屉;
