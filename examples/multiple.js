@@ -33,7 +33,7 @@ class Demo extends React.Component {
   }
   getLevelMove = (e) => {
     const target = e.target;
-    if (target.className === 'drawer1') {
+    if (target.className.indexOf('drawer1') >=0 ) {
       return [200, 100];
     }
     return 100;
@@ -54,7 +54,7 @@ class Demo extends React.Component {
           handler={false}
           open={this.state.open}
           onMaskClick={this.onClick}
-          wrapperClassName="drawer1"
+          className="drawer1"
           placement="right"
         >
           <div>
@@ -63,7 +63,7 @@ class Demo extends React.Component {
               handler={false}
               open={this.state.openChild}
               onMaskClick={this.onChildClick}
-              wrapperClassName="drawer2"
+              className="drawer2"
               level=".drawer1"
               placement="right"
               levelMove={100}

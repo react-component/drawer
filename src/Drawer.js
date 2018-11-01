@@ -471,11 +471,14 @@ class Drawer extends React.PureComponent {
      */
     const t = currentTarget.scrollTop;
     const l = currentTarget.scrollLeft;
-    currentTarget.scrollTo(currentTarget.scrollLeft + 1, currentTarget.scrollTop + 1);
+    if (currentTarget.scrollTo) {
+      currentTarget.scrollTo(currentTarget.scrollLeft + 1, currentTarget.scrollTop + 1);
+    }
     const currentT = currentTarget.scrollTop;
     const currentL = currentTarget.scrollLeft;
-    currentTarget.scrollTo(currentTarget.scrollLeft - 1, currentTarget.scrollTop - 1);
-
+    if (currentTarget.scrollTo) {
+      currentTarget.scrollTo(currentTarget.scrollLeft - 1, currentTarget.scrollTop - 1);
+    }
     if (
       isY && (!scrollY || !(currentT - t) ||
         (scrollY && (currentTarget.scrollTop >= scrollY && differY < 0 ||
