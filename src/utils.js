@@ -4,20 +4,20 @@ export function dataToArray(vars) {
   }
   return [vars];
 }
-const trnasitionEndObject = {
+const transitionEndObject = {
   transition: 'transitionend',
   WebkitTransition: 'webkitTransitionEnd',
   MozTransition: 'transitionend',
   OTransition: 'oTransitionEnd otransitionend',
 };
-export const trnasitionStr = Object.keys(trnasitionEndObject).filter(key => {
+export const transitionStr = Object.keys(transitionEndObject).filter(key => {
   if (typeof document === 'undefined') {
     return false;
   }
   const html = document.getElementsByTagName('html')[0];
   return key in (html ? html.style : {});
 })[0];
-export const transitionEnd = trnasitionEndObject[trnasitionStr];
+export const transitionEnd = transitionEndObject[transitionStr];
 
 export function addEventListener(target, eventType, callback, options) {
   if (target.addEventListener) {
