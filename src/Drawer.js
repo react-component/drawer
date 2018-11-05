@@ -7,7 +7,7 @@ import getScrollBarSize from 'rc-util/lib/getScrollBarSize';
 import {
   dataToArray,
   transitionEnd,
-  trnasitionStr,
+  transitionStr,
   addEventListener,
   removeEventListener,
   transformArguments,
@@ -165,7 +165,7 @@ class Drawer extends React.PureComponent {
   onWrapperTransitionEnd = (e) => {
     if (e.target === this.contentWrapper) {
       this.dom.style.transition = '';
-      if (!this.state.open && this.getCrrentDrawerSome()) {
+      if (!this.state.open && this.getCurrentDrawerSome()) {
         document.body.style.overflowX = '';
         if (this.maskDom) {
           this.maskDom.style.left = '';
@@ -182,7 +182,7 @@ class Drawer extends React.PureComponent {
     }
   };
 
-  getCrrentDrawerSome = () => !Object.keys(currentDrawer).some(key => currentDrawer[key]);
+  getCurrentDrawerSome = () => !Object.keys(currentDrawer).some(key => currentDrawer[key]);
 
   getContainer = () => {
     return this.container;
@@ -232,7 +232,7 @@ class Drawer extends React.PureComponent {
         if (this.isOpenChange || openTransition) {
           /* eslint no-param-reassign: "error" */
           dom.style.transition = `transform ${duration} ${ease}`;
-          addEventListener(dom, transitionEnd, this.trnasitionEnd);
+          addEventListener(dom, transitionEnd, this.transitionEnd);
           let levelValue = open ? value : 0;
           if (levelMove) {
             const $levelMove = transformArguments(levelMove, { target: dom, open });
@@ -292,12 +292,12 @@ class Drawer extends React.PureComponent {
               this.passive
             );
           });
-        } else if (this.getCrrentDrawerSome()) {
+        } else if (this.getCurrentDrawerSome()) {
           document.body.style.overflow = '';
           if ((this.isOpenChange || openTransition) && right) {
             document.body.style.position = '';
             document.body.style.width = '';
-            if (trnasitionStr) {
+            if (transitionStr) {
               document.body.style.overflowX = 'hidden';
             }
             this.dom.style.transition = 'none';
@@ -388,7 +388,7 @@ class Drawer extends React.PureComponent {
       const value = (isHorizontal ? width : height) || contentValue;
       this.setLevelDomTransform(open, false, placementName, value);
     }
-    const handlerCildren = handler && React.cloneElement(handler, {
+    const handlerChildren = handler && React.cloneElement(handler, {
       onClick: (e) => {
         if (handler.props.onClick) {
           handler.props.onClick();
@@ -438,7 +438,7 @@ class Drawer extends React.PureComponent {
           >
             {children}
           </div>
-          {handlerCildren}
+          {handlerChildren}
         </div>
       </div>
     );
@@ -521,8 +521,8 @@ class Drawer extends React.PureComponent {
     }
   };
 
-  trnasitionEnd = e => {
-    removeEventListener(e.target, transitionEnd, this.trnasitionEnd);
+  transitionEnd = e => {
+    removeEventListener(e.target, transitionEnd, this.transitionEnd);
     e.target.style.transition = '';
   };
 
