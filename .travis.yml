@@ -7,7 +7,7 @@ notifications:
   - 155259966@qq.com
 
 node_js:
-- 6.9.1
+- 8.1.0
 
 before_install:
 - |
