@@ -52,6 +52,8 @@
     "karma": "rc-test run karma",
     "saucelabs": "rc-test run saucelabs",
     "test": "jest",
+    "postinstall": "rc-tools run init-eslint",
+    "pretter":"rc-tools run prettier",
     "coverage": "jest --coverage"
   },
   "devDependencies": {

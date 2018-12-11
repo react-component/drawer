@@ -18,7 +18,9 @@ Div.propTypes = {
 function DrawerComp(props) {
   return (
     <div className="react-wrapper">
-      <div id="a" style={{ position: 'absolute', top: 0, left: 0 }}>test1</div>
+      <div id="a" style={{ position: 'absolute', top: 0, left: 0 }}>
+        test1
+      </div>
       <Drawer getContainer={null} open={props.open} wrapperClassName="drawer-wrapper" />
     </div>
   );
@@ -39,7 +41,7 @@ function createMoveTouchEventObject({ x = 0, y = 0 }) {
 describe('rc-drawer-menu', () => {
   let instance;
   it('single drawer', () => {
-    instance = mount(<Drawer onIconClick={() => { }} />);
+    instance = mount(<Drawer onIconClick={() => {}} />);
     const drawer = instance.find('.drawer');
     const drawerContent = instance.find('.drawer-content-wrapper');
     expect(!!drawer).toBe(true);
@@ -49,53 +51,41 @@ describe('rc-drawer-menu', () => {
   });
 
   it('icon child is element', () => {
-    instance = mount(<Drawer
-      handler={<div className="a"><i >a</i></div>}
-      level={null}
-    />);
+    instance = mount(
+      <Drawer
+        handler={
+          <div className="a">
+            <i>a</i>
+          </div>
+        }
+        level={null}
+      />,
+    );
     const icon = instance.find('.a');
     console.log('icon.length:', icon.length);
     expect(icon.length).toBe(1);
   });
 
   it('default open drawer', () => {
-    instance = mount(<Drawer
-      handler={<i className="a">a</i>}
-      defaultOpen
-      level={[]}
-    />);
+    instance = mount(<Drawer handler={<i className="a">a</i>} defaultOpen level={[]} />);
     const drawer = instance.find('.drawer-content-wrapper').instance();
     const content = instance.find('.drawer-content');
-    content.simulate('touchStart',
-      createStartTouchEventObject({ x: 100, y: 0 }));
-    content.simulate('touchMove',
-      createMoveTouchEventObject({ x: 150, y: 10 }));
-    content.simulate('touchEnd',
-      createMoveTouchEventObject({ x: 200, y: 0 }));
-    content.simulate('touchStart',
-      createStartTouchEventObject({ x: 0, y: 0 }));
-    content.simulate('touchMove',
-      createMoveTouchEventObject({ x: 0, y: 10 }));
-    content.simulate('touchEnd',
-      createMoveTouchEventObject({ x: 0, y: 10 }));
+    content.simulate('touchStart', createStartTouchEventObject({ x: 100, y: 0 }));
+    content.simulate('touchMove', createMoveTouchEventObject({ x: 150, y: 10 }));
+    content.simulate('touchEnd', createMoveTouchEventObject({ x: 200, y: 0 }));
+    content.simulate('touchStart', createStartTouchEventObject({ x: 0, y: 0 }));
+    content.simulate('touchMove', createMoveTouchEventObject({ x: 0, y: 10 }));
+    content.simulate('touchEnd', createMoveTouchEventObject({ x: 0, y: 10 }));
     console.log('transform is empty:', drawer.style.transform);
     expect(drawer.style.transform).toEqual('');
   });
 
   it('handler is null，open=true', () => {
-    const instance = mount(<Drawer
-      handler={false}
-      open
-      level={null}
-    />);
+    const instance = mount(<Drawer handler={false} open level={null} />);
     expect(instance.render()).toMatchSnapshot();
   });
   it('handler is null，open=false', () => {
-    const instance = mount(<Drawer
-      handler={false}
-      open={false}
-      level={null}
-    />);
+    const instance = mount(<Drawer handler={false} open={false} level={null} />);
     expect(instance.render()).toMatchSnapshot();
   });
   it('switch open drawer', () => {
@@ -119,15 +109,14 @@ describe('rc-drawer-menu', () => {
     jest.useRealTimers();
   });
   it('getContainer is null', () => {
-    instance = mount(<div className="react-wrapper">
-      <div id="a" className="a" style={{ position: 'absolute', top: 0, left: 0 }}>test1</div>
-      <Drawer
-        getContainer={null}
-        defaultOpen
-        level="#a"
-        wrapperClassName="drawer-wrapper"
-      />
-    </div>);
+    instance = mount(
+      <div className="react-wrapper">
+        <div id="a" className="a" style={{ position: 'absolute', top: 0, left: 0 }}>
+          test1
+        </div>
+        <Drawer getContainer={null} defaultOpen level="#a" wrapperClassName="drawer-wrapper" />
+      </div>,
+    );
     const drawer = instance.find('.drawer').instance();
     const a = instance.find('#a').instance();
     console.log('a transform:', a.style.transform);
@@ -181,7 +170,7 @@ describe('rc-drawer-menu', () => {
     });
     instance.setProps({
       open: false,
-      levelMove: () => (200),
+      levelMove: () => 200,
     });
     instance.setProps({
       open: true,
@@ -190,12 +179,12 @@ describe('rc-drawer-menu', () => {
   });
   it('handler is null, render is null', () => {
     instance = mount(<Drawer handler={false} levelMove={200} />);
-    console.log(instance.children())
+    console.log(instance.children());
     expect(instance.children().length).toBe(0);
     instance.setProps({
       open: true,
     });
-    console.log(instance.children())
+    console.log(instance.children());
     expect(instance.children().length).toBe(1);
   });
 });

@@ -15,7 +15,7 @@ class DrawerTesterRef extends React.Component {
   render() {
     return (
       <div>
-        <div ref={this.saveContainer} className="main"/>
+        <div ref={this.saveContainer} className="main" />
         <Drawer {...this.props} open getContainer={this.getContainer}>
           <p className="text">Here is content of Drawer</p>
         </Drawer>
@@ -41,7 +41,7 @@ class DrawerTesterDom extends React.Component {
   render() {
     return (
       <div>
-        <div ref={this.saveContainer} className="main"/>
+        <div ref={this.saveContainer} className="main" />
         {this.state.visible ? (
           <Drawer {...this.props} open getContainer={this.getContainer()}>
             <p className="text">Here is content of Drawer</p>
@@ -67,7 +67,7 @@ class DrawerTesterString extends React.Component {
   render() {
     return (
       <div>
-        <div id="test"/>
+        <div id="test" />
         {this.state.visible ? (
           <Drawer {...this.props} open getContainer={this.getContainer()}>
             <p className="text">Here is content of Drawer</p>
@@ -93,7 +93,7 @@ class DrawerTesterBoolean extends React.Component {
   render() {
     return (
       <div>
-        <div id="test"/>
+        <div id="test" />
         {this.state.visible ? (
           <Drawer {...this.props} open getContainer={false}>
             <p className="text">Here is content of Drawer</p>

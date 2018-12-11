@@ -31,9 +31,9 @@ class Drawer extends React.PureComponent {
     level: 'all',
     duration: '.3s',
     ease: 'cubic-bezier(0.78, 0.14, 0.15, 0.86)',
-    onChange: () => { },
-    onMaskClick: () => { },
-    onHandleClick: () => { },
+    onChange: () => {},
+    onMaskClick: () => {},
+    onHandleClick: () => {},
     handler: (
       <div className="drawer-handle">
         <i className="drawer-handle-icon" />
@@ -52,10 +52,11 @@ class Drawer extends React.PureComponent {
     this.contentDom = null;
     this.maskDom = null;
     this.handlerdom = null;
-    this.firstEnter = props.firstEnter;// 记录首次进入.
+    this.firstEnter = props.firstEnter; // 记录首次进入.
     this.timeout = null;
-    this.drawerId = Number((Date.now() + Math.random()).toString()
-      .replace('.', Math.round(Math.random() * 9))).toString(16);
+    this.drawerId = Number(
+      (Date.now() + Math.random()).toString().replace('.', Math.round(Math.random() * 9)),
+    ).toString(16);
     const open = props.open !== undefined ? props.open : !!props.defaultOpen;
     currentDrawer[this.drawerId] = open;
     this.state = {
@@ -73,7 +74,7 @@ class Drawer extends React.PureComponent {
             passiveSupported = true;
             return null;
           },
-        })
+        }),
       );
       this.passive = passiveSupported ? { passive: false } : false;
     }
@@ -136,7 +137,7 @@ class Drawer extends React.PureComponent {
     if (this.renderComponent && !IS_REACT_16) {
       this.renderComponent({
         afterClose: this.removeContainer,
-        onClose() { },
+        onClose() {},
         visible: false,
       });
     }
@@ -162,7 +163,7 @@ class Drawer extends React.PureComponent {
     });
   };
 
-  onWrapperTransitionEnd = (e) => {
+  onWrapperTransitionEnd = e => {
     if (e.target === this.contentWrapper) {
       this.dom.style.transition = '';
       if (!this.state.open && this.getCurrentDrawerSome()) {
@@ -173,7 +174,7 @@ class Drawer extends React.PureComponent {
         }
       }
     }
-  }
+  };
 
   getDefault = props => {
     this.getParentAndLevelDom(props);
@@ -211,8 +212,12 @@ class Drawer extends React.PureComponent {
     if (level === 'all') {
       const children = Array.prototype.slice.call(this.parent.children);
       children.forEach(child => {
-        if (child.nodeName !== 'SCRIPT' && child.nodeName !== 'STYLE'
-          && child.nodeName !== 'LINK' && child !== this.container) {
+        if (
+          child.nodeName !== 'SCRIPT' &&
+          child.nodeName !== 'STYLE' &&
+          child.nodeName !== 'LINK' &&
+          child !== this.container
+        ) {
           this.levelDom.push(child);
         }
       });
@@ -248,9 +253,12 @@ class Drawer extends React.PureComponent {
       if (getContainer === 'body') {
         const eventArray = ['touchstart'];
         const domArray = [document.body, this.maskDom, this.handlerdom, this.contentDom];
-        const right = document.body.scrollHeight > (window.innerHeight || document.documentElement.clientHeight) &&
+        const right =
+          document.body.scrollHeight >
+            (window.innerHeight || document.documentElement.clientHeight) &&
           window.innerWidth > document.body.offsetWidth
-          ? getScrollBarSize(1) : 0;
+            ? getScrollBarSize(1)
+            : 0;
         let widthTransition = `width ${duration} ${ease}`;
         const trannsformTransition = `transform ${duration} ${ease}`;
         if (open && document.body.style.overflow !== 'hidden') {
@@ -289,7 +297,7 @@ class Drawer extends React.PureComponent {
               item,
               eventArray[i] || 'touchmove',
               i ? this.removeMoveHandler : this.removeStartHandler,
-              this.passive
+              this.passive,
             );
           });
         } else if (this.getCurrentDrawerSome()) {
@@ -307,7 +315,7 @@ class Drawer extends React.PureComponent {
                 this.dom.style.transform = `translateX(${right}px)`;
                 this.dom.style.msTransform = `translateX(${right}px)`;
                 this.dom.style.width = '100%';
-                widthTransition = `width 0s ${ease} ${duration}`
+                widthTransition = `width 0s ${ease} ${duration}`;
                 if (this.maskDom) {
                   this.maskDom.style.left = `-${right}px`;
                   this.maskDom.style.width = `calc(100% + ${right}px)`;
@@ -319,7 +327,7 @@ class Drawer extends React.PureComponent {
                 this.dom.style.width = `calc(100% + ${right}px)`;
                 this.dom.style.height = '100%';
                 this.dom.style.transform = 'translateZ(0)';
-                heightTransition = `height 0s ${ease} ${duration}`
+                heightTransition = `height 0s ${ease} ${duration}`;
                 break;
               }
               default:
@@ -328,7 +336,8 @@ class Drawer extends React.PureComponent {
             clearTimeout(this.timeout);
             this.timeout = setTimeout(() => {
               this.dom.style.transition = `${trannsformTransition},${
-                heightTransition ? `${heightTransition},` : ''}${widthTransition}`;
+                heightTransition ? `${heightTransition},` : ''
+              }${widthTransition}`;
               this.dom.style.transform = '';
               this.dom.style.msTransform = '';
               this.dom.style.width = '';
@@ -343,7 +352,7 @@ class Drawer extends React.PureComponent {
               item,
               eventArray[i] || 'touchmove',
               i ? this.removeMoveHandler : this.removeStartHandler,
-              this.passive
+              this.passive,
             );
           });
         }
@@ -378,32 +387,35 @@ class Drawer extends React.PureComponent {
     const placementName = `translate${isHorizontal ? 'X' : 'Y'}`;
     // 百分比与像素动画不同步，第一次打用后全用像素动画。
     // const defaultValue = !this.contentDom || !level ? '100%' : `${value}px`;
-    const placementPos =
-      placement === 'left' || placement === 'top' ? '-100%' : '100%';
+    const placementPos = placement === 'left' || placement === 'top' ? '-100%' : '100%';
     const transform = open ? '' : `${placementName}(${placementPos})`;
     if (isOpenChange === undefined || isOpenChange) {
-      const contentValue = this.contentDom ? this.contentDom.getBoundingClientRect()[
-        isHorizontal ? 'width' : 'height'
-      ] : 0;
+      const contentValue = this.contentDom
+        ? this.contentDom.getBoundingClientRect()[isHorizontal ? 'width' : 'height']
+        : 0;
       const value = (isHorizontal ? width : height) || contentValue;
       this.setLevelDomTransform(open, false, placementName, value);
     }
-    const handlerChildren = handler && React.cloneElement(handler, {
-      onClick: (e) => {
-        if (handler.props.onClick) {
-          handler.props.onClick();
-        }
-        this.onIconTouchEnd(e);
-      },
-      ref: (c) => {
-        this.handlerdom = c;
-      }
-    });
+    const handlerChildren =
+      handler &&
+      React.cloneElement(handler, {
+        onClick: e => {
+          if (handler.props.onClick) {
+            handler.props.onClick();
+          }
+          this.onIconTouchEnd(e);
+        },
+        ref: c => {
+          this.handlerdom = c;
+        },
+      });
     return (
       <div
         className={wrapperClassname}
         style={style}
-        ref={c => { this.dom = c; }}
+        ref={c => {
+          this.dom = c;
+        }}
         onTransitionEnd={this.onWrapperTransitionEnd}
       >
         {showMask && (
@@ -444,9 +456,7 @@ class Drawer extends React.PureComponent {
     );
   };
 
-  getOpen = () => (
-    this.props.open !== undefined ? this.props.open : this.state.open
-  )
+  getOpen = () => (this.props.open !== undefined ? this.props.open : this.state.open);
 
   getTouchParentScroll = (root, currentTarget, differX, differY) => {
     if (!currentTarget) {
@@ -480,19 +490,23 @@ class Drawer extends React.PureComponent {
       currentTarget.scrollTo(currentTarget.scrollLeft - 1, currentTarget.scrollTop - 1);
     }
     if (
-      isY && (!scrollY || !(currentT - t) ||
-        (scrollY && (currentTarget.scrollTop >= scrollY && differY < 0 ||
-          currentTarget.scrollTop <= 0 && differY > 0))
-      ) ||
-      isX && (!scrollX || !(currentL - l) ||
-        (scrollX && (currentTarget.scrollLeft >= scrollX && differX < 0 ||
-          currentTarget.scrollLeft <= 0 && differX > 0))
-      )
+      (isY &&
+        (!scrollY ||
+          !(currentT - t) ||
+          (scrollY &&
+            ((currentTarget.scrollTop >= scrollY && differY < 0) ||
+              (currentTarget.scrollTop <= 0 && differY > 0))))) ||
+      (isX &&
+        (!scrollX ||
+          !(currentL - l) ||
+          (scrollX &&
+            ((currentTarget.scrollLeft >= scrollX && differX < 0) ||
+              (currentTarget.scrollLeft <= 0 && differX > 0)))))
     ) {
       return this.getTouchParentScroll(root, currentTarget.parentNode, differX, differY);
     }
     return false;
-  }
+  };
 
   removeStartHandler = e => {
     if (e.touches.length > 1) {
@@ -514,8 +528,8 @@ class Drawer extends React.PureComponent {
     if (
       currentTarget === this.maskDom ||
       currentTarget === this.handlerdom ||
-      currentTarget === this.contentDom &&
-      this.getTouchParentScroll(currentTarget, e.target, differX, differY)
+      (currentTarget === this.contentDom &&
+        this.getTouchParentScroll(currentTarget, e.target, differX, differY))
     ) {
       e.preventDefault();
     }
@@ -555,7 +569,7 @@ class Drawer extends React.PureComponent {
         </div>
       );
     }
-    if (!this.container || !open && !this.firstEnter) {
+    if (!this.container || (!open && !this.firstEnter)) {
       return null;
     }
     // suppport react15
@@ -597,7 +611,12 @@ Drawer.propTypes = {
   levelMove: PropTypes.oneOfType([PropTypes.number, PropTypes.func, PropTypes.array]),
   ease: PropTypes.string,
   duration: PropTypes.string,
-  getContainer: PropTypes.oneOfType([PropTypes.string, PropTypes.func, PropTypes.object, PropTypes.bool]),
+  getContainer: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.func,
+    PropTypes.object,
+    PropTypes.bool,
+  ]),
   handler: PropTypes.any,
   onChange: PropTypes.func,
   onMaskClick: PropTypes.func,
