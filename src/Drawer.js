@@ -459,7 +459,7 @@ class Drawer extends React.PureComponent {
   getOpen = () => (this.props.open !== undefined ? this.props.open : this.state.open);
 
   getTouchParentScroll = (root, currentTarget, differX, differY) => {
-    if (!currentTarget) {
+    if (!currentTarget || currentTarget === document) {
       return false;
     }
     // root 为 drawer-content 设定了 overflow, 判断为 root 的 parent 时结束滚动；
