@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { mount } from 'enzyme';
-import Drawer from '../src';
+import Drawer from '../src/index';
 
 function Div(props) {
   return (
@@ -40,7 +40,7 @@ function createMoveTouchEventObject({ x = 0, y = 0 }) {
 
 describe('rc-drawer-menu', () => {
   let instance;
-  it('single drawer', () => {
+  fit('single drawer', () => {
     instance = mount(<Drawer onIconClick={() => {}} />);
     const drawer = instance.find('.drawer');
     const drawerContent = instance.find('.drawer-content-wrapper');

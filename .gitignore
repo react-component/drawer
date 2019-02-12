@@ -27,3 +27,6 @@ dist
 es
 yarn.lock
 eslintrc.js
+tsconfig.json
+tslint.json
+.vscode/*
