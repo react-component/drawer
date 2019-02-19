@@ -92,7 +92,8 @@ class Demo extends React.Component {
             lineHeight: '667px',
           }}
         >
-          内容区块
+          内容区块 内容区块
+          <br />
           <Button onClick={this.onClick}>
             {level ? '切换成空 level' : '切换成标题和内容跟随动'}
           </Button>

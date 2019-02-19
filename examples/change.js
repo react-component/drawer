@@ -109,19 +109,14 @@ class Demo extends React.Component {
           style={{
             width: '100%',
             height: 667,
+            padding: 80,
             backgroundImage:
               'url("https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg")',
-
             textAlign: 'center',
-            lineHeight: '667px',
           }}
         >
-          内容区块
-          <button
-            type="button"
-            onClick={this.onSwitch}
-            style={{ height: 24, width: 100, marginLeft: 20, color: '#000', lineHeight: '24px' }}
-          >
+          内容区块<br />
+          <button type="button" onClick={this.onSwitch}>
             {!open ? 'open' : 'close'}
           </button>
         </div>
