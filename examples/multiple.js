@@ -1,7 +1,7 @@
 /* eslint-disable no-console,react/no-multi-comp */
 import Drawer from 'rc-drawer';
 import React from 'react';
-import ReactDom from 'react-dom';
+
 import { Button } from 'antd';
 
 import 'antd/lib/style';
@@ -15,36 +15,49 @@ class Demo extends React.Component {
     open: false,
     openChild: false,
     openChildren: false,
-  }
+  };
+
   onClick = () => {
+    const { open } = this.state;
     this.setState({
-      open: !this.state.open,
+      open: !open,
     });
-  }
+  };
+
   onChildClick = () => {
+    const { openChild } = this.state;
     this.setState({
-      openChild: !this.state.openChild,
-    })
-  }
+      openChild: !openChild,
+    });
+  };
+
   onChildrenClick = () => {
+    const { openChildren } = this.state;
     this.setState({
-      openChildren: !this.state.openChildren,
-    })
-  }
-  getLevelMove = (e) => {
+      openChildren: !openChildren,
+    });
+  };
+
+  getLevelMove = e => {
     const target = e.target;
-    if (target.className.indexOf('drawer1') >=0 ) {
+    if (target.className.indexOf('drawer1') >= 0) {
       return [200, 100];
     }
     return 100;
-  }
+  };
+
   render() {
+    const { open, openChild, openChildren } = this.state;
     return (
-      <div >
+      <div>
         <div
           style={{
-            width: '100%', height: 667, background: '#fff000',
-            color: '#fff', textAlign: 'center', lineHeight: '667px',
+            width: '100%',
+            height: 667,
+            background: '#fff000',
+            color: '#fff',
+            textAlign: 'center',
+            lineHeight: '667px',
           }}
         >
           <Button onClick={this.onClick}>打开抽屉</Button>
@@ -52,7 +65,7 @@ class Demo extends React.Component {
         <Drawer
           width="20vw"
           handler={false}
-          open={this.state.open}
+          open={open}
           onMaskClick={this.onClick}
           className="drawer1"
           placement="right"
@@ -61,7 +74,7 @@ class Demo extends React.Component {
             <Button onClick={this.onChildClick}>打开子级</Button>
             <Drawer
               handler={false}
-              open={this.state.openChild}
+              open={openChild}
               onMaskClick={this.onChildClick}
               className="drawer2"
               level=".drawer1"
@@ -73,21 +86,20 @@ class Demo extends React.Component {
                 <Button onClick={this.onChildrenClick}>打开子级</Button>
                 <Drawer
                   handler={false}
-                  open={this.state.openChildren}
+                  open={openChildren}
                   onMaskClick={this.onChildrenClick}
                   level={['.drawer1', '.drawer2']}
                   placement="right"
                   levelMove={this.getLevelMove}
                 >
-                  <div style={{ width: 200 }}>
-                    三级抽屉
-                  </div>
+                  <div style={{ width: 200 }}>三级抽屉</div>
                 </Drawer>
               </div>
             </Drawer>
           </div>
         </Drawer>
-      </div>);
+      </div>
+    );
   }
 }
-ReactDom.render(<Demo />, document.getElementById('__react-content'));
+export default () => <Demo />;

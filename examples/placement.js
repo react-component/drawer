@@ -1,7 +1,7 @@
 /* eslint-disable no-console,react/no-multi-comp */
 import Drawer from 'rc-drawer';
 import React from 'react';
-import ReactDom from 'react-dom';
+
 import { Menu, Icon, Select } from 'antd';
 
 import 'antd/lib/style';
@@ -19,34 +19,37 @@ class Demo extends React.Component {
   state = {
     placement: 'right',
     childShow: true,
-    width: '20vw',
-    height: null,
-  }
-  onChange = (value) => {
-    this.setState({
-      placement: value,
-      width: value === 'right' || value === 'left' ? '20vw' : null,
-      height: value === 'right' || value === 'left' ? null : '20vh',
-      childShow: false, // 删除子级，删除切换时的过渡动画。。。
-    }, () => {
-      this.setState({
-        childShow: true,
-      });
-    });
-  }
+  };
+
+  onChange = value => {
+    this.setState(
+      {
+        placement: value,
+        childShow: false, // 删除子级，删除切换时的过渡动画。。。
+      },
+      () => {
+        this.setState({
+          childShow: true,
+        });
+      },
+    );
+  };
+
   render() {
+    const { childShow, placement } = this.state;
     return (
-      <div >
-        {this.state.childShow && (
-          <Drawer placement={this.state.placement} width={this.state.width} height={this.state.height}>
-            <Menu
-              defaultSelectedKeys={['1']}
-              defaultOpenKeys={['sub1']}
-              mode="inline"
-            >
+      <div>
+        {childShow && (
+          <Drawer placement={placement}>
+            <Menu defaultSelectedKeys={['1']} defaultOpenKeys={['sub1']} mode="inline">
               <SubMenu
                 key="sub1"
-                title={<span><Icon type="mail" /><span>Navigation One</span></span>}
+                title={
+                  <span>
+                    <Icon type="mail" />
+                    <span>Navigation One</span>
+                  </span>
+                }
               >
                 <MenuItemGroup key="g1" title="Item 1">
                   <Menu.Item key="1">Option 1</Menu.Item>
@@ -59,7 +62,12 @@ class Demo extends React.Component {
               </SubMenu>
               <SubMenu
                 key="sub2"
-                title={<span><Icon type="appstore" /><span>Navigation Two</span></span>}
+                title={
+                  <span>
+                    <Icon type="appstore" />
+                    <span>Navigation Two</span>
+                  </span>
+                }
               >
                 <Menu.Item key="5">Option 5</Menu.Item>
                 <Menu.Item key="6">Option 6</Menu.Item>
@@ -70,7 +78,12 @@ class Demo extends React.Component {
               </SubMenu>
               <SubMenu
                 key="sub4"
-                title={<span><Icon type="setting" /><span>Navigation Three</span></span>}
+                title={
+                  <span>
+                    <Icon type="setting" />
+                    <span>Navigation Three</span>
+                  </span>
+                }
               >
                 <Menu.Item key="9">Option 9</Menu.Item>
                 <Menu.Item key="10">Option 10</Menu.Item>
@@ -82,14 +95,18 @@ class Demo extends React.Component {
         )}
         <div
           style={{
-            width: '100%', height: 667, background: '#fff000',
-            color: '#fff', textAlign: 'center', lineHeight: '667px',
+            width: '100%',
+            height: 667,
+            background: '#fff000',
+            color: '#fff',
+            textAlign: 'center',
+            lineHeight: '667px',
           }}
         >
           选择位置：
           <Select
             style={{ width: 120, marginLeft: 20 }}
-            defaultValue={this.state.placement}
+            defaultValue={placement}
             onChange={this.onChange}
           >
             <Option value="left">左边 left</Option>
@@ -98,7 +115,8 @@ class Demo extends React.Component {
             <Option value="bottom">下面 bottom</Option>
           </Select>
         </div>
-      </div>);
+      </div>
+    );
   }
 }
-ReactDom.render(<Demo />, document.getElementById('__react-content'));
+export default () => <Demo />;

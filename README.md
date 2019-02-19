@@ -25,7 +25,7 @@ http://react-component.github.io/drawer/examples/
 ```js
 import Drawer from 'rc-drawer';
 import React from 'react';
-import ReactDom from 'react-dom';
+
 
 ReactDom.render(
   <Drawer>

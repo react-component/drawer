@@ -45,31 +45,34 @@
     "dist": "rc-tools run dist",
     "build": "rc-tools run build",
     "gh-pages": "rc-tools run gh-pages",
-    "start": "rc-tools run server",
+    "start": "rc-tools run storybook",
     "compile": "rc-tools run compile --babel-runtime",
     "pub": "rc-tools run pub --babel-runtime",
     "lint": "rc-tools run lint",
     "karma": "rc-test run karma",
     "saucelabs": "rc-test run saucelabs",
     "test": "rc-tools run test",
-    "pretter": "rc-tools run prettier",
-    "coverage": "rc-tools run test --coverage"
+    "prettier": "rc-tools run prettier",
+    "coverage": "rc-tools run test --coverage",
+    "genStorybook": "rc-tools run genStorybook"
   },
   "devDependencies": {
-    "antd": "^3.10.0",
+    "@types/classnames": "^2.2.7",
+    "@types/react": "^16.8.2",
+    "@types/react-dom": "^16.8.0",
+    "antd": "^3.13.3",
     "core-js": "^2.5.1",
     "enzyme": "^3.1.1",
     "enzyme-adapter-react-16": "^1.0.4",
     "enzyme-to-json": "^3.2.1",
     "expect.js": "0.3.x",
+    "less": "2.7.3",
+    "less-loader": "^4.1.0",
     "pre-commit": "1.x",
     "raf": "^3.4.0",
-    "rc-tools": "^9.3.7",
+    "rc-tools": "^9.3.11",
     "react": "^16.0.0",
-    "react-dom": "^16.0.0",
-    "@types/react": "^16.8.2",
-    "@types/react-dom": "^16.8.0",
-    "@types/classnames":"^2.2.7"
+    "react-dom": "^16.0.0"
   },
   "precommit": [
     "lint"
