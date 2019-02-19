@@ -53,7 +53,7 @@ class Demo extends React.Component {
         <div
           style={{
             width: '100%',
-            height: 667,
+            height: '100vh',
             backgroundImage:
               'url("https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg")',
 

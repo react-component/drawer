@@ -108,14 +108,15 @@ class Demo extends React.Component {
         <div
           style={{
             width: '100%',
-            height: 667,
+            height: '100vh',
             padding: 80,
             backgroundImage:
               'url("https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg")',
             textAlign: 'center',
           }}
         >
-          内容区块<br />
+          内容区块
+          <br />
           <button type="button" onClick={this.onSwitch}>
             {!open ? 'open' : 'close'}
           </button>
