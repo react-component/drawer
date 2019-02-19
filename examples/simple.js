@@ -76,8 +76,9 @@ export default () => (
       style={{
         width: '100%',
         height: 667,
-        background: '#fff000',
-        color: '#fff',
+        backgroundImage:
+          'url("https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg")',
+
         textAlign: 'center',
         lineHeight: '667px',
       }}
