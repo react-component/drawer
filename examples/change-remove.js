@@ -17,17 +17,17 @@ class Demo extends React.Component {
     show: true,
   };
 
-  hide() {
+  destroy = () => {
     this.setState({
       show: false,
     });
-  }
+  };
 
-  show() {
+  create = () => {
     this.setState({
       show: true,
     });
-  }
+  };
 
   render() {
     const { show } = this.state;
@@ -95,14 +95,14 @@ class Demo extends React.Component {
               'url("https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg")',
 
             textAlign: 'center',
-            lineHeight: '667px',
+            padding: '120px',
           }}
         >
-          <button type="button" onClick={this.show}>
-            show
+          <button type="button" onClick={this.create}>
+            create
           </button>
-          <button type="button" onClick={this.hide}>
-            hide
+          <button type="button" onClick={this.destroy}>
+            destroy
           </button>
         </div>
       </div>

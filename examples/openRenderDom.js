@@ -98,7 +98,7 @@ class Demo extends React.Component {
             lineHeight: '667px',
           }}
         >
-          <Button onClick={this.onClick}>开关</Button>
+          <Button onClick={this.onClick}>开</Button>
         </div>
       </div>
     );
