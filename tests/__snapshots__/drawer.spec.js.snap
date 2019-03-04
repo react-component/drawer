@@ -3,9 +3,6 @@
 exports[`Drawer render boolean 1`] = `
 <div>
   <div
-    id="test"
-  />
-  <div
     class=""
   >
     <div
@@ -121,9 +118,6 @@ exports[`Drawer render function 1`] = `
 exports[`Drawer render string 1`] = `
 <div>
   <div
-    id="test"
-  />
-  <div
     class=""
   >
     <div
@@ -160,9 +154,6 @@ exports[`Drawer render string 1`] = `
 
 exports[`Drawer render string 2`] = `
 <div>
-  <div
-    id="test"
-  />
   <div
     class=""
   >

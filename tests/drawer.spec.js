@@ -78,7 +78,6 @@ class DrawerTesterString extends React.Component {
     const { visible } = this.state;
     return (
       <div>
-        <div id="test" />
         {visible ? (
           <Drawer {...this.props} open getContainer={this.getContainer()}>
             <p className="text">Here is content of Drawer</p>
@@ -108,7 +107,6 @@ class DrawerTesterBoolean extends React.Component {
     const { visible } = this.state;
     return (
       <div>
-        <div id="test" />
         {visible ? (
           <Drawer {...this.props} open getContainer={false}>
             <p className="text">Here is content of Drawer</p>
