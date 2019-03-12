@@ -62,7 +62,7 @@
     "enzyme-adapter-react-16": "^1.0.4",
     "enzyme-to-json": "^3.2.1",
     "expect.js": "0.3.x",
-    "jest": "^23.1.0",
+    "jest": "^24.5.0",
     "pre-commit": "1.x",
     "raf": "^3.4.0",
     "rc-tools": "^8.1.1",
