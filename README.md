@@ -65,6 +65,7 @@ ReactDom.render(
 | showMask    |  boolean  | true | mask is show |
 | maskStyle | object | null | mask style |
 | onChange  | func | null | change callback(open) |
+| afterVisibleChange  | func | null | transition end callback(open) |
 | onMaskClick | func | null | mask close click function |
 | onHandleClick | func | nul  | handle icon click function |
 

@@ -24,6 +24,36 @@ const windowIsUndefined = !(
 );
 
 class Drawer extends React.PureComponent {
+  static propTypes = {
+    wrapperClassName: PropTypes.string,
+    className: PropTypes.string,
+    children: PropTypes.node,
+    style: PropTypes.object,
+    width: PropTypes.any,
+    height: PropTypes.any,
+    defaultOpen: PropTypes.bool,
+    firstEnter: PropTypes.bool,
+    open: PropTypes.bool,
+    prefixCls: PropTypes.string,
+    placement: PropTypes.string,
+    level: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+    levelMove: PropTypes.oneOfType([PropTypes.number, PropTypes.func, PropTypes.array]),
+    ease: PropTypes.string,
+    duration: PropTypes.string,
+    getContainer: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.func,
+      PropTypes.object,
+      PropTypes.bool,
+    ]),
+    handler: PropTypes.any,
+    onChange: PropTypes.func,
+    afterVisibleChange: PropTypes.func,
+    onMaskClick: PropTypes.func,
+    onHandleClick: PropTypes.func,
+    showMask: PropTypes.bool,
+    maskStyle: PropTypes.object,
+  };
   static defaultProps = {
     prefixCls: 'drawer',
     placement: 'left',
@@ -32,6 +62,7 @@ class Drawer extends React.PureComponent {
     duration: '.3s',
     ease: 'cubic-bezier(0.78, 0.14, 0.15, 0.86)',
     onChange: () => { },
+    afterVisibleChange: () => { },
     onMaskClick: () => { },
     onHandleClick: () => { },
     handler: (
@@ -173,6 +204,9 @@ class Drawer extends React.PureComponent {
           this.maskDom.style.width = '';
         }
       }
+      const { afterVisibleChange } = this.props;
+      const { open } = this.state;
+      afterVisibleChange(open);
     }
   };
 
@@ -365,7 +399,7 @@ class Drawer extends React.PureComponent {
         }
       }
     }
-    if (onChange && this.isOpenChange && this.firstEnter) {
+    if (this.isOpenChange && this.firstEnter) {
       onChange(open);
       this.isOpenChange = false;
     }
@@ -570,7 +604,7 @@ class Drawer extends React.PureComponent {
           className={wrapperClassName}
           ref={c => {
             if (this.props.getContainer) {
-              return ;
+              return;
             }
             this.container = c;
           }}
@@ -604,35 +638,5 @@ class Drawer extends React.PureComponent {
     return ReactDOM.createPortal(children, this.container);
   }
 }
-
-Drawer.propTypes = {
-  wrapperClassName: PropTypes.string,
-  className: PropTypes.string,
-  children: PropTypes.node,
-  style: PropTypes.object,
-  width: PropTypes.any,
-  height: PropTypes.any,
-  defaultOpen: PropTypes.bool,
-  firstEnter: PropTypes.bool,
-  open: PropTypes.bool,
-  prefixCls: PropTypes.string,
-  placement: PropTypes.string,
-  level: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
-  levelMove: PropTypes.oneOfType([PropTypes.number, PropTypes.func, PropTypes.array]),
-  ease: PropTypes.string,
-  duration: PropTypes.string,
-  getContainer: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.func,
-    PropTypes.object,
-    PropTypes.bool,
-  ]),
-  handler: PropTypes.any,
-  onChange: PropTypes.func,
-  onMaskClick: PropTypes.func,
-  onHandleClick: PropTypes.func,
-  showMask: PropTypes.bool,
-  maskStyle: PropTypes.object,
-};
 
 export default Drawer;

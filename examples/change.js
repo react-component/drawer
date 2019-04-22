@@ -24,7 +24,7 @@ class Demo extends React.Component {
     }, 2000);
   }
   onChange = (bool) => {
-    console.log(bool);
+    console.log('change: ', bool);
   }
   onTouchEnd = () => {
     this.setState({
@@ -45,6 +45,9 @@ class Demo extends React.Component {
           onMaskClick={this.onTouchEnd}
           handler={false}
           level={null}
+          afterVisibleChange={(c) => {
+            console.log('transitionEnd: ', c);
+          }}
           width="20vw"
         >
           <Menu
