@@ -69,7 +69,7 @@ var Demo = function (_React$Component) {
     return _ret = (_temp = (_this = __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(this, (_ref = Demo.__proto__ || Object.getPrototypeOf(Demo)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
       open: true
     }, _this.onChange = function (bool) {
-      console.log(bool);
+      console.log('change: ', bool);
     }, _this.onTouchEnd = function () {
       _this.setState({
         open: false
@@ -106,6 +106,9 @@ var Demo = function (_React$Component) {
             onMaskClick: this.onTouchEnd,
             handler: false,
             level: null,
+            afterVisibleChange: function afterVisibleChange(c) {
+              console.log('transitionEnd: ', c);
+            },
             width: '20vw'
           },
           __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
