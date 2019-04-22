@@ -89,11 +89,11 @@ class Drawer extends React.PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { open, placement } = nextProps;
+    const { open, placement, getContainer } = nextProps;
     if (open !== undefined && open !== this.props.open) {
       this.isOpenChange = true;
       // 没渲染 dom 时，获取默认数据;
-      if (!this.container) {
+      if (!this.container || this.props.getContainer !== getContainer) {
         this.getDefault(nextProps);
       }
       this.setState({
@@ -569,6 +569,9 @@ class Drawer extends React.PureComponent {
         <div
           className={wrapperClassName}
           ref={c => {
+            if (this.props.getContainer) {
+              return ;
+            }
             this.container = c;
           }}
         >
