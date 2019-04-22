@@ -53,32 +53,6 @@ class DrawerTesterDom extends React.Component {
 }
 
 /* eslint react/no-multi-comp: 0 */
-class DrawerTesterString extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { visible: false };
-  }
-  componentDidMount() {
-    this.setState({ visible: true }); // eslint-disable-line react/no-did-mount-set-state
-  }
-  getContainer = () => {
-    return document.getElementById('test');
-  };
-  render() {
-    return (
-      <div>
-        <div id="test" />
-        {this.state.visible ? (
-          <Drawer {...this.props} open getContainer={this.getContainer()}>
-            <p className="text">Here is content of Drawer</p>
-          </Drawer>
-        ) : null}
-      </div>
-    );
-  }
-}
-
-/* eslint react/no-multi-comp: 0 */
 class DrawerTesterBoolean extends React.Component {
   constructor(props) {
     super(props);
@@ -93,7 +67,6 @@ class DrawerTesterBoolean extends React.Component {
   render() {
     return (
       <div>
-        <div id="test" />
         {this.state.visible ? (
           <Drawer {...this.props} open getContainer={false}>
             <p className="text">Here is content of Drawer</p>
@@ -112,16 +85,6 @@ describe('Drawer', () => {
 
   it('render dom', () => {
     const wrapper = mount(<DrawerTesterDom />);
-    expect(wrapper.render()).toMatchSnapshot();
-  });
-
-  it('render string', () => {
-    const wrapper = mount(<DrawerTesterString />);
-    expect(wrapper.render()).toMatchSnapshot();
-  });
-
-  it('render string', () => {
-    const wrapper = mount(<DrawerTesterString />);
     expect(wrapper.render()).toMatchSnapshot();
   });
 

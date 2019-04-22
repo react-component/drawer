@@ -3,9 +3,6 @@
 exports[`Drawer render boolean 1`] = `
 <div>
   <div
-    id="test"
-  />
-  <div
     class=""
   >
     <div
@@ -111,86 +108,6 @@ exports[`Drawer render function 1`] = `
               class="drawer-handle-icon"
             />
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`Drawer render string 1`] = `
-<div>
-  <div
-    id="test"
-  />
-  <div
-    class=""
-  >
-    <div
-      class="drawer drawer-left drawer-open"
-    >
-      <div
-        class="drawer-mask"
-      />
-      <div
-        class="drawer-content-wrapper"
-        style=""
-      >
-        <div
-          class="drawer-content"
-        >
-          <p
-            class="text"
-          >
-            Here is content of Drawer
-          </p>
-        </div>
-        <div
-          class="drawer-handle"
-        >
-          <i
-            class="drawer-handle-icon"
-          />
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`Drawer render string 2`] = `
-<div>
-  <div
-    id="test"
-  />
-  <div
-    class=""
-  >
-    <div
-      class="drawer drawer-left drawer-open"
-    >
-      <div
-        class="drawer-mask"
-      />
-      <div
-        class="drawer-content-wrapper"
-        style=""
-      >
-        <div
-          class="drawer-content"
-        >
-          <p
-            class="text"
-          >
-            Here is content of Drawer
-          </p>
-        </div>
-        <div
-          class="drawer-handle"
-        >
-          <i
-            class="drawer-handle-icon"
-          />
         </div>
       </div>
     </div>
