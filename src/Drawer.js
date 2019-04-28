@@ -297,12 +297,12 @@ class Drawer extends React.PureComponent {
         let widthTransition = `width ${duration} ${ease}`;
         const transformTransition = `transform ${duration} ${ease}`;
         if (open && document.body.style.overflow !== 'hidden') {
-          if (showMask) {
-            document.body.style.overflow = 'hidden';
-          }
           if (right) {
             document.body.style.position = 'relative';
-            document.body.style.width = `calc(100% - ${right}px)`;
+            if (showMask) {
+              document.body.style.overflow = 'hidden';
+              document.body.style.width = `calc(100% - ${right}px)`;
+            }
             this.dom.style.transition = 'none';
             switch (placement) {
               case 'right':
