@@ -285,7 +285,7 @@ class Drawer extends React.PureComponent {
         }
       });
       // 处理 body 滚动
-      if (getContainer === 'body') {
+      if (getContainer === 'body' && showMask) {
         const eventArray = ['touchstart'];
         const domArray = [document.body, this.maskDom, this.handlerDom, this.contentDom];
         const right =
@@ -297,12 +297,10 @@ class Drawer extends React.PureComponent {
         let widthTransition = `width ${duration} ${ease}`;
         const transformTransition = `transform ${duration} ${ease}`;
         if (open && document.body.style.overflow !== 'hidden') {
+          document.body.style.overflow = 'hidden';
           if (right) {
             document.body.style.position = 'relative';
-            if (showMask) {
-              document.body.style.overflow = 'hidden';
-              document.body.style.width = `calc(100% - ${right}px)`;
-            }
+            document.body.style.width = `calc(100% - ${right}px)`;
             this.dom.style.transition = 'none';
             switch (placement) {
               case 'right':
@@ -325,20 +323,18 @@ class Drawer extends React.PureComponent {
               this.dom.style.msTransform = '';
             });
           }
-          if (showMask) {
-            // 手机禁滚
-            domArray.forEach((item, i) => {
-              if (!item) {
-                return;
-              }
-              addEventListener(
-                item,
-                eventArray[i] || 'touchmove',
-                i ? this.removeMoveHandler : this.removeStartHandler,
-                this.passive,
-              );
-            });
-          }
+          // 手机禁滚
+          domArray.forEach((item, i) => {
+            if (!item) {
+              return;
+            }
+            addEventListener(
+              item,
+              eventArray[i] || 'touchmove',
+              i ? this.removeMoveHandler : this.removeStartHandler,
+              this.passive,
+            );
+          });
         } else if (this.getCurrentDrawerSome()) {
           document.body.style.overflow = '';
           if ((this.isOpenChange || openTransition) && right) {
@@ -383,19 +379,17 @@ class Drawer extends React.PureComponent {
               this.dom.style.height = '';
             });
           }
-          if (showMask) {
-            domArray.forEach((item, i) => {
-              if (!item) {
-                return;
-              }
-              removeEventListener(
-                item,
-                eventArray[i] || 'touchmove',
-                i ? this.removeMoveHandler : this.removeStartHandler,
-                this.passive,
-              );
-            });
-          }
+          domArray.forEach((item, i) => {
+            if (!item) {
+              return;
+            }
+            removeEventListener(
+              item,
+              eventArray[i] || 'touchmove',
+              i ? this.removeMoveHandler : this.removeStartHandler,
+              this.passive,
+            );
+          });
         }
       }
     }
