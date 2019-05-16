@@ -23,6 +23,8 @@ const windowIsUndefined = !(
   window.document.createElement
 );
 
+const isAndroid = !!window.navigator.userAgent.match(/Android/);
+
 class Drawer extends React.PureComponent {
   static propTypes = {
     wrapperClassName: PropTypes.string,
@@ -285,7 +287,7 @@ class Drawer extends React.PureComponent {
         }
       });
       // 处理 body 滚动
-      if (getContainer === 'body' && showMask) {
+      if (getContainer === 'body' && showMask && !isAndroid) {
         const eventArray = ['touchstart'];
         const domArray = [document.body, this.maskDom, this.handlerDom, this.contentDom];
         const right =
