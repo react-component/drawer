@@ -23,7 +23,7 @@ const windowIsUndefined = !(
   window.document.createElement
 );
 
-const isAndroid = !!window.navigator.userAgent.match(/Android/);
+const isAndroid = typeof window !== 'undefined' && !!window.navigator.userAgent.match(/Android/);
 
 class Drawer extends React.PureComponent {
   static propTypes = {
