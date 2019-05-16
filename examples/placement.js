@@ -98,7 +98,9 @@ class Demo extends React.Component {
             <Option value="bottom">下面 bottom</Option>
           </Select>
         </div>
-      </div>);
+      </div>
+    );
   }
 }
+
 ReactDom.render(<Demo />, document.getElementById('__react-content'));
