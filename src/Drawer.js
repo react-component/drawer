@@ -23,8 +23,6 @@ const windowIsUndefined = !(
   window.document.createElement
 );
 
-const isAndroid = !!window.navigator.userAgent.match(/Android/);
-
 class Drawer extends React.PureComponent {
   static propTypes = {
     wrapperClassName: PropTypes.string,
@@ -287,7 +285,7 @@ class Drawer extends React.PureComponent {
         }
       });
       // 处理 body 滚动
-      if (getContainer === 'body' && showMask && !isAndroid) {
+      if (getContainer === 'body' && showMask) {
         const eventArray = ['touchstart'];
         const domArray = [document.body, this.maskDom, this.handlerDom, this.contentDom];
         const right =
@@ -300,6 +298,7 @@ class Drawer extends React.PureComponent {
         const transformTransition = `transform ${duration} ${ease}`;
         if (open && document.body.style.overflow !== 'hidden') {
           document.body.style.overflow = 'hidden';
+          document.body.style.touchAction = 'none';
           if (right) {
             document.body.style.position = 'relative';
             document.body.style.width = `calc(100% - ${right}px)`;
@@ -339,6 +338,7 @@ class Drawer extends React.PureComponent {
           });
         } else if (this.getCurrentDrawerSome()) {
           document.body.style.overflow = '';
+          document.body.style.touchAction = '';
           if ((this.isOpenChange || openTransition) && right) {
             document.body.style.position = '';
             document.body.style.width = '';
@@ -518,14 +518,12 @@ class Drawer extends React.PureComponent {
      */
     const t = currentTarget.scrollTop;
     const l = currentTarget.scrollLeft;
-    if (currentTarget.scrollTo) {
-      currentTarget.scrollTo(currentTarget.scrollLeft + 1, currentTarget.scrollTop + 1);
-    }
+    currentTarget.scrollTop += 1;
+    currentTarget.scrollLeft += 1;
     const currentT = currentTarget.scrollTop;
     const currentL = currentTarget.scrollLeft;
-    if (currentTarget.scrollTo) {
-      currentTarget.scrollTo(currentTarget.scrollLeft - 1, currentTarget.scrollTop - 1);
-    }
+    currentTarget.scrollTop -= 1;
+    currentTarget.scrollLeft -= 1;
     if (
       (isY &&
         (!scrollY ||
