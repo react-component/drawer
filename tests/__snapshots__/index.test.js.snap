@@ -5,6 +5,7 @@ exports[`rc-drawer-menu handler is null，open=false 1`] = `null`;
 exports[`rc-drawer-menu handler is null，open=true 1`] = `
 <div
   class="drawer drawer-left drawer-open"
+  tabindex="-1"
 >
   <div
     class="drawer-mask"

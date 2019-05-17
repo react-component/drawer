@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import ContainerRender from 'rc-util/lib/ContainerRender';
 import getScrollBarSize from 'rc-util/lib/getScrollBarSize';
+import KeyCode from 'rc-util/lib/KeyCode';
+
 import {
   dataToArray,
   transitionEnd,
@@ -53,6 +55,7 @@ class Drawer extends React.PureComponent {
     onHandleClick: PropTypes.func,
     showMask: PropTypes.bool,
     maskStyle: PropTypes.object,
+    keyboard: PropTypes.bool,
   };
   static defaultProps = {
     prefixCls: 'drawer',
@@ -75,6 +78,7 @@ class Drawer extends React.PureComponent {
     maskStyle: {},
     wrapperClassName: '',
     className: '',
+    keyboard: true,
   };
 
   constructor(props) {
@@ -192,6 +196,13 @@ class Drawer extends React.PureComponent {
     this.setState({
       open: !open,
     });
+  };
+
+  onKeyDown = e => {
+    if (e.keyCode === KeyCode.ESC) {
+      e.stopPropagation();
+      this.onTouchEnd(e, true);
+    }
   };
 
   onWrapperTransitionEnd = e => {
@@ -413,6 +424,7 @@ class Drawer extends React.PureComponent {
       maskStyle,
       width,
       height,
+      keyboard,
     } = this.props;
     const wrapperClassName = classnames(prefixCls, {
       [`${prefixCls}-${placement}`]: true,
@@ -448,11 +460,13 @@ class Drawer extends React.PureComponent {
       });
     return (
       <div
+        tabIndex={-1}
         className={wrapperClassName}
         style={style}
         ref={c => {
           this.dom = c;
         }}
+        onKeyDown={open && keyboard ? this.onKeyDown : null}
         onTransitionEnd={this.onWrapperTransitionEnd}
       >
         {showMask && (

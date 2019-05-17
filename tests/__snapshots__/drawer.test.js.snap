@@ -7,6 +7,7 @@ exports[`Drawer render boolean 1`] = `
   >
     <div
       class="drawer drawer-left drawer-open"
+      tabindex="-1"
     >
       <div
         class="drawer-mask"
@@ -45,6 +46,7 @@ exports[`Drawer render dom 1`] = `
     <div>
       <div
         class="drawer drawer-left drawer-open"
+        tabindex="-1"
       >
         <div
           class="drawer-mask"
@@ -84,6 +86,7 @@ exports[`Drawer render function 1`] = `
     <div>
       <div
         class="drawer drawer-left drawer-open"
+        tabindex="-1"
       >
         <div
           class="drawer-mask"
