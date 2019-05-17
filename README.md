@@ -68,6 +68,7 @@ ReactDom.render(
 | afterVisibleChange  | func | null | transition end callback(open) |
 | onMaskClick | func | null | mask close click function |
 | onHandleClick | func | nul  | handle icon click function |
+| keyboard  | boolean |  true | key `esc` close drawer |
 
 > 1.5 Rename `handleChild` -> `handler`, remove `handleStyle`, remove `levelTransition` -> `duration` `ease`, add `levelMove`.
 ## Development
