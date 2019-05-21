@@ -129,9 +129,12 @@ class Drawer extends React.PureComponent {
       if (!this.container || this.props.getContainer !== getContainer) {
         this.getDefault(nextProps);
       }
+      const focus = open && !this.props.open;
       this.setState({
         open,
-      }, open && !this.props.open ? this.domFocus : null);
+      }, () => {
+        this.domFocus(focus);
+      });
     }
     if (placement !== this.props.placement) {
       // test 的 bug, 有动画过场，删除 dom
@@ -199,7 +202,9 @@ class Drawer extends React.PureComponent {
     this.isOpenChange = true;
     this.setState({
       open: !open,
-    }, !open ? this.domFocus : null);
+    }, () => {
+      this.domFocus(!open);
+    });
   };
 
   onKeyDown = e => {
@@ -567,8 +572,8 @@ class Drawer extends React.PureComponent {
     return false;
   };
 
-  domFocus = () => {
-    if (this.dom) {
+  domFocus = (focus) => {
+    if (this.dom && focus) {
       this.dom.focus();
     }
   }
