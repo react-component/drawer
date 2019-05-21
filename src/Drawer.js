@@ -66,8 +66,6 @@ class Drawer extends React.PureComponent {
     ease: 'cubic-bezier(0.78, 0.14, 0.15, 0.86)',
     onChange: () => { },
     afterVisibleChange: () => { },
-    onMaskClick: () => { },
-    onHandleClick: () => { },
     handler: (
       <div className="drawer-handle">
         <i className="drawer-handle-icon" />
@@ -179,12 +177,18 @@ class Drawer extends React.PureComponent {
   }
 
   onMaskTouchEnd = e => {
-    this.props.onMaskClick(e);
+    const { onMaskClick } = this.props;
+    if (onMaskClick) {
+      onMaskClick(e);
+    }
     this.onTouchEnd(e, true);
   };
 
   onIconTouchEnd = e => {
-    this.props.onHandleClick(e);
+    const { onHandleClick } = this.props;
+    if (onHandleClick) {
+      onHandleClick(e);
+    }
     this.onTouchEnd(e);
   };
   onTouchEnd = (e, close) => {
@@ -200,8 +204,15 @@ class Drawer extends React.PureComponent {
 
   onKeyDown = e => {
     if (e.keyCode === KeyCode.ESC) {
+      const { onMaskClick, onHandleClick } = this.props;
       e.stopPropagation();
-      this.onMaskTouchEnd(e);
+      const onClose = onHandleClick || onMaskClick;
+      console.log(onClose)
+      if (onClose) {
+        onClose(e);
+      } else {
+        this.onTouchEnd(e, true);
+      }
     }
   };
 
