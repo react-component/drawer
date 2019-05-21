@@ -201,7 +201,7 @@ class Drawer extends React.PureComponent {
   onKeyDown = e => {
     if (e.keyCode === KeyCode.ESC) {
       e.stopPropagation();
-      this.onTouchEnd(e, true);
+      this.onMaskTouchEnd(e);
     }
   };
 
@@ -465,6 +465,9 @@ class Drawer extends React.PureComponent {
         style={style}
         ref={c => {
           this.dom = c;
+          if (open && this.dom) {
+            this.dom.focus();
+          }
         }}
         onKeyDown={open && keyboard ? this.onKeyDown : null}
         onTransitionEnd={this.onWrapperTransitionEnd}
