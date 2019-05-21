@@ -131,7 +131,7 @@ class Drawer extends React.PureComponent {
       }
       this.setState({
         open,
-      });
+      }, open && !this.props.open ? this.domFocus : null);
     }
     if (placement !== this.props.placement) {
       // test 的 bug, 有动画过场，删除 dom
@@ -199,7 +199,7 @@ class Drawer extends React.PureComponent {
     this.isOpenChange = true;
     this.setState({
       open: !open,
-    });
+    }, !open ? this.domFocus : null);
   };
 
   onKeyDown = e => {
@@ -207,7 +207,6 @@ class Drawer extends React.PureComponent {
       const { onMaskClick, onHandleClick } = this.props;
       e.stopPropagation();
       const onClose = onHandleClick || onMaskClick;
-      console.log(onClose)
       if (onClose) {
         onClose(e);
       } else {
@@ -476,9 +475,6 @@ class Drawer extends React.PureComponent {
         style={style}
         ref={c => {
           this.dom = c;
-          if (open && this.dom) {
-            this.dom.focus();
-          }
         }}
         onKeyDown={open && keyboard ? this.onKeyDown : null}
         onTransitionEnd={this.onWrapperTransitionEnd}
@@ -570,6 +566,12 @@ class Drawer extends React.PureComponent {
     }
     return false;
   };
+
+  domFocus = () => {
+    if (this.dom) {
+      this.dom.focus();
+    }
+  }
 
   removeStartHandler = e => {
     if (e.touches.length > 1) {
