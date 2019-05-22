@@ -1312,6 +1312,7 @@ html {
 }
 .drawer-left,
 .drawer-right {
+  width: 0%;
   height: 100%;
 }
 .drawer-left .drawer-content-wrapper,
@@ -1324,6 +1325,9 @@ html {
 .drawer-right .drawer-content {
   width: 100%;
 }
+.drawer-left {
+  left: 0;
+}
 .drawer-left .drawer-handle {
   right: -40px;
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
@@ -1331,6 +1335,9 @@ html {
 }
 .drawer-left.drawer-open .drawer-content-wrapper {
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+}
+.drawer-right {
+  right: 0;
 }
 .drawer-right .drawer-content-wrapper {
   right: 0;
@@ -1362,6 +1369,9 @@ html {
   left: 50%;
   margin-left: -20px;
 }
+.drawer-top {
+  top: 0;
+}
 .drawer-top .drawer-handle {
   top: auto;
   bottom: -40px;
@@ -1370,6 +1380,9 @@ html {
 }
 .drawer-top.drawer-open .drawer-wrapper {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+.drawer-bottom {
+  bottom: 0;
 }
 .drawer-bottom .drawer-content-wrapper {
   bottom: 0;
