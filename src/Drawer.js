@@ -126,10 +126,7 @@ class Drawer extends React.PureComponent {
     if (open !== undefined && open !== this.props.open) {
       this.isOpenChange = true;
       // 没渲染 dom 时，获取默认数据;
-      const getContainerBool = typeof getContainer === 'function' &&
-        typeof this.props.getContainer === 'function' ?
-        this.props.getContainer() === getContainer() :
-        this.props.getContainer === getContainer;
+      const getContainerBool = getContainer.toString() === this.props.getContainer.toString();
       if (!this.container || !getContainerBool) {
         this.getDefault(nextProps);
       }
