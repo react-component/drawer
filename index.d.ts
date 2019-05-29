@@ -24,13 +24,13 @@ export interface IProps<T> extends Omit<React.HTMLAttributes<T>, 'onChange'> {
   levelMove?: ILevelMove | ((e: { target: HTMLElement, open: boolean }) => ILevelMove),
   duration?: string,
   ease?: string,
-  getContainer?: IStringOrHtmlElement | (() => IStringOrHtmlElement),
+  getContainer?:  IStringOrHtmlElement | (() => IStringOrHtmlElement),
   showMask?: boolean,
   maskStyle?: React.CSSProperties,
   onChange?: ((open: boolean) => void),
   afterVisibleChange?: ((open: boolean) => void),
-  onMaskClick?: ((e: MouseEvent) => void) | ((e: KeyboardEvent) => void),
-  onHandleClick?: ((e: MouseEvent) => void) | ((e: KeyboardEvent) => void),
+  onMaskClick?: ((e: MouseEvent | KeyboardEvent) => void),
+  onHandleClick?: ((e: MouseEvent | KeyboardEvent) => void),
 }
 
 export default class ReDrawer<T> extends React.Component<IProps<T>> { }
