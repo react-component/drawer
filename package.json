@@ -27,7 +27,8 @@
     "lib",
     "assets/*.css",
     "dist",
-    "es"
+    "es",
+    "index.d.ts"
   ],
   "licenses": "MIT",
   "main": "./lib/index",
@@ -56,6 +57,7 @@
     "coverage": "jest --coverage"
   },
   "devDependencies": {
+    "@types/react": "^16.0.0",
     "antd": "^3.10.0",
     "core-js": "^2.5.1",
     "enzyme": "^3.1.1",
@@ -92,5 +94,6 @@
     "transform": {
       "\\.jsx?$": "./node_modules/rc-tools/scripts/jestPreprocessor.js"
     }
-  }
+  },
+  "types": "index.d.ts"
 }

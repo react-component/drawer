@@ -317,7 +317,7 @@ class Drawer extends React.PureComponent {
           const $value = typeof levelValue === 'number' ? `${levelValue}px` : levelValue;
           let placementPos = placement === 'left' || placement === 'top' ? $value : `-${$value}`;
           const mark = placement === 'left' || placement === 'top' ? '-' : '+';
-          placementPos = showMask && (placement === 'left' || placement === 'right') ?
+          placementPos = showMask && (placement === 'left' || placement === 'right') && right ?
             `calc(${placementPos} ${mark} ${right}px)` : placementPos;
           dom.style.transform = levelValue ? `${placementName}(${placementPos})` : '';
           dom.style.msTransform = levelValue ? `${placementName}(${placementPos})` : '';
