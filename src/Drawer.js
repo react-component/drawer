@@ -297,13 +297,13 @@ class Drawer extends React.PureComponent {
 
   setLevelDomTransform = (open, openTransition, placementName, value) => {
     const { placement, levelMove, duration, ease, onChange, getContainer, showMask } = this.props;
-    const right =
-      document.body.scrollHeight >
-        (window.innerHeight || document.documentElement.clientHeight) &&
-        window.innerWidth > document.body.offsetWidth
-        ? getScrollBarSize(1)
-        : 0;
     if (!windowIsUndefined) {
+      const right =
+        document.body.scrollHeight >
+          (window.innerHeight || document.documentElement.clientHeight) &&
+          window.innerWidth > document.body.offsetWidth
+          ? getScrollBarSize(1)
+          : 0;
       this.levelDom.forEach(dom => {
         if (this.isOpenChange || openTransition) {
           /* eslint no-param-reassign: "error" */
