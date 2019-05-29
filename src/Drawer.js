@@ -297,6 +297,12 @@ class Drawer extends React.PureComponent {
 
   setLevelDomTransform = (open, openTransition, placementName, value) => {
     const { placement, levelMove, duration, ease, onChange, getContainer, showMask } = this.props;
+    const right =
+      document.body.scrollHeight >
+        (window.innerHeight || document.documentElement.clientHeight) &&
+        window.innerWidth > document.body.offsetWidth
+        ? getScrollBarSize(1)
+        : 0;
     if (!windowIsUndefined) {
       this.levelDom.forEach(dom => {
         if (this.isOpenChange || openTransition) {
@@ -309,7 +315,10 @@ class Drawer extends React.PureComponent {
             levelValue = open ? $levelMove[0] : $levelMove[1] || 0;
           }
           const $value = typeof levelValue === 'number' ? `${levelValue}px` : levelValue;
-          const placementPos = placement === 'left' || placement === 'top' ? $value : `-${$value}`;
+          let placementPos = placement === 'left' || placement === 'top' ? $value : `-${$value}`;
+          const mark = placement === 'left' || placement === 'top' ? '-' : '+';
+          placementPos = showMask && (placement === 'left' || placement === 'right') ?
+            `calc(${placementPos} ${mark} ${right}px)` : placementPos;
           dom.style.transform = levelValue ? `${placementName}(${placementPos})` : '';
           dom.style.msTransform = levelValue ? `${placementName}(${placementPos})` : '';
         }
@@ -318,12 +327,6 @@ class Drawer extends React.PureComponent {
       if (getContainer === 'body' && showMask) {
         const eventArray = ['touchstart'];
         const domArray = [document.body, this.maskDom, this.handlerDom, this.contentDom];
-        const right =
-          document.body.scrollHeight >
-            (window.innerHeight || document.documentElement.clientHeight) &&
-            window.innerWidth > document.body.offsetWidth
-            ? getScrollBarSize(1)
-            : 0;
         let widthTransition = `width ${duration} ${ease}`;
         const transformTransition = `transform ${duration} ${ease}`;
         if (open && document.body.style.overflow !== 'hidden') {
@@ -449,6 +452,7 @@ class Drawer extends React.PureComponent {
       [`${prefixCls}-${placement}`]: true,
       [`${prefixCls}-open`]: open,
       [className]: !!className,
+      'no-mask': !showMask,
     });
     const isOpenChange = this.isOpenChange;
     const isHorizontal = placement === 'left' || placement === 'right';

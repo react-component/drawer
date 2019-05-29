@@ -6,18 +6,17 @@
   top: 0;
   z-index: 9999;
   >* {
-    transition: transform @duration @ease-in-out-circ, opacity @duration @ease-in-out-circ, box-shaow @duration @ease-in-out-circ;
+     transition: transform @duration @ease-in-out-circ, opacity @duration @ease-in-out-circ, box-shaow @duration @ease-in-out-circ;
   }
   & &-mask {
     background: #000;
     opacity: 0;
-    width: 0;
+    width: 100%;
     height: 0;
     position: fixed;
     top: 0;
     left: 0;
     transition: opacity @duration @ease-in-out-circ, 
-      width 0s ease @duration,
       height 0s ease @duration;
   }
   &-content-wrapper {
@@ -76,8 +75,11 @@
     .@{drawer}-content {
       height: 100%;
     }
-    .@{drawer}-content {
+    &.@{drawer}-open {
       width: 100%;
+      &.no-mask {
+        width: 0%;
+      }
     }
   }
   &-left {
@@ -120,6 +122,7 @@
   &-top,
   &-bottom {
     width: 100%;
+    height: 0%;
     .@{drawer}-content-wrapper,
     .@{drawer}-content {
       width: 100%;
@@ -127,6 +130,13 @@
     .@{drawer}-content {
       height: 100%;
     }
+    &.@{drawer}-open {
+      height: 100%;
+      &.no-mask {
+        height: 0%;
+      }
+    }
+    
     .@{drawer} {
       &-handle {
         left: 50%;
@@ -146,7 +156,7 @@
     }
     &.@{drawer}-open {
       .@{drawer} {
-        &-wrapper {
+        &-content-wrapper {
           box-shadow: 0 2px 8px rgba(0, 0, 0, .15);
         }
       }
@@ -176,7 +186,6 @@
     .@{drawer} {
       &-mask {
         opacity: .3;
-        width: 100%;
         height: 100%;
         animation: rcDrawerFadeIn 0.3s @ease-in-out-circ;
         transition: none;
