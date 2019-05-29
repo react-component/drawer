@@ -322,8 +322,8 @@ mark {
 }
 .clearfix::before,
 .clearfix::after {
-  content: '';
   display: table;
+  content: '';
 }
 .clearfix::after {
   clear: both;
@@ -646,8 +646,8 @@ html {
   opacity: 0.2;
   animation: fadeEffect 2s cubic-bezier(0.08, 0.82, 0.17, 1), waveEffect 0.4s cubic-bezier(0.08, 0.82, 0.17, 1);
   animation-fill-mode: forwards;
-  pointer-events: none;
   content: '';
+  pointer-events: none;
 }
 @keyframes waveEffect {
   100% {
@@ -1237,10 +1237,14 @@ html {
     opacity: 0;
   }
 }
-.ant-motion-collapse {
+.ant-motion-collapse-legacy {
   overflow: hidden;
 }
-.ant-motion-collapse-active {
+.ant-motion-collapse-legacy-active {
+  transition: height 0.15s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.15s cubic-bezier(0.645, 0.045, 0.355, 1) !important;
+}
+.ant-motion-collapse {
+  overflow: hidden;
   transition: height 0.15s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.15s cubic-bezier(0.645, 0.045, 0.355, 1) !important;
 }
 .drawer {
@@ -1254,12 +1258,12 @@ html {
 .drawer .drawer-mask {
   background: #000;
   opacity: 0;
-  width: 0;
+  width: 100%;
   height: 0;
   position: fixed;
   top: 0;
   left: 0;
-  transition: opacity 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86), width 0s ease 0.3s, height 0s ease 0.3s;
+  transition: opacity 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86), height 0s ease 0.3s;
 }
 .drawer-content-wrapper {
   position: fixed;
@@ -1322,9 +1326,13 @@ html {
 .drawer-right .drawer-content {
   height: 100%;
 }
-.drawer-left .drawer-content,
-.drawer-right .drawer-content {
+.drawer-left.drawer-open,
+.drawer-right.drawer-open {
   width: 100%;
+}
+.drawer-left.drawer-open.no-mask,
+.drawer-right.drawer-open.no-mask {
+  width: 0%;
 }
 .drawer-left {
   left: 0;
@@ -1354,6 +1362,7 @@ html {
 .drawer-top,
 .drawer-bottom {
   width: 100%;
+  height: 0%;
 }
 .drawer-top .drawer-content-wrapper,
 .drawer-bottom .drawer-content-wrapper,
@@ -1364,6 +1373,14 @@ html {
 .drawer-top .drawer-content,
 .drawer-bottom .drawer-content {
   height: 100%;
+}
+.drawer-top.drawer-open,
+.drawer-bottom.drawer-open {
+  height: 100%;
+}
+.drawer-top.drawer-open.no-mask,
+.drawer-bottom.drawer-open.no-mask {
+  height: 0%;
 }
 .drawer-top .drawer-handle,
 .drawer-bottom .drawer-handle {
@@ -1379,7 +1396,7 @@ html {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   border-radius: 0 0 4px 4px;
 }
-.drawer-top.drawer-open .drawer-wrapper {
+.drawer-top.drawer-open .drawer-content-wrapper {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 .drawer-bottom {
@@ -1398,7 +1415,6 @@ html {
 }
 .drawer.drawer-open .drawer-mask {
   opacity: .3;
-  width: 100%;
   height: 100%;
   animation: rcDrawerFadeIn 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
   transition: none;

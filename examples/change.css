@@ -24,8 +24,8 @@
 }
 .ant-menu::before,
 .ant-menu::after {
-  content: '';
   display: table;
+  content: '';
 }
 .ant-menu::after {
   clear: both;
@@ -713,8 +713,8 @@
   position: absolute;
   width: 0;
   height: 0;
-  border-style: solid;
   border-color: transparent;
+  border-style: solid;
 }
 .ant-tooltip-placement-top .ant-tooltip-arrow,
 .ant-tooltip-placement-topLeft .ant-tooltip-arrow,
