@@ -31,6 +31,7 @@ export interface IProps<T> extends Omit<React.HTMLAttributes<T>, 'onChange'> {
   afterVisibleChange?: ((open: boolean) => void),
   onMaskClick?: ((e: MouseEvent | KeyboardEvent) => void),
   onHandleClick?: ((e: MouseEvent | KeyboardEvent) => void),
+  keyboard?: boolean,
 }
 
 export default class ReDrawer<T> extends React.Component<IProps<T>> { }
