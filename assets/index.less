@@ -6,7 +6,7 @@
   top: 0;
   z-index: 9999;
   >* {
-     transition: transform 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86), opacity 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86), box-shadow 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+     transition: transform @duration @ease-in-out-circ, opacity @duration @ease-in-out-circ, box-shadow @duration @ease-in-out-circ;
   }
   & &-mask {
     background: #000;
