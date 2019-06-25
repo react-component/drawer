@@ -436,17 +436,31 @@ class Drawer extends React.PureComponent {
 
   getChildToRender = open => {
     const {
+      wrapperClassName: $wrapperClass,
       className,
-      prefixCls,
-      style,
-      placement,
       children,
-      handler,
-      showMask,
-      maskStyle,
+      style,
       width,
       height,
+      defaultOpen,
+      firstEnter,
+      open: $open,
+      prefixCls,
+      placement,
+      level,
+      levelMove,
+      ease,
+      duration,
+      getContainer,
+      handler,
+      onChange,
+      afterVisibleChange,
+      onMaskClick,
+      onHandleClick,
+      showMask,
+      maskStyle,
       keyboard,
+      ...props
     } = this.props;
     const wrapperClassName = classnames(prefixCls, {
       [`${prefixCls}-${placement}`]: true,
@@ -483,6 +497,7 @@ class Drawer extends React.PureComponent {
       });
     return (
       <div
+        {...props}
         tabIndex={-1}
         className={wrapperClassName}
         style={style}
