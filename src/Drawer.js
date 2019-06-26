@@ -225,7 +225,7 @@ class Drawer extends React.PureComponent {
   };
 
   onWrapperTransitionEnd = e => {
-    if (e.target === this.contentWrapper && e.propertyName === 'transform') {
+    if (e.target === this.contentWrapper && e.propertyName.match(/transform$/)) {
       this.dom.style.transition = '';
       if (!this.state.open && this.getCurrentDrawerSome()) {
         document.body.style.overflowX = '';
