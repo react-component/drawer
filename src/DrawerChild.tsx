@@ -40,7 +40,6 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
         // test 的 bug, 有动画过场，删除 dom
         self.contentDom = null;
       }
-      console.log(level , prevProps.level, self)
       if (level !== prevProps.level) {
         self.getLevelDom(props);
       }
