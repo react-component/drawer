@@ -120,7 +120,6 @@ class DrawerWrapper extends React.Component<IDrawerProps, IState> {
         }: {
           openCount: number,
           getContainer: () => HTMLElement,
-          switchScrollingEffect: (close?: boolean) => void,
         }) => (
             <Child
               {...props}
