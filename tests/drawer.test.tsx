@@ -87,8 +87,7 @@ class DrawerTesterBoolean extends React.Component<IDrawerProps, IState> {
 }
 
 describe('Drawer', () => {
-  it.only('render function', () => {
-    console.log(1221, <DrawerTesterRef />);
+  it('render function', () => {
     const wrapper = mount(<DrawerTesterRef />);
     expect(wrapper.render()).toMatchSnapshot();
   });

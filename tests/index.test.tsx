@@ -34,12 +34,16 @@ function createMoveTouchEventObject({ x = 0, y = 0 }) {
   return { touches: [createClientXY(x, y)], changedTouches: [createClientXY(x, y)] };
 }
 
-/* describe('rc-drawer-menu', () => {
+describe('rc-drawer-menu', () => {
   let instance;
   it('single drawer', () => {
-    instance = mount(<Drawer onIconClick={() => { }} />);
-    // const drawer = instance.find('.drawer');
-    console.log(instance)
+    instance = mount(<Drawer onHandleClick={() => { }} />);
+    const drawer = instance.find('.drawer') as any;
+    const drawerContent = instance.find('.drawer-content-wrapper') as any;
+    expect(!!drawer).toBe(true);
+    expect(drawer.instance().parentNode.parentNode.tagName).toBe('BODY');
+    console.log('clientWidth:', drawerContent.instance().clientWidth);
+    expect(drawerContent.instance().style.transform).toBe('translateX(-100%)');
   });
 
   it('icon child is element', () => {
@@ -155,8 +159,8 @@ function createMoveTouchEventObject({ x = 0, y = 0 }) {
     expect(content.style.transform).toBe('translateY(-100%)');
   });
   it('levelMove is Array', () => {
-    instance = mount(<Drawer handler={false} levelMove={[200, 0]} />);
-    expect(instance.children().length).toBe(0);
+    instance = mount(<Drawer handler={null} levelMove={[200, 0]} />);
+    expect(instance.render()).toMatchSnapshot();
     instance.setProps({
       open: true,
     });
@@ -168,16 +172,10 @@ function createMoveTouchEventObject({ x = 0, y = 0 }) {
       open: true,
       levelMove: [200],
     });
+    expect(instance.render()).toMatchSnapshot();
   });
   it('handler is null, render is null', () => {
-    instance = mount(<Drawer handler={false} levelMove={200} />);
-    console.log(instance.children());
-    expect(instance.children().length).toBe(0);
-    instance.setProps({
-      open: true,
-    });
-    console.log(instance.children());
-    expect(instance.children().length).toBe(1);
+    instance = mount(<Drawer handler={null} levelMove={200} />);
+    expect(instance.render()).toMatchSnapshot();
   });
 });
- */

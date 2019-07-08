@@ -106,7 +106,7 @@ class DrawerWrapper extends React.Component<IDrawerProps, IState> {
     }
     // 如果有 handler 为内置强制渲染；
     const $forceRender = !!handler || forceRender;
-    console.log($forceRender);
+
     return (
       <Portal
         visible={open}
