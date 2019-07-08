@@ -23,7 +23,30 @@ const currentDrawer: {
   [key: string]: boolean;
 } = {};
 
-class DrawerChild extends React.Component<IDrawerChildProps, any> {
+interface IState {
+  self: DrawerChild;
+  prevProps?: IDrawerChildProps;
+}
+
+class DrawerChild extends React.Component<IDrawerChildProps, IState> {
+  public static getDerivedStateFromProps(props: IDrawerChildProps,
+    { prevProps, self }: { prevProps: IDrawerChildProps, self: DrawerChild }) {
+    const nextState = {
+      prevProps: props,
+    }
+    if (prevProps !== undefined) {
+      const { placement, level } = props;
+      if (placement !== prevProps.placement) {
+        // test 的 bug, 有动画过场，删除 dom
+        self.contentDom = null;
+      }
+      console.log(level , prevProps.level, self)
+      if (level !== prevProps.level) {
+        self.getLevelDom(props);
+      }
+    }
+    return nextState;
+  }
   private levelDom: HTMLElement[];
   private dom: HTMLElement;
   private contentWrapper: HTMLElement;
@@ -37,6 +60,13 @@ class DrawerChild extends React.Component<IDrawerChildProps, any> {
     x: number,
     y: number,
   };
+
+  constructor(props: IDrawerChildProps) {
+    super(props);
+    this.state = {
+      self: this,
+    };
+  }
 
   public componentDidMount() {
     if (!windowIsUndefined) {
@@ -78,18 +108,6 @@ class DrawerChild extends React.Component<IDrawerChildProps, any> {
       }
       currentDrawer[this.drawerId] = !!open;
       this.openLevelTransition();
-    }
-  }
-
-  public UNSAFE_componentWillReceiveProps(nextProps: IDrawerChildProps) {
-    const { placement, level } = nextProps;
-    if (placement !== this.props.placement) {
-      // test 的 bug, 有动画过场，删除 dom
-      this.contentDom = null;
-    }
-    if (level !== this.props.level) {
-
-      this.getLevelDom(nextProps);
     }
   }
 
