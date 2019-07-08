@@ -1,34 +1,57 @@
 /* eslint-disable no-console,react/no-multi-comp */
-import Drawer from 'rc-drawer';
-import React from 'react';
-import ReactDom from 'react-dom';
-import { Menu, Icon, Button } from 'antd';
+import { Icon, Menu } from 'antd';
+import * as React from 'react';
+import * as ReactDom from 'react-dom';
 
-import 'antd/lib/style';
+import Drawer from '../src/';
+
 import 'antd/lib/menu/style';
-import 'antd/lib/button/style';
+import 'antd/lib/style';
 
-import 'rc-drawer/assets/index.less';
+import '../assets/index.less';
 import './assets/index.less';
 
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
-
 class Demo extends React.Component {
-  state = {
-    open: false,
+  public state = {
+    open: true,
   }
-  onClick = () => {
+  public componentDidMount() {
+    setTimeout(() => {
+      this.setState({
+        open: false,
+      });
+    }, 2000);
+  }
+  public onChange = (bool: boolean) => {
+    console.log('change: ', bool);
+  }
+  public onTouchEnd = () => {
+    this.setState({
+      open: false,
+    });
+  }
+  public onSwitch = () => {
     this.setState({
       open: !this.state.open,
     });
   }
-  render() {
+  public render() {
     return (
       <div >
-        <Drawer width="20vw" handler={false} open={this.state.open} onMaskClick={this.onClick}>
+        <Drawer
+          onChange={this.onChange}
+          open={this.state.open}
+          onClose={this.onTouchEnd}
+          handler={false}
+          level={null}
+          afterVisibleChange={(c: boolean) => {
+            console.log('transitionEnd: ', c);
+          }}
+          width="20vw"
+        >
           <Menu
-            style={{ height: '200%' }}
             defaultSelectedKeys={['1']}
             defaultOpenKeys={['sub1']}
             mode="inline"
@@ -74,11 +97,16 @@ class Demo extends React.Component {
             color: '#fff', textAlign: 'center', lineHeight: '667px',
           }}
         >
-          <Button onClick={this.onClick}>开关</Button>
+          内容区块
+          <button
+            onClick={this.onSwitch}
+            style={{ height: 24, width: 100, marginLeft: 20, color: '#000', lineHeight: '24px' }}
+          >
+            {!this.state.open ? '打开' : '关闭'}
+          </button>
         </div>
       </div>
     );
   }
 }
-
-ReactDom.render((<Demo />), document.getElementById('__react-content'));
+ReactDom.render(<Demo />, document.getElementById('__react-content'));

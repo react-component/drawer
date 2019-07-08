@@ -1,26 +1,30 @@
 /* eslint-disable no-console,react/no-multi-comp */
-import Drawer from 'rc-drawer';
-import React from 'react';
-import ReactDom from 'react-dom';
-import { Menu, Icon } from 'antd';
+import { Icon, Menu } from 'antd';
+import * as React from 'react';
+import * as ReactDom from 'react-dom';
 
-import 'antd/lib/style';
+import Drawer from '../src/';
+
 import 'antd/lib/menu/style';
+import 'antd/lib/style';
 
-import 'rc-drawer/assets/index.less';
+import '../assets/index.less';
 import './assets/index.less';
 
 const { SubMenu } = Menu;
 const MenuItemGroup = Menu.ItemGroup;
 
 class DrawerTester extends React.Component {
-  getContainer = () => {
+  private container: HTMLDivElement;
+
+  public getContainer = () => {
     return this.container;
   };
-  saveContainer = container => {
+  public saveContainer = (container: HTMLDivElement) => {
     this.container = container;
   };
-  render() {
+
+  public render() {
     return (
       <div>
         <div ref={this.saveContainer} />

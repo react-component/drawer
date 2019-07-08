@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Drawer render function 1`] = `
+<div>
+  <div
+    class="main"
+  />
+  <div>
+    1212
+  </div>
+</div>
+`;

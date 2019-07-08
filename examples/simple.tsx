@@ -1,36 +1,37 @@
 /* eslint-disable no-console,react/no-multi-comp */
-import Drawer from 'rc-drawer';
-import React from 'react';
-import ReactDom from 'react-dom';
-import { Menu, Icon } from 'antd';
+import { Icon, Menu } from 'antd';
+import * as React from 'react';
+import * as ReactDom from 'react-dom';
 
-import 'antd/lib/style';
+import Drawer from '../src/';
+
 import 'antd/lib/menu/style';
+import 'antd/lib/style';
 
-import 'rc-drawer/assets/index.less';
+
+import '../assets/index.less';
 import './assets/index.less';
 
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
 class Demo extends React.Component {
-  state = {
-    show: true,
+  public state = {
+    open: false,
   }
-  componentDidMount() {
-    setTimeout(() => {
-      this.setState({
-        show: false,
-      });
-    }, 2000);
+
+  public onSwitch = () => {
+    const { open } = this.state;
+    this.setState({
+      open: !open,
+    });
   }
-  render() {
+
+  public render() {
     return (
       <div >
-        {this.state.show && <Drawer
-          wrapperClassName="drawer-wrapper"
-          width="20vw"
-        >
+        <Drawer width="250px">
           <Menu
+            style={{ height: '200%', width: 'calc(100% - 1px)' }}// 选中的线超出
             defaultSelectedKeys={['1']}
             defaultOpenKeys={['sub1']}
             mode="inline"
@@ -69,7 +70,7 @@ class Demo extends React.Component {
               <Menu.Item key="12">Option 12</Menu.Item>
             </SubMenu>
           </Menu>
-        </Drawer>}
+        </Drawer>
         <div
           style={{
             width: '100%', height: 667, background: '#fff000',
@@ -77,9 +78,10 @@ class Demo extends React.Component {
           }}
         >
           内容区块
-        </div>
+    </div>
       </div>
-    );
+    )
   }
 }
+
 ReactDom.render(<Demo />, document.getElementById('__react-content'));

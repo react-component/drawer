@@ -1,44 +1,45 @@
 /* eslint-disable no-console,react/no-multi-comp */
-import Drawer from 'rc-drawer';
-import React from 'react';
-import ReactDom from 'react-dom';
 import { Button } from 'antd';
+import * as React from 'react';
+import * as ReactDom from 'react-dom';
 
-import 'antd/lib/style';
+import Drawer from '../src/';
+
 import 'antd/lib/button/style';
+import 'antd/lib/style';
 
-import 'rc-drawer/assets/index.less';
+import '../assets/index.less';
 import './assets/index.less';
 
 class Demo extends React.Component {
-  state = {
+  public state = {
     open: false,
     openChild: false,
     openChildren: false,
   }
-  onClick = () => {
+  public onClick = () => {
     this.setState({
       open: !this.state.open,
     });
   }
-  onChildClick = () => {
+  public onChildClick = () => {
     this.setState({
       openChild: !this.state.openChild,
     })
   }
-  onChildrenClick = () => {
+  public onChildrenClick = () => {
     this.setState({
       openChildren: !this.state.openChildren,
     })
   }
-  getLevelMove = (e) => {
-    const target = e.target;
-    if (target.className.indexOf('drawer1') >=0 ) {
+  public getLevelMove = (e: React.MouseEvent) => {
+    const target = e.target as HTMLElement;
+    if (target.className.indexOf('drawer1') >= 0) {
       return [200, 100];
     }
     return 100;
   }
-  render() {
+  public render() {
     return (
       <div >
         <div
@@ -53,7 +54,7 @@ class Demo extends React.Component {
           width="20vw"
           handler={false}
           open={this.state.open}
-          onMaskClick={this.onClick}
+          onClose={this.onClick}
           className="drawer1"
           placement="right"
         >
@@ -62,7 +63,7 @@ class Demo extends React.Component {
             <Drawer
               handler={false}
               open={this.state.openChild}
-              onMaskClick={this.onChildClick}
+              onClose={this.onChildClick}
               className="drawer2"
               level=".drawer1"
               placement="right"
@@ -74,7 +75,7 @@ class Demo extends React.Component {
                 <Drawer
                   handler={false}
                   open={this.state.openChildren}
-                  onMaskClick={this.onChildrenClick}
+                  onClose={this.onChildrenClick}
                   level={['.drawer1', '.drawer2']}
                   placement="right"
                   levelMove={this.getLevelMove}

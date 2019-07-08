@@ -1,32 +1,35 @@
 /* eslint-disable no-console,react/no-multi-comp */
-import Drawer from 'rc-drawer';
-import React from 'react';
-import ReactDom from 'react-dom';
-import { Menu, Icon, Button } from 'antd';
+import { Button, Icon, Menu } from 'antd';
+import * as React from 'react';
+import * as ReactDom from 'react-dom';
 
-import 'antd/lib/style';
-import 'antd/lib/menu/style';
+import Drawer from '../src/';
+
 import 'antd/lib/button/style';
+import 'antd/lib/menu/style';
+import 'antd/lib/style';
 
-import 'rc-drawer/assets/index.less';
+import '../assets/index.less';
 import './assets/index.less';
 
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
+
 class Demo extends React.Component {
-  state = {
-    level: ['body > h1', '#__react-content'],
+  public state = {
+    open: false,
   }
-  onClick = () => {
+  public onClick = () => {
     this.setState({
-      level: this.state.level ? null : ['body > h1', '#__react-content'],
+      open: !this.state.open,
     });
   }
-  render() {
+  public render() {
     return (
       <div >
-        <Drawer level={this.state.level} width="20vw">
+        <Drawer width="20vw" handler={false} open={this.state.open} onClose={this.onClick}>
           <Menu
+            style={{ height: '200%' }}
             defaultSelectedKeys={['1']}
             defaultOpenKeys={['sub1']}
             mode="inline"
@@ -72,13 +75,11 @@ class Demo extends React.Component {
             color: '#fff', textAlign: 'center', lineHeight: '667px',
           }}
         >
-          内容区块
-          <Button onClick={this.onClick}>
-            {this.state.level ? '切换成空 level' : '切换成标题和内容跟随动'}
-          </Button>
+          <Button onClick={this.onClick}>开关</Button>
         </div>
       </div>
     );
   }
 }
-ReactDom.render(<Demo />, document.getElementById('__react-content'));
+
+ReactDom.render((<Demo />), document.getElementById('__react-content'));
