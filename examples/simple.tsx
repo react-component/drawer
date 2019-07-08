@@ -29,7 +29,7 @@ class Demo extends React.Component {
   public render() {
     return (
       <div >
-        <Drawer handler={null} levelMove={[200, 0]}>
+        <Drawer width="250px">
           <Menu
             style={{ height: '200%', width: 'calc(100% - 1px)' }}// 选中的线超出
             defaultSelectedKeys={['1']}
