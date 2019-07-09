@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>change-remove.js - example - rc-drawer@1.10.1</title>
+  <title>change-remove.js - example - rc-drawer@2.0.0-beta.0</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,38 +263,40 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-drawer@1.10.1</h1>
+      <h1>rc-drawer@2.0.0-beta.0</h1>
 
       <p>drawer component for react</p>
     </div>
     <div class="example" id="__react-content"></div>
 
     <div class="highlight"><pre><code language="js"><span class="hljs-comment">/* eslint-disable no-console,react/no-multi-comp */</span>
-<span class="hljs-keyword">import</span> Drawer <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-drawer'</span>;
-<span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
-<span class="hljs-keyword">import</span> ReactDom <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
-<span class="hljs-keyword">import</span> { Menu, Icon } <span class="hljs-keyword">from</span> <span class="hljs-string">'antd'</span>;
+<span class="hljs-keyword">import</span> { Icon, Menu } <span class="hljs-keyword">from</span> <span class="hljs-string">'antd'</span>;
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> ReactDom <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
 
-<span class="hljs-keyword">import</span> <span class="hljs-string">'antd/lib/style'</span>;
+<span class="hljs-keyword">import</span> Drawer <span class="hljs-keyword">from</span> <span class="hljs-string">'../src/'</span>;
+
 <span class="hljs-keyword">import</span> <span class="hljs-string">'antd/lib/menu/style'</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">'antd/lib/style'</span>;
 
-<span class="hljs-keyword">import</span> <span class="hljs-string">'rc-drawer/assets/index.css'</span>;
+
+<span class="hljs-keyword">import</span> <span class="hljs-string">'../assets/index.less'</span>;
 <span class="hljs-keyword">import</span> <span class="hljs-string">'./assets/index.less'</span>;
 
 <span class="hljs-keyword">const</span> SubMenu = Menu.SubMenu;
 <span class="hljs-keyword">const</span> MenuItemGroup = Menu.ItemGroup;
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Demo</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
-  state = {
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Demo</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span>&lt;<span class="hljs-title">any</span>, </span>{ show: boolean }&gt; {
+  public state = {
     show: <span class="hljs-literal">true</span>,
   }
-  componentDidMount() {
+  public componentDidMount() {
     setTimeout(() =&gt; {
       <span class="hljs-keyword">this</span>.setState({
         show: <span class="hljs-literal">false</span>,
       });
     }, <span class="hljs-number">2000</span>);
   }
-  render() {
+  public render() {
     <span class="hljs-keyword">return</span> (
       <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> &gt;</span>
         {this.state.show &amp;&amp; <span class="hljs-tag">&lt;<span class="hljs-title">Drawer</span>

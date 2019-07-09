@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>placement.js - example - rc-drawer@1.10.1</title>
+  <title>placement.js - example - rc-drawer@2.0.0-beta.0</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,23 +263,25 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-drawer@1.10.1</h1>
+      <h1>rc-drawer@2.0.0-beta.0</h1>
 
       <p>drawer component for react</p>
     </div>
     <div class="example" id="__react-content"></div>
 
     <div class="highlight"><pre><code language="js"><span class="hljs-comment">/* eslint-disable no-console,react/no-multi-comp */</span>
-<span class="hljs-keyword">import</span> Drawer <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-drawer'</span>;
-<span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
-<span class="hljs-keyword">import</span> ReactDom <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
-<span class="hljs-keyword">import</span> { Menu, Icon, Select } <span class="hljs-keyword">from</span> <span class="hljs-string">'antd'</span>;
+<span class="hljs-keyword">import</span> { Icon, Menu, Select } <span class="hljs-keyword">from</span> <span class="hljs-string">'antd'</span>;
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> ReactDom <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
 
-<span class="hljs-keyword">import</span> <span class="hljs-string">'antd/lib/style'</span>;
+<span class="hljs-keyword">import</span> Drawer <span class="hljs-keyword">from</span> <span class="hljs-string">'../src/'</span>;
+
+<span class="hljs-keyword">import</span> <span class="hljs-string">'antd/lib/button/style'</span>;
 <span class="hljs-keyword">import</span> <span class="hljs-string">'antd/lib/menu/style'</span>;
 <span class="hljs-keyword">import</span> <span class="hljs-string">'antd/lib/select/style'</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">'antd/lib/style'</span>;
 
-<span class="hljs-keyword">import</span> <span class="hljs-string">'rc-drawer/assets/index.css'</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">'../assets/index.less'</span>;
 <span class="hljs-keyword">import</span> <span class="hljs-string">'./assets/index.less'</span>;
 
 <span class="hljs-keyword">const</span> SubMenu = Menu.SubMenu;
@@ -287,13 +289,13 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <span class="hljs-keyword">const</span> Option = Select.Option;
 
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Demo</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
-  state = {
+  public state = {
     placement: <span class="hljs-string">'right'</span>,
     childShow: <span class="hljs-literal">true</span>,
     width: <span class="hljs-string">'20vw'</span>,
     height: <span class="hljs-literal">null</span>,
   }
-  onChange = (value) =&gt; {
+  public onChange = (value: string) =&gt; {
     <span class="hljs-keyword">this</span>.setState({
       placement: value,
       width: value === <span class="hljs-string">'right'</span> || value === <span class="hljs-string">'left'</span> ? <span class="hljs-string">'20vw'</span> : <span class="hljs-literal">null</span>,
@@ -305,7 +307,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
       });
     });
   }
-  render() {
+  public render() {
     <span class="hljs-keyword">return</span> (
       <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> &gt;</span>
         {this.state.childShow &amp;&amp; (

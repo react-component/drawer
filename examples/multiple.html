@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>multiple.js - example - rc-drawer@1.10.1</title>
+  <title>multiple.js - example - rc-drawer@2.0.0-beta.0</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,53 +263,54 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-drawer@1.10.1</h1>
+      <h1>rc-drawer@2.0.0-beta.0</h1>
 
       <p>drawer component for react</p>
     </div>
     <div class="example" id="__react-content"></div>
 
     <div class="highlight"><pre><code language="js"><span class="hljs-comment">/* eslint-disable no-console,react/no-multi-comp */</span>
-<span class="hljs-keyword">import</span> Drawer <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-drawer'</span>;
-<span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
-<span class="hljs-keyword">import</span> ReactDom <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
 <span class="hljs-keyword">import</span> { Button } <span class="hljs-keyword">from</span> <span class="hljs-string">'antd'</span>;
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> ReactDom <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
 
-<span class="hljs-keyword">import</span> <span class="hljs-string">'antd/lib/style'</span>;
+<span class="hljs-keyword">import</span> Drawer <span class="hljs-keyword">from</span> <span class="hljs-string">'../src/'</span>;
+
 <span class="hljs-keyword">import</span> <span class="hljs-string">'antd/lib/button/style'</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">'antd/lib/style'</span>;
 
-<span class="hljs-keyword">import</span> <span class="hljs-string">'rc-drawer/assets/index.css'</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">'../assets/index.less'</span>;
 <span class="hljs-keyword">import</span> <span class="hljs-string">'./assets/index.less'</span>;
 
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Demo</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
-  state = {
+  public state = {
     open: <span class="hljs-literal">false</span>,
     openChild: <span class="hljs-literal">false</span>,
     openChildren: <span class="hljs-literal">false</span>,
   }
-  onClick = () =&gt; {
+  public onClick = () =&gt; {
     <span class="hljs-keyword">this</span>.setState({
       open: !<span class="hljs-keyword">this</span>.state.open,
     });
   }
-  onChildClick = () =&gt; {
+  public onChildClick = () =&gt; {
     <span class="hljs-keyword">this</span>.setState({
       openChild: !<span class="hljs-keyword">this</span>.state.openChild,
     })
   }
-  onChildrenClick = () =&gt; {
+  public onChildrenClick = () =&gt; {
     <span class="hljs-keyword">this</span>.setState({
       openChildren: !<span class="hljs-keyword">this</span>.state.openChildren,
     })
   }
-  getLevelMove = (e) =&gt; {
-    <span class="hljs-keyword">const</span> target = e.target;
-    <span class="hljs-keyword">if</span> (target.className.indexOf(<span class="hljs-string">'drawer1'</span>) &gt;=<span class="hljs-number">0</span> ) {
+  public getLevelMove = (e: React.MouseEvent) =&gt; {
+    <span class="hljs-keyword">const</span> target = e.target <span class="hljs-keyword">as</span> HTMLElement;
+    <span class="hljs-keyword">if</span> (target.className.indexOf(<span class="hljs-string">'drawer1'</span>) &gt;= <span class="hljs-number">0</span>) {
       <span class="hljs-keyword">return</span> [<span class="hljs-number">200</span>, <span class="hljs-number">100</span>];
     }
     <span class="hljs-keyword">return</span> <span class="hljs-number">100</span>;
   }
-  render() {
+  public render() {
     <span class="hljs-keyword">return</span> (
       <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> &gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-title">div</span>
@@ -324,7 +325,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
           <span class="hljs-attribute">width</span>=<span class="hljs-value">"20vw"</span>
           <span class="hljs-attribute">handler</span>=<span class="hljs-value">{false}</span>
           <span class="hljs-attribute">open</span>=<span class="hljs-value">{this.state.open}</span>
-          <span class="hljs-attribute">onMaskClick</span>=<span class="hljs-value">{this.onClick}</span>
+          <span class="hljs-attribute">onClose</span>=<span class="hljs-value">{this.onClick}</span>
           <span class="hljs-attribute">className</span>=<span class="hljs-value">"drawer1"</span>
           <span class="hljs-attribute">placement</span>=<span class="hljs-value">"right"</span>
         &gt;</span>
@@ -333,7 +334,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
             <span class="hljs-tag">&lt;<span class="hljs-title">Drawer</span>
               <span class="hljs-attribute">handler</span>=<span class="hljs-value">{false}</span>
               <span class="hljs-attribute">open</span>=<span class="hljs-value">{this.state.openChild}</span>
-              <span class="hljs-attribute">onMaskClick</span>=<span class="hljs-value">{this.onChildClick}</span>
+              <span class="hljs-attribute">onClose</span>=<span class="hljs-value">{this.onChildClick}</span>
               <span class="hljs-attribute">className</span>=<span class="hljs-value">"drawer2"</span>
               <span class="hljs-attribute">level</span>=<span class="hljs-value">".drawer1"</span>
               <span class="hljs-attribute">placement</span>=<span class="hljs-value">"right"</span>
@@ -345,7 +346,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
                 <span class="hljs-tag">&lt;<span class="hljs-title">Drawer</span>
                   <span class="hljs-attribute">handler</span>=<span class="hljs-value">{false}</span>
                   <span class="hljs-attribute">open</span>=<span class="hljs-value">{this.state.openChildren}</span>
-                  <span class="hljs-attribute">onMaskClick</span>=<span class="hljs-value">{this.onChildrenClick}</span>
+                  <span class="hljs-attribute">onClose</span>=<span class="hljs-value">{this.onChildrenClick}</span>
                   <span class="hljs-attribute">level</span>=<span class="hljs-value">{['.drawer1',</span> '<span class="hljs-attribute">.drawer2</span>']}
                   <span class="hljs-attribute">placement</span>=<span class="hljs-value">"right"</span>
                   <span class="hljs-attribute">levelMove</span>=<span class="hljs-value">{this.getLevelMove}</span>

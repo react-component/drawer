@@ -7,7 +7,7 @@
   <meta charset="utf-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css" rel="stylesheet"/>
-  <title>rc-drawer@1.10.1 - drawer component for react</title>
+  <title>rc-drawer@2.0.0-beta.0 - drawer component for react</title>
   <style>
     @font-face {
       font-family: octicons-anchor;
@@ -737,7 +737,7 @@
 
 <body>
 <div class="header">
-  <h1>rc-drawer@1.10.1</h1>
+  <h1>rc-drawer@2.0.0-beta.0</h1>
 </div>
 <div class="examples">
   <h3>EXAMPLES</h3>
@@ -911,6 +911,12 @@ ReactDom.render(
 <td>mask is show</td>
 </tr>
 <tr>
+<td>maskClosable</td>
+<td>boolean</td>
+<td>true</td>
+<td>Clicking on the mask (area outside the Drawer) to close the Drawer or not.</td>
+</tr>
+<tr>
 <td>maskStyle</td>
 <td>object</td>
 <td>null</td>
@@ -929,10 +935,10 @@ ReactDom.render(
 <td>transition end callback(open)</td>
 </tr>
 <tr>
-<td>onMaskClick</td>
+<td>onClose</td>
 <td>func</td>
 <td>null</td>
-<td>mask close click function</td>
+<td>close click function</td>
 </tr>
 <tr>
 <td>onHandleClick</td>

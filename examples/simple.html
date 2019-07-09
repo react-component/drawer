@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>simple.js - example - rc-drawer@1.10.1</title>
+  <title>simple.js - example - rc-drawer@2.0.0-beta.0</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,81 +263,100 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-drawer@1.10.1</h1>
+      <h1>rc-drawer@2.0.0-beta.0</h1>
 
       <p>drawer component for react</p>
     </div>
     <div class="example" id="__react-content"></div>
 
     <div class="highlight"><pre><code language="js"><span class="hljs-comment">/* eslint-disable no-console,react/no-multi-comp */</span>
-<span class="hljs-keyword">import</span> Drawer <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-drawer'</span>;
-<span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
-<span class="hljs-keyword">import</span> ReactDom <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
-<span class="hljs-keyword">import</span> { Menu, Icon } <span class="hljs-keyword">from</span> <span class="hljs-string">'antd'</span>;
+<span class="hljs-keyword">import</span> { Icon, Menu } <span class="hljs-keyword">from</span> <span class="hljs-string">'antd'</span>;
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> ReactDom <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
 
-<span class="hljs-keyword">import</span> <span class="hljs-string">'antd/lib/style'</span>;
+<span class="hljs-keyword">import</span> Drawer <span class="hljs-keyword">from</span> <span class="hljs-string">'../src/'</span>;
+
 <span class="hljs-keyword">import</span> <span class="hljs-string">'antd/lib/menu/style'</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">'antd/lib/style'</span>;
 
-<span class="hljs-keyword">import</span> <span class="hljs-string">'rc-drawer/assets/index.css'</span>;
+
+<span class="hljs-keyword">import</span> <span class="hljs-string">'../assets/index.less'</span>;
 <span class="hljs-keyword">import</span> <span class="hljs-string">'./assets/index.less'</span>;
 
 <span class="hljs-keyword">const</span> SubMenu = Menu.SubMenu;
 <span class="hljs-keyword">const</span> MenuItemGroup = Menu.ItemGroup;
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Demo</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+  public state = {
+    open: <span class="hljs-literal">false</span>,
+  }
 
-ReactDom.render((
-  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> &gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-title">Drawer</span> <span class="hljs-attribute">width</span>=<span class="hljs-value">"250px"</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">Menu</span>
-        <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">height:</span> '<span class="hljs-attribute">200</span>%', <span class="hljs-attribute">width:</span> '<span class="hljs-attribute">calc</span>(<span class="hljs-attribute">100</span>% <span class="hljs-attribute">-</span> <span class="hljs-attribute">1px</span>)' }}// 选中的线超出
-        <span class="hljs-attribute">defaultSelectedKeys</span>=<span class="hljs-value">{['1']}</span>
-        <span class="hljs-attribute">defaultOpenKeys</span>=<span class="hljs-value">{['sub1']}</span>
-        <span class="hljs-attribute">mode</span>=<span class="hljs-value">"inline"</span>
-      &gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">SubMenu</span>
-          <span class="hljs-attribute">key</span>=<span class="hljs-value">"sub1"</span>
-          <span class="hljs-attribute">title</span>=<span class="hljs-value">{&lt;span</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">Icon</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"mail"</span> /&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">span</span>&gt;</span>Navigation One<span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span>}
-        &gt;
-          <span class="hljs-tag">&lt;<span class="hljs-title">MenuItemGroup</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"g1"</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">"Item 1"</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-title">Menu.Item</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"1"</span>&gt;</span>Option 1<span class="hljs-tag">&lt;/<span class="hljs-title">Menu.Item</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-title">Menu.Item</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"2"</span>&gt;</span>Option 2<span class="hljs-tag">&lt;/<span class="hljs-title">Menu.Item</span>&gt;</span>
-          <span class="hljs-tag">&lt;/<span class="hljs-title">MenuItemGroup</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">MenuItemGroup</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"g2"</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">"Item 2"</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-title">Menu.Item</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"3"</span>&gt;</span>Option 3<span class="hljs-tag">&lt;/<span class="hljs-title">Menu.Item</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-title">Menu.Item</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"4"</span>&gt;</span>Option 4<span class="hljs-tag">&lt;/<span class="hljs-title">Menu.Item</span>&gt;</span>
-          <span class="hljs-tag">&lt;/<span class="hljs-title">MenuItemGroup</span>&gt;</span>
-        <span class="hljs-tag">&lt;/<span class="hljs-title">SubMenu</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">SubMenu</span>
-          <span class="hljs-attribute">key</span>=<span class="hljs-value">"sub2"</span>
-          <span class="hljs-attribute">title</span>=<span class="hljs-value">{&lt;span</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">Icon</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"appstore"</span> /&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">span</span>&gt;</span>Navigation Two<span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span>}
-        &gt;
-          <span class="hljs-tag">&lt;<span class="hljs-title">Menu.Item</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"5"</span>&gt;</span>Option 5<span class="hljs-tag">&lt;/<span class="hljs-title">Menu.Item</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">Menu.Item</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"6"</span>&gt;</span>Option 6<span class="hljs-tag">&lt;/<span class="hljs-title">Menu.Item</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">SubMenu</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"sub3"</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">"Submenu"</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-title">Menu.Item</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"7"</span>&gt;</span>Option 7<span class="hljs-tag">&lt;/<span class="hljs-title">Menu.Item</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-title">Menu.Item</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"8"</span>&gt;</span>Option 8<span class="hljs-tag">&lt;/<span class="hljs-title">Menu.Item</span>&gt;</span>
-          <span class="hljs-tag">&lt;/<span class="hljs-title">SubMenu</span>&gt;</span>
-        <span class="hljs-tag">&lt;/<span class="hljs-title">SubMenu</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">SubMenu</span>
-          <span class="hljs-attribute">key</span>=<span class="hljs-value">"sub4"</span>
-          <span class="hljs-attribute">title</span>=<span class="hljs-value">{&lt;span</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">Icon</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"setting"</span> /&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">span</span>&gt;</span>Navigation Three<span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span>}
-        &gt;
-          <span class="hljs-tag">&lt;<span class="hljs-title">Menu.Item</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"9"</span>&gt;</span>Option 9<span class="hljs-tag">&lt;/<span class="hljs-title">Menu.Item</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">Menu.Item</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"10"</span>&gt;</span>Option 10<span class="hljs-tag">&lt;/<span class="hljs-title">Menu.Item</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">Menu.Item</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"11"</span>&gt;</span>Option 11<span class="hljs-tag">&lt;/<span class="hljs-title">Menu.Item</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">Menu.Item</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"12"</span>&gt;</span>Option 12<span class="hljs-tag">&lt;/<span class="hljs-title">Menu.Item</span>&gt;</span>
-        <span class="hljs-tag">&lt;/<span class="hljs-title">SubMenu</span>&gt;</span>
-      <span class="hljs-tag">&lt;/<span class="hljs-title">Menu</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-title">Drawer</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-title">div</span>
-      <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span>
-        <span class="hljs-attribute">width:</span> '<span class="hljs-attribute">100</span>%', <span class="hljs-attribute">height:</span> <span class="hljs-attribute">667</span>, <span class="hljs-attribute">background:</span> '#<span class="hljs-attribute">fff000</span>',
-        <span class="hljs-attribute">color:</span> '#<span class="hljs-attribute">fff</span>', <span class="hljs-attribute">textAlign:</span> '<span class="hljs-attribute">center</span>', <span class="hljs-attribute">lineHeight:</span> '<span class="hljs-attribute">667px</span>',
-      }}
-    &gt;</span>
-      内容区块
+  public onSwitch = () =&gt; {
+    <span class="hljs-keyword">const</span> { open } = <span class="hljs-keyword">this</span>.state;
+    <span class="hljs-keyword">this</span>.setState({
+      open: !open,
+    });
+  }
+
+  public render() {
+    <span class="hljs-keyword">return</span> (
+      <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> &gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">Drawer</span> <span class="hljs-attribute">width</span>=<span class="hljs-value">"250px"</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">Menu</span>
+            <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">height:</span> '<span class="hljs-attribute">200</span>%', <span class="hljs-attribute">width:</span> '<span class="hljs-attribute">calc</span>(<span class="hljs-attribute">100</span>% <span class="hljs-attribute">-</span> <span class="hljs-attribute">1px</span>)' }}// 选中的线超出
+            <span class="hljs-attribute">defaultSelectedKeys</span>=<span class="hljs-value">{['1']}</span>
+            <span class="hljs-attribute">defaultOpenKeys</span>=<span class="hljs-value">{['sub1']}</span>
+            <span class="hljs-attribute">mode</span>=<span class="hljs-value">"inline"</span>
+          &gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">SubMenu</span>
+              <span class="hljs-attribute">key</span>=<span class="hljs-value">"sub1"</span>
+              <span class="hljs-attribute">title</span>=<span class="hljs-value">{&lt;span</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">Icon</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"mail"</span> /&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">span</span>&gt;</span>Navigation One<span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span>}
+            &gt;
+              <span class="hljs-tag">&lt;<span class="hljs-title">MenuItemGroup</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"g1"</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">"Item 1"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">Menu.Item</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"1"</span>&gt;</span>Option 1<span class="hljs-tag">&lt;/<span class="hljs-title">Menu.Item</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">Menu.Item</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"2"</span>&gt;</span>Option 2<span class="hljs-tag">&lt;/<span class="hljs-title">Menu.Item</span>&gt;</span>
+              <span class="hljs-tag">&lt;/<span class="hljs-title">MenuItemGroup</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-title">MenuItemGroup</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"g2"</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">"Item 2"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">Menu.Item</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"3"</span>&gt;</span>Option 3<span class="hljs-tag">&lt;/<span class="hljs-title">Menu.Item</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">Menu.Item</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"4"</span>&gt;</span>Option 4<span class="hljs-tag">&lt;/<span class="hljs-title">Menu.Item</span>&gt;</span>
+              <span class="hljs-tag">&lt;/<span class="hljs-title">MenuItemGroup</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-title">SubMenu</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">SubMenu</span>
+              <span class="hljs-attribute">key</span>=<span class="hljs-value">"sub2"</span>
+              <span class="hljs-attribute">title</span>=<span class="hljs-value">{&lt;span</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">Icon</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"appstore"</span> /&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">span</span>&gt;</span>Navigation Two<span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span>}
+            &gt;
+              <span class="hljs-tag">&lt;<span class="hljs-title">Menu.Item</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"5"</span>&gt;</span>Option 5<span class="hljs-tag">&lt;/<span class="hljs-title">Menu.Item</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-title">Menu.Item</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"6"</span>&gt;</span>Option 6<span class="hljs-tag">&lt;/<span class="hljs-title">Menu.Item</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-title">SubMenu</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"sub3"</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">"Submenu"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">Menu.Item</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"7"</span>&gt;</span>Option 7<span class="hljs-tag">&lt;/<span class="hljs-title">Menu.Item</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">Menu.Item</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"8"</span>&gt;</span>Option 8<span class="hljs-tag">&lt;/<span class="hljs-title">Menu.Item</span>&gt;</span>
+              <span class="hljs-tag">&lt;/<span class="hljs-title">SubMenu</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-title">SubMenu</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">SubMenu</span>
+              <span class="hljs-attribute">key</span>=<span class="hljs-value">"sub4"</span>
+              <span class="hljs-attribute">title</span>=<span class="hljs-value">{&lt;span</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">Icon</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"setting"</span> /&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">span</span>&gt;</span>Navigation Three<span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span>}
+            &gt;
+              <span class="hljs-tag">&lt;<span class="hljs-title">Menu.Item</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"9"</span>&gt;</span>Option 9<span class="hljs-tag">&lt;/<span class="hljs-title">Menu.Item</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-title">Menu.Item</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"10"</span>&gt;</span>Option 10<span class="hljs-tag">&lt;/<span class="hljs-title">Menu.Item</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-title">Menu.Item</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"11"</span>&gt;</span>Option 11<span class="hljs-tag">&lt;/<span class="hljs-title">Menu.Item</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-title">Menu.Item</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"12"</span>&gt;</span>Option 12<span class="hljs-tag">&lt;/<span class="hljs-title">Menu.Item</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-title">SubMenu</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-title">Menu</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">Drawer</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">div</span>
+          <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span>
+            <span class="hljs-attribute">width:</span> '<span class="hljs-attribute">100</span>%', <span class="hljs-attribute">height:</span> <span class="hljs-attribute">667</span>, <span class="hljs-attribute">background:</span> '#<span class="hljs-attribute">fff000</span>',
+            <span class="hljs-attribute">color:</span> '#<span class="hljs-attribute">fff</span>', <span class="hljs-attribute">textAlign:</span> '<span class="hljs-attribute">center</span>', <span class="hljs-attribute">lineHeight:</span> '<span class="hljs-attribute">667px</span>',
+          }}
+        &gt;</span>
+          内容区块
     <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>)</span>, <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'__react-content'</span>));
-</code></pre></div>
+      <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    )</span>
+  }
+}
+
+ReactDom.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Demo</span> /&gt;</span>, document.getElementById('__react-content'));
+</span></code></pre></div>
   </div>
   <a href="https://github.com/ant-motion/drawer">
     <img style="position: absolute; top: 0; right: 0; border: 0;"

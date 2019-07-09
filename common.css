@@ -924,7 +924,8 @@ html {
 }
 .zoom-enter,
 .zoom-appear {
-  transform: scale(0);
+  -ms-transform: scale(0);
+      transform: scale(0);
   opacity: 0;
   animation-timing-function: cubic-bezier(0.08, 0.82, 0.17, 1);
 }
@@ -954,7 +955,8 @@ html {
 }
 .zoom-big-enter,
 .zoom-big-appear {
-  transform: scale(0);
+  -ms-transform: scale(0);
+      transform: scale(0);
   opacity: 0;
   animation-timing-function: cubic-bezier(0.08, 0.82, 0.17, 1);
 }
@@ -984,7 +986,8 @@ html {
 }
 .zoom-big-fast-enter,
 .zoom-big-fast-appear {
-  transform: scale(0);
+  -ms-transform: scale(0);
+      transform: scale(0);
   opacity: 0;
   animation-timing-function: cubic-bezier(0.08, 0.82, 0.17, 1);
 }
@@ -1014,7 +1017,8 @@ html {
 }
 .zoom-up-enter,
 .zoom-up-appear {
-  transform: scale(0);
+  -ms-transform: scale(0);
+      transform: scale(0);
   opacity: 0;
   animation-timing-function: cubic-bezier(0.08, 0.82, 0.17, 1);
 }
@@ -1044,7 +1048,8 @@ html {
 }
 .zoom-down-enter,
 .zoom-down-appear {
-  transform: scale(0);
+  -ms-transform: scale(0);
+      transform: scale(0);
   opacity: 0;
   animation-timing-function: cubic-bezier(0.08, 0.82, 0.17, 1);
 }
@@ -1074,7 +1079,8 @@ html {
 }
 .zoom-left-enter,
 .zoom-left-appear {
-  transform: scale(0);
+  -ms-transform: scale(0);
+      transform: scale(0);
   opacity: 0;
   animation-timing-function: cubic-bezier(0.08, 0.82, 0.17, 1);
 }
@@ -1104,7 +1110,8 @@ html {
 }
 .zoom-right-enter,
 .zoom-right-appear {
-  transform: scale(0);
+  -ms-transform: scale(0);
+      transform: scale(0);
   opacity: 0;
   animation-timing-function: cubic-bezier(0.08, 0.82, 0.17, 1);
 }
