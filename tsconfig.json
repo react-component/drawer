@@ -4,6 +4,7 @@
     "moduleResolution": "node",
     "jsx": "react",
     "target": "es6",
-    "noImplicitAny": true
+    "noImplicitAny": true,
+    "skipLibCheck": true
   }
 } 
