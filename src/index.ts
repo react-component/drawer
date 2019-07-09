@@ -1,4 +1,4 @@
 // export this package's api
-import Drawer from './Drawer';
+import Drawer from './DrawerWrapper';
 
 export default Drawer;

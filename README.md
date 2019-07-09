@@ -63,10 +63,11 @@ ReactDom.render(
 | ease | string | `cubic-bezier(0.78, 0.14, 0.15, 0.86)` | level animation timing function |
 | getContainer    | string \| func \| HTMLElement | `body` | Return the mount node for Drawer. if is `null` use React.creactElement  |
 | showMask    |  boolean  | true | mask is show |
+| maskClosable | boolean  | true | Clicking on the mask (area outside the Drawer) to close the Drawer or not. | 
 | maskStyle | object | null | mask style |
 | onChange  | func | null | change callback(open) |
 | afterVisibleChange  | func | null | transition end callback(open) |
-| onMaskClick | func | null | mask close click function |
+| onClose | func | null | close click function |
 | onHandleClick | func | nul  | handle icon click function |
 | keyboard | Boolean | true |  Whether support press esc to close |
 

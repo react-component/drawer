@@ -1,55 +1,32 @@
 /* eslint-disable no-console,react/no-multi-comp */
-import Drawer from 'rc-drawer';
-import React from 'react';
-import ReactDom from 'react-dom';
-import { Menu, Icon } from 'antd';
+import { Button, Icon, Menu } from 'antd';
+import * as React from 'react';
+import * as ReactDom from 'react-dom';
 
-import 'antd/lib/style';
+import Drawer from '../src/';
+
+import 'antd/lib/button/style';
 import 'antd/lib/menu/style';
+import 'antd/lib/style';
 
-import 'rc-drawer/assets/index.less';
+import '../assets/index.less';
 import './assets/index.less';
 
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
 class Demo extends React.Component {
-  state = {
-    open: true,
+  public state = {
+    level: ['body > h1', '#__react-content'],
   }
-  componentDidMount() {
-    setTimeout(() => {
-      this.setState({
-        open: false,
-      });
-    }, 2000);
-  }
-  onChange = (bool) => {
-    console.log('change: ', bool);
-  }
-  onTouchEnd = () => {
+  public onClick = () => {
     this.setState({
-      open: false,
+      level: this.state.level ? null : ['body > h1', '#__react-content'],
     });
   }
-  onSwitch = () => {
-    this.setState({
-      open: !this.state.open,
-    });
-  }
-  render() {
+  public render() {
     return (
       <div >
-        <Drawer
-          onChange={this.onChange}
-          open={this.state.open}
-          onMaskClick={this.onTouchEnd}
-          handler={false}
-          level={null}
-          afterVisibleChange={(c) => {
-            console.log('transitionEnd: ', c);
-          }}
-          width="20vw"
-        >
+        <Drawer level={this.state.level} width="20vw">
           <Menu
             defaultSelectedKeys={['1']}
             defaultOpenKeys={['sub1']}
@@ -97,12 +74,9 @@ class Demo extends React.Component {
           }}
         >
           内容区块
-          <button
-            onClick={this.onSwitch}
-            style={{ height: 24, width: 100, marginLeft: 20, color: '#000', lineHeight: '24px' }}
-          >
-            {!this.state.open ? '打开' : '关闭'}
-          </button>
+          <Button onClick={this.onClick}>
+            {this.state.level ? '切换成空 level' : '切换成标题和内容跟随动'}
+          </Button>
         </div>
       </div>
     );

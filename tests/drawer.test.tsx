@@ -1,22 +1,24 @@
 // eslint-disable react/no-multi-comp
-import React from 'react';
 import { mount } from 'enzyme';
-import Drawer from '../src';
+import * as React from 'react';
+import Drawer from '../src/';
+import { IDrawerProps } from '../src/IDrawerPropTypes'
 
 jest.mock('rc-util/lib/Portal');
 
 class DrawerTesterRef extends React.Component {
-  getContainer = () => {
+  public container: HTMLDivElement;
+  public getContainer = () => {
     return this.container;
   };
-  saveContainer = container => {
+  public saveContainer = (container: HTMLDivElement) => {
     this.container = container;
   };
-  render() {
+  public render() {
     return (
       <div>
         <div ref={this.saveContainer} className="main" />
-        <Drawer {...this.props} open getContainer={this.getContainer}>
+        <Drawer {...this.props} open={true} getContainer={this.getContainer}>
           <p className="text">Here is content of Drawer</p>
         </Drawer>
       </div>
@@ -24,26 +26,32 @@ class DrawerTesterRef extends React.Component {
   }
 }
 /* eslint react/no-multi-comp: 0 */
-class DrawerTesterDom extends React.Component {
-  constructor(props) {
+
+interface IState {
+  visible: boolean;
+};
+// tslint:disable-next-line:max-classes-per-file
+class DrawerTesterDom extends React.Component<IDrawerProps, IState> {
+  public container: HTMLDivElement;
+  constructor(props: IDrawerProps) {
     super(props);
     this.state = { visible: false };
   }
-  componentDidMount() {
+  public componentDidMount() {
     this.setState({ visible: true }); // eslint-disable-line react/no-did-mount-set-state
   }
-  getContainer = () => {
+  public getContainer = () => {
     return this.container;
   };
-  saveContainer = container => {
+  public saveContainer = (container: HTMLDivElement) => {
     this.container = container;
   };
-  render() {
+  public render() {
     return (
       <div>
         <div ref={this.saveContainer} className="main" />
         {this.state.visible ? (
-          <Drawer {...this.props} open getContainer={this.getContainer()}>
+          <Drawer {...this.props} open={true} getContainer={this.getContainer()}>
             <p className="text">Here is content of Drawer</p>
           </Drawer>
         ) : null}
@@ -53,22 +61,23 @@ class DrawerTesterDom extends React.Component {
 }
 
 /* eslint react/no-multi-comp: 0 */
-class DrawerTesterBoolean extends React.Component {
-  constructor(props) {
+// tslint:disable-next-line:max-classes-per-file
+class DrawerTesterBoolean extends React.Component<IDrawerProps, IState> {
+  constructor(props: IDrawerProps) {
     super(props);
     this.state = { visible: false };
   }
-  componentDidMount() {
+  public componentDidMount() {
     this.setState({ visible: true }); // eslint-disable-line react/no-did-mount-set-state
   }
-  getContainer = () => {
+  public getContainer = () => {
     return document.getElementById('test');
   };
-  render() {
+  public render() {
     return (
       <div>
         {this.state.visible ? (
-          <Drawer {...this.props} open getContainer={false}>
+          <Drawer {...this.props} open={true} getContainer={false}>
             <p className="text">Here is content of Drawer</p>
           </Drawer>
         ) : null}

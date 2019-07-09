@@ -1,21 +1,17 @@
 /* eslint-disable */
-import React from 'react';
-import PropTypes from 'prop-types';
 import { mount } from 'enzyme';
-import Drawer from '../src';
+import * as React from 'react';
+import Drawer from '../src/';
 
-function Div(props) {
+function Div(props: { show?: boolean }) {
   return (
     <div className="div-wrapper">
-      {props.show && <Drawer wrapperClassName="drawer-wrapper" defaultOpen />}
+      {props.show && <Drawer wrapperClassName="drawer-wrapper" defaultOpen={true} />}
     </div>
   );
 }
-Div.propTypes = {
-  show: PropTypes.bool,
-};
 
-function DrawerComp(props) {
+function DrawerComp(props: { open?: boolean }) {
   return (
     <div className="react-wrapper">
       <div id="a" style={{ position: 'absolute', top: 0, left: 0 }}>
@@ -26,7 +22,7 @@ function DrawerComp(props) {
   );
 }
 
-function createClientXY(x, y) {
+function createClientXY(x: number, y: number) {
   return { clientX: x, clientY: y };
 }
 
@@ -41,9 +37,9 @@ function createMoveTouchEventObject({ x = 0, y = 0 }) {
 describe('rc-drawer-menu', () => {
   let instance;
   it('single drawer', () => {
-    instance = mount(<Drawer onIconClick={() => {}} />);
-    const drawer = instance.find('.drawer');
-    const drawerContent = instance.find('.drawer-content-wrapper');
+    instance = mount(<Drawer onHandleClick={() => { }} />);
+    const drawer = instance.find('.drawer') as any;
+    const drawerContent = instance.find('.drawer-content-wrapper') as any;
     expect(!!drawer).toBe(true);
     expect(drawer.instance().parentNode.parentNode.tagName).toBe('BODY');
     console.log('clientWidth:', drawerContent.instance().clientWidth);
@@ -67,8 +63,8 @@ describe('rc-drawer-menu', () => {
   });
 
   it('default open drawer', () => {
-    instance = mount(<Drawer handler={<i className="a">a</i>} defaultOpen level={[]} />);
-    const drawer = instance.find('.drawer-content-wrapper').instance();
+    instance = mount(<Drawer handler={<i className="a">a</i>} defaultOpen={true} level={[]} />);
+    const drawer = instance.find('.drawer-content-wrapper').instance() as any;
     const content = instance.find('.drawer-content');
     content.simulate('touchStart', createStartTouchEventObject({ x: 100, y: 0 }));
     content.simulate('touchMove', createMoveTouchEventObject({ x: 150, y: 10 }));
@@ -81,17 +77,17 @@ describe('rc-drawer-menu', () => {
   });
 
   it('handler is null，open=true', () => {
-    const instance = mount(<Drawer handler={false} open level={null} />);
+    instance = mount(<Drawer handler={null} open={true} level={null} />);
     expect(instance.render()).toMatchSnapshot();
   });
   it('handler is null，open=false', () => {
-    const instance = mount(<Drawer handler={false} open={false} level={null} />);
+    instance = mount(<Drawer handler={false} open={false} level={null} />);
     expect(instance.render()).toMatchSnapshot();
   });
   it('switch open drawer', () => {
     instance = mount(<DrawerComp />);
     jest.useFakeTimers();
-    const drawer = instance.find('.drawer-content-wrapper').instance();
+    const drawer = instance.find('.drawer-content-wrapper').instance() as any;
     console.log('第一次：', drawer.style.transform);
     expect(drawer.style.transform).toBe('translateX(-100%)');
     instance.setProps({
@@ -114,11 +110,11 @@ describe('rc-drawer-menu', () => {
         <div id="a" className="a" style={{ position: 'absolute', top: 0, left: 0 }}>
           test1
         </div>
-        <Drawer getContainer={null} defaultOpen level="#a" wrapperClassName="drawer-wrapper" />
+        <Drawer getContainer={null} defaultOpen={true} level="#a" wrapperClassName="drawer-wrapper" />
       </div>,
     );
-    const drawer = instance.find('.drawer').instance();
-    const a = instance.find('#a').instance();
+    const drawer = instance.find('.drawer').instance() as any;
+    const a = instance.find('#a').instance() as any;
     console.log('a transform:', a.style.transform);
     expect(a.style.transform).toBe('');
     console.log(drawer.parentNode.parentNode.className);
@@ -127,7 +123,7 @@ describe('rc-drawer-menu', () => {
   });
   it('click open close', () => {
     instance = mount(<Drawer level="b" levelMove={200} />);
-    const content = instance.find('.drawer-content-wrapper').instance();
+    const content = instance.find('.drawer-content-wrapper').instance() as any;
     console.log(content.style.transform);
     expect(content.style.transform).toBe('translateX(-100%)');
     const handle = instance.find('.drawer-handle');
@@ -140,9 +136,9 @@ describe('rc-drawer-menu', () => {
     expect(content.style.transform).toBe('translateX(-100%)');
   });
   it('will unmount', () => {
-    instance = mount(<Div show />);
-    const divWrapper = instance.find('.div-wrapper').instance();
-    const content = instance.find('.drawer-content-wrapper').instance();
+    instance = mount(<Div show={true} />);
+    const divWrapper = instance.find('.div-wrapper').instance() as any;
+    const content = instance.find('.drawer-content-wrapper').instance() as any;
     console.log(content.style.transform);
     expect(content.style.transform).toBe('');
     instance.setProps({
@@ -152,7 +148,7 @@ describe('rc-drawer-menu', () => {
   });
   it('placement change', () => {
     instance = mount(<Drawer level={null} />);
-    const content = instance.find('.drawer-content-wrapper').instance();
+    const content = instance.find('.drawer-content-wrapper').instance() as any;
     console.log(content.style.transform);
     expect(content.style.transform).toBe('translateX(-100%)');
     instance.setProps({
@@ -163,8 +159,8 @@ describe('rc-drawer-menu', () => {
     expect(content.style.transform).toBe('translateY(-100%)');
   });
   it('levelMove is Array', () => {
-    instance = mount(<Drawer handler={false} levelMove={[200, 0]} />);
-    expect(instance.children().length).toBe(0);
+    instance = mount(<Drawer handler={null} levelMove={[200, 0]} />);
+    expect(instance.render()).toMatchSnapshot();
     instance.setProps({
       open: true,
     });
@@ -176,15 +172,10 @@ describe('rc-drawer-menu', () => {
       open: true,
       levelMove: [200],
     });
+    expect(instance.render()).toMatchSnapshot();
   });
   it('handler is null, render is null', () => {
-    instance = mount(<Drawer handler={false} levelMove={200} />);
-    console.log(instance.children());
-    expect(instance.children().length).toBe(0);
-    instance.setProps({
-      open: true,
-    });
-    console.log(instance.children());
-    expect(instance.children().length).toBe(1);
+    instance = mount(<Drawer handler={null} levelMove={200} />);
+    expect(instance.render()).toMatchSnapshot();
   });
 });

@@ -1,5 +1,5 @@
-import React from 'react';
-import Drawer from '../'
+import * as React from 'react';
+import Drawer from '../';
 
 export default () => {
   return (
@@ -14,14 +14,14 @@ export default () => {
       placement="bottom"
       level="all"
       levelMove={() => [100, 100]}
-      duration='.3s'
+      duration=".3s"
       ease=""
       getContainer="#abc"
       showMask={false}
       maskStyle={{ top: 100 }}
-      onChange={(e) => { console.log(e)}}
-      onMaskClick={(e: MouseEvent) => { console.log(e.pageX); }}
-      onHandleClick={(e: KeyboardEvent) => { console.log(e.keyCode); }}
+      onChange={(e) => { console.log(e); }}
+      onClose={(e: React.MouseEvent) => { console.log(e.pageX); }}
+      onHandleClick={(e: React.KeyboardEvent) => { console.log(e.keyCode); }}
     />
   );
-}
+};

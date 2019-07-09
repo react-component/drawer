@@ -1,14 +1,16 @@
 /* eslint-disable no-console,react/no-multi-comp */
-import Drawer from 'rc-drawer';
-import React from 'react';
-import ReactDom from 'react-dom';
-import { Menu, Icon, Select } from 'antd';
+import { Icon, Menu, Select } from 'antd';
+import * as React from 'react';
+import * as ReactDom from 'react-dom';
 
-import 'antd/lib/style';
+import Drawer from '../src/';
+
+import 'antd/lib/button/style';
 import 'antd/lib/menu/style';
 import 'antd/lib/select/style';
+import 'antd/lib/style';
 
-import 'rc-drawer/assets/index.less';
+import '../assets/index.less';
 import './assets/index.less';
 
 const SubMenu = Menu.SubMenu;
@@ -16,13 +18,13 @@ const MenuItemGroup = Menu.ItemGroup;
 const Option = Select.Option;
 
 class Demo extends React.Component {
-  state = {
+  public state = {
     placement: 'right',
     childShow: true,
     width: '20vw',
     height: null,
   }
-  onChange = (value) => {
+  public onChange = (value: string) => {
     this.setState({
       placement: value,
       width: value === 'right' || value === 'left' ? '20vw' : null,
@@ -34,7 +36,7 @@ class Demo extends React.Component {
       });
     });
   }
-  render() {
+  public render() {
     return (
       <div >
         {this.state.childShow && (
