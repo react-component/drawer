@@ -26,7 +26,6 @@
   "files": [
     "lib",
     "assets/*.css",
-    "dist",
     "es"
   ],
   "licenses": "MIT",
@@ -34,84 +33,61 @@
   "module": "./es/index",
   "typings": "./lib/index.d.ts",
   "config": {
-    "port": 8009,
-    "entry": {
-      "rc-drawer": [
-        "./assets/index.less",
-        "./src/index.ts"
-      ]
-    }
+    "port": 8009
   },
   "scripts": {
     "dist": "rc-tools run dist",
     "build": "rc-tools run build",
-    "gh-pages": "rc-tools run gh-pages",
-    "start": "rc-tools run server",
     "compile": "rc-tools run compile --babel-runtime",
+    "gh-pages": "rc-tools run gh-pages",
+    "start": "rc-tools run storybook",
     "pub": "rc-tools run pub --babel-runtime",
     "lint": "rc-tools run lint",
-    "karma": "rc-test run karma",
-    "saucelabs": "rc-test run saucelabs",
-    "test": "jest",
-    "pretter": "rc-tools run prettier",
-    "coverage": "jest --coverage"
+    "lint:fix": "rc-tools run lint --fix",
+    "prettier": "rc-tools run prettier",
+    "test": "rc-tools run test",
+    "prepublish": "rc-tools run guard",
+    "init-tslint": "rc-tools run gen-lint-config",
+    "coverage": "rc-tools run test --coverage",
+    "pre-commit": "rc-tools run pre-commit",
+    "lint-staged": "lint-staged"
   },
   "devDependencies": {
-    "@babel/plugin-transform-typescript": "~7.4.5",
-    "@types/classnames": "^2.2.5",
-    "@types/enzyme": "^2.8.6",
-    "@types/enzyme-to-json": "^1.5.0",
-    "@types/jest": "^23.1.5",
-    "@types/react": "^16.0.0",
-    "@types/react-dom": "^16.0.0",
+    "@types/classnames": "^2.2.6",
+    "@types/enzyme": "^3.1.15",
+    "@types/raf": "^3.4.0",
+    "@types/react": "^16.7.17",
+    "@types/react-dom": "^16.0.11",
     "@types/react-lifecycles-compat": "^3.0.1",
-    "antd": "^3.10.0",
-    "core-js": "^2.5.1",
-    "enzyme": "^3.1.1",
-    "enzyme-adapter-react-16": "^1.0.4",
-    "enzyme-to-json": "^3.2.1",
-    "expect.js": "0.3.x",
-    "jest": "^23.6.0",
+    "@types/warning": "^3.0.0",
+    "enzyme": "^3.8.0",
+    "enzyme-adapter-react-16": "^1.7.1",
+    "enzyme-to-json": "^3.1.4",
+    "jsonp": "^0.2.0",
+    "lint-staged": "^8.0.0",
     "pre-commit": "1.x",
-    "raf": "^3.4.0",
-    "rc-tools": "^8.1.1",
+    "querystring": "^0.2.0",
+    "rc-dialog": "7.3.1",
+    "rc-test": "^6.0.1",
+    "rc-tools": "^9.6.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
-    "ts-jest": "^23.10.5",
+    "react-test-renderer": "^16.0.0",
     "typescript": "^3.5.2"
   },
-  "precommit": [
-    "lint"
-  ],
   "dependencies": {
     "babel-runtime": "6.x",
     "classnames": "^2.2.5",
     "rc-util": "^4.7.0",
     "react-lifecycles-compat": "^3.0.4"
   },
-  "jest": {
-    "testMatch": [
-      "**/__tests__/**/*.ts?(x)",
-      "**/?(*.)(spec|test).ts?(x)"
-    ],
-    "setupFiles": [
-      "./tests/setup.ts"
-    ],
-    "collectCoverageFrom": [
-      "src/**/*.{ts,tsx}"
-    ],
-    "coverageDirectory": "./coverage/",
-    "snapshotSerializers": [
-      "enzyme-to-json/serializer"
-    ],
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
-    ],
-    "transform": {
-      "\\.tsx?$": "./node_modules/rc-tools/scripts/jestPreprocessor.js",
-      "\\.jsx?$": "./node_modules/rc-tools/scripts/jestPreprocessor.js"
-    }
+  "pre-commit": [
+    "lint-staged"
+  ],
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "npm run pre-commit",
+      "git add"
+    ]
   }
 }

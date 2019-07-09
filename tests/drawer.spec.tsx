@@ -2,7 +2,7 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
 import Drawer from '../src/';
-import { IDrawerProps } from '../src/IDrawerPropTypes'
+import { IDrawerProps } from '../src/IDrawerPropTypes';
 
 jest.mock('rc-util/lib/Portal');
 
@@ -29,7 +29,7 @@ class DrawerTesterRef extends React.Component {
 
 interface IState {
   visible: boolean;
-};
+}
 // tslint:disable-next-line:max-classes-per-file
 class DrawerTesterDom extends React.Component<IDrawerProps, IState> {
   public container: HTMLDivElement;

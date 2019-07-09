@@ -21,29 +21,36 @@ export const transitionStr: string = Object.keys(transitionEndObject).filter(key
 })[0];
 export const transitionEnd: string = transitionEndObject[transitionStr];
 
-export function addEventListener(target: HTMLElement, eventType: string, callback: (e: React.TouchEvent | TouchEvent | Event) => void, options?: any) {
+export function addEventListener(
+  target: HTMLElement,
+  eventType: string,
+  callback: (e: React.TouchEvent | TouchEvent | Event) => void,
+  options?: any,
+) {
   if (target.addEventListener) {
     target.addEventListener(eventType, callback, options);
-  } else if ((target as any).attachEvent) {// tslint:disable-line
-    (target as any).attachEvent(`on${eventType}`, callback);// tslint:disable-line
+  } else if ((target as any).attachEvent) {
+    // tslint:disable-line
+    (target as any).attachEvent(`on${eventType}`, callback); // tslint:disable-line
   }
 }
 
-export function removeEventListener(target: HTMLElement, eventType: string, callback: (e: React.TouchEvent | TouchEvent | Event) => void, options?: any) {
+export function removeEventListener(
+  target: HTMLElement,
+  eventType: string,
+  callback: (e: React.TouchEvent | TouchEvent | Event) => void,
+  options?: any,
+) {
   if (target.removeEventListener) {
     target.removeEventListener(eventType, callback, options);
-  } else if ((target as any).attachEvent) {// tslint:disable-line
-    (target as any).detachEvent(`on${eventType}`, callback);// tslint:disable-line
+  } else if ((target as any).attachEvent) {
+    // tslint:disable-line
+    (target as any).detachEvent(`on${eventType}`, callback); // tslint:disable-line
   }
 }
 
 export function transformArguments(arg: any, cb: any) {
-  let result;
-  if (typeof arg === 'function') {
-    result = arg(cb);
-  } else {
-    result = arg;
-  }
+  const result = typeof arg === 'function' ? arg(cb) : arg;
   if (Array.isArray(result)) {
     if (result.length === 2) {
       return result;
@@ -67,7 +74,7 @@ export const getTouchParentScroll = (
   root: HTMLElement,
   currentTarget: HTMLElement | Document | null,
   differX: number,
-  differY: number
+  differY: number,
 ): boolean => {
   if (!currentTarget || currentTarget === document || currentTarget instanceof Document) {
     return false;
@@ -111,7 +118,7 @@ export const getTouchParentScroll = (
           ((currentTarget.scrollLeft >= scrollX && differX < 0) ||
             (currentTarget.scrollLeft <= 0 && differX > 0)))))
   ) {
-    return getTouchParentScroll(root, currentTarget.parentNode as HTMLElement, differX, differY);// tslint:disable-line
+    return getTouchParentScroll(root, currentTarget.parentNode as HTMLElement, differX, differY); // tslint:disable-line
   }
   return false;
 };

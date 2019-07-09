@@ -37,7 +37,7 @@ function createMoveTouchEventObject({ x = 0, y = 0 }) {
 describe('rc-drawer-menu', () => {
   let instance;
   it('single drawer', () => {
-    instance = mount(<Drawer onHandleClick={() => { }} />);
+    instance = mount(<Drawer onHandleClick={() => {}} />);
     const drawer = instance.find('.drawer') as any;
     const drawerContent = instance.find('.drawer-content-wrapper') as any;
     expect(!!drawer).toBe(true);
@@ -110,7 +110,12 @@ describe('rc-drawer-menu', () => {
         <div id="a" className="a" style={{ position: 'absolute', top: 0, left: 0 }}>
           test1
         </div>
-        <Drawer getContainer={null} defaultOpen={true} level="#a" wrapperClassName="drawer-wrapper" />
+        <Drawer
+          getContainer={null}
+          defaultOpen={true}
+          level="#a"
+          wrapperClassName="drawer-wrapper"
+        />
       </div>,
     );
     const drawer = instance.find('.drawer').instance() as any;
