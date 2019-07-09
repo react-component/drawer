@@ -344,10 +344,10 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
       return;
     }
     const container = getContainer && getContainer();
-    const parent = container && container.parentNode;
+    const parent = container ? container.parentNode as HTMLElement : null;
     this.levelDom = [];
     if (level === 'all') {
-      const children = parent ? Array.prototype.slice.call(parent.children) : [];
+      const children: HTMLElement[] = parent ? Array.prototype.slice.call(parent.children) : [];
       children.forEach((child: HTMLElement) => {
         if (
           child.nodeName !== 'SCRIPT' &&

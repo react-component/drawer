@@ -77,7 +77,7 @@ describe('rc-drawer-menu', () => {
   });
 
   it('handler is null，open=true', () => {
-    instance = mount(<Drawer handler={false} open={true} level={null} />);
+    instance = mount(<Drawer handler={null} open={true} level={null} />);
     expect(instance.render()).toMatchSnapshot();
   });
   it('handler is null，open=false', () => {

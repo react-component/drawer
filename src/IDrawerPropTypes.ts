@@ -19,7 +19,7 @@ interface IProps extends Omit<React.HTMLAttributes<any>, 'onChange'> {
   height?: string | number;
   open?: boolean;
   defaultOpen?: boolean;
-  handler?: React.ReactElement;
+  handler?: React.ReactElement | null | false;
   placement?: IPlacement;
   level?: null | string | string[];
   levelMove?: ILevelMove | ((e: { target: HTMLElement, open: boolean }) => ILevelMove);
@@ -38,7 +38,7 @@ interface IProps extends Omit<React.HTMLAttributes<any>, 'onChange'> {
 export interface IDrawerProps extends IProps {
   wrapperClassName?: string;
   forceRender?: boolean;
-  getContainer?: IStringOrHtmlElement | (() => IStringOrHtmlElement);
+  getContainer?: IStringOrHtmlElement | (() => IStringOrHtmlElement) | null | false;
 }
 
 export interface IDrawerChildProps extends IProps {

@@ -13,7 +13,5 @@ declare module 'rc-util/lib/*' {
   export default Ret;
 }
 
-declare module 'react-lifecycles-compat';
-
 declare module 'raf';
 

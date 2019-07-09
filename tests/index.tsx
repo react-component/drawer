@@ -20,8 +20,8 @@ export default () => {
       showMask={false}
       maskStyle={{ top: 100 }}
       onChange={(e) => { console.log(e); }}
-      onMaskClick={(e: MouseEvent) => { console.log(e.pageX); }}
-      onHandleClick={(e: KeyboardEvent) => { console.log(e.keyCode); }}
+      onClose={(e: React.MouseEvent) => { console.log(e.pageX); }}
+      onHandleClick={(e: React.KeyboardEvent) => { console.log(e.keyCode); }}
     />
   );
 };

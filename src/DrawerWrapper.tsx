@@ -48,7 +48,7 @@ class DrawerWrapper extends React.Component<IDrawerProps, IState> {
     return newState;
   }
 
-  private dom: HTMLElement | null;
+  public dom: HTMLElement | null;
 
   constructor(props: IDrawerProps) {
     super(props);
@@ -61,7 +61,7 @@ class DrawerWrapper extends React.Component<IDrawerProps, IState> {
     }
   }
 
-  public onHandleClick = (e: React.MouseEvent | React.KeyboardEvent) => {
+  private onHandleClick = (e: React.MouseEvent | React.KeyboardEvent) => {
     const { onHandleClick, open: $open } = this.props;
     if (onHandleClick) {
       onHandleClick(e);
@@ -74,7 +74,7 @@ class DrawerWrapper extends React.Component<IDrawerProps, IState> {
     }
   }
 
-  public onClose = (e: React.MouseEvent | React.KeyboardEvent) => {
+  private onClose = (e: React.MouseEvent | React.KeyboardEvent) => {
     const { onClose, open } = this.props;
     if (onClose) {
       onClose(e);
@@ -86,6 +86,7 @@ class DrawerWrapper extends React.Component<IDrawerProps, IState> {
     }
   }
 
+  // tslint:disable-next-line:member-ordering
   public render() {
     const { defaultOpen, getContainer, wrapperClassName, forceRender, handler, ...props } = this.props;
     const { open } = this.state;
