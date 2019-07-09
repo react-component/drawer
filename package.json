@@ -66,7 +66,7 @@
     "@types/react-dom": "^16.0.0",
     "@types/react-lifecycles-compat": "^3.0.1",
     "antd": "^3.10.0",
-    "core-js": "^2.5.1",
+    "core-js": "^3.1.4",
     "enzyme": "^3.1.1",
     "enzyme-adapter-react-16": "^1.0.4",
     "enzyme-to-json": "^3.2.1",
