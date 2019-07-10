@@ -27,10 +27,11 @@ class DrawerTester extends React.Component {
   public render() {
     return (
       <div>
-        <div ref={this.saveContainer} />
+        <div ref={this.saveContainer} id="container"/>
         <Drawer
           width="20vw"
           getContainer={this.getContainer}
+          open={true}
         >
           <Menu
             defaultSelectedKeys={['1']}
@@ -91,5 +92,4 @@ class DrawerTester extends React.Component {
     );
   }
 }
-
-ReactDom.render(<DrawerTester />, document.getElementById('__react-content'));
+export default DrawerTester;

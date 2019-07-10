@@ -32,7 +32,7 @@ class Demo extends React.Component {
       openChildren: !this.state.openChildren,
     })
   }
-  public getLevelMove = (e: React.MouseEvent) => {
+  public getLevelMove = (e: { target: HTMLElement, open: boolean }): number | [number, number] => {
     const target = e.target as HTMLElement;
     if (target.className.indexOf('drawer1') >= 0) {
       return [200, 100];
@@ -91,4 +91,4 @@ class Demo extends React.Component {
       </div>);
   }
 }
-ReactDom.render(<Demo />, document.getElementById('__react-content'));
+export default Demo;

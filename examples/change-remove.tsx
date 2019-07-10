@@ -84,4 +84,4 @@ class Demo extends React.Component<any, { show: boolean }> {
     );
   }
 }
-ReactDom.render(<Demo />, document.getElementById('__react-content'));
+export default Demo;

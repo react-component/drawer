@@ -60,9 +60,8 @@ export function transformArguments(arg: any, cb: any) {
   return [result];
 }
 
-export const isNumeric = (value: string | number | undefined) => {
-  return !isNaN(parseFloat(value as string)) && isFinite(value as number);
-};
+export const isNumeric = (value: string | number | undefined) =>
+  !isNaN(parseFloat(value as string)) && isFinite(value as number);
 
 export const windowIsUndefined = !(
   typeof window !== 'undefined' &&
@@ -118,7 +117,12 @@ export const getTouchParentScroll = (
           ((currentTarget.scrollLeft >= scrollX && differX < 0) ||
             (currentTarget.scrollLeft <= 0 && differX > 0)))))
   ) {
-    return getTouchParentScroll(root, currentTarget.parentNode as HTMLElement, differX, differY); // tslint:disable-line
+    return getTouchParentScroll(
+      root,
+      currentTarget.parentNode as HTMLElement,
+      differX,
+      differY,
+    );
   }
   return false;
 };

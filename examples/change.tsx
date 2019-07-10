@@ -109,4 +109,4 @@ class Demo extends React.Component {
     );
   }
 }
-ReactDom.render(<Demo />, document.getElementById('__react-content'));
+export default Demo;

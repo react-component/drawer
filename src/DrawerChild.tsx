@@ -2,7 +2,7 @@ import classnames from 'classnames';
 import getScrollBarSize from 'rc-util/lib/getScrollBarSize';
 import KeyCode from 'rc-util/lib/KeyCode';
 import switchScrollingEffect from 'rc-util/lib/switchScrollingEffect';
-import * as React from 'react';
+import React from 'react';
 import { polyfill } from 'react-lifecycles-compat';
 
 import { IDrawerChildProps } from './IDrawerPropTypes';
@@ -24,37 +24,47 @@ const currentDrawer: {
 } = {};
 
 interface IState {
-  self: DrawerChild;
+  _self: DrawerChild;
   prevProps?: IDrawerChildProps;
 }
 
 class DrawerChild extends React.Component<IDrawerChildProps, IState> {
   public static getDerivedStateFromProps(props: IDrawerChildProps,
-    { prevProps, self }: { prevProps: IDrawerChildProps, self: DrawerChild }) {
+    { prevProps, _self }: { prevProps: IDrawerChildProps, _self: DrawerChild }) {
     const nextState = {
       prevProps: props,
-    }
+    };
     if (prevProps !== undefined) {
       const { placement, level } = props;
       if (placement !== prevProps.placement) {
         // test 的 bug, 有动画过场，删除 dom
-        self.contentDom = null;
+        _self.contentDom = null;
       }
       if (level !== prevProps.level) {
-        self.getLevelDom(props);
+        _self.getLevelDom(props);
       }
     }
     return nextState;
   }
+
   private levelDom: HTMLElement[];
+
   private dom: HTMLElement;
+
   private contentWrapper: HTMLElement;
+
   private contentDom: HTMLElement | null;
+
   private maskDom: HTMLElement;
+
   private handlerDom: HTMLElement;
+
   private drawerId: string;
+
   private timeout: any;
+
   private passive: { passive: boolean } | boolean;
+
   private startPos: {
     x: number,
     y: number,
@@ -63,7 +73,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
   constructor(props: IDrawerChildProps) {
     super(props);
     this.state = {
-      self: this,
+      _self: this,
     };
   }
 
@@ -149,7 +159,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
       currentTarget === this.maskDom ||
       currentTarget === this.handlerDom ||
       (currentTarget === this.contentDom &&
-        getTouchParentScroll(currentTarget, e.target as HTMLElement, differX, differY))// tslint:disable-line
+        getTouchParentScroll(currentTarget, e.target as HTMLElement, differX, differY))
     ) {
       e.preventDefault();
     }
@@ -160,6 +170,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
     removeEventListener(dom, transitionEnd, this.transitionEnd);
     dom.style.transition = '';
   }
+
   private onKeyDown = (e: React.KeyboardEvent) => {
     if (e.keyCode === KeyCode.ESC) {
       const { onClose } = this.props;
@@ -169,6 +180,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
       }
     }
   }
+
   private onWrapperTransitionEnd = (e: React.TransitionEvent) => {
     const { open, afterVisibleChange } = this.props;
     if (e.target === this.contentWrapper && e.propertyName.match(/transform$/)) {
@@ -185,6 +197,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
       }
     }
   }
+
   private openLevelTransition = () => {
     const { open, width, height } = this.props;
     const { isHorizontal, placementName } = this.getHorizontalBoolAndPlacementName();
@@ -194,7 +207,12 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
     const value = (isHorizontal ? width : height) || contentValue;
     this.setLevelDomTransform(open, placementName, value);
   }
-  private setLevelDomTransform = (open?: boolean, placementName?: string, value?: string | number) => {
+
+  private setLevelDomTransform = (
+    open?: boolean,
+    placementName?: string,
+    value?: string | number,
+  ) => {
     const { placement, levelMove, duration, ease, onChange, showMask } = this.props;
     if (!windowIsUndefined) {
       const right = getScrollBarSize(true);// router 切换时可能会导至页面失去滚动条，所以需要时时获取。
@@ -220,7 +238,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
   }
 
   private setScrollingEffect = (right: number) => {
-    const { openCount, getContainer, showMask } = this.props;
+    const { openCount, getContainer, showMask, open } = this.props;
     const container = getContainer && getContainer();
     // 处理 body 滚动
     if (container && container.parentNode === document.body && showMask) {
@@ -230,7 +248,9 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
         if (right) {
           this.addScrollingEffect(right);
         }
-        document.body.style.overflow = 'hidden';
+        if (openCount === 1) {
+          document.body.style.overflow = 'hidden';
+        }
         document.body.style.touchAction = 'none';
         // 手机禁滚
         domArray.forEach((item, i) => {
@@ -248,8 +268,8 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
         // 没有弹框的状态下清除 overflow;
         if (!openCount) {
           document.body.style.overflow = '';
-          document.body.style.touchAction = '';
         }
+        document.body.style.touchAction = '';
         if (right) {
           this.remScrollingEffect(right);
         }
@@ -268,11 +288,14 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
       }
     }
   }
+
   private addScrollingEffect = (right: number) => {
-    const { placement, duration, ease } = this.props;
+    const { placement, duration, ease, openCount } = this.props;
     const widthTransition = `width ${duration} ${ease}`;
     const transformTransition = `transform ${duration} ${ease}`;
-    switchScrollingEffect();
+    if (openCount === 1) {
+      switchScrollingEffect();
+    }
     this.dom.style.transition = 'none';
     switch (placement) {
       case 'right':
@@ -295,14 +318,16 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
   }
 
   private remScrollingEffect = (right: number) => {
-    const { placement, duration, ease } = this.props;
-    switchScrollingEffect(true);
+    const { placement, duration, ease, openCount } = this.props;
+    if (!openCount) {
+      switchScrollingEffect(true);
+    }
     if (transitionStr) {
       document.body.style.overflowX = 'hidden';
     }
     this.dom.style.transition = 'none';
     let heightTransition: string;
-    let widthTransition: string = `width ${duration} ${ease}`;
+    let widthTransition = `width ${duration} ${ease}`;
     const transformTransition = `transform ${duration} ${ease}`;
     switch (placement) {
       case 'right': {
@@ -366,15 +391,17 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
       });
     }
   }
+
   private getHorizontalBoolAndPlacementName = () => {
     const { placement } = this.props;
     const isHorizontal = placement === 'left' || placement === 'right';
     const placementName = `translate${isHorizontal ? 'X' : 'Y'}`;
     return {
       isHorizontal,
-      placementName
+      placementName,
     };
   }
+
   // tslint:disable-next-line:member-ordering
   public render() {
     const {
@@ -454,7 +481,6 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
             ref={c => {
               this.maskDom = c as HTMLElement;
             }}
-            role="drawer-mask"
           />
         )}
         <div

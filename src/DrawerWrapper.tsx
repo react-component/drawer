@@ -1,5 +1,5 @@
 import Portal from 'rc-util/lib/PortalWrapper';
-import * as React from 'react';
+import React from 'react';
 import { polyfill } from 'react-lifecycles-compat';
 
 import Child from './DrawerChild';
@@ -43,7 +43,7 @@ class DrawerWrapper extends React.Component<IDrawerProps, IState> {
       prevProps: props,
     };
     if (typeof prevProps !== 'undefined' && props.open !== prevProps.open) {
-      newState.open = props.open
+      newState.open = props.open;
     }
     return newState;
   }
@@ -88,12 +88,22 @@ class DrawerWrapper extends React.Component<IDrawerProps, IState> {
 
   // tslint:disable-next-line:member-ordering
   public render() {
-    const { defaultOpen, getContainer, wrapperClassName, forceRender, handler, ...props } = this.props;
+    const {
+      defaultOpen,
+      getContainer,
+      wrapperClassName,
+      forceRender,
+      handler,
+      ...props
+    } = this.props;
     const { open } = this.state;
     // 渲染在当前 dom 里；
     if (!getContainer) {
       return (
-        <div className={wrapperClassName} ref={(c) => { this.dom = c; }}>
+        <div
+          className={wrapperClassName}
+          ref={c => { this.dom = c; }}
+        >
           <Child
             {...props}
             open={open}

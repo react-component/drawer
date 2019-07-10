@@ -16,11 +16,11 @@ const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
 class Demo extends React.Component {
   public state = {
-    level: ['body > h1', '#__react-content'],
+    level: ['#root'],
   }
   public onClick = () => {
     this.setState({
-      level: this.state.level ? null : ['body > h1', '#__react-content'],
+      level: this.state.level ? null : ['#root'],
     });
   }
   public render() {
@@ -82,4 +82,4 @@ class Demo extends React.Component {
     );
   }
 }
-ReactDom.render(<Demo />, document.getElementById('__react-content'));
+export default Demo;

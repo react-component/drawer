@@ -1,6 +1,6 @@
 {
   "name": "rc-drawer",
-  "version": "2.0.0-beta.0",
+  "version": "2.0.0-beta.1",
   "description": "drawer component for react",
   "keywords": [
     "react",
@@ -31,30 +31,22 @@
   "licenses": "MIT",
   "main": "./lib/index",
   "module": "./es/index",
-  "typings": "./lib/index.d.ts",
-  "config": {
-    "port": 8009
-  },
   "scripts": {
-    "dist": "rc-tools run dist",
-    "build": "rc-tools run build",
-    "compile": "rc-tools run compile --babel-runtime",
-    "gh-pages": "rc-tools run gh-pages",
-    "start": "rc-tools run storybook",
-    "pub": "rc-tools run pub --babel-runtime",
-    "lint": "rc-tools run lint",
-    "lint:fix": "rc-tools run lint --fix",
-    "prettier": "rc-tools run prettier",
-    "test": "rc-tools run test",
-    "prepublish": "rc-tools run guard",
-    "init-tslint": "rc-tools run gen-lint-config",
-    "coverage": "rc-tools run test --coverage",
-    "pre-commit": "rc-tools run pre-commit",
-    "lint-staged": "lint-staged"
+    "start": "father doc dev --storybook",
+    "build": "father doc build --storybook",
+    "compile": "father build",
+    "prepublishOnly": "npm run compile && np --no-cleanup --yolo --no-publish",
+    "lint": "eslint src/ --ext .tsx,.ts",
+    "test": "father test",
+    "now-build": "npm run build"
+  },
+  "peerDependencies": {
+    "react": "*"
   },
   "devDependencies": {
     "@types/classnames": "^2.2.6",
     "@types/enzyme": "^3.1.15",
+    "@types/jest": "^24.0.15",
     "@types/raf": "^3.4.0",
     "@types/react": "^16.7.17",
     "@types/react-dom": "^16.0.11",
@@ -62,14 +54,15 @@
     "@types/warning": "^3.0.0",
     "enzyme": "^3.8.0",
     "enzyme-adapter-react-16": "^1.7.1",
-    "enzyme-to-json": "^3.1.4",
+    "enzyme-to-json": "^3.3.5",
+    "father": "^2.13.2",
     "jsonp": "^0.2.0",
     "lint-staged": "^8.0.0",
+    "np": "^5.0.3",
     "pre-commit": "1.x",
     "querystring": "^0.2.0",
     "rc-dialog": "7.3.1",
     "rc-test": "^6.0.1",
-    "rc-tools": "^9.6.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-test-renderer": "^16.0.0",
@@ -80,14 +73,5 @@
     "classnames": "^2.2.5",
     "rc-util": "^4.7.0",
     "react-lifecycles-compat": "^3.0.4"
-  },
-  "pre-commit": [
-    "lint-staged"
-  ],
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "npm run pre-commit",
-      "git add"
-    ]
   }
 }

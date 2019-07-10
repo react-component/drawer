@@ -11,7 +11,6 @@ exports[`Drawer render boolean 1`] = `
     >
       <div
         class="drawer-mask"
-        role="drawer-mask"
       />
       <div
         class="drawer-content-wrapper"
@@ -43,7 +42,39 @@ exports[`Drawer render dom 1`] = `
 <div>
   <div
     class="main"
-  />
+  >
+    <div>
+      <div
+        class="drawer drawer-left drawer-open"
+        tabindex="-1"
+      >
+        <div
+          class="drawer-mask"
+        />
+        <div
+          class="drawer-content-wrapper"
+          style=""
+        >
+          <div
+            class="drawer-content"
+          >
+            <p
+              class="text"
+            >
+              Here is content of Drawer
+            </p>
+          </div>
+          <div
+            class="drawer-handle"
+          >
+            <i
+              class="drawer-handle-icon"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 `;
 
@@ -51,6 +82,38 @@ exports[`Drawer render function 1`] = `
 <div>
   <div
     class="main"
-  />
+  >
+    <div>
+      <div
+        class="drawer drawer-left drawer-open"
+        tabindex="-1"
+      >
+        <div
+          class="drawer-mask"
+        />
+        <div
+          class="drawer-content-wrapper"
+          style=""
+        >
+          <div
+            class="drawer-content"
+          >
+            <p
+              class="text"
+            >
+              Here is content of Drawer
+            </p>
+          </div>
+          <div
+            class="drawer-handle"
+          >
+            <i
+              class="drawer-handle-icon"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 `;

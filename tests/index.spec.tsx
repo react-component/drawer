@@ -1,6 +1,6 @@
-/* eslint-disable */
 import { mount } from 'enzyme';
 import * as React from 'react';
+import toJson from 'enzyme-to-json';
 import Drawer from '../src/';
 
 function Div(props: { show?: boolean }) {
@@ -78,11 +78,11 @@ describe('rc-drawer-menu', () => {
 
   it('handler is null，open=true', () => {
     instance = mount(<Drawer handler={null} open={true} level={null} />);
-    expect(instance.render()).toMatchSnapshot();
+    expect(toJson(instance.render())).toMatchSnapshot();
   });
   it('handler is null，open=false', () => {
     instance = mount(<Drawer handler={false} open={false} level={null} />);
-    expect(instance.render()).toMatchSnapshot();
+    expect(toJson(instance.render())).toMatchSnapshot();
   });
   it('switch open drawer', () => {
     instance = mount(<DrawerComp />);
@@ -90,10 +90,12 @@ describe('rc-drawer-menu', () => {
     const drawer = instance.find('.drawer-content-wrapper').instance() as any;
     console.log('第一次：', drawer.style.transform);
     expect(drawer.style.transform).toBe('translateX(-100%)');
+    expect(toJson(instance.render())).toMatchSnapshot();
     instance.setProps({
       open: true,
     });
     jest.runAllTimers();
+    expect(toJson(instance.render())).toMatchSnapshot();
     console.log(drawer.style.transform);
     expect(drawer.style.transform).toEqual('');
     instance.setProps({
@@ -102,6 +104,7 @@ describe('rc-drawer-menu', () => {
     console.log('第二次：', drawer.style.transform);
     jest.runAllTimers();
     expect(drawer.style.transform).toBe('translateX(-100%)');
+    expect(toJson(instance.render())).toMatchSnapshot();
     jest.useRealTimers();
   });
   it('getContainer is null', () => {
@@ -125,6 +128,7 @@ describe('rc-drawer-menu', () => {
     console.log(drawer.parentNode.parentNode.className);
     expect(drawer.parentNode.className).toBe('drawer-wrapper');
     expect(drawer.parentNode.parentNode.className).toBe('react-wrapper');
+    expect(toJson(instance.render())).toMatchSnapshot();
   });
   it('click open close', () => {
     instance = mount(<Drawer level="b" levelMove={200} />);
@@ -165,7 +169,7 @@ describe('rc-drawer-menu', () => {
   });
   it('levelMove is Array', () => {
     instance = mount(<Drawer handler={null} levelMove={[200, 0]} />);
-    expect(instance.render()).toMatchSnapshot();
+    expect(toJson(instance.render())).toMatchSnapshot();
     instance.setProps({
       open: true,
     });
@@ -177,10 +181,10 @@ describe('rc-drawer-menu', () => {
       open: true,
       levelMove: [200],
     });
-    expect(instance.render()).toMatchSnapshot();
+    expect(toJson(instance.render())).toMatchSnapshot();
   });
   it('handler is null, render is null', () => {
     instance = mount(<Drawer handler={null} levelMove={200} />);
-    expect(instance.render()).toMatchSnapshot();
+    expect(toJson(instance.render())).toMatchSnapshot();
   });
 });
