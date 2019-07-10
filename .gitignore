@@ -4,6 +4,7 @@
 .idea
 .ipr
 .iws
+.doc
 *~
 ~*
 *.diff
