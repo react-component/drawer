@@ -28,3 +28,4 @@ dist
 es
 yarn.lock
 package-lock.json
+storybook
