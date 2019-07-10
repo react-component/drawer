@@ -2,7 +2,7 @@
 // Project: https://github.com/react-component/drawer
 // Definitions by: jljsj33 <https://github.com/jljsj33>
 // Definitions: https://github.com/react-component/drawer
-import React from 'react';
+import * as React from 'react';
 
 
 export type IPlacement = 'left' | 'top' | 'right' | 'bottom';

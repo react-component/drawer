@@ -1,5 +1,5 @@
 import Portal from 'rc-util/lib/PortalWrapper';
-import React from 'react';
+import * as React from 'react';
 import { polyfill } from 'react-lifecycles-compat';
 
 import Child from './DrawerChild';

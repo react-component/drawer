@@ -2,7 +2,7 @@ import classnames from 'classnames';
 import getScrollBarSize from 'rc-util/lib/getScrollBarSize';
 import KeyCode from 'rc-util/lib/KeyCode';
 import switchScrollingEffect from 'rc-util/lib/switchScrollingEffect';
-import React from 'react';
+import * as React from 'react';
 import { polyfill } from 'react-lifecycles-compat';
 
 import { IDrawerChildProps } from './IDrawerPropTypes';
