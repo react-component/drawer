@@ -61,6 +61,10 @@ class DrawerWrapper extends React.Component<IDrawerProps, IState> {
     }
   }
 
+  componentWillUnmount(){
+    console.log('wrapper')
+  }
+
   private onHandleClick = (e: React.MouseEvent | React.KeyboardEvent) => {
     const { onHandleClick, open: $open } = this.props;
     if (onHandleClick) {
@@ -126,15 +130,15 @@ class DrawerWrapper extends React.Component<IDrawerProps, IState> {
         wrapperClassName={wrapperClassName}
       >
         {({
-          openCount,
+          getOpenCount,
           getContainer: getCurrentContainer,
         }: {
-          openCount: number,
+          getOpenCount: () => number,
           getContainer: () => HTMLElement,
         }) => (
             <Child
               {...props}
-              openCount={openCount}
+              getOpenCount={getOpenCount}
               open={open}
               getContainer={getCurrentContainer}
               handler={handler}

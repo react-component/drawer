@@ -65,6 +65,8 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
 
   private passive: { passive: boolean } | boolean;
 
+  private isTransition: boolean;
+
   private startPos: {
     x: number,
     y: number,
@@ -121,15 +123,14 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
   }
 
   public componentWillUnmount() {
-    const { openCount, open } = this.props;
+    const { getOpenCount, getContainer, open } = this.props;
+    delete currentDrawer[this.drawerId];
     if (open) {
       this.setLevelDomTransform(false);
     }
-    if (!openCount) {
+    if (typeof getOpenCount === 'function' && !getOpenCount()) {
       document.body.style.overflow = '';
     }
-    delete currentDrawer[this.drawerId];
-    clearTimeout(this.timeout);
   }
 
   private domFocus = () => {
@@ -230,23 +231,25 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
           `calc(${placementPos} + ${right}px)` : placementPos;
         dom.style.transform = levelValue ? `${placementName}(${placementPos})` : '';
       });
-      this.setScrollingEffect(right);
+      this.toggleDrawerAndBody(right);
     }
     if (onChange) {
       onChange(open);
     }
   }
 
-  private setScrollingEffect = (right: number) => {
-    const { openCount, getContainer, showMask, open } = this.props;
+  private toggleDrawerAndBody = (right: number) => {
+    const { getOpenCount, getContainer, showMask, open } = this.props;
     const container = getContainer && getContainer();
+    const openCount = getOpenCount && getOpenCount();
     // 处理 body 滚动
     if (container && container.parentNode === document.body && showMask) {
       const eventArray = ['touchstart'];
       const domArray = [document.body, this.maskDom, this.handlerDom, this.contentDom];
       if (open && document.body.style.overflow !== 'hidden') {
         if (right) {
-          this.addScrollingEffect(right);
+          this.addScrollingEffect();
+          this.openDrawer(right);
         }
         if (openCount === 1) {
           document.body.style.overflow = 'hidden';
@@ -271,7 +274,8 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
         }
         document.body.style.touchAction = '';
         if (right) {
-          this.remScrollingEffect(right);
+          this.remScrollingEffect();
+          this.closeDrawer(right);
         }
         // 恢复事件
         domArray.forEach((item, i) => {
@@ -289,13 +293,10 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
     }
   }
 
-  private addScrollingEffect = (right: number) => {
-    const { placement, duration, ease, openCount } = this.props;
+  private openDrawer = (right: number) => {
+    const { placement, duration, ease } = this.props;
     const widthTransition = `width ${duration} ${ease}`;
     const transformTransition = `transform ${duration} ${ease}`;
-    if (openCount === 1) {
-      switchScrollingEffect();
-    }
     this.dom.style.transition = 'none';
     switch (placement) {
       case 'right':
@@ -311,17 +312,16 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
     }
     clearTimeout(this.timeout);
     this.timeout = setTimeout(() => {
-      this.dom.style.transition = `${transformTransition},${widthTransition}`;
-      this.dom.style.width = '';
-      this.dom.style.transform = '';
+      if (this.dom) {
+        this.dom.style.transition = `${transformTransition},${widthTransition}`;
+        this.dom.style.width = '';
+        this.dom.style.transform = '';
+      }
     });
   }
 
-  private remScrollingEffect = (right: number) => {
-    const { placement, duration, ease, openCount } = this.props;
-    if (!openCount) {
-      switchScrollingEffect(true);
-    }
+  private closeDrawer = (right: number) => {
+    const { placement, duration, ease } = this.props;
     if (transitionStr) {
       document.body.style.overflowX = 'hidden';
     }
@@ -353,13 +353,31 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
     }
     clearTimeout(this.timeout);
     this.timeout = setTimeout(() => {
-      this.dom.style.transition = `${transformTransition},${
-        heightTransition ? `${heightTransition},` : ''
-        }${widthTransition}`;
-      this.dom.style.transform = '';
-      this.dom.style.width = '';
-      this.dom.style.height = '';
+      if (this.dom) {
+        this.dom.style.transition = `${transformTransition},${
+          heightTransition ? `${heightTransition},` : ''
+          }${widthTransition}`;
+        this.dom.style.transform = '';
+        this.dom.style.width = '';
+        this.dom.style.height = '';
+      }
     });
+  }
+
+  private addScrollingEffect = () => {
+    const { getOpenCount } = this.props;
+    const openCount = getOpenCount && getOpenCount();
+    if (openCount === 1) {
+      switchScrollingEffect();
+    }
+  }
+
+  private remScrollingEffect = () => {
+    const {  getOpenCount } = this.props;
+    const openCount = getOpenCount && getOpenCount();
+    if (!openCount) {
+      switchScrollingEffect(true);
+    }
   }
 
   private getCurrentDrawerSome = () => !Object.keys(currentDrawer).some(key => currentDrawer[key]);
@@ -428,7 +446,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
       onClose,
       onHandleClick,
       keyboard,
-      openCount,
+      getOpenCount,
       ...props
     } = this.props;
     // 首次渲染都将是关闭状态。

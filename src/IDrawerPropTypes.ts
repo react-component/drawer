@@ -43,5 +43,5 @@ export interface IDrawerProps extends IProps {
 
 export interface IDrawerChildProps extends IProps {
   getContainer?: () => HTMLElement;
-  openCount?: number;
+  getOpenCount?: () => number;
 }
