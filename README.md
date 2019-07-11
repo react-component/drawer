@@ -71,7 +71,8 @@ ReactDom.render(
 | onHandleClick | func | nul  | handle icon click function |
 | keyboard | Boolean | true |  Whether support press esc to close |
 
-> 1.5 Rename `handleChild` -> `handler`, remove `handleStyle`, remove `levelTransition` -> `duration` `ease`, add `levelMove`.
+> 2.0 Rename `onMaskClick` -> `onClose`, add `maskClosable`.
+
 ## Development
 
 ```
