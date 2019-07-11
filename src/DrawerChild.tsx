@@ -65,8 +65,6 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
 
   private passive: { passive: boolean } | boolean;
 
-  private isTransition: boolean;
-
   private startPos: {
     x: number,
     y: number,
@@ -231,14 +229,14 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
           `calc(${placementPos} + ${right}px)` : placementPos;
         dom.style.transform = levelValue ? `${placementName}(${placementPos})` : '';
       });
-      this.toggleDrawerAndBody(right);
+      this.toggleScrollingToDrawerAndBody(right);
     }
     if (onChange) {
       onChange(open);
     }
   }
 
-  private toggleDrawerAndBody = (right: number) => {
+  private toggleScrollingToDrawerAndBody = (right: number) => {
     const { getOpenCount, getContainer, showMask, open } = this.props;
     const container = getContainer && getContainer();
     const openCount = getOpenCount && getOpenCount();
@@ -248,8 +246,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
       const domArray = [document.body, this.maskDom, this.handlerDom, this.contentDom];
       if (open && document.body.style.overflow !== 'hidden') {
         if (right) {
-          this.addScrollingEffect();
-          this.openDrawer(right);
+          this.addScrollingEffect(right);
         }
         if (openCount === 1) {
           document.body.style.overflow = 'hidden';
@@ -274,8 +271,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
         }
         document.body.style.touchAction = '';
         if (right) {
-          this.remScrollingEffect();
-          this.closeDrawer(right);
+          this.remScrollingEffect(right);
         }
         // 恢复事件
         domArray.forEach((item, i) => {
@@ -293,8 +289,12 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
     }
   }
 
-  private openDrawer = (right: number) => {
-    const { placement, duration, ease } = this.props;
+  private addScrollingEffect = (right: number) => {
+    const { placement, duration, ease, getOpenCount } = this.props;
+    const openCount = getOpenCount && getOpenCount();
+    if (openCount === 1) {
+      switchScrollingEffect();
+    }
     const widthTransition = `width ${duration} ${ease}`;
     const transformTransition = `transform ${duration} ${ease}`;
     this.dom.style.transition = 'none';
@@ -320,8 +320,12 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
     });
   }
 
-  private closeDrawer = (right: number) => {
-    const { placement, duration, ease } = this.props;
+  private remScrollingEffect = (right: number) => {
+    const { placement, duration, ease, getOpenCount } = this.props;
+    const openCount = getOpenCount && getOpenCount();
+    if (!openCount) {
+      switchScrollingEffect(true);
+    }
     if (transitionStr) {
       document.body.style.overflowX = 'hidden';
     }
@@ -362,22 +366,6 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
         this.dom.style.height = '';
       }
     });
-  }
-
-  private addScrollingEffect = () => {
-    const { getOpenCount } = this.props;
-    const openCount = getOpenCount && getOpenCount();
-    if (openCount === 1) {
-      switchScrollingEffect();
-    }
-  }
-
-  private remScrollingEffect = () => {
-    const {  getOpenCount } = this.props;
-    const openCount = getOpenCount && getOpenCount();
-    if (!openCount) {
-      switchScrollingEffect(true);
-    }
   }
 
   private getCurrentDrawerSome = () => !Object.keys(currentDrawer).some(key => currentDrawer[key]);

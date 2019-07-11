@@ -31,7 +31,6 @@ class DrawerTester extends React.Component {
         <Drawer
           width="20vw"
           getContainer={this.getContainer}
-          open={true}
         >
           <Menu
             defaultSelectedKeys={['1']}
