@@ -61,10 +61,6 @@ class DrawerWrapper extends React.Component<IDrawerProps, IState> {
     }
   }
 
-  componentWillUnmount(){
-    console.log('wrapper')
-  }
-
   private onHandleClick = (e: React.MouseEvent | React.KeyboardEvent) => {
     const { onHandleClick, open: $open } = this.props;
     if (onHandleClick) {
