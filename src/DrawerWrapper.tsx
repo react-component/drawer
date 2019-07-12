@@ -3,12 +3,16 @@ import * as React from 'react';
 import { polyfill } from 'react-lifecycles-compat';
 
 import Child from './DrawerChild';
-import { IDrawerProps } from './IDrawerPropTypes';
+import { IDrawerProps, IDrawerChildProps } from './IDrawerPropTypes';
 
 interface IState {
   open: boolean;
 }
 
+interface IChildProps extends IDrawerChildProps {
+  visible?: boolean;
+  afterClose?: () => void;
+}
 class DrawerWrapper extends React.Component<IDrawerProps, IState> {
   public static defaultProps = {
     prefixCls: 'drawer',
@@ -125,23 +129,18 @@ class DrawerWrapper extends React.Component<IDrawerProps, IState> {
         getContainer={getContainer}
         wrapperClassName={wrapperClassName}
       >
-        {({
-          getOpenCount,
-          getContainer: getCurrentContainer,
-        }: {
-          getOpenCount: () => number,
-          getContainer: () => HTMLElement,
-        }) => (
-            <Child
-              {...props}
-              getOpenCount={getOpenCount}
-              open={open}
-              getContainer={getCurrentContainer}
-              handler={handler}
-              onClose={this.onClose}
-              onHandleClick={this.onHandleClick}
-            />
-          )}
+        {({ visible, afterClose, ...rest }: IChildProps) => (
+          // react 15，componentWillUnmount 时 Portal 返回 afterClose, visible.
+          <Child
+            {...props}
+            {...rest}
+            open={visible !== undefined ? visible : open}
+            afterVisibleChange={afterClose !== undefined ? afterClose : props.afterVisibleChange}
+            handler={handler}
+            onClose={this.onClose}
+            onHandleClick={this.onHandleClick}
+          />
+        )}
       </Portal>
     );
   }
