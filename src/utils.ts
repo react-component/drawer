@@ -97,15 +97,15 @@ export const getTouchParentScroll = (
   const x = scrollX && overflowX;
 
   if (
-    isY && (!y ||
+    (isY && (!y ||
       (y && (
         (currentTarget.scrollTop >= scrollY && differY < 0) ||
         (currentTarget.scrollTop <= 0 && differY > 0)
-      ))) ||
-    isX && (!x ||
-      x && (
+      )))) ||
+    (isX && (!x ||
+      (x && (
         (currentTarget.scrollLeft >= scrollX && scrollX < 0) ||
-        (currentTarget.scrollLeft <= 0 && scrollX > 0)))
+        (currentTarget.scrollLeft <= 0 && scrollX > 0)))))
   ) {
     return getTouchParentScroll(
       root,
