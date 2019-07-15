@@ -121,7 +121,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
   }
 
   public componentWillUnmount() {
-    const { getOpenCount, getContainer, open } = this.props;
+    const { getOpenCount, open } = this.props;
     delete currentDrawer[this.drawerId];
     if (open) {
       this.setLevelDomTransform(false);

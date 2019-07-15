@@ -78,7 +78,7 @@ class Demo extends React.Component {
           }}
         >
           内容区块
-    </div>
+        </div>
       </div>
     )
   }
