@@ -336,6 +336,11 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
     let widthTransition = `width ${duration} ${ease}`;
     const transformTransition = `transform ${duration} ${ease}`;
     switch (placement) {
+      case 'left': {
+        this.dom.style.width = '100%';
+        widthTransition = `width 0s ${ease} ${duration}`;
+        break;
+      }
       case 'right': {
         this.dom.style.transform = `translateX(${right}px)`;
         this.dom.style.width = '100%';
