@@ -216,7 +216,8 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
     if (!windowIsUndefined) {
       const right = document.body.scrollHeight >
         (window.innerHeight || document.documentElement.clientHeight) &&
-        window.innerWidth > document.body.offsetWidth ? getScrollBarSize(true) : 0;// router 切换时可能会导至页面失去滚动条，所以需要时时获取。
+        window.innerWidth > document.body.offsetWidth ? getScrollBarSize(true) : 0;
+        // router 切换时可能会导至页面失去滚动条，所以需要时时获取。
       this.levelDom.forEach(dom => {
         dom.style.transition = `transform ${duration} ${ease}`;
         addEventListener(dom, transitionEnd, this.transitionEnd);
