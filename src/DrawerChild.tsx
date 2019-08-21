@@ -124,7 +124,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
     const { getOpenCount, open } = this.props;
     delete currentDrawer[this.drawerId];
     if (open) {
-      this.setLevelDomTransform(false);
+      this.setLevelTransform(false);
     }
     if (typeof getOpenCount === 'function' && !getOpenCount()) {
       document.body.style.overflow = '';
@@ -204,34 +204,44 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
       ? this.contentDom.getBoundingClientRect()[isHorizontal ? 'width' : 'height']
       : 0;
     const value = (isHorizontal ? width : height) || contentValue;
-    this.setLevelDomTransform(open, placementName, value);
+    this.setLevelAndScrolling(open, placementName, value);
   }
 
-  private setLevelDomTransform = (
+  private setLevelTransform = (
+    open?: boolean,
+    placementName?: string,
+    value?: string | number,
+    right?: number,
+  ) => {
+    const { placement, levelMove, duration, ease, showMask } = this.props;
+    // router 切换时可能会导至页面失去滚动条，所以需要时时获取。
+    this.levelDom.forEach(dom => {
+      dom.style.transition = `transform ${duration} ${ease}`;
+      addEventListener(dom, transitionEnd, this.transitionEnd);
+      let levelValue = open ? value : 0;
+      if (levelMove) {
+        const $levelMove = transformArguments(levelMove, { target: dom, open });
+        levelValue = open ? $levelMove[0] : $levelMove[1] || 0;
+      }
+      const $value = typeof levelValue === 'number' ? `${levelValue}px` : levelValue;
+      let placementPos = placement === 'left' || placement === 'top' ? $value : `-${$value}`;
+      placementPos = showMask && placement === 'right' && right ?
+        `calc(${placementPos} + ${right}px)` : placementPos;
+      dom.style.transform = levelValue ? `${placementName}(${placementPos})` : '';
+    });
+  }
+
+  private setLevelAndScrolling = (
     open?: boolean,
     placementName?: string,
     value?: string | number,
   ) => {
-    const { placement, levelMove, duration, ease, onChange, showMask } = this.props;
+    const { onChange } = this.props;
     if (!windowIsUndefined) {
       const right = document.body.scrollHeight >
         (window.innerHeight || document.documentElement.clientHeight) &&
         window.innerWidth > document.body.offsetWidth ? getScrollBarSize(true) : 0;
-        // router 切换时可能会导至页面失去滚动条，所以需要时时获取。
-      this.levelDom.forEach(dom => {
-        dom.style.transition = `transform ${duration} ${ease}`;
-        addEventListener(dom, transitionEnd, this.transitionEnd);
-        let levelValue = open ? value : 0;
-        if (levelMove) {
-          const $levelMove = transformArguments(levelMove, { target: dom, open });
-          levelValue = open ? $levelMove[0] : $levelMove[1] || 0;
-        }
-        const $value = typeof levelValue === 'number' ? `${levelValue}px` : levelValue;
-        let placementPos = placement === 'left' || placement === 'top' ? $value : `-${$value}`;
-        placementPos = showMask && placement === 'right' && right ?
-          `calc(${placementPos} + ${right}px)` : placementPos;
-        dom.style.transform = levelValue ? `${placementName}(${placementPos})` : '';
-      });
+      this.setLevelTransform(open, placementName, value, right);
       this.toggleScrollingToDrawerAndBody(right);
     }
     if (onChange) {
