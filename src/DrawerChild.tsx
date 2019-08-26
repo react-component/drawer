@@ -125,6 +125,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
     delete currentDrawer[this.drawerId];
     if (open) {
       this.setLevelTransform(false);
+      document.body.style.touchAction = '';
     }
     if (typeof getOpenCount === 'function' && !getOpenCount()) {
       document.body.style.overflow = '';
