@@ -5,8 +5,12 @@
   position: fixed;
   top: 0;
   z-index: 9999;
+  transition: width 0s ease @duration, height 0s ease @duration, transform @duration @ease-in-out-circ;
   >* {
      transition: transform @duration @ease-in-out-circ, opacity @duration @ease-in-out-circ, box-shadow @duration @ease-in-out-circ;
+  }
+  &.@{drawer}-open {
+    transition: transform @duration @ease-in-out-circ;
   }
   & &-mask {
     background: #000;
@@ -116,6 +120,11 @@
           box-shadow: -2px 0 8px rgba(0, 0, 0, .15);
         }
       }
+      &.no-mask {
+        // https://github.com/ant-design/ant-design/issues/18607
+        right: 1px;
+        transform: translateX(1px);
+      }
     }
   }
   &-top,
@@ -178,6 +187,11 @@
         &-content-wrapper {
           box-shadow: 0 -2px 8px rgba(0, 0, 0, .15);
         }
+      }
+      &.no-mask {
+        // https://github.com/ant-design/ant-design/issues/18607
+        bottom: 1px;
+        transform: translateY(1px);
       }
     }
   }
