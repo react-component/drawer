@@ -44,32 +44,32 @@
     "react": "*"
   },
   "devDependencies": {
-    "@types/classnames": "^2.2.6",
+    "@types/classnames": "^2.2.9",
     "@types/enzyme": "^3.1.15",
     "@types/jest": "^24.0.15",
     "@types/raf": "^3.4.0",
-    "@types/react": "^16.7.17",
-    "@types/react-dom": "^16.0.11",
+    "@types/react": "^16.9.5",
+    "@types/react-dom": "^16.9.1",
     "@types/react-lifecycles-compat": "^3.0.1",
     "@types/warning": "^3.0.0",
-    "enzyme": "^3.8.0",
-    "enzyme-adapter-react-16": "^1.7.1",
-    "enzyme-to-json": "^3.3.5",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.14.0",
+    "enzyme-to-json": "^3.4.2",
     "father": "^2.13.2",
     "jsonp": "^0.2.0",
     "np": "^5.0.3",
-    "pre-commit": "1.x",
+    "pre-commit": "^1.2.2",
     "querystring": "^0.2.0",
     "rc-test": "^6.0.1",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
-    "react-test-renderer": "^16.0.0",
-    "typescript": "^3.5.2"
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2",
+    "react-test-renderer": "^16.10.2",
+    "typescript": "^3.6.3"
   },
   "dependencies": {
-    "babel-runtime": "6.x",
-    "classnames": "^2.2.5",
-    "rc-util": "^4.7.0",
+    "babel-runtime": "^6.26.0",
+    "classnames": "^2.2.6",
+    "rc-util": "^4.11.2",
     "react-lifecycles-compat": "^3.0.4"
   }
 }

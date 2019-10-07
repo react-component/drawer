@@ -2,6 +2,10 @@ History
 
 ---
 
+## 2.1.0
+
+- Add `drawerStyle`.
+
 ## 1.5.0
 
 1. Rename `handleChild` -> `handled`, remove `handleStyle`.

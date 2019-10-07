@@ -450,6 +450,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
       showMask,
       maskClosable,
       maskStyle,
+      drawerStyle,
       onClose,
       onHandleClick,
       keyboard,
@@ -515,6 +516,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
             msTransform: transform,
             width: isNumeric(width) ? `${width}px` : width,
             height: isNumeric(height) ? `${height}px` : height,
+            ...drawerStyle,
           }}
           ref={c => {
             this.contentWrapper = c as HTMLElement;
