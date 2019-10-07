@@ -14,4 +14,3 @@ declare module 'rc-util/lib/*' {
 }
 
 declare module 'raf';
-

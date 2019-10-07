@@ -28,7 +28,6 @@ interface IProps extends Omit<React.HTMLAttributes<any>, 'onChange'> {
   showMask?: boolean;
   maskClosable?: boolean;
   maskStyle?: React.CSSProperties;
-  drawerStyle?: React.CSSProperties;
   onChange?: ((open?: boolean) => void);
   afterVisibleChange?: ((open: boolean) => void);
   onHandleClick?: ((e: React.MouseEvent | React.KeyboardEvent) => void);

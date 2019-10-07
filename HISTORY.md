@@ -2,6 +2,10 @@ History
 
 ---
 
+## 3.0.0
+
+- Remove `drawerStyle`.
+
 ## 2.1.0
 
 - Add `drawerStyle`.
