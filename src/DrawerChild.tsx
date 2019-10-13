@@ -130,6 +130,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
     if (typeof getOpenCount === 'function' && !getOpenCount()) {
       document.body.style.overflow = '';
     }
+    switchScrollingEffect(true);
   }
 
   private domFocus = () => {
