@@ -130,7 +130,6 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
     }
     if (!openCount) {
       document.body.style.overflow = '';
-    } else if (openCount === 1) {
       switchScrollingEffect(true);
     }
   }
