@@ -122,13 +122,15 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
 
   public componentWillUnmount() {
     const { getOpenCount, open } = this.props;
+    const openCount = typeof getOpenCount === 'function' && getOpenCount()
     delete currentDrawer[this.drawerId];
     if (open) {
       this.setLevelTransform(false);
       document.body.style.touchAction = '';
     }
-    if (typeof getOpenCount === 'function' && !getOpenCount()) {
+    if (!openCount) {
       document.body.style.overflow = '';
+      switchScrollingEffect(true);
     }
   }
 
