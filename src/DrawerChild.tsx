@@ -1,7 +1,6 @@
 import classnames from 'classnames';
 import getScrollBarSize from 'rc-util/lib/getScrollBarSize';
 import KeyCode from 'rc-util/lib/KeyCode';
-import switchScrollingEffect from 'rc-util/lib/switchScrollingEffect';
 import * as React from 'react';
 import { polyfill } from 'react-lifecycles-compat';
 
@@ -121,7 +120,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
   }
 
   public componentWillUnmount() {
-    const { getOpenCount, open } = this.props;
+    const { getOpenCount, open, switchScrollingEffect } = this.props;
     const openCount = typeof getOpenCount === 'function' && getOpenCount()
     delete currentDrawer[this.drawerId];
     if (open) {
@@ -306,7 +305,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
   }
 
   private addScrollingEffect = (right: number) => {
-    const { placement, duration, ease, getOpenCount } = this.props;
+    const { placement, duration, ease, getOpenCount, switchScrollingEffect } = this.props;
     const openCount = getOpenCount && getOpenCount();
     if (openCount === 1) {
       switchScrollingEffect();
@@ -337,7 +336,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
   }
 
   private remScrollingEffect = (right: number) => {
-    const { placement, duration, ease, getOpenCount } = this.props;
+    const { placement, duration, ease, getOpenCount, switchScrollingEffect } = this.props;
     const openCount = getOpenCount && getOpenCount();
     if (!openCount) {
       switchScrollingEffect(true);

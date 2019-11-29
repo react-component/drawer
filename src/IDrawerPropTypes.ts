@@ -44,4 +44,5 @@ export interface IDrawerProps extends IProps {
 export interface IDrawerChildProps extends IProps {
   getContainer?: () => HTMLElement;
   getOpenCount?: () => number;
+  switchScrollingEffect?: (close?: boolean) => void;
 }
