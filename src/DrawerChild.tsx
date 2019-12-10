@@ -305,7 +305,6 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
   }
 
   private addScrollingEffect = (right: number) => {
-    console.log(222)
     const { placement, duration, ease, getOpenCount, switchScrollingEffect } = this.props;
     const openCount = getOpenCount && getOpenCount();
     if (openCount === 1) {
