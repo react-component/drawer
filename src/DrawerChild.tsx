@@ -305,6 +305,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
   }
 
   private addScrollingEffect = (right: number) => {
+    console.log(222)
     const { placement, duration, ease, getOpenCount, switchScrollingEffect } = this.props;
     const openCount = getOpenCount && getOpenCount();
     if (openCount === 1) {
@@ -455,6 +456,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
       onHandleClick,
       keyboard,
       getOpenCount,
+      switchScrollingEffect,
       ...props
     } = this.props;
     // 首次渲染都将是关闭状态。
