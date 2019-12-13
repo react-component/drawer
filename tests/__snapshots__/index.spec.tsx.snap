@@ -1,5 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`rc-drawer-menu getContainer 1`] = `
+<div
+  class="div-wrapper"
+/>
+`;
+
 exports[`rc-drawer-menu getContainer is null 1`] = `
 <div
   class="react-wrapper"

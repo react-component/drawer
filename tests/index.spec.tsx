@@ -3,10 +3,11 @@ import * as React from 'react';
 import toJson from 'enzyme-to-json';
 import Drawer from '../src/';
 
-function Div(props: { show?: boolean }) {
+function Div(props) {
+  const { show, ...otherProps } = props
   return (
     <div className="div-wrapper">
-      {props.show && <Drawer wrapperClassName="drawer-wrapper" defaultOpen={true} />}
+      {show && <Drawer wrapperClassName="drawer-wrapper" defaultOpen {...otherProps} />}
     </div>
   );
 }
@@ -185,6 +186,14 @@ describe('rc-drawer-menu', () => {
   });
   it('handler is null, render is null', () => {
     instance = mount(<Drawer handler={null} levelMove={200} />);
+    expect(toJson(instance.render())).toMatchSnapshot();
+  });
+
+  it('getContainer', () => {
+    instance = mount(<Div show getContainer={false} />);
+    instance.setProps({
+      show: false,
+    });
     expect(toJson(instance.render())).toMatchSnapshot();
   });
 });

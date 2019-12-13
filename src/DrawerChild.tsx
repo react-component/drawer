@@ -28,6 +28,10 @@ interface IState {
 }
 
 class DrawerChild extends React.Component<IDrawerChildProps, IState> {
+  static defaultProps = {
+    switchScrollingEffect: () => {},
+  }
+
   public static getDerivedStateFromProps(props: IDrawerChildProps,
     { prevProps, _self }: { prevProps: IDrawerChildProps, _self: DrawerChild }) {
     const nextState = {
