@@ -27,6 +27,8 @@ interface IState {
   prevProps?: IDrawerChildProps;
 }
 
+let passiveSupported
+
 class DrawerChild extends React.Component<IDrawerChildProps, IState> {
   static defaultProps = {
     switchScrollingEffect: () => {},
@@ -81,20 +83,22 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
   }
 
   public componentDidMount() {
-    if (!windowIsUndefined) {
-      let passiveSupported = false;
+    if (!windowIsUndefined && passiveSupported === undefined) {
+      passiveSupported = false;
       window.addEventListener(
-        'test',
-        () => { },
+        'testPassive',
+        null,
         Object.defineProperty({}, 'passive', {
           get: () => {
+            console.log(1123)
             passiveSupported = true;
             return null;
           },
         }),
       );
-      this.passive = passiveSupported ? { passive: false } : false;
+      window.removeEventListener("testPassive", null);
     }
+    this.passive = passiveSupported ? { passive: false } : false;
     const { open } = this.props;
     this.drawerId = `drawer_id_${
       Number(
