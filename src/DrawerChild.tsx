@@ -27,7 +27,7 @@ interface IState {
   prevProps?: IDrawerChildProps;
 }
 
-let passiveSupported
+let passiveSupported;
 
 class DrawerChild extends React.Component<IDrawerChildProps, IState> {
   static defaultProps = {
@@ -90,13 +90,12 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
         null,
         Object.defineProperty({}, 'passive', {
           get: () => {
-            console.log(1123)
             passiveSupported = true;
             return null;
           },
         }),
       );
-      window.removeEventListener("testPassive", null);
+      window.removeEventListener('testPassive', null);
     }
     this.passive = passiveSupported ? { passive: false } : false;
     const { open } = this.props;
