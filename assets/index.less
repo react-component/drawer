@@ -200,8 +200,7 @@
       &-mask {
         opacity: .3;
         height: 100%;
-        animation: rcDrawerFadeIn 0.3s @ease-in-out-circ;
-        transition: none;
+        transition: opacity 0.3s @ease-in-out-circ;
       }
       &-handle {
         &-icon {
@@ -215,14 +214,5 @@
         }
       }
     }
-  }
-}
-
-@keyframes rcDrawerFadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 0.3;
   }
 }
