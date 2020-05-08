@@ -2,6 +2,10 @@ History
 
 ---
 
+## 3.2.0
+
+- Remove `react-lifecycles-compat`.
+
 ## 3.0.0
 
 - Remove `drawerStyle`.
