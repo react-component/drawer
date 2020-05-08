@@ -1,6 +1,5 @@
 import Portal from 'rc-util/lib/PortalWrapper';
 import * as React from 'react';
-import { polyfill } from 'react-lifecycles-compat';
 
 import Child from './DrawerChild';
 import { IDrawerProps, IDrawerChildProps } from './IDrawerPropTypes';
@@ -146,4 +145,4 @@ class DrawerWrapper extends React.Component<IDrawerProps, IState> {
   }
 }
 
-export default polyfill(DrawerWrapper);
+export default DrawerWrapper;
