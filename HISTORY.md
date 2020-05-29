@@ -2,6 +2,10 @@ History
 
 ---
 
+## 4.0.0
+
+- Upgrade `rc-util` to `5.x`.
+
 ## 3.2.0
 
 - Remove `react-lifecycles-compat`.
