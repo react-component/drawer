@@ -1,6 +1,6 @@
 {
   "name": "rc-drawer",
-  "version": "4.0.1",
+  "version": "4.0.0",
   "description": "drawer component for react",
   "keywords": [
     "react",
@@ -65,7 +65,7 @@
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
     "react-test-renderer": "^16.10.2",
-    "typescript": "^3.6.3"
+    "typescript": "^3.9.3"
   },
   "dependencies": {
     "@babel/runtime": "^7.10.1",
