@@ -18,7 +18,7 @@
 
 ## Example
 
-http://react-component.github.io/drawer/examples/
+https://rc-drawer.react-component.now.sh
 
 ## Usage
 
