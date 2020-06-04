@@ -12,13 +12,15 @@ const transitionEndObject: {
   MozTransition: 'transitionend',
   OTransition: 'oTransitionEnd otransitionend',
 };
-export const transitionStr: string = Object.keys(transitionEndObject).filter(key => {
-  if (typeof document === 'undefined') {
-    return false;
-  }
-  const html = document.getElementsByTagName('html')[0];
-  return key in (html ? html.style : {});
-})[0];
+export const transitionStr: string = Object.keys(transitionEndObject).filter(
+  key => {
+    if (typeof document === 'undefined') {
+      return false;
+    }
+    const html = document.getElementsByTagName('html')[0];
+    return key in (html ? html.style : {});
+  },
+)[0];
 export const transitionEnd: string = transitionEndObject[transitionStr];
 
 export function addEventListener(
@@ -75,7 +77,11 @@ export const getTouchParentScroll = (
   differX: number,
   differY: number,
 ): boolean => {
-  if (!currentTarget || currentTarget === document || currentTarget instanceof Document) {
+  if (
+    !currentTarget ||
+    currentTarget === document ||
+    currentTarget instanceof Document
+  ) {
     return false;
   }
   // root 为 drawer-content 设定了 overflow, 判断为 root 的 parent 时结束滚动；
@@ -83,8 +89,10 @@ export const getTouchParentScroll = (
     return true;
   }
 
-  const isY = Math.max(Math.abs(differX), Math.abs(differY)) === Math.abs(differY);
-  const isX = Math.max(Math.abs(differX), Math.abs(differY)) === Math.abs(differX);
+  const isY =
+    Math.max(Math.abs(differX), Math.abs(differY)) === Math.abs(differY);
+  const isX =
+    Math.max(Math.abs(differX), Math.abs(differY)) === Math.abs(differX);
 
   const scrollY = currentTarget.scrollHeight - currentTarget.clientHeight;
   const scrollX = currentTarget.scrollWidth - currentTarget.clientWidth;
@@ -97,15 +105,16 @@ export const getTouchParentScroll = (
   const x = scrollX && overflowX;
 
   if (
-    (isY && (!y ||
-      (y && (
-        (currentTarget.scrollTop >= scrollY && differY < 0) ||
-        (currentTarget.scrollTop <= 0 && differY > 0)
-      )))) ||
-    (isX && (!x ||
-      (x && (
-        (currentTarget.scrollLeft >= scrollX && scrollX < 0) ||
-        (currentTarget.scrollLeft <= 0 && scrollX > 0)))))
+    (isY &&
+      (!y ||
+        (y &&
+          ((currentTarget.scrollTop >= scrollY && differY < 0) ||
+            (currentTarget.scrollTop <= 0 && differY > 0))))) ||
+    (isX &&
+      (!x ||
+        (x &&
+          ((currentTarget.scrollLeft >= scrollX && differX < 0) ||
+            (currentTarget.scrollLeft <= 0 && differX > 0)))))
   ) {
     return getTouchParentScroll(
       root,
