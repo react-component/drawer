@@ -169,16 +169,14 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
     const currentTarget = e.currentTarget as HTMLElement;
     const differX = e.changedTouches[0].clientX - this.startPos.x;
     const differY = e.changedTouches[0].clientY - this.startPos.y;
+    // 统一走 getTouchParentScroll, 不做其它判断；
     if (
-      (currentTarget === this.maskDom ||
-        currentTarget === this.handlerDom ||
-        (currentTarget === this.contentDom &&
-          getTouchParentScroll(
-            currentTarget,
-            e.target as HTMLElement,
-            differX,
-            differY,
-          ))) &&
+      getTouchParentScroll(
+        currentTarget,
+        e.target as HTMLElement,
+        differX,
+        differY,
+      ) &&
       e.cancelable
     ) {
       e.preventDefault();
@@ -288,34 +286,32 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
   };
 
   private toggleScrollingToDrawerAndBody = (right: number) => {
-    const { getOpenCount, getContainer, showMask, open } = this.props;
+    const {
+      getOpenCount,
+      getContainer,
+      showMask,
+      open,
+      switchScrollingEffect,
+    } = this.props;
     const container = getContainer && getContainer();
     const openCount = getOpenCount && getOpenCount();
     // 处理 body 滚动
     if (container && container.parentNode === document.body && showMask) {
-      const eventArray = ['touchstart'];
-      const domArray = [
-        document.body,
-        this.maskDom,
-        this.handlerDom,
-        this.contentDom,
-      ];
-      if (open && document.body.style.overflow !== 'hidden') {
+      const eventArray = ['touchstart', 'touchmove'];
+      if (open && !document.body.getAttribute('ant-drawer-scrolling-effect')) {
+        if (openCount === 1) {
+          switchScrollingEffect();
+        }
         if (right) {
           this.addScrollingEffect(right);
         }
-        if (openCount === 1) {
-          document.body.style.overflow = 'hidden';
-        }
+        document.body.setAttribute('ant-drawer-scrolling-effect', 'true');
         document.body.style.touchAction = 'none';
         // 手机禁滚
-        domArray.forEach((item, i) => {
-          if (!item) {
-            return;
-          }
+        eventArray.forEach((event, i) => {
           addEventListener(
-            item,
-            eventArray[i] || 'touchmove',
+            document.body,
+            event,
             i ? this.removeMoveHandler : this.removeStartHandler,
             this.passive,
           );
@@ -323,20 +319,18 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
       } else if (this.getCurrentDrawerSome()) {
         // 没有弹框的状态下清除 overflow;
         if (!openCount) {
-          document.body.style.overflow = '';
+          switchScrollingEffect();
         }
+        document.body.removeAttribute('ant-drawer-scrolling-effect');
         document.body.style.touchAction = '';
         if (right) {
           this.remScrollingEffect(right);
         }
         // 恢复事件
-        domArray.forEach((item, i) => {
-          if (!item) {
-            return;
-          }
+        eventArray.forEach((event, i) => {
           removeEventListener(
-            item,
-            eventArray[i] || 'touchmove',
+            document.body,
+            event,
             i ? this.removeMoveHandler : this.removeStartHandler,
             this.passive,
           );
@@ -346,17 +340,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
   };
 
   private addScrollingEffect = (right: number) => {
-    const {
-      placement,
-      duration,
-      ease,
-      getOpenCount,
-      switchScrollingEffect,
-    } = this.props;
-    const openCount = getOpenCount && getOpenCount();
-    if (openCount === 1) {
-      switchScrollingEffect();
-    }
+    const { placement, duration, ease } = this.props;
     const widthTransition = `width ${duration} ${ease}`;
     const transformTransition = `transform ${duration} ${ease}`;
     this.dom.style.transition = 'none';
@@ -383,17 +367,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
   };
 
   private remScrollingEffect = (right: number) => {
-    const {
-      placement,
-      duration,
-      ease,
-      getOpenCount,
-      switchScrollingEffect,
-    } = this.props;
-    const openCount = getOpenCount && getOpenCount();
-    if (!openCount) {
-      switchScrollingEffect(true);
-    }
+    const { placement, duration, ease } = this.props;
     if (transitionStr) {
       document.body.style.overflowX = 'hidden';
     }
