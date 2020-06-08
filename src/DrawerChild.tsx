@@ -291,7 +291,6 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
     const { getOpenCount, getContainer, showMask, open } = this.props;
     const container = getContainer && getContainer();
     const openCount = getOpenCount && getOpenCount();
-    console.log(openCount);
     // 处理 body 滚动
     if (container && container.parentNode === document.body && showMask) {
       const eventArray = ['touchstart'];
