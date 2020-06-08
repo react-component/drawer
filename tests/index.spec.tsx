@@ -29,21 +29,6 @@ function DrawerComp(props: { open?: boolean }) {
   );
 }
 
-function TowDrawer(props: { oneOpen?: boolean; towOpen?: boolean }) {
-  return (
-    <div className="tow-wrapper">
-      <div
-        id="a"
-        className="a"
-        style={{ position: 'absolute', top: 0, left: 0 }}
-      >
-        <Drawer getContainer="#a" open={props.oneOpen} />
-      </div>
-      <Drawer open={props.towOpen} />
-    </div>
-  );
-}
-
 function createClientXY(x: number, y: number) {
   return { clientX: x, clientY: y };
 }
@@ -231,30 +216,5 @@ describe('rc-drawer-menu', () => {
       show: false,
     });
     expect(toJson(instance.render())).toMatchSnapshot();
-  });
-  it.only('tow drawer getContainer', () => {
-    instance = mount(<TowDrawer />);
-    jest.useFakeTimers();
-    instance.setProps({
-      oneOpen: true,
-    });
-    jest.runAllTimers();
-    expect(document.body.style.cssText).toEqual('');
-    console.log(document.body.style.cssText);
-    instance.setProps({
-      towOpen: true,
-    });
-    jest.runAllTimers();
-    console.log(document.body.style.cssText);
-    expect(document.body.style.cssText).toBe(
-      'overflow: hidden; overflow-x: hidden; overflow-y: hidden;',
-    );
-    instance.setProps({
-      towOpen: false,
-    });
-    jest.runAllTimers();
-    console.log(document.body.style.cssText);
-    expect(document.body.style.cssText).toEqual('');
-    jest.useRealTimers();
   });
 });
