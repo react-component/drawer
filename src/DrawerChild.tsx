@@ -98,7 +98,8 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
       } catch (err) {}
       this.passive = passiveSupported ? { passive: false } : false;
     }
-    const { open } = this.props;
+    const { open, getContainer } = this.props;
+    const container = getContainer && getContainer();
     this.drawerId = `drawer_id_${Number(
       (Date.now() + Math.random())
         .toString()
@@ -106,7 +107,9 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
     ).toString(16)}`;
     this.getLevelDom(this.props);
     if (open) {
-      currentDrawer[this.drawerId] = open;
+      if (container && container.parentNode === document.body) {
+        currentDrawer[this.drawerId] = open;
+      }
       // 默认打开状态时推出 level;
       this.openLevelTransition();
       this.forceUpdate(() => {
@@ -116,12 +119,15 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
   }
 
   public componentDidUpdate(prevProps: IDrawerChildProps) {
-    const { open } = this.props;
+    const { open, getContainer } = this.props;
+    const container = getContainer && getContainer();
     if (open !== prevProps.open) {
       if (open) {
         this.domFocus();
       }
-      currentDrawer[this.drawerId] = !!open;
+      if (container && container.parentNode === document.body) {
+        currentDrawer[this.drawerId] = !!open;
+      }
       this.openLevelTransition();
     }
   }
@@ -238,7 +244,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
   ) => {
     const { placement, levelMove, duration, ease, showMask } = this.props;
     // router 切换时可能会导至页面失去滚动条，所以需要时时获取。
-    this.levelDom.forEach((dom) => {
+    this.levelDom.forEach(dom => {
       dom.style.transition = `transform ${duration} ${ease}`;
       addEventListener(dom, transitionEnd, this.transitionEnd);
       let levelValue = open ? value : 0;
@@ -436,7 +442,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
   };
 
   private getCurrentDrawerSome = () =>
-    !Object.keys(currentDrawer).some((key) => currentDrawer[key]);
+    !Object.keys(currentDrawer).some(key => currentDrawer[key]);
 
   private getLevelDom = ({ level, getContainer }: IDrawerChildProps) => {
     if (windowIsUndefined) {
@@ -460,8 +466,8 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
         }
       });
     } else if (level) {
-      dataToArray(level).forEach((key) => {
-        document.querySelectorAll(key).forEach((item) => {
+      dataToArray(level).forEach(key => {
+        document.querySelectorAll(key).forEach(item => {
           this.levelDom.push(item);
         });
       });
@@ -556,7 +562,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
             className={`${prefixCls}-mask`}
             onClick={maskClosable ? onClose : undefined}
             style={maskStyle}
-            ref={(c) => {
+            ref={c => {
               this.maskDom = c as HTMLElement;
             }}
           />
@@ -569,13 +575,13 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
             width: isNumeric(width) ? `${width}px` : width,
             height: isNumeric(height) ? `${height}px` : height,
           }}
-          ref={(c) => {
+          ref={c => {
             this.contentWrapper = c as HTMLElement;
           }}
         >
           <div
             className={`${prefixCls}-content`}
-            ref={(c) => {
+            ref={c => {
               this.contentDom = c as HTMLElement;
             }}
             onTouchStart={
