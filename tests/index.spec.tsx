@@ -1,7 +1,7 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
 import toJson from 'enzyme-to-json';
-import Drawer from "../src";
+import Drawer from '../src';
 
 function Div(props) {
   const { show, ...otherProps } = props;
@@ -246,7 +246,9 @@ describe('rc-drawer-menu', () => {
     });
     jest.runAllTimers();
     console.log(document.body.style.cssText);
-    expect(document.body.style.cssText).toBe('overflow: hidden;');
+    expect(document.body.style.cssText).toBe(
+      'overflow: hidden; overflow-x: hidden; overflow-y: hidden;',
+    );
     instance.setProps({
       towOpen: false,
     });
