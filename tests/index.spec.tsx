@@ -1,13 +1,15 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
 import toJson from 'enzyme-to-json';
-import Drawer from '../src/';
+import Drawer from "../src";
 
 function Div(props) {
-  const { show, ...otherProps } = props
+  const { show, ...otherProps } = props;
   return (
     <div className="div-wrapper">
-      {show && <Drawer wrapperClassName="drawer-wrapper" defaultOpen {...otherProps} />}
+      {show && (
+        <Drawer wrapperClassName="drawer-wrapper" defaultOpen {...otherProps} />
+      )}
     </div>
   );
 }
@@ -18,7 +20,26 @@ function DrawerComp(props: { open?: boolean }) {
       <div id="a" style={{ position: 'absolute', top: 0, left: 0 }}>
         test1
       </div>
-      <Drawer getContainer={null} open={props.open} wrapperClassName="drawer-wrapper" />
+      <Drawer
+        getContainer={null}
+        open={props.open}
+        wrapperClassName="drawer-wrapper"
+      />
+    </div>
+  );
+}
+
+function TowDrawer(props: { oneOpen?: boolean; towOpen?: boolean }) {
+  return (
+    <div className="tow-wrapper">
+      <div
+        id="a"
+        className="a"
+        style={{ position: 'absolute', top: 0, left: 0 }}
+      >
+        <Drawer getContainer="#a" open={props.oneOpen} />
+      </div>
+      <Drawer open={props.towOpen} />
     </div>
   );
 }
@@ -32,7 +53,10 @@ function createStartTouchEventObject({ x = 0, y = 0 }) {
 }
 
 function createMoveTouchEventObject({ x = 0, y = 0 }) {
-  return { touches: [createClientXY(x, y)], changedTouches: [createClientXY(x, y)] };
+  return {
+    touches: [createClientXY(x, y)],
+    changedTouches: [createClientXY(x, y)],
+  };
 }
 
 describe('rc-drawer-menu', () => {
@@ -64,11 +88,19 @@ describe('rc-drawer-menu', () => {
   });
 
   it('default open drawer', () => {
-    instance = mount(<Drawer handler={<i className="a">a</i>} defaultOpen={true} level={[]} />);
+    instance = mount(
+      <Drawer handler={<i className="a">a</i>} defaultOpen level={[]} />,
+    );
     const drawer = instance.find('.drawer-content-wrapper').instance() as any;
     const content = instance.find('.drawer-content');
-    content.simulate('touchStart', createStartTouchEventObject({ x: 100, y: 0 }));
-    content.simulate('touchMove', createMoveTouchEventObject({ x: 150, y: 10 }));
+    content.simulate(
+      'touchStart',
+      createStartTouchEventObject({ x: 100, y: 0 }),
+    );
+    content.simulate(
+      'touchMove',
+      createMoveTouchEventObject({ x: 150, y: 10 }),
+    );
     content.simulate('touchEnd', createMoveTouchEventObject({ x: 200, y: 0 }));
     content.simulate('touchStart', createStartTouchEventObject({ x: 0, y: 0 }));
     content.simulate('touchMove', createMoveTouchEventObject({ x: 0, y: 10 }));
@@ -78,7 +110,7 @@ describe('rc-drawer-menu', () => {
   });
 
   it('handler is null，open=true', () => {
-    instance = mount(<Drawer handler={null} open={true} level={null} />);
+    instance = mount(<Drawer handler={null} open level={null} />);
     expect(toJson(instance.render())).toMatchSnapshot();
   });
   it('handler is null，open=false', () => {
@@ -111,12 +143,16 @@ describe('rc-drawer-menu', () => {
   it('getContainer is null', () => {
     instance = mount(
       <div className="react-wrapper">
-        <div id="a" className="a" style={{ position: 'absolute', top: 0, left: 0 }}>
+        <div
+          id="a"
+          className="a"
+          style={{ position: 'absolute', top: 0, left: 0 }}
+        >
           test1
         </div>
         <Drawer
           getContainer={null}
-          defaultOpen={true}
+          defaultOpen
           level="#a"
           wrapperClassName="drawer-wrapper"
         />
@@ -146,7 +182,7 @@ describe('rc-drawer-menu', () => {
     expect(content.style.transform).toBe('translateX(-100%)');
   });
   it('will unmount', () => {
-    instance = mount(<Div show={true} />);
+    instance = mount(<Div show />);
     const divWrapper = instance.find('.div-wrapper').instance() as any;
     const content = instance.find('.drawer-content-wrapper').instance() as any;
     console.log(content.style.transform);
@@ -195,5 +231,28 @@ describe('rc-drawer-menu', () => {
       show: false,
     });
     expect(toJson(instance.render())).toMatchSnapshot();
+  });
+  it.only('tow drawer getContainer', () => {
+    instance = mount(<TowDrawer />);
+    jest.useFakeTimers();
+    instance.setProps({
+      oneOpen: true,
+    });
+    jest.runAllTimers();
+    expect(document.body.style.cssText).toEqual('');
+    console.log(document.body.style.cssText);
+    instance.setProps({
+      towOpen: true,
+    });
+    jest.runAllTimers();
+    console.log(document.body.style.cssText);
+    expect(document.body.style.cssText).toBe('overflow: hidden;');
+    instance.setProps({
+      towOpen: false,
+    });
+    jest.runAllTimers();
+    console.log(document.body.style.cssText);
+    expect(document.body.style.cssText).toEqual('');
+    jest.useRealTimers();
   });
 });
