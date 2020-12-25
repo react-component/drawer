@@ -4,6 +4,7 @@
 // Definitions: https://github.com/react-component/drawer
 import { GetContainer } from 'rc-util/lib/PortalWrapper';
 import * as React from 'react';
+import ScrollLocker from 'rc-util/lib/Dom/scrollLocker';
 
 export type IPlacement = 'left' | 'top' | 'right' | 'bottom';
 
@@ -44,5 +45,5 @@ export interface IDrawerProps extends IProps {
 export interface IDrawerChildProps extends IProps {
   getContainer?: () => HTMLElement;
   getOpenCount?: () => number;
-  switchScrollingEffect?: (close?: boolean) => void;
+  scrollLocker?: ScrollLocker;
 }

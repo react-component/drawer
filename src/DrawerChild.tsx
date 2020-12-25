@@ -27,10 +27,6 @@ interface IState {
 }
 
 class DrawerChild extends React.Component<IDrawerChildProps, IState> {
-  static defaultProps = {
-    switchScrollingEffect: () => {},
-  };
-
   public static getDerivedStateFromProps(
     props: IDrawerChildProps,
     { prevProps, _self }: { prevProps: IDrawerChildProps; _self: DrawerChild },
@@ -115,35 +111,36 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
       this.forceUpdate(() => {
         this.domFocus();
       });
+      this.props.scrollLocker?.lock();
     }
   }
 
   public componentDidUpdate(prevProps: IDrawerChildProps) {
-    const { open, getContainer } = this.props;
+    const { open, getContainer, scrollLocker } = this.props;
     const container = getContainer && getContainer();
     if (open !== prevProps.open) {
-      if (open) {
-        this.domFocus();
-      }
       if (container && container.parentNode === document.body) {
         currentDrawer[this.drawerId] = !!open;
       }
       this.openLevelTransition();
+      if (open) {
+        this.domFocus();
+        scrollLocker?.lock();
+      } else {
+        scrollLocker?.unLock();
+      }
     }
   }
 
   public componentWillUnmount() {
-    const { getOpenCount, open, switchScrollingEffect } = this.props;
+    const { getOpenCount, open, scrollLocker } = this.props;
     const openCount = typeof getOpenCount === 'function' && getOpenCount();
     delete currentDrawer[this.drawerId];
     if (open) {
       this.setLevelTransform(false);
       document.body.style.touchAction = '';
     }
-    if (!openCount) {
-      document.body.style.overflow = '';
-      switchScrollingEffect(true);
-    }
+    scrollLocker?.unLock();
   }
 
   private domFocus = () => {
@@ -244,7 +241,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
   ) => {
     const { placement, levelMove, duration, ease, showMask } = this.props;
     // router 切换时可能会导至页面失去滚动条，所以需要时时获取。
-    this.levelDom.forEach(dom => {
+    this.levelDom.forEach((dom) => {
       dom.style.transition = `transform ${duration} ${ease}`;
       addEventListener(dom, transitionEnd, this.transitionEnd);
       let levelValue = open ? value : 0;
@@ -351,12 +348,8 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
       duration,
       ease,
       getOpenCount,
-      switchScrollingEffect,
+      scrollLocker,
     } = this.props;
-    const openCount = getOpenCount && getOpenCount();
-    if (openCount === 1) {
-      switchScrollingEffect();
-    }
     const widthTransition = `width ${duration} ${ease}`;
     const transformTransition = `transform ${duration} ${ease}`;
     this.dom.style.transition = 'none';
@@ -383,17 +376,9 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
   };
 
   private remScrollingEffect = (right: number) => {
-    const {
-      placement,
-      duration,
-      ease,
-      getOpenCount,
-      switchScrollingEffect,
-    } = this.props;
+    const { placement, duration, ease, getOpenCount } = this.props;
     const openCount = getOpenCount && getOpenCount();
-    if (!openCount) {
-      switchScrollingEffect(true);
-    }
+
     if (transitionStr) {
       document.body.style.overflowX = 'hidden';
     }
@@ -442,7 +427,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
   };
 
   private getCurrentDrawerSome = () =>
-    !Object.keys(currentDrawer).some(key => currentDrawer[key]);
+    !Object.keys(currentDrawer).some((key) => currentDrawer[key]);
 
   private getLevelDom = ({ level, getContainer }: IDrawerChildProps) => {
     if (windowIsUndefined) {
@@ -466,8 +451,8 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
         }
       });
     } else if (level) {
-      dataToArray(level).forEach(key => {
-        document.querySelectorAll(key).forEach(item => {
+      dataToArray(level).forEach((key) => {
+        document.querySelectorAll(key).forEach((item) => {
           this.levelDom.push(item);
         });
       });
@@ -511,7 +496,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
       onHandleClick,
       keyboard,
       getOpenCount,
-      switchScrollingEffect,
+      scrollLocker,
       ...props
     } = this.props;
     // 首次渲染都将是关闭状态。
@@ -562,7 +547,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
             className={`${prefixCls}-mask`}
             onClick={maskClosable ? onClose : undefined}
             style={maskStyle}
-            ref={c => {
+            ref={(c) => {
               this.maskDom = c as HTMLElement;
             }}
           />
@@ -575,13 +560,13 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
             width: isNumeric(width) ? `${width}px` : width,
             height: isNumeric(height) ? `${height}px` : height,
           }}
-          ref={c => {
+          ref={(c) => {
             this.contentWrapper = c as HTMLElement;
           }}
         >
           <div
             className={`${prefixCls}-content`}
-            ref={c => {
+            ref={(c) => {
               this.contentDom = c as HTMLElement;
             }}
             onTouchStart={
