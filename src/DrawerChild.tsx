@@ -133,8 +133,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
   }
 
   public componentWillUnmount() {
-    const { getOpenCount, open, scrollLocker } = this.props;
-    const openCount = typeof getOpenCount === 'function' && getOpenCount();
+    const { open, scrollLocker } = this.props;
     delete currentDrawer[this.drawerId];
     if (open) {
       this.setLevelTransform(false);
@@ -343,13 +342,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
   };
 
   private addScrollingEffect = (right: number) => {
-    const {
-      placement,
-      duration,
-      ease,
-      getOpenCount,
-      scrollLocker,
-    } = this.props;
+    const { placement, duration, ease } = this.props;
     const widthTransition = `width ${duration} ${ease}`;
     const transformTransition = `transform ${duration} ${ease}`;
     this.dom.style.transition = 'none';
@@ -376,8 +369,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
   };
 
   private remScrollingEffect = (right: number) => {
-    const { placement, duration, ease, getOpenCount } = this.props;
-    const openCount = getOpenCount && getOpenCount();
+    const { placement, duration, ease } = this.props;
 
     if (transitionStr) {
       document.body.style.overflowX = 'hidden';
