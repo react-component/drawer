@@ -42,7 +42,7 @@ exports[`Drawer render dom 1`] = `
 <div>
   <div
     class="main ant-scrolling-effect"
-    style="padding-right: 0px; overflow: hidden; overflow-x: hidden; overflow-y: hidden;"
+    style="overflow: hidden; overflow-x: hidden; overflow-y: hidden;"
   >
     <div>
       <div

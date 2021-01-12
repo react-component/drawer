@@ -1,7 +1,8 @@
+import * as React from 'react';
 import classnames from 'classnames';
 import getScrollBarSize from 'rc-util/lib/getScrollBarSize';
 import KeyCode from 'rc-util/lib/KeyCode';
-import * as React from 'react';
+import omit from 'omit.js';
 
 import { IDrawerChildProps } from './IDrawerPropTypes';
 
@@ -284,9 +285,8 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
   };
 
   private toggleScrollingToDrawerAndBody = (right: number) => {
-    const { getOpenCount, getContainer, showMask, open } = this.props;
+    const { getContainer, showMask, open } = this.props;
     const container = getContainer && getContainer();
-    const openCount = getOpenCount && getOpenCount();
     // 处理 body 滚动
     if (container && container.parentNode === document.body && showMask) {
       const eventArray = ['touchstart'];
@@ -299,9 +299,6 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
       if (open && document.body.style.overflow !== 'hidden') {
         if (right) {
           this.addScrollingEffect(right);
-        }
-        if (openCount === 1) {
-          document.body.style.overflow = 'hidden';
         }
         document.body.style.touchAction = 'none';
         // 手机禁滚
@@ -317,10 +314,6 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
           );
         });
       } else if (this.getCurrentDrawerSome()) {
-        // 没有弹框的状态下清除 overflow;
-        if (!openCount) {
-          document.body.style.overflow = '';
-        }
         document.body.style.touchAction = '';
         if (right) {
           this.remScrollingEffect(right);
@@ -524,7 +517,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
       });
     return (
       <div
-        {...props}
+        {...omit(props, ['switchScrollingEffect'])}
         tabIndex={-1}
         className={wrapperClassName}
         style={style}
