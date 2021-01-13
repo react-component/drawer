@@ -71,7 +71,6 @@
   "dependencies": {
     "@babel/runtime": "^7.10.1",
     "classnames": "^2.2.6",
-    "omit.js": "^2.0.2",
-    "rc-util": "^5.6.2"
+    "rc-util": "^5.7.0"
   }
 }
