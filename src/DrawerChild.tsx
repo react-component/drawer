@@ -2,7 +2,7 @@ import * as React from 'react';
 import classnames from 'classnames';
 import getScrollBarSize from 'rc-util/lib/getScrollBarSize';
 import KeyCode from 'rc-util/lib/KeyCode';
-import omit from 'omit.js';
+import omit from 'rc-util/lib/omit';
 
 import { IDrawerChildProps } from './IDrawerPropTypes';
 
