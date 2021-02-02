@@ -4,9 +4,7 @@ export function dataToArray(vars: any) {
   }
   return [vars];
 }
-const transitionEndObject: {
-  [key: string]: string;
-} = {
+const transitionEndObject: Record<string, string> = {
   transition: 'transitionend',
   WebkitTransition: 'webkitTransitionEnd',
   MozTransition: 'transitionend',
