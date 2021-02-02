@@ -70,6 +70,7 @@ ReactDom.render(
 | onClose | func | null | close click function |
 | onHandleClick | func | nul  | handle icon click function |
 | keyboard | Boolean | true |  Whether support press esc to close |
+| contentWrapperStyle | CSSProperties | null |  wrapper style |
 
 > 2.0 Rename `onMaskClick` -> `onClose`, add `maskClosable`.
 

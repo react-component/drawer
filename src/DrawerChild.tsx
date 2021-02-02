@@ -480,6 +480,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
       keyboard,
       getOpenCount,
       scrollLocker,
+      contentWrapperStyle,
       ...props
     } = this.props;
     // 首次渲染都将是关闭状态。
@@ -542,6 +543,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
             msTransform: transform,
             width: isNumeric(width) ? `${width}px` : width,
             height: isNumeric(height) ? `${height}px` : height,
+            ...contentWrapperStyle
           }}
           ref={c => {
             this.contentWrapper = c as HTMLElement;

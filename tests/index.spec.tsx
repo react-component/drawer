@@ -217,4 +217,12 @@ describe('rc-drawer-menu', () => {
     });
     expect(toJson(instance.render())).toMatchSnapshot();
   });
+
+  it('contentWrapperStyle', () => {
+    instance = mount(
+      <Drawer contentWrapperStyle={{ background: '#f00' }} level={null} />,
+    );
+    const content = instance.find('.drawer-content-wrapper').instance() as any;
+    expect(content.style.background).toBe('rgb(255, 0, 0)');
+  });
 });
