@@ -2,9 +2,9 @@
 // Project: https://github.com/react-component/drawer
 // Definitions by: jljsj33 <https://github.com/jljsj33>
 // Definitions: https://github.com/react-component/drawer
-import { GetContainer } from 'rc-util/lib/PortalWrapper';
-import * as React from 'react';
-import ScrollLocker from 'rc-util/lib/Dom/scrollLocker';
+import type { GetContainer } from 'rc-util/lib/PortalWrapper';
+import type * as React from 'react';
+import type ScrollLocker from 'rc-util/lib/Dom/scrollLocker';
 
 export type IPlacement = 'left' | 'top' | 'right' | 'bottom';
 

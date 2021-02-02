@@ -2,7 +2,7 @@ import Portal from 'rc-util/lib/PortalWrapper';
 import * as React from 'react';
 
 import Child from './DrawerChild';
-import { IDrawerProps, IDrawerChildProps } from './IDrawerPropTypes';
+import type { IDrawerProps, IDrawerChildProps } from './IDrawerPropTypes';
 
 interface IState {
   open: boolean;

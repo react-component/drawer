@@ -4,7 +4,7 @@ import getScrollBarSize from 'rc-util/lib/getScrollBarSize';
 import KeyCode from 'rc-util/lib/KeyCode';
 import omit from 'rc-util/lib/omit';
 
-import { IDrawerChildProps } from './IDrawerPropTypes';
+import type { IDrawerChildProps } from './IDrawerPropTypes';
 
 import {
   addEventListener,
@@ -18,9 +18,7 @@ import {
   windowIsUndefined,
 } from './utils';
 
-const currentDrawer: {
-  [key: string]: boolean;
-} = {};
+const currentDrawer: Record<string, boolean> = {};
 
 interface IState {
   _self: DrawerChild;
