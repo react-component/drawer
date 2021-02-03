@@ -93,7 +93,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
       } catch (err) {}
       this.passive = passiveSupported ? { passive: false } : false;
     }
-    const { open, getContainer } = this.props;
+    const { open, getContainer, showMask } = this.props;
     const container = getContainer && getContainer();
     this.drawerId = `drawer_id_${Number(
       (Date.now() + Math.random())
@@ -110,12 +110,14 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
       this.forceUpdate(() => {
         this.domFocus();
       });
-      this.props.scrollLocker?.lock();
+      if (showMask) {
+        this.props.scrollLocker?.lock();
+      }
     }
   }
 
   public componentDidUpdate(prevProps: IDrawerChildProps) {
-    const { open, getContainer, scrollLocker } = this.props;
+    const { open, getContainer, scrollLocker, showMask } = this.props;
     const container = getContainer && getContainer();
     if (open !== prevProps.open) {
       if (container && container.parentNode === document.body) {
@@ -124,7 +126,9 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
       this.openLevelTransition();
       if (open) {
         this.domFocus();
-        scrollLocker?.lock();
+        if (showMask) {
+          scrollLocker?.lock();
+        }
       } else {
         scrollLocker?.unLock();
       }
