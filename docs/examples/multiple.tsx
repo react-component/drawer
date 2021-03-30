@@ -1,14 +1,13 @@
 /* eslint-disable no-console,react/no-multi-comp */
 import { Button } from 'antd';
 import * as React from 'react';
-import * as ReactDom from 'react-dom';
 
-import Drawer from '../src/';
+import Drawer from 'rc-drawer';
 
 import 'antd/lib/button/style';
 import 'antd/lib/style';
 
-import '../assets/index.less';
+import '../../assets/index.less';
 import './assets/index.less';
 
 class Demo extends React.Component {

@@ -1,37 +1,34 @@
 /* eslint-disable no-console,react/no-multi-comp */
-import { Icon, Menu } from 'antd';
+import { Button, Icon, Menu } from 'antd';
 import * as React from 'react';
-import * as ReactDom from 'react-dom';
 
-import Drawer from '../src/';
+import Drawer from 'rc-drawer';
 
+import 'antd/lib/button/style';
 import 'antd/lib/menu/style';
 import 'antd/lib/style';
 
-
-import '../assets/index.less';
+import '../../assets/index.less';
 import './assets/index.less';
 
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
+
 class Demo extends React.Component {
   public state = {
     open: false,
   }
-
-  public onSwitch = () => {
-    const { open } = this.state;
+  public onClick = () => {
     this.setState({
-      open: !open,
+      open: !this.state.open,
     });
   }
-
   public render() {
     return (
       <div >
-        <Drawer width="250px">
+        <Drawer width="20vw" handler={false} open={this.state.open} onClose={this.onClick}>
           <Menu
-            style={{ height: '200%', width: 'calc(100% - 1px)' }}// 选中的线超出
+            style={{ height: '200%' }}
             defaultSelectedKeys={['1']}
             defaultOpenKeys={['sub1']}
             mode="inline"
@@ -77,10 +74,10 @@ class Demo extends React.Component {
             color: '#fff', textAlign: 'center', lineHeight: '667px',
           }}
         >
-          内容区块
+          <Button onClick={this.onClick}>开关</Button>
         </div>
       </div>
-    )
+    );
   }
 }
 

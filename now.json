@@ -8,5 +8,8 @@
       "use": "@now/static-build",
       "config": { "distDir": ".doc" }
     }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "/dist/$1" }
   ]
 }
