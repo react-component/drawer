@@ -1,48 +1,63 @@
 /* eslint-disable no-console,react/no-multi-comp */
 import { Icon, Menu } from 'antd';
 import * as React from 'react';
-import * as ReactDom from 'react-dom';
 
-import Drawer from '../src';
+import Drawer from 'rc-drawer';
 
 import 'antd/lib/menu/style';
 import 'antd/lib/style';
 
-import '../assets/index.less';
+import '../../assets/index.less';
 import './assets/index.less';
 
-const {SubMenu} = Menu;
+const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
 class Demo extends React.Component {
   public state = {
-    open: false,
-  };
-
-  public onSwitch = () => {
-    const { open } = this.state;
+    open: true,
+  }
+  public componentDidMount() {
+    setTimeout(() => {
+      this.setState({
+        open: false,
+      });
+    }, 2000);
+  }
+  public onChange = (bool: boolean) => {
+    console.log('change: ', bool);
+  }
+  public onTouchEnd = () => {
     this.setState({
-      open: !open,
+      open: false,
     });
-  };
-
+  }
+  public onSwitch = () => {
+    this.setState({
+      open: !this.state.open,
+    });
+  }
   public render() {
     return (
-      <div>
-        <Drawer width="250px" showMask={false}>
+      <div >
+        <Drawer
+          onChange={this.onChange}
+          open={this.state.open}
+          onClose={this.onTouchEnd}
+          handler={false}
+          level={null}
+          afterVisibleChange={(c: boolean) => {
+            console.log('transitionEnd: ', c);
+          }}
+          width="20vw"
+        >
           <Menu
-            style={{ height: '200%', width: 'calc(100% - 1px)' }} // 选中的线超出
             defaultSelectedKeys={['1']}
             defaultOpenKeys={['sub1']}
             mode="inline"
           >
             <SubMenu
               key="sub1"
-              title={
-                <span>
-                  <Icon type="mail" />
-                  <span>Navigation One</span>
-                </span>
-              }
+              title={<span><Icon type="mail" /><span>Navigation One</span></span>}
             >
               <MenuItemGroup key="g1" title="Item 1">
                 <Menu.Item key="1">Option 1</Menu.Item>
@@ -55,12 +70,7 @@ class Demo extends React.Component {
             </SubMenu>
             <SubMenu
               key="sub2"
-              title={
-                <span>
-                  <Icon type="appstore" />
-                  <span>Navigation Two</span>
-                </span>
-              }
+              title={<span><Icon type="appstore" /><span>Navigation Two</span></span>}
             >
               <Menu.Item key="5">Option 5</Menu.Item>
               <Menu.Item key="6">Option 6</Menu.Item>
@@ -71,12 +81,7 @@ class Demo extends React.Component {
             </SubMenu>
             <SubMenu
               key="sub4"
-              title={
-                <span>
-                  <Icon type="setting" />
-                  <span>Navigation Three</span>
-                </span>
-              }
+              title={<span><Icon type="setting" /><span>Navigation Three</span></span>}
             >
               <Menu.Item key="9">Option 9</Menu.Item>
               <Menu.Item key="10">Option 10</Menu.Item>
@@ -87,19 +92,20 @@ class Demo extends React.Component {
         </Drawer>
         <div
           style={{
-            width: '100%',
-            height: 667,
-            background: '#fff000',
-            color: '#fff',
-            textAlign: 'center',
-            lineHeight: '667px',
+            width: '100%', height: 667, background: '#fff000',
+            color: '#fff', textAlign: 'center', lineHeight: '667px',
           }}
         >
           内容区块
+          <button
+            onClick={this.onSwitch}
+            style={{ height: 24, width: 100, marginLeft: 20, color: '#000', lineHeight: '24px' }}
+          >
+            {!this.state.open ? '打开' : '关闭'}
+          </button>
         </div>
       </div>
     );
   }
 }
-
 export default Demo;

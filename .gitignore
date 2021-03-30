@@ -30,3 +30,8 @@ es
 yarn.lock
 package-lock.json
 storybook
+# umi
+.umi
+.umi-production
+.umi-test
+.env.local
