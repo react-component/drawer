@@ -13,7 +13,7 @@
 
 ## Example
 
-https://rc-drawer.react-component.now.sh
+https://drawer-react-component.vercel.app/
 
 ## Usage
 
