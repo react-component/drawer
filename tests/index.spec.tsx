@@ -225,4 +225,23 @@ describe('rc-drawer-menu', () => {
     const content = instance.find('.drawer-content-wrapper').instance() as any;
     expect(content.style.background).toBe('rgb(255, 0, 0)');
   });
+
+  it('autoFocus:false', () => {
+    instance = mount(
+      <div>
+        <Drawer
+          autoFocus={false}
+          open={true}
+          getContainer={false}
+          wrapperClassName="autofocus-test-wrapper-class-name"
+        >
+          <p className="text">Here is content of Drawer</p>
+        </Drawer>
+      </div>,
+    );
+
+    expect(
+      instance.find('.autofocus-test-wrapper-class-name').is(':focus'),
+    ).toBe(false);
+  });
 });

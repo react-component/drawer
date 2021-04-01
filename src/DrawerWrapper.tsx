@@ -101,7 +101,6 @@ class DrawerWrapper extends React.Component<IDrawerProps, IState> {
       wrapperClassName,
       forceRender,
       handler,
-      autoFocus,
       ...props
     } = this.props;
     const { open } = this.state;
