@@ -93,7 +93,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
       } catch (err) {}
       this.passive = passiveSupported ? { passive: false } : false;
     }
-    const { open, getContainer, showMask } = this.props;
+    const { open, getContainer, showMask, autoFocus } = this.props;
     const container = getContainer && getContainer();
     this.drawerId = `drawer_id_${Number(
       (Date.now() + Math.random())
@@ -108,7 +108,9 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
       // 默认打开状态时推出 level;
       this.openLevelTransition();
       this.forceUpdate(() => {
-        this.domFocus();
+        if (autoFocus) {
+          this.domFocus();
+        }
       });
       if (showMask) {
         this.props.scrollLocker?.lock();
@@ -117,7 +119,13 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
   }
 
   public componentDidUpdate(prevProps: IDrawerChildProps) {
-    const { open, getContainer, scrollLocker, showMask } = this.props;
+    const {
+      open,
+      getContainer,
+      scrollLocker,
+      showMask,
+      autoFocus,
+    } = this.props;
     const container = getContainer && getContainer();
     if (open !== prevProps.open) {
       if (container && container.parentNode === document.body) {
@@ -125,7 +133,9 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
       }
       this.openLevelTransition();
       if (open) {
-        this.domFocus();
+        if (autoFocus) {
+          this.domFocus();
+        }
         if (showMask) {
           scrollLocker?.lock();
         }
@@ -547,7 +557,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
             msTransform: transform,
             width: isNumeric(width) ? `${width}px` : width,
             height: isNumeric(height) ? `${height}px` : height,
-            ...contentWrapperStyle
+            ...contentWrapperStyle,
           }}
           ref={c => {
             this.contentWrapper = c as HTMLElement;

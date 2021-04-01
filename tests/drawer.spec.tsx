@@ -1,10 +1,10 @@
+/* eslint-disable max-classes-per-file */
 // eslint-disable react/no-multi-comp
 import { mount } from 'enzyme';
 import * as React from 'react';
 import Drawer from '../src/';
-import { IDrawerProps } from '../src/IDrawerPropTypes';
+import type { IDrawerProps } from '../src/IDrawerPropTypes';
 import toJson from 'enzyme-to-json';
-
 
 class DrawerTesterRef extends React.Component {
   public container: HTMLDivElement;
@@ -51,7 +51,11 @@ class DrawerTesterDom extends React.Component<IDrawerProps, IState> {
       <div>
         <div ref={this.saveContainer} className="main" />
         {this.state.visible ? (
-          <Drawer {...this.props} open={true} getContainer={this.getContainer()}>
+          <Drawer
+            {...this.props}
+            open={true}
+            getContainer={this.getContainer()}
+          >
             <p className="text">Here is content of Drawer</p>
           </Drawer>
         ) : null}
@@ -62,9 +66,25 @@ class DrawerTesterDom extends React.Component<IDrawerProps, IState> {
 
 /* eslint react/no-multi-comp: 0 */
 // tslint:disable-next-line:max-classes-per-file
-const DrawerTesterBoolean = (props) => (
+const DrawerTesterBoolean = props => (
   <div>
     <Drawer {...props} open={true} getContainer={false}>
+      <p className="text">Here is content of Drawer</p>
+    </Drawer>
+  </div>
+);
+
+/* eslint react/no-multi-comp: 0 */
+// tslint:disable-next-line:max-classes-per-file
+const DrawerTesterAutoFocus = props => (
+  <div>
+    <Drawer
+      {...props}
+      autoFocus={false}
+      open={true}
+      getContainer={false}
+      wrapperClassName="autofocus-test-wrapper-class-name"
+    >
       <p className="text">Here is content of Drawer</p>
     </Drawer>
   </div>
@@ -83,6 +103,14 @@ describe('Drawer', () => {
 
   it('render boolean', () => {
     const wrapper = mount(<DrawerTesterBoolean />);
+    expect(toJson(wrapper.render())).toMatchSnapshot();
+  });
+
+  it('render autoFocus', () => {
+    const wrapper = mount(<DrawerTesterAutoFocus />);
+    expect(
+      wrapper.find('.autofocus-test-wrapper-class-name').is(':focus'),
+    ).toBe(false);
     expect(toJson(wrapper.render())).toMatchSnapshot();
   });
 });

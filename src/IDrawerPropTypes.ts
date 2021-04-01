@@ -35,6 +35,7 @@ interface IProps extends Omit<React.HTMLAttributes<any>, 'onChange'> {
   onClose?: (e: React.MouseEvent | React.KeyboardEvent) => void;
   keyboard?: boolean;
   contentWrapperStyle?: React.CSSProperties;
+  autoFocus?: boolean;
 }
 
 export interface IDrawerProps extends IProps {

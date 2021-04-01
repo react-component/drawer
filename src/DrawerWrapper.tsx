@@ -35,6 +35,7 @@ class DrawerWrapper extends React.Component<IDrawerProps, IState> {
     className: '',
     keyboard: true,
     forceRender: false,
+    autoFocus: true,
   };
 
   public static getDerivedStateFromProps(
@@ -100,6 +101,7 @@ class DrawerWrapper extends React.Component<IDrawerProps, IState> {
       wrapperClassName,
       forceRender,
       handler,
+      autoFocus,
       ...props
     } = this.props;
     const { open } = this.state;
