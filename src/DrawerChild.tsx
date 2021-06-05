@@ -25,6 +25,11 @@ interface IState {
   prevProps?: IDrawerChildProps;
 }
 
+interface Point {
+  x: number;
+  y: number;
+}
+
 class DrawerChild extends React.Component<IDrawerChildProps, IState> {
   public static getDerivedStateFromProps(
     props: IDrawerChildProps,
@@ -64,10 +69,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
 
   private passive: { passive: boolean } | boolean;
 
-  private startPos: {
-    x: number;
-    y: number;
-  };
+  private startPos: Point | null;
 
   constructor(props: IDrawerChildProps) {
     super(props);
@@ -153,6 +155,8 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
 
   private removeStartHandler = (e: React.TouchEvent | TouchEvent) => {
     if (e.touches.length > 1) {
+      // need clear the startPos when another touch event happens
+      this.startPos = null;
       return;
     }
     this.startPos = {
@@ -162,7 +166,8 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
   };
 
   private removeMoveHandler = (e: React.TouchEvent | TouchEvent) => {
-    if (e.changedTouches.length > 1) {
+    // the startPos may be null or undefined
+    if (e.changedTouches.length > 1 || !this.startPos) {
       return;
     }
     const currentTarget = e.currentTarget as HTMLElement;
