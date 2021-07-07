@@ -225,4 +225,32 @@ describe('rc-drawer-menu', () => {
     const content = instance.find('.drawer-content-wrapper').instance() as any;
     expect(content.style.background).toBe('rgb(255, 0, 0)');
   });
+
+  it('autoFocus', () => {
+    instance = mount(
+      <Drawer
+        autoFocus={false}
+        open={true}
+        getContainer={null}
+        wrapperClassName="auto-focus-test-wrapper"
+      >
+        <p className="text">Here is content of Drawer</p>
+      </Drawer>,
+    );
+
+    // In case { autoFocus: false }, default activeElement shouldn't be drawer node
+    expect(document.activeElement).not.toBe(
+      instance.find('.auto-focus-test-wrapper .drawer').at(0).getDOMNode(),
+    );
+
+    // Close and reopen drawer with props {autoFocus: true}
+    instance.setProps({ open: false, autoFocus: true });
+
+    instance.setProps({ open: true });
+
+    // In case { autoFocus: true }, by which is also <Drawer />'s default, the activeElement will be drawer by itself
+    expect(document.activeElement).toBe(
+      instance.find('.auto-focus-test-wrapper .drawer').at(0).getDOMNode(),
+    );
+  });
 });

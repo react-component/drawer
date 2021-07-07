@@ -66,6 +66,7 @@ ReactDom.render(
 | onHandleClick | func | nul  | handle icon click function |
 | keyboard | Boolean | true |  Whether support press esc to close |
 | contentWrapperStyle | CSSProperties | null |  content wrapper style |
+| autoFocus | Boolean | true |  Whether focusing on the drawer after it opened |
 
 > 2.0 Rename `onMaskClick` -> `onClose`, add `maskClosable`.
 
