@@ -52,7 +52,7 @@
   "devDependencies": {
     "@types/classnames": "^2.2.9",
     "@types/enzyme": "^3.1.15",
-    "@types/jest": "^26.0.0",
+    "@types/jest": "^27.0.1",
     "@types/raf": "^3.4.0",
     "@types/react": "^17.0.9",
     "@types/react-dom": "^17.0.6",
