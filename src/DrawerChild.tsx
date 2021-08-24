@@ -567,11 +567,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
             className={`${prefixCls}-content`}
             ref={c => {
               this.contentDom = c as HTMLElement;
-            }}
-            onTouchStart={
-              open && showMask ? this.removeStartHandler : undefined
-            } // 跑用例用
-            onTouchMove={open && showMask ? this.removeMoveHandler : undefined} // 跑用例用
+            }}            
           >
             {children}
           </div>
