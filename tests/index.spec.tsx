@@ -243,6 +243,9 @@ describe('rc-drawer-menu', () => {
       instance.find('.auto-focus-test-wrapper .drawer').at(0).getDOMNode(),
     );
 
+    // autofocus should not treat as dom attribute when {autofocus: false}
+    expect(instance.html().indexOf('autofocus')).toBe(-1);
+
     // Close and reopen drawer with props {autoFocus: true}
     instance.setProps({ open: false, autoFocus: true });
 
@@ -252,5 +255,8 @@ describe('rc-drawer-menu', () => {
     expect(document.activeElement).toBe(
       instance.find('.auto-focus-test-wrapper .drawer').at(0).getDOMNode(),
     );
+
+    // autofocus should not treat as dom attribute when {autofocus: true}
+    expect(instance.html().indexOf('autofocus')).toBe(-1);
   });
 });
