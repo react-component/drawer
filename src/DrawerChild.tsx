@@ -119,13 +119,8 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
   }
 
   public componentDidUpdate(prevProps: IDrawerChildProps) {
-    const {
-      open,
-      getContainer,
-      scrollLocker,
-      showMask,
-      autoFocus,
-    } = this.props;
+    const { open, getContainer, scrollLocker, showMask, autoFocus } =
+      this.props;
     const container = getContainer && getContainer();
     if (open !== prevProps.open) {
       if (container && container.parentNode === document.body) {
@@ -232,10 +227,8 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
 
   private openLevelTransition = () => {
     const { open, width, height } = this.props;
-    const {
-      isHorizontal,
-      placementName,
-    } = this.getHorizontalBoolAndPlacementName();
+    const { isHorizontal, placementName } =
+      this.getHorizontalBoolAndPlacementName();
     const contentValue = this.contentDom
       ? this.contentDom.getBoundingClientRect()[
           isHorizontal ? 'width' : 'height'
@@ -530,7 +523,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
       });
     return (
       <div
-        {...omit(props, ['switchScrollingEffect'])}
+        {...omit(props, ['switchScrollingEffect', 'autoFocus'])}
         tabIndex={-1}
         className={wrapperClassName}
         style={style}
@@ -567,7 +560,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
             className={`${prefixCls}-content`}
             ref={c => {
               this.contentDom = c as HTMLElement;
-            }}            
+            }}
           >
             {children}
           </div>
