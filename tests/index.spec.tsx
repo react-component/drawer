@@ -3,6 +3,11 @@ import * as React from 'react';
 import toJson from 'enzyme-to-json';
 import Drawer from '../src';
 
+interface Point {
+  x: number;
+  y: number;
+}
+
 function Div(props) {
   const { show, ...otherProps } = props;
   return (
@@ -41,6 +46,18 @@ function createMoveTouchEventObject({ x = 0, y = 0 }) {
   return {
     touches: [createClientXY(x, y)],
     changedTouches: [createClientXY(x, y)],
+  };
+}
+
+function createMultiStartTouchEventObject(points: Point[]) {
+  return { touches: points.map(point => createClientXY(point.x, point.y)) };
+}
+
+function createMultiMoveTouchEventObject(points: Point[]) {
+  const touches = points.map(point => createClientXY(point.x, point.y));
+  return {
+    touches,
+    changedTouches: touches,
   };
 }
 
@@ -90,6 +107,27 @@ describe('rc-drawer-menu', () => {
     content.simulate('touchStart', createStartTouchEventObject({ x: 0, y: 0 }));
     content.simulate('touchMove', createMoveTouchEventObject({ x: 0, y: 10 }));
     content.simulate('touchEnd', createMoveTouchEventObject({ x: 0, y: 10 }));
+    content.simulate(
+      'touchStart',
+      createMultiStartTouchEventObject([
+        { x: 0, y: 0 },
+        { x: 100, y: 100 },
+      ]),
+    );
+    content.simulate(
+      'touchMove',
+      createMultiMoveTouchEventObject([
+        { x: 0, y: 10 },
+        { x: 100, y: 120 },
+      ]),
+    );
+    content.simulate(
+      'touchEnd',
+      createMultiMoveTouchEventObject([
+        { x: 0, y: 10 },
+        { x: 100, y: 120 },
+      ]),
+    );
     console.log('transform is empty:', drawer.style.transform);
     expect(drawer.style.transform).toEqual('');
   });
