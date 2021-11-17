@@ -167,7 +167,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
   };
 
   private removeMoveHandler = (e: React.TouchEvent | TouchEvent) => {
-    if (e.changedTouches.length > 1) {
+    if (e.changedTouches.length > 1 || !this.startPos) {
       return;
     }
     const currentTarget = e.currentTarget as HTMLElement;
