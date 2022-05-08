@@ -22,11 +22,6 @@ import {
 
 const currentDrawer: Record<string, boolean> = {};
 
-// interface IState {
-//   _self: DrawerChild;
-//   prevProps?: IDrawerChildProps;
-// }
-
 interface Point {
   x: number;
   y: number;
@@ -63,32 +58,6 @@ const DrawerChild = (props: IDrawerChildProps) => {
     ...rest
   } = props;
   const { autoFocus } = props;
-  // public static getDerivedStateFromProps(
-  //   props: IDrawerChildProps,
-  //   { prevProps, _self }: { prevProps: IDrawerChildProps; _self: DrawerChild },
-  // ) {
-  //   const nextState = {
-  //     prevProps: props,
-  //   };
-  //   if (prevProps !== undefined) {
-  //     const { placement, level } = props;
-  //     if (placement !== prevProps.placement) {
-  //       // test 的 bug, 有动画过场，删除 dom
-  //       _self.contentDom = null;
-  //     }
-  //     if (level !== prevProps.level) {
-  //       _self.getLevelDom(props);
-  //     }
-  //   }
-  //   return nextState;
-  // }
-
-  // constructor(props: IDrawerChildProps) {
-  //   super(props);
-  //   this.state = {
-  //     _self: this,
-  //   };
-  // }
   const passive = useRef<{ passive: boolean } | boolean>();
   const levelDom = useRef<HTMLElement[]>();
   const dom = useRef<HTMLDivElement>(null);
@@ -116,7 +85,6 @@ const DrawerChild = (props: IDrawerChildProps) => {
       } catch (err) {}
       passive.current = passiveSupported ? { passive: false } : false;
     }
-    // const { open, getContainer, showMask, autoFocus } = this.props;
     const container = getParent(getContainer);
     drawerId.current = `drawer_id_${Number(
       (Date.now() + Math.random())
@@ -232,7 +200,6 @@ const DrawerChild = (props: IDrawerChildProps) => {
   };
 
   const onWrapperTransitionEnd = (e: React.TransitionEvent) => {
-    // const { open, afterVisibleChange } = this.props;
     if (
       e.target === contentWrapper.current &&
       e.propertyName.match(/transform$/)
@@ -252,7 +219,6 @@ const DrawerChild = (props: IDrawerChildProps) => {
   };
 
   const openLevelTransition = () => {
-    // const { open, width, height } = this.props;
     const { isHorizontal, placementName } = getHorizontalBoolAndPlacementName();
     const contentValue = contentDom.current
       ? contentDom.current.getBoundingClientRect()[
@@ -269,7 +235,6 @@ const DrawerChild = (props: IDrawerChildProps) => {
     value?: string | number,
     right?: number,
   ) => {
-    // const { placement, levelMove, duration, ease, showMask } = this.props;
     // router 切换时可能会导至页面失去滚动条，所以需要时时获取。
     levelDom.current?.forEach(dom => {
       dom.style.transition = `transform ${duration} ${ease}`;
@@ -298,7 +263,6 @@ const DrawerChild = (props: IDrawerChildProps) => {
     placementName?: string,
     value?: string | number,
   ) => {
-    // const { onChange } = this.props;
     if (!windowIsUndefined) {
       const right =
         document.body.scrollHeight >
@@ -315,7 +279,6 @@ const DrawerChild = (props: IDrawerChildProps) => {
   };
 
   const toggleScrollingToDrawerAndBody = (right: number) => {
-    // const { getContainer, showMask, open } = this.props;
     const container = getParent(getContainer);
     // 处理 body 滚动
     if (container && container.parentNode === document.body && showMask) {
@@ -365,7 +328,6 @@ const DrawerChild = (props: IDrawerChildProps) => {
   };
 
   const addScrollingEffect = (right: number) => {
-    // const { placement, duration, ease } = this.props;
     const widthTransition = `width ${duration} ${ease}`;
     const transformTransition = `transform ${duration} ${ease}`;
     dom.current.style.transition = 'none';
@@ -391,8 +353,6 @@ const DrawerChild = (props: IDrawerChildProps) => {
   };
 
   const remScrollingEffect = (right: number) => {
-    // const { placement, duration, ease } = this.props;
-
     if (transitionStr) {
       document.body.style.overflowX = 'hidden';
     }
