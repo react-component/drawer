@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
 import Drawer from 'rc-drawer';
 
 const Demo = () => {
   const [open, setOpen] = useState(false);
   const onChange = (bool: boolean) => {
-    console.log('change: ', bool);
+    // console.log('change: ', bool);
   };
   const onTouchEnd = () => {
     setOpen(false);
@@ -21,7 +22,7 @@ const Demo = () => {
         handler={false}
         level={null}
         afterVisibleChange={(c: boolean) => {
-          console.log('transitionEnd: ', c);
+          // console.log('transitionEnd: ', c);
         }}
         placement="right"
         width={400}
