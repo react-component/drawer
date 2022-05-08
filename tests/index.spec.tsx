@@ -1,4 +1,4 @@
-import { fireEvent, render } from '@testing-library/react';
+import { cleanup, fireEvent, render } from '@testing-library/react';
 import React from 'react';
 import Drawer from '../src';
 import type { IDrawerProps } from '../src/IDrawerPropTypes';
@@ -62,6 +62,9 @@ function createMultiMoveTouchEventObject(points: Point[]) {
 }
 
 describe('rc-drawer-menu', () => {
+  afterEach(() => {
+    cleanup();
+  });
   it('single drawer', () => {
     render(<Drawer onHandleClick={() => {}} />);
     const drawer = document.querySelector('.drawer');
