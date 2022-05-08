@@ -1,7 +1,7 @@
-import { mount } from 'enzyme';
-import * as React from 'react';
-import toJson from 'enzyme-to-json';
+import { fireEvent, render } from '@testing-library/react';
+import React from 'react';
 import Drawer from '../src';
+import type { IDrawerProps } from '../src/IDrawerPropTypes';
 
 interface Point {
   x: number;
@@ -62,19 +62,18 @@ function createMultiMoveTouchEventObject(points: Point[]) {
 }
 
 describe('rc-drawer-menu', () => {
-  let instance;
   it('single drawer', () => {
-    instance = mount(<Drawer onHandleClick={() => {}} />);
-    const drawer = instance.find('.drawer') as any;
-    const drawerContent = instance.find('.drawer-content-wrapper') as any;
-    expect(!!drawer).toBe(true);
-    expect(drawer.instance().parentNode.parentNode.tagName).toBe('BODY');
-    console.log('clientWidth:', drawerContent.instance().clientWidth);
-    expect(drawerContent.instance().style.transform).toBe('translateX(-100%)');
+    render(<Drawer onHandleClick={() => {}} />);
+    const drawer = document.querySelector('.drawer');
+    expect(drawer).toBeTruthy();
+    expect(drawer.parentNode.parentNode.nodeName).toBe('BODY');
+    expect(
+      document.querySelector('.drawer-content-wrapper').getAttribute('style'),
+    ).toBe('transform: translateX(-100%);');
   });
 
   it('icon child is element', () => {
-    instance = mount(
+    render(
       <Drawer
         handler={
           <div className="a">
@@ -84,87 +83,75 @@ describe('rc-drawer-menu', () => {
         level={null}
       />,
     );
-    const icon = instance.find('.a');
-    console.log('icon.length:', icon.length);
-    expect(icon.length).toBe(1);
+    expect(document.querySelector('.a')).toBeTruthy();
   });
 
   it('default open drawer', () => {
-    instance = mount(
-      <Drawer handler={<i className="a">a</i>} defaultOpen level={[]} />,
-    );
-    const drawer = instance.find('.drawer-content-wrapper').instance() as any;
-    const content = instance.find('.drawer-content');
-    content.simulate(
-      'touchStart',
+    render(<Drawer handler={<i className="a">a</i>} defaultOpen level={[]} />);
+    const drawer = document.querySelector('.drawer-content-wrapper');
+    const content = document.querySelector('.drawer-content');
+    fireEvent.touchStart(
+      content,
       createStartTouchEventObject({ x: 100, y: 0 }),
     );
-    content.simulate(
-      'touchMove',
-      createMoveTouchEventObject({ x: 150, y: 10 }),
-    );
-    content.simulate('touchEnd', createMoveTouchEventObject({ x: 200, y: 0 }));
-    content.simulate('touchStart', createStartTouchEventObject({ x: 0, y: 0 }));
-    content.simulate('touchMove', createMoveTouchEventObject({ x: 0, y: 10 }));
-    content.simulate('touchEnd', createMoveTouchEventObject({ x: 0, y: 10 }));
-    content.simulate(
-      'touchStart',
+    fireEvent.touchMove(content, createMoveTouchEventObject({ x: 150, y: 10 }));
+    fireEvent.touchEnd(content, createMoveTouchEventObject({ x: 200, y: 0 }));
+    fireEvent.touchStart(content, createStartTouchEventObject({ x: 0, y: 0 }));
+    fireEvent.touchMove(content, createMoveTouchEventObject({ x: 0, y: 10 }));
+    fireEvent.touchEnd(content, createMoveTouchEventObject({ x: 0, y: 10 }));
+    fireEvent.touchStart(
+      content,
       createMultiStartTouchEventObject([
         { x: 0, y: 0 },
         { x: 100, y: 100 },
       ]),
     );
-    content.simulate(
-      'touchMove',
+    fireEvent.touchMove(
+      content,
       createMultiMoveTouchEventObject([
         { x: 0, y: 10 },
         { x: 100, y: 120 },
       ]),
     );
-    content.simulate(
-      'touchEnd',
+    fireEvent.touchEnd(
+      content,
       createMultiMoveTouchEventObject([
         { x: 0, y: 10 },
         { x: 100, y: 120 },
       ]),
     );
-    console.log('transform is empty:', drawer.style.transform);
-    expect(drawer.style.transform).toEqual('');
+    expect(drawer.getAttribute('style')).toEqual('');
   });
 
   it('handler is null，open=true', () => {
-    instance = mount(<Drawer handler={null} open level={null} />);
-    expect(toJson(instance.render())).toMatchSnapshot();
+    render(<Drawer handler={null} open level={null} />);
+    expect(document.body).toMatchSnapshot();
   });
   it('handler is null，open=false', () => {
-    instance = mount(<Drawer handler={false} open={false} level={null} />);
-    expect(toJson(instance.render())).toMatchSnapshot();
+    render(<Drawer handler={false} open={false} level={null} />);
+    expect(document.body).toMatchSnapshot();
   });
   it('switch open drawer', () => {
-    instance = mount(<DrawerComp />);
+    const { rerender } = render(<DrawerComp />);
     jest.useFakeTimers();
-    const drawer = instance.find('.drawer-content-wrapper').instance() as any;
-    console.log('第一次：', drawer.style.transform);
+    const drawer = document.querySelector(
+      '.drawer-content-wrapper',
+    ) as HTMLElement;
+    // console.log('第一次：', drawer.style.transform);
     expect(drawer.style.transform).toBe('translateX(-100%)');
-    expect(toJson(instance.render())).toMatchSnapshot();
-    instance.setProps({
-      open: true,
-    });
-    jest.runAllTimers();
-    expect(toJson(instance.render())).toMatchSnapshot();
+    expect(document.body).toMatchSnapshot();
+    rerender(<DrawerComp open />);
+    expect(document.body).toMatchSnapshot();
     console.log(drawer.style.transform);
     expect(drawer.style.transform).toEqual('');
-    instance.setProps({
-      open: false,
-    });
-    console.log('第二次：', drawer.style.transform);
-    jest.runAllTimers();
+    rerender(<DrawerComp />);
+    // console.log('第二次：', drawer.style.transform);
     expect(drawer.style.transform).toBe('translateX(-100%)');
-    expect(toJson(instance.render())).toMatchSnapshot();
+    expect(document.body).toMatchSnapshot();
     jest.useRealTimers();
   });
   it('getContainer is null', () => {
-    instance = mount(
+    render(
       <div className="react-wrapper">
         <div
           id="a"
@@ -181,120 +168,118 @@ describe('rc-drawer-menu', () => {
         />
       </div>,
     );
-    const drawer = instance.find('.drawer').instance() as any;
-    const a = instance.find('#a').instance() as any;
-    console.log('a transform:', a.style.transform);
+    const drawer = document.querySelector('.drawer') as HTMLElement;
+    const a = document.querySelector('#a') as HTMLElement;
     expect(a.style.transform).toBe('');
-    console.log(drawer.parentNode.parentNode.className);
-    expect(drawer.parentNode.className).toBe('drawer-wrapper');
-    expect(drawer.parentNode.parentNode.className).toBe('react-wrapper');
-    expect(toJson(instance.render())).toMatchSnapshot();
+    // console.log(drawer.parentNode.parentElement.className);
+    expect(drawer.parentElement.className).toBe('drawer-wrapper');
+    expect(drawer.parentNode.parentElement.className).toBe('react-wrapper');
+    expect(document.body).toMatchSnapshot();
   });
   it('click open close', () => {
-    instance = mount(<Drawer level="b" levelMove={200} />);
-    const content = instance.find('.drawer-content-wrapper').instance() as any;
-    console.log(content.style.transform);
+    render(<Drawer level="b" levelMove={200} />);
+    const content = document.querySelector(
+      '.drawer-content-wrapper',
+    ) as HTMLElement;
+    // console.log(content.style.transform);
     expect(content.style.transform).toBe('translateX(-100%)');
-    const handle = instance.find('.drawer-handle');
-    handle.simulate('click');
-    console.log(content.style.transform);
+    const handle = document.querySelector('.drawer-handle');
+    fireEvent.click(handle);
+    // console.log(content.style.transform);
     expect(content.style.transform).toBe('');
-    const mask = instance.find('.drawer-mask');
-    mask.simulate('click');
-    console.log(content.style.transform);
+    const mask = document.querySelector('.drawer-mask');
+    fireEvent.click(mask);
+    // console.log(content.style.transform);
     expect(content.style.transform).toBe('translateX(-100%)');
   });
   it('will unmount', () => {
-    instance = mount(<Div show />);
-    const divWrapper = instance.find('.div-wrapper').instance() as any;
-    const content = instance.find('.drawer-content-wrapper').instance() as any;
+    const { rerender } = render(<Div show />);
+    const divWrapper = document.querySelector('.div-wrapper') as HTMLElement;
+    const content = document.querySelector(
+      '.drawer-content-wrapper',
+    ) as HTMLElement;
     console.log(content.style.transform);
     expect(content.style.transform).toBe('');
-    instance.setProps({
-      show: false,
-    });
+    rerender(<Div />);
     expect(divWrapper.children.length).toBe(0);
   });
   it('placement change', () => {
-    instance = mount(<Drawer level={null} />);
-    const content = instance.find('.drawer-content-wrapper').instance() as any;
-    console.log(content.style.transform);
+    const { rerender } = render(<Drawer level={null} />);
+    const content = document.querySelector(
+      '.drawer-content-wrapper',
+    ) as HTMLElement;
+    // console.log(content.style.transform);
     expect(content.style.transform).toBe('translateX(-100%)');
-    instance.setProps({
-      placement: 'top',
-      level: ['a', 'b'],
-    });
-    console.log(content.style.transform);
+    rerender(<Drawer level={['a', 'b']} placement="top" />);
+
+    // console.log(content.style.transform);
     expect(content.style.transform).toBe('translateY(-100%)');
   });
   it('levelMove is Array', () => {
-    instance = mount(<Drawer handler={null} levelMove={[200, 0]} />);
-    expect(toJson(instance.render())).toMatchSnapshot();
-    instance.setProps({
-      open: true,
-    });
-    instance.setProps({
-      open: false,
-      levelMove: () => 200,
-    });
-    instance.setProps({
-      open: true,
-      levelMove: [200],
-    });
-    expect(toJson(instance.render())).toMatchSnapshot();
+    const { rerender } = render(<Drawer handler={null} levelMove={[200, 0]} />);
+    expect(document.body).toMatchSnapshot();
+    rerender(<Drawer handler={null} levelMove={[200, 0]} open />);
+    rerender(<Drawer handler={null} levelMove={() => 200} open={false} />);
+    rerender(<Drawer handler={null} levelMove={200} open />);
+    expect(document.body).toMatchSnapshot();
   });
   it('handler is null, render is null', () => {
-    instance = mount(<Drawer handler={null} levelMove={200} />);
-    expect(toJson(instance.render())).toMatchSnapshot();
+    render(<Drawer handler={null} levelMove={200} />);
+    expect(document.body).toMatchSnapshot();
   });
 
   it('getContainer', () => {
-    instance = mount(<Div show getContainer={false} />);
-    instance.setProps({
-      show: false,
-    });
-    expect(toJson(instance.render())).toMatchSnapshot();
+    const { rerender } = render(<Div show getContainer={false} />);
+    rerender(<Div getContainer={false} />);
+    expect(document.body).toMatchSnapshot();
   });
 
   it('contentWrapperStyle', () => {
-    instance = mount(
+    render(
       <Drawer contentWrapperStyle={{ background: '#f00' }} level={null} />,
     );
-    const content = instance.find('.drawer-content-wrapper').instance() as any;
+    const content = document.querySelector(
+      '.drawer-content-wrapper',
+    ) as HTMLElement;
     expect(content.style.background).toBe('rgb(255, 0, 0)');
   });
 
   it('autoFocus', () => {
-    instance = mount(
-      <Drawer
-        autoFocus={false}
-        open={true}
-        getContainer={null}
-        wrapperClassName="auto-focus-test-wrapper"
-      >
-        <p className="text">Here is content of Drawer</p>
-      </Drawer>,
-    );
+    let cache: IDrawerProps = {};
+    const getDom = (props: IDrawerProps) => {
+      cache = { ...cache, ...props };
+      return (
+        <Drawer
+          autoFocus={false}
+          open={true}
+          getContainer={null}
+          wrapperClassName="auto-focus-test-wrapper"
+          {...cache}
+        >
+          <p className="text">Here is content of Drawer</p>
+        </Drawer>
+      );
+    };
+    const { rerender } = render(getDom({}));
 
     // In case { autoFocus: false }, default activeElement shouldn't be drawer node
     expect(document.activeElement).not.toBe(
-      instance.find('.auto-focus-test-wrapper .drawer').at(0).getDOMNode(),
+      document.querySelector('.auto-focus-test-wrapper .drawer'),
     );
 
     // autofocus should not treat as dom attribute when {autofocus: false}
-    expect(instance.html().indexOf('autofocus')).toBe(-1);
+    expect(document.body.innerHTML.indexOf('autofocus')).toBe(-1);
 
     // Close and reopen drawer with props {autoFocus: true}
-    instance.setProps({ open: false, autoFocus: true });
-
-    instance.setProps({ open: true });
+    rerender(getDom({ open: false, autoFocus: true }));
+    rerender(getDom({ open: true }));
 
     // In case { autoFocus: true }, by which is also <Drawer />'s default, the activeElement will be drawer by itself
     expect(document.activeElement).toBe(
-      instance.find('.auto-focus-test-wrapper .drawer').at(0).getDOMNode(),
+      document.querySelector('.auto-focus-test-wrapper .drawer'),
     );
 
     // autofocus should not treat as dom attribute when {autofocus: true}
-    expect(instance.html().indexOf('autofocus')).toBe(-1);
+    expect(document.body.innerHTML.indexOf('autofocus')).toBe(-1);
   });
 });

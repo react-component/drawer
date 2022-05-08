@@ -1,25 +1,91 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`rc-drawer-menu getContainer 1`] = `
-<div
-  class="div-wrapper"
-/>
+<body
+  class=""
+  style=""
+>
+  <div>
+    <div
+      class="div-wrapper"
+    />
+  </div>
+</body>
 `;
 
 exports[`rc-drawer-menu getContainer is null 1`] = `
-<div
-  class="react-wrapper"
+<body
+  class=""
+  style=""
 >
-  <div
-    class="a"
-    id="a"
-    style="position: absolute; top: 0px; left: 0px;"
-  >
-    test1
+  <div>
+    <div
+      class="react-wrapper"
+    >
+      <div
+        class="a"
+        id="a"
+        style="position: absolute; top: 0px; left: 0px; transition: transform .3s cubic-bezier(0.78, 0.14, 0.15, 0.86);"
+      >
+        test1
+      </div>
+      <div
+        class="drawer-wrapper"
+      >
+        <div
+          class="drawer drawer-left drawer-open"
+          tabindex="-1"
+        >
+          <div
+            class="drawer-mask"
+          />
+          <div
+            class="drawer-content-wrapper"
+            style=""
+          >
+            <div
+              class="drawer-content"
+            />
+            <div
+              class="drawer-handle"
+            >
+              <i
+                class="drawer-handle-icon"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <div
-    class="drawer-wrapper"
-  >
+</body>
+`;
+
+exports[`rc-drawer-menu handler is null, render is null 1`] = `
+<body
+  class=""
+  style=""
+>
+  <div />
+</body>
+`;
+
+exports[`rc-drawer-menu handler is null，open=false 1`] = `
+<body
+  class=""
+  style=""
+>
+  <div />
+</body>
+`;
+
+exports[`rc-drawer-menu handler is null，open=true 1`] = `
+<body
+  class="ant-scrolling-effect"
+  style="overflow: hidden; overflow-x: hidden; overflow-y: hidden;"
+>
+  <div />
+  <div>
     <div
       class="drawer drawer-left drawer-open"
       tabindex="-1"
@@ -34,179 +100,187 @@ exports[`rc-drawer-menu getContainer is null 1`] = `
         <div
           class="drawer-content"
         />
-        <div
-          class="drawer-handle"
-        >
-          <i
-            class="drawer-handle-icon"
-          />
-        </div>
       </div>
     </div>
   </div>
-</div>
+</body>
 `;
 
-exports[`rc-drawer-menu handler is null, render is null 1`] = `null`;
-
-exports[`rc-drawer-menu handler is null，open=false 1`] = `null`;
-
-exports[`rc-drawer-menu handler is null，open=true 1`] = `
-<div
-  class="drawer drawer-left drawer-open"
-  tabindex="-1"
+exports[`rc-drawer-menu levelMove is Array 1`] = `
+<body
+  class=""
+  style=""
 >
-  <div
-    class="drawer-mask"
-  />
-  <div
-    class="drawer-content-wrapper"
-    style=""
-  >
-    <div
-      class="drawer-content"
-    />
-  </div>
-</div>
+  <div />
+</body>
 `;
-
-exports[`rc-drawer-menu levelMove is Array 1`] = `null`;
 
 exports[`rc-drawer-menu levelMove is Array 2`] = `
-<div
-  class="drawer drawer-left drawer-open"
-  tabindex="-1"
+<body
+  class="ant-scrolling-effect"
+  style="overflow: hidden; overflow-x: hidden; overflow-y: hidden;"
 >
   <div
-    class="drawer-mask"
+    style="transition: transform .3s cubic-bezier(0.78, 0.14, 0.15, 0.86); transform: translateX(200px);"
   />
-  <div
-    class="drawer-content-wrapper"
-    style=""
-  >
+  <div>
     <div
-      class="drawer-content"
-    />
+      class="drawer drawer-left drawer-open"
+      tabindex="-1"
+    >
+      <div
+        class="drawer-mask"
+      />
+      <div
+        class="drawer-content-wrapper"
+        style=""
+      >
+        <div
+          class="drawer-content"
+        />
+      </div>
+    </div>
   </div>
-</div>
+</body>
 `;
 
 exports[`rc-drawer-menu switch open drawer 1`] = `
-<div
-  class="react-wrapper"
+<body
+  class=""
+  style=""
 >
-  <div
-    id="a"
-    style="position: absolute; top: 0px; left: 0px;"
-  >
-    test1
-  </div>
-  <div
-    class="drawer-wrapper"
-  >
+  <div>
     <div
-      class="drawer drawer-left"
-      tabindex="-1"
+      class="react-wrapper"
     >
       <div
-        class="drawer-mask"
-      />
+        id="a"
+        style="position: absolute; top: 0px; left: 0px;"
+      >
+        test1
+      </div>
       <div
-        class="drawer-content-wrapper"
-        style="transform: translateX(-100%);"
+        class="drawer-wrapper"
       >
         <div
-          class="drawer-content"
-        />
-        <div
-          class="drawer-handle"
+          class="drawer drawer-left"
+          tabindex="-1"
         >
-          <i
-            class="drawer-handle-icon"
+          <div
+            class="drawer-mask"
           />
+          <div
+            class="drawer-content-wrapper"
+            style="transform: translateX(-100%);"
+          >
+            <div
+              class="drawer-content"
+            />
+            <div
+              class="drawer-handle"
+            >
+              <i
+                class="drawer-handle-icon"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</body>
 `;
 
 exports[`rc-drawer-menu switch open drawer 2`] = `
-<div
-  class="react-wrapper"
+<body
+  class=""
+  style=""
 >
-  <div
-    id="a"
-    style="position: absolute; top: 0px; left: 0px;"
-  >
-    test1
-  </div>
-  <div
-    class="drawer-wrapper"
-  >
+  <div>
     <div
-      class="drawer drawer-left drawer-open"
-      tabindex="-1"
+      class="react-wrapper"
     >
       <div
-        class="drawer-mask"
-      />
+        id="a"
+        style="position: absolute; top: 0px; left: 0px;"
+      >
+        test1
+      </div>
       <div
-        class="drawer-content-wrapper"
-        style=""
+        class="drawer-wrapper"
       >
         <div
-          class="drawer-content"
-        />
-        <div
-          class="drawer-handle"
+          class="drawer drawer-left drawer-open"
+          tabindex="-1"
         >
-          <i
-            class="drawer-handle-icon"
+          <div
+            class="drawer-mask"
           />
+          <div
+            class="drawer-content-wrapper"
+            style=""
+          >
+            <div
+              class="drawer-content"
+            />
+            <div
+              class="drawer-handle"
+            >
+              <i
+                class="drawer-handle-icon"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</body>
 `;
 
 exports[`rc-drawer-menu switch open drawer 3`] = `
-<div
-  class="react-wrapper"
+<body
+  class=""
+  style=""
 >
-  <div
-    id="a"
-    style="position: absolute; top: 0px; left: 0px;"
-  >
-    test1
-  </div>
-  <div
-    class="drawer-wrapper"
-  >
+  <div>
     <div
-      class="drawer drawer-left"
-      tabindex="-1"
+      class="react-wrapper"
     >
       <div
-        class="drawer-mask"
-      />
+        id="a"
+        style="position: absolute; top: 0px; left: 0px;"
+      >
+        test1
+      </div>
       <div
-        class="drawer-content-wrapper"
-        style="transform: translateX(-100%);"
+        class="drawer-wrapper"
       >
         <div
-          class="drawer-content"
-        />
-        <div
-          class="drawer-handle"
+          class="drawer drawer-left"
+          tabindex="-1"
         >
-          <i
-            class="drawer-handle-icon"
+          <div
+            class="drawer-mask"
           />
+          <div
+            class="drawer-content-wrapper"
+            style="transform: translateX(-100%);"
+          >
+            <div
+              class="drawer-content"
+            />
+            <div
+              class="drawer-handle"
+            >
+              <i
+                class="drawer-handle-icon"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</body>
 `;
