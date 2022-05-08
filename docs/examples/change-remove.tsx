@@ -1,4 +1,5 @@
-import { Icon, Menu } from 'antd';
+import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
+import { Menu } from 'antd';
 import * as React from 'react';
 
 import Drawer from 'rc-drawer';
@@ -33,7 +34,7 @@ class Demo extends React.Component<any, { show: boolean }> {
                 key="sub1"
                 title={
                   <span>
-                    <Icon type="mail" />
+                    <MailOutlined />
                     <span>Navigation One</span>
                   </span>
                 }
@@ -51,7 +52,7 @@ class Demo extends React.Component<any, { show: boolean }> {
                 key="sub2"
                 title={
                   <span>
-                    <Icon type="appstore" />
+                    <AppstoreOutlined />
                     <span>Navigation Two</span>
                   </span>
                 }
@@ -67,7 +68,7 @@ class Demo extends React.Component<any, { show: boolean }> {
                 key="sub4"
                 title={
                   <span>
-                    <Icon type="setting" />
+                    <SettingOutlined />
                     <span>Navigation Three</span>
                   </span>
                 }
