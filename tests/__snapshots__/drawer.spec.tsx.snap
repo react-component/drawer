@@ -98,13 +98,14 @@ exports[`Drawer render dom 1`] = `
 
 exports[`Drawer render function 1`] = `
 <body
-  class="ant-scrolling-effect"
-  style="overflow: hidden; overflow-x: hidden; overflow-y: hidden;"
+  class=""
+  style=""
 >
   <div>
     <div>
       <div
-        class="main"
+        class="main ant-scrolling-effect"
+        style="overflow: hidden; overflow-x: hidden; overflow-y: hidden;"
       >
         <div>
           <div

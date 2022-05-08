@@ -18,6 +18,7 @@ const Demo = () => {
       <Drawer
         onChange={onChange}
         open={open}
+        // defaultOpen
         onClose={onTouchEnd}
         handler={false}
         level={null}
