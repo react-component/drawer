@@ -10,7 +10,7 @@ import 'antd/lib/style';
 import '../../assets/index.less';
 import './assets/index.less';
 
-const {SubMenu} = Menu;
+const { SubMenu } = Menu;
 const MenuItemGroup = Menu.ItemGroup;
 class Demo extends React.Component {
   public state = {

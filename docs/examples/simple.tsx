@@ -7,7 +7,6 @@ import Drawer from 'rc-drawer';
 import 'antd/lib/menu/style';
 import 'antd/lib/style';
 
-
 import '../../assets/index.less';
 import './assets/index.less';
 
@@ -16,28 +15,33 @@ const MenuItemGroup = Menu.ItemGroup;
 class Demo extends React.Component {
   public state = {
     open: false,
-  }
+  };
 
   public onSwitch = () => {
     const { open } = this.state;
     this.setState({
       open: !open,
     });
-  }
+  };
 
   public render() {
     return (
-      <div >
+      <div>
         <Drawer width="250px">
           <Menu
-            style={{ height: '200%', width: 'calc(100% - 1px)' }}// 选中的线超出
+            style={{ height: '200%', width: 'calc(100% - 1px)' }} // 选中的线超出
             defaultSelectedKeys={['1']}
             defaultOpenKeys={['sub1']}
             mode="inline"
           >
             <SubMenu
               key="sub1"
-              title={<span><Icon type="mail" /><span>Navigation One</span></span>}
+              title={
+                <span>
+                  <Icon type="mail" />
+                  <span>Navigation One</span>
+                </span>
+              }
             >
               <MenuItemGroup key="g1" title="Item 1">
                 <Menu.Item key="1">Option 1</Menu.Item>
@@ -50,7 +54,12 @@ class Demo extends React.Component {
             </SubMenu>
             <SubMenu
               key="sub2"
-              title={<span><Icon type="appstore" /><span>Navigation Two</span></span>}
+              title={
+                <span>
+                  <Icon type="appstore" />
+                  <span>Navigation Two</span>
+                </span>
+              }
             >
               <Menu.Item key="5">Option 5</Menu.Item>
               <Menu.Item key="6">Option 6</Menu.Item>
@@ -61,7 +70,12 @@ class Demo extends React.Component {
             </SubMenu>
             <SubMenu
               key="sub4"
-              title={<span><Icon type="setting" /><span>Navigation Three</span></span>}
+              title={
+                <span>
+                  <Icon type="setting" />
+                  <span>Navigation Three</span>
+                </span>
+              }
             >
               <Menu.Item key="9">Option 9</Menu.Item>
               <Menu.Item key="10">Option 10</Menu.Item>
@@ -72,14 +86,18 @@ class Demo extends React.Component {
         </Drawer>
         <div
           style={{
-            width: '100%', height: 667, background: '#fff000',
-            color: '#fff', textAlign: 'center', lineHeight: '667px',
+            width: '100%',
+            height: 667,
+            background: '#fff000',
+            color: '#fff',
+            textAlign: 'center',
+            lineHeight: '667px',
           }}
         >
           内容区块
         </div>
       </div>
-    )
+    );
   }
 }
 
