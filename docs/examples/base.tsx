@@ -6,7 +6,7 @@ const Child = () => {
     console.log('load');
   }, []);
 
-  return <>child</>;
+  return <>123456</>;
 };
 
 const Demo = () => {
