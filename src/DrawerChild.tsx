@@ -9,6 +9,7 @@ import type { IDrawerChildProps } from './IDrawerPropTypes';
 import {
   addEventListener,
   dataToArray,
+  getParent,
   getTouchParentScroll,
   isNumeric,
   removeEventListener,
@@ -96,7 +97,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
       this.passive = passiveSupported ? { passive: false } : false;
     }
     const { open, getContainer, showMask, autoFocus } = this.props;
-    const container = getContainer && getContainer();
+    const container = getParent(getContainer);
     this.drawerId = `drawer_id_${Number(
       (Date.now() + Math.random())
         .toString()
@@ -123,7 +124,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
   public componentDidUpdate(prevProps: IDrawerChildProps) {
     const { open, getContainer, scrollLocker, showMask, autoFocus } =
       this.props;
-    const container = getContainer && getContainer();
+    const container = getParent(getContainer);
     if (open !== prevProps.open) {
       if (container && container.parentNode === document.body) {
         currentDrawer[this.drawerId] = !!open;
@@ -296,7 +297,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
 
   private toggleScrollingToDrawerAndBody = (right: number) => {
     const { getContainer, showMask, open } = this.props;
-    const container = getContainer && getContainer();
+    const container = getParent(getContainer);
     // 处理 body 滚动
     if (container && container.parentNode === document.body && showMask) {
       const eventArray = ['touchstart'];
@@ -428,7 +429,7 @@ class DrawerChild extends React.Component<IDrawerChildProps, IState> {
     if (windowIsUndefined) {
       return;
     }
-    const container = getContainer && getContainer();
+    const container = getParent(getContainer);
     const parent = container ? (container.parentNode as HTMLElement) : null;
     this.levelDom = [];
     if (level === 'all') {
