@@ -155,7 +155,7 @@ exports[`rc-drawer-menu switch open drawer 1`] = `
     >
       <div
         id="a"
-        style="position: absolute; top: 0px; left: 0px;"
+        style="position: absolute; top: 0px; left: 0px; transition: transform .3s cubic-bezier(0.78, 0.14, 0.15, 0.86);"
       >
         test1
       </div>
@@ -202,7 +202,7 @@ exports[`rc-drawer-menu switch open drawer 2`] = `
     >
       <div
         id="a"
-        style="position: absolute; top: 0px; left: 0px;"
+        style="position: absolute; top: 0px; left: 0px; transition: transform .3s cubic-bezier(0.78, 0.14, 0.15, 0.86);"
       >
         test1
       </div>
@@ -249,7 +249,7 @@ exports[`rc-drawer-menu switch open drawer 3`] = `
     >
       <div
         id="a"
-        style="position: absolute; top: 0px; left: 0px;"
+        style="position: absolute; top: 0px; left: 0px; transition: transform .3s cubic-bezier(0.78, 0.14, 0.15, 0.86);"
       >
         test1
       </div>

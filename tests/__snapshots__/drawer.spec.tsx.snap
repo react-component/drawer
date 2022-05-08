@@ -1,14 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Drawer render boolean 1`] = `
-<body
-  class=""
-  style=""
->
+<body>
   <div>
     <div>
       <div
         class="main"
+        style="transition: transform .3s cubic-bezier(0.78, 0.14, 0.15, 0.86);"
       />
       <div
         class=""
@@ -49,10 +47,7 @@ exports[`Drawer render boolean 1`] = `
 `;
 
 exports[`Drawer render dom 1`] = `
-<body
-  class=""
-  style=""
->
+<body>
   <div>
     <div>
       <div
@@ -97,10 +92,7 @@ exports[`Drawer render dom 1`] = `
 `;
 
 exports[`Drawer render function 1`] = `
-<body
-  class=""
-  style=""
->
+<body>
   <div>
     <div>
       <div
