@@ -127,34 +127,36 @@ describe('rc-drawer-menu', () => {
   });
 
   it('handler is null，open=true', () => {
-    render(<Drawer handler={null} open level={null} />);
-    expect(document.body.children[0]).toMatchSnapshot();
+    const { container } = render(<Drawer handler={null} open level={null} />);
+    expect(container.firstChild).toMatchSnapshot();
   });
   it('handler is null，open=false', () => {
-    render(<Drawer handler={false} open={false} level={null} />);
-    expect(document.body.children[0]).toMatchSnapshot();
+    const { container } = render(
+      <Drawer handler={false} open={false} level={null} />,
+    );
+    expect(container.firstChild).toMatchSnapshot();
   });
   it('switch open drawer', () => {
-    const { rerender } = render(<DrawerComp />);
+    const { container, rerender } = render(<DrawerComp />);
     jest.useFakeTimers();
     const drawer = document.querySelector(
       '.drawer-content-wrapper',
     ) as HTMLElement;
     // console.log('第一次：', drawer.style.transform);
     expect(drawer.style.transform).toBe('translateX(-100%)');
-    expect(document.body.children[0]).toMatchSnapshot();
+    expect(container.firstChild).toMatchSnapshot();
     rerender(<DrawerComp open />);
-    expect(document.body.children[0]).toMatchSnapshot();
+    expect(container.firstChild).toMatchSnapshot();
     console.log(drawer.style.transform);
     expect(drawer.style.transform).toEqual('');
     rerender(<DrawerComp />);
     // console.log('第二次：', drawer.style.transform);
     expect(drawer.style.transform).toBe('translateX(-100%)');
-    expect(document.body.children[0]).toMatchSnapshot();
+    expect(container.firstChild).toMatchSnapshot();
     jest.useRealTimers();
   });
   it('getContainer is null', () => {
-    render(
+    const { container } = render(
       <div className="react-wrapper">
         <div
           id="a"
@@ -177,7 +179,7 @@ describe('rc-drawer-menu', () => {
     // console.log(drawer.parentNode.parentElement.className);
     expect(drawer.parentElement.className).toBe('drawer-wrapper');
     expect(drawer.parentNode.parentElement.className).toBe('react-wrapper');
-    expect(document.body.children[0]).toMatchSnapshot();
+    expect(container.firstChild).toMatchSnapshot();
   });
   it('click open close', () => {
     render(<Drawer level="b" levelMove={200} />);
@@ -219,22 +221,24 @@ describe('rc-drawer-menu', () => {
     expect(content.style.transform).toBe('translateY(-100%)');
   });
   it('levelMove is Array', () => {
-    const { rerender } = render(<Drawer handler={null} levelMove={[200, 0]} />);
-    expect(document.body.children[0]).toMatchSnapshot();
+    const { rerender, container } = render(
+      <Drawer handler={null} levelMove={[200, 0]} />,
+    );
+    expect(container.firstChild).toMatchSnapshot();
     rerender(<Drawer handler={null} levelMove={[200, 0]} open />);
     rerender(<Drawer handler={null} levelMove={() => 200} open={false} />);
-    rerender(<Drawer handler={null} levelMove={200} open />);
-    expect(document.body.children[0]).toMatchSnapshot();
+    rerender(<Drawer handler={null} levelMove={[200]} open />);
+    expect(container.firstChild).toMatchSnapshot();
   });
   it('handler is null, render is null', () => {
-    render(<Drawer handler={null} levelMove={200} />);
-    expect(document.body.children[0]).toMatchSnapshot();
+    const { container } = render(<Drawer handler={null} levelMove={200} />);
+    expect(container.firstChild).toMatchSnapshot();
   });
 
   it('getContainer', () => {
-    const { rerender } = render(<Div show getContainer={false} />);
+    const { container, rerender } = render(<Div show getContainer={false} />);
     rerender(<Div getContainer={false} />);
-    expect(document.body.children[0]).toMatchSnapshot();
+    expect(container.firstChild).toMatchSnapshot();
   });
 
   it('contentWrapperStyle', () => {

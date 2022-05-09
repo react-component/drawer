@@ -29,23 +29,33 @@ const DrawerTesterDom = (props: IDrawerProps) => {
   );
 };
 
+const DrawerTesterBoolean = props => (
+  <div>
+    <Drawer {...props} open={true} getContainer={false}>
+      <p className="text">Here is content of Drawer</p>
+    </Drawer>
+  </div>
+);
+
 describe('Drawer', () => {
   afterEach(() => {
     cleanup();
   });
   it('render function', () => {
-    render(<DrawerTesterRef open />);
-    expect(document.body.children[0]).toMatchSnapshot();
+    const { container } = render(<DrawerTesterRef open />);
+    expect(container.firstChild).toMatchSnapshot();
   });
 
   it('render dom', () => {
-    const { rerender } = render(<DrawerTesterDom />);
+    const { container, rerender } = render(<DrawerTesterDom />);
     rerender(<DrawerTesterDom open />);
-    expect(document.body.children[0]).toMatchSnapshot();
+    expect(container.firstChild).toMatchSnapshot();
   });
 
   it('render boolean', () => {
-    render(<DrawerTesterRef open getContainer={false} />);
-    expect(document.body.children[0]).toMatchSnapshot();
+    const { container } = render(
+      <DrawerTesterBoolean open getContainer={false} />,
+    );
+    expect(container.firstChild).toMatchSnapshot();
   });
 });
