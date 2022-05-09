@@ -35,17 +35,17 @@ describe('Drawer', () => {
   });
   it('render function', () => {
     render(<DrawerTesterRef open />);
-    expect(document.body).toMatchSnapshot();
+    expect(document.body.children[0]).toMatchSnapshot();
   });
 
   it('render dom', () => {
     const { rerender } = render(<DrawerTesterDom />);
     rerender(<DrawerTesterDom open />);
-    expect(document.body).toMatchSnapshot();
+    expect(document.body.children[0]).toMatchSnapshot();
   });
 
   it('render boolean', () => {
     render(<DrawerTesterRef open getContainer={false} />);
-    expect(document.body).toMatchSnapshot();
+    expect(document.body.children[0]).toMatchSnapshot();
   });
 });

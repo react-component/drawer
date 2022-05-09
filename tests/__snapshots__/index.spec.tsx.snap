@@ -1,286 +1,192 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`rc-drawer-menu getContainer 1`] = `
-<body
-  class=""
-  style=""
->
-  <div>
-    <div
-      class="div-wrapper"
-    />
-  </div>
-</body>
+<div>
+  <div
+    class="div-wrapper"
+  />
+</div>
 `;
 
 exports[`rc-drawer-menu getContainer is null 1`] = `
-<body
-  class=""
-  style=""
->
-  <div>
+<div>
+  <div
+    class="react-wrapper"
+  >
     <div
-      class="react-wrapper"
+      class="a"
+      id="a"
+      style="position: absolute; top: 0px; left: 0px; transition: transform .3s cubic-bezier(0.78, 0.14, 0.15, 0.86);"
+    >
+      test1
+    </div>
+    <div
+      class="drawer-wrapper"
     >
       <div
-        class="a"
-        id="a"
-        style="position: absolute; top: 0px; left: 0px; transition: transform .3s cubic-bezier(0.78, 0.14, 0.15, 0.86);"
-      >
-        test1
-      </div>
-      <div
-        class="drawer-wrapper"
+        class="drawer drawer-left drawer-open"
+        tabindex="-1"
       >
         <div
-          class="drawer drawer-left drawer-open"
-          tabindex="-1"
+          class="drawer-mask"
+        />
+        <div
+          class="drawer-content-wrapper"
+          style=""
         >
           <div
-            class="drawer-mask"
+            class="drawer-content"
           />
           <div
-            class="drawer-content-wrapper"
-            style=""
+            class="drawer-handle"
           >
-            <div
-              class="drawer-content"
+            <i
+              class="drawer-handle-icon"
             />
-            <div
-              class="drawer-handle"
-            >
-              <i
-                class="drawer-handle-icon"
-              />
-            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</body>
+</div>
 `;
 
-exports[`rc-drawer-menu handler is null, render is null 1`] = `
-<body
-  class=""
-  style=""
->
-  <div />
-</body>
-`;
+exports[`rc-drawer-menu handler is null, render is null 1`] = `<div />`;
 
-exports[`rc-drawer-menu handler is null，open=false 1`] = `
-<body
-  class=""
-  style=""
->
-  <div />
-</body>
-`;
+exports[`rc-drawer-menu handler is null，open=false 1`] = `<div />`;
 
-exports[`rc-drawer-menu handler is null，open=true 1`] = `
-<body
-  class="ant-scrolling-effect"
-  style="overflow: hidden; overflow-x: hidden; overflow-y: hidden;"
->
-  <div />
-  <div>
-    <div
-      class="drawer drawer-left drawer-open"
-      tabindex="-1"
-    >
-      <div
-        class="drawer-mask"
-      />
-      <div
-        class="drawer-content-wrapper"
-        style=""
-      >
-        <div
-          class="drawer-content"
-        />
-      </div>
-    </div>
-  </div>
-</body>
-`;
+exports[`rc-drawer-menu handler is null，open=true 1`] = `<div />`;
 
-exports[`rc-drawer-menu levelMove is Array 1`] = `
-<body
-  class=""
-  style=""
->
-  <div />
-</body>
-`;
+exports[`rc-drawer-menu levelMove is Array 1`] = `<div />`;
 
 exports[`rc-drawer-menu levelMove is Array 2`] = `
-<body
-  class="ant-scrolling-effect"
-  style="overflow: hidden; overflow-x: hidden; overflow-y: hidden;"
->
-  <div
-    style="transition: transform .3s cubic-bezier(0.78, 0.14, 0.15, 0.86); transform: translateX(200px);"
-  />
-  <div>
-    <div
-      class="drawer drawer-left drawer-open"
-      tabindex="-1"
-    >
-      <div
-        class="drawer-mask"
-      />
-      <div
-        class="drawer-content-wrapper"
-        style=""
-      >
-        <div
-          class="drawer-content"
-        />
-      </div>
-    </div>
-  </div>
-</body>
+<div
+  style="transition: transform .3s cubic-bezier(0.78, 0.14, 0.15, 0.86); transform: translateX(200px);"
+/>
 `;
 
 exports[`rc-drawer-menu switch open drawer 1`] = `
-<body
-  class=""
-  style=""
->
-  <div>
+<div>
+  <div
+    class="react-wrapper"
+  >
     <div
-      class="react-wrapper"
+      id="a"
+      style="position: absolute; top: 0px; left: 0px;"
+    >
+      test1
+    </div>
+    <div
+      class="drawer-wrapper"
     >
       <div
-        id="a"
-        style="position: absolute; top: 0px; left: 0px; transition: transform .3s cubic-bezier(0.78, 0.14, 0.15, 0.86);"
-      >
-        test1
-      </div>
-      <div
-        class="drawer-wrapper"
+        class="drawer drawer-left"
+        tabindex="-1"
       >
         <div
-          class="drawer drawer-left"
-          tabindex="-1"
+          class="drawer-mask"
+        />
+        <div
+          class="drawer-content-wrapper"
+          style="transform: translateX(-100%);"
         >
           <div
-            class="drawer-mask"
+            class="drawer-content"
           />
           <div
-            class="drawer-content-wrapper"
-            style="transform: translateX(-100%);"
+            class="drawer-handle"
           >
-            <div
-              class="drawer-content"
+            <i
+              class="drawer-handle-icon"
             />
-            <div
-              class="drawer-handle"
-            >
-              <i
-                class="drawer-handle-icon"
-              />
-            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</body>
+</div>
 `;
 
 exports[`rc-drawer-menu switch open drawer 2`] = `
-<body
-  class=""
-  style=""
->
-  <div>
+<div>
+  <div
+    class="react-wrapper"
+  >
     <div
-      class="react-wrapper"
+      id="a"
+      style="position: absolute; top: 0px; left: 0px;"
+    >
+      test1
+    </div>
+    <div
+      class="drawer-wrapper"
     >
       <div
-        id="a"
-        style="position: absolute; top: 0px; left: 0px; transition: transform .3s cubic-bezier(0.78, 0.14, 0.15, 0.86);"
-      >
-        test1
-      </div>
-      <div
-        class="drawer-wrapper"
+        class="drawer drawer-left drawer-open"
+        tabindex="-1"
       >
         <div
-          class="drawer drawer-left drawer-open"
-          tabindex="-1"
+          class="drawer-mask"
+        />
+        <div
+          class="drawer-content-wrapper"
+          style=""
         >
           <div
-            class="drawer-mask"
+            class="drawer-content"
           />
           <div
-            class="drawer-content-wrapper"
-            style=""
+            class="drawer-handle"
           >
-            <div
-              class="drawer-content"
+            <i
+              class="drawer-handle-icon"
             />
-            <div
-              class="drawer-handle"
-            >
-              <i
-                class="drawer-handle-icon"
-              />
-            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</body>
+</div>
 `;
 
 exports[`rc-drawer-menu switch open drawer 3`] = `
-<body
-  class=""
-  style=""
->
-  <div>
+<div>
+  <div
+    class="react-wrapper"
+  >
     <div
-      class="react-wrapper"
+      id="a"
+      style="position: absolute; top: 0px; left: 0px;"
+    >
+      test1
+    </div>
+    <div
+      class="drawer-wrapper"
     >
       <div
-        id="a"
-        style="position: absolute; top: 0px; left: 0px; transition: transform .3s cubic-bezier(0.78, 0.14, 0.15, 0.86);"
-      >
-        test1
-      </div>
-      <div
-        class="drawer-wrapper"
+        class="drawer drawer-left"
+        tabindex="-1"
       >
         <div
-          class="drawer drawer-left"
-          tabindex="-1"
+          class="drawer-mask"
+        />
+        <div
+          class="drawer-content-wrapper"
+          style="transform: translateX(-100%);"
         >
           <div
-            class="drawer-mask"
+            class="drawer-content"
           />
           <div
-            class="drawer-content-wrapper"
-            style="transform: translateX(-100%);"
+            class="drawer-handle"
           >
-            <div
-              class="drawer-content"
+            <i
+              class="drawer-handle-icon"
             />
-            <div
-              class="drawer-handle"
-            >
-              <i
-                class="drawer-handle-icon"
-              />
-            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</body>
+</div>
 `;
