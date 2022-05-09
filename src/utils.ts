@@ -123,17 +123,3 @@ export const getTouchParentScroll = (
   }
   return false;
 };
-
-type GetContainer = string | HTMLElement | (() => HTMLElement) | false | null;
-
-export function getParent(getContainer?: GetContainer) {
-  const container =
-    typeof getContainer === 'function' ? getContainer() : getContainer;
-
-  const element =
-    typeof container === 'string'
-      ? document.querySelector(container)
-      : container;
-
-  return element;
-}

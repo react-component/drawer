@@ -41,11 +41,11 @@ interface IProps extends Omit<React.HTMLAttributes<any>, 'onChange'> {
 export interface IDrawerProps extends IProps {
   wrapperClassName?: string;
   forceRender?: boolean;
-  getContainer?: GetContainer | false;
+  getContainer?: GetContainer;
 }
 
 export interface IDrawerChildProps extends IProps {
-  getContainer?: GetContainer | false;
+  getContainer?: () => HTMLElement;
   getOpenCount?: () => number;
   scrollLocker?: ScrollLocker;
   switchScrollingEffect?: () => void;
