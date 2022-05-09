@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Drawer from '../';
+import Drawer from '../src';
 
 export default () => {
   return (
@@ -19,9 +19,15 @@ export default () => {
       getContainer="#abc"
       showMask={false}
       maskStyle={{ top: 100 }}
-      onChange={(e) => { console.log(e); }}
-      onClose={(e: React.MouseEvent) => { console.log(e.pageX); }}
-      onHandleClick={(e: React.KeyboardEvent) => { console.log(e.keyCode); }}
+      onChange={e => {
+        console.log(e);
+      }}
+      onClose={(e: React.MouseEvent) => {
+        console.log(e.pageX);
+      }}
+      onHandleClick={(e: React.KeyboardEvent) => {
+        console.log(e.keyCode);
+      }}
     />
   );
 };

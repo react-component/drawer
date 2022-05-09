@@ -1,5 +1,5 @@
-/* eslint-disable no-console,react/no-multi-comp */
-import { Icon, Menu } from 'antd';
+import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
+import { Menu } from 'antd';
 import * as React from 'react';
 
 import Drawer from 'rc-drawer';
@@ -15,7 +15,7 @@ const MenuItemGroup = Menu.ItemGroup;
 class Demo extends React.Component {
   public state = {
     open: true,
-  }
+  };
   public componentDidMount() {
     setTimeout(() => {
       this.setState({
@@ -25,20 +25,20 @@ class Demo extends React.Component {
   }
   public onChange = (bool: boolean) => {
     console.log('change: ', bool);
-  }
+  };
   public onTouchEnd = () => {
     this.setState({
       open: false,
     });
-  }
+  };
   public onSwitch = () => {
     this.setState({
       open: !this.state.open,
     });
-  }
+  };
   public render() {
     return (
-      <div >
+      <div>
         <Drawer
           onChange={this.onChange}
           open={this.state.open}
@@ -57,7 +57,12 @@ class Demo extends React.Component {
           >
             <SubMenu
               key="sub1"
-              title={<span><Icon type="mail" /><span>Navigation One</span></span>}
+              title={
+                <span>
+                  <MailOutlined />
+                  <span>Navigation One</span>
+                </span>
+              }
             >
               <MenuItemGroup key="g1" title="Item 1">
                 <Menu.Item key="1">Option 1</Menu.Item>
@@ -70,7 +75,12 @@ class Demo extends React.Component {
             </SubMenu>
             <SubMenu
               key="sub2"
-              title={<span><Icon type="appstore" /><span>Navigation Two</span></span>}
+              title={
+                <span>
+                  <AppstoreOutlined />
+                  <span>Navigation Two</span>
+                </span>
+              }
             >
               <Menu.Item key="5">Option 5</Menu.Item>
               <Menu.Item key="6">Option 6</Menu.Item>
@@ -81,7 +91,12 @@ class Demo extends React.Component {
             </SubMenu>
             <SubMenu
               key="sub4"
-              title={<span><Icon type="setting" /><span>Navigation Three</span></span>}
+              title={
+                <span>
+                  <SettingOutlined />
+                  <span>Navigation Three</span>
+                </span>
+              }
             >
               <Menu.Item key="9">Option 9</Menu.Item>
               <Menu.Item key="10">Option 10</Menu.Item>
@@ -92,14 +107,24 @@ class Demo extends React.Component {
         </Drawer>
         <div
           style={{
-            width: '100%', height: 667, background: '#fff000',
-            color: '#fff', textAlign: 'center', lineHeight: '667px',
+            width: '100%',
+            height: 667,
+            background: '#fff000',
+            color: '#fff',
+            textAlign: 'center',
+            lineHeight: '667px',
           }}
         >
           内容区块
           <button
             onClick={this.onSwitch}
-            style={{ height: 24, width: 100, marginLeft: 20, color: '#000', lineHeight: '24px' }}
+            style={{
+              height: 24,
+              width: 100,
+              marginLeft: 20,
+              color: '#000',
+              lineHeight: '24px',
+            }}
           >
             {!this.state.open ? '打开' : '关闭'}
           </button>

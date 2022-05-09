@@ -15,36 +15,43 @@ class Demo extends React.Component {
     open: false,
     openChild: false,
     openChildren: false,
-  }
+  };
   public onClick = () => {
     this.setState({
       open: !this.state.open,
     });
-  }
+  };
   public onChildClick = () => {
     this.setState({
       openChild: !this.state.openChild,
-    })
-  }
+    });
+  };
   public onChildrenClick = () => {
     this.setState({
       openChildren: !this.state.openChildren,
-    })
-  }
-  public getLevelMove = (e: { target: HTMLElement, open: boolean }): number | [number, number] => {
+    });
+  };
+  public getLevelMove = (e: {
+    target: HTMLElement;
+    open: boolean;
+  }): number | [number, number] => {
     const target = e.target as HTMLElement;
     if (target.className.indexOf('drawer1') >= 0) {
       return [200, 100];
     }
     return 100;
-  }
+  };
   public render() {
     return (
-      <div >
+      <div>
         <div
           style={{
-            width: '100%', height: 667, background: '#fff000',
-            color: '#fff', textAlign: 'center', lineHeight: '667px',
+            width: '100%',
+            height: 667,
+            background: '#fff000',
+            color: '#fff',
+            textAlign: 'center',
+            lineHeight: '667px',
           }}
         >
           <Button onClick={this.onClick}>打开抽屉</Button>
@@ -79,15 +86,14 @@ class Demo extends React.Component {
                   placement="right"
                   levelMove={this.getLevelMove}
                 >
-                  <div style={{ width: 200 }}>
-                    三级抽屉
-                  </div>
+                  <div style={{ width: 200 }}>三级抽屉</div>
                 </Drawer>
               </div>
             </Drawer>
           </div>
         </Drawer>
-      </div>);
+      </div>
+    );
   }
 }
 export default Demo;

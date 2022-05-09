@@ -1,28 +1,26 @@
-import { mount } from 'enzyme';
-import * as React from 'react';
+import { cleanup, render } from '@testing-library/react';
+import React from 'react';
 import Drawer from '../src';
 
 describe('Drawer Mask', () => {
+  afterEach(() => {
+    cleanup();
+  });
   it('show mask', () => {
-    const wrapper = mount(<Drawer open />);
+    const { rerender } = render(<Drawer open />);
 
     expect(document.body.className).toBe('ant-scrolling-effect');
 
-    wrapper.setProps({
-      open: false,
-    });
-
+    rerender(<Drawer />);
     expect(document.body.className).toBe('');
   });
 
   it('no mask', () => {
-    const wrapper = mount(<Drawer open showMask={false} />);
+    const { rerender } = render(<Drawer open showMask={false} />);
 
     expect(document.body.className).toBe('');
 
-    wrapper.setProps({
-      open: false,
-    });
+    rerender(<Drawer open={false} showMask={false} />);
 
     expect(document.body.className).toBe('');
   });

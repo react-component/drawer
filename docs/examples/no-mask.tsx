@@ -1,5 +1,5 @@
-/* eslint-disable no-console,react/no-multi-comp */
-import { Icon, Menu } from 'antd';
+import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
+import { Menu } from 'antd';
 import * as React from 'react';
 
 import Drawer from 'rc-drawer';
@@ -10,7 +10,7 @@ import 'antd/lib/style';
 import '../../assets/index.less';
 import './assets/index.less';
 
-const {SubMenu} = Menu;
+const { SubMenu } = Menu;
 const MenuItemGroup = Menu.ItemGroup;
 class Demo extends React.Component {
   public state = {
@@ -38,7 +38,7 @@ class Demo extends React.Component {
               key="sub1"
               title={
                 <span>
-                  <Icon type="mail" />
+                  <MailOutlined />
                   <span>Navigation One</span>
                 </span>
               }
@@ -56,7 +56,7 @@ class Demo extends React.Component {
               key="sub2"
               title={
                 <span>
-                  <Icon type="appstore" />
+                  <AppstoreOutlined />
                   <span>Navigation Two</span>
                 </span>
               }
@@ -72,7 +72,7 @@ class Demo extends React.Component {
               key="sub4"
               title={
                 <span>
-                  <Icon type="setting" />
+                  <SettingOutlined />
                   <span>Navigation Three</span>
                 </span>
               }
