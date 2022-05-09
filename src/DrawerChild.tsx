@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-use-before-define */
-import React, { useEffect, useRef, useState } from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
 import getScrollBarSize from 'rc-util/lib/getScrollBarSize';
 import KeyCode from 'rc-util/lib/KeyCode';
@@ -10,7 +9,6 @@ import type { IDrawerChildProps } from './IDrawerPropTypes';
 import {
   addEventListener,
   dataToArray,
-  getParent,
   getTouchParentScroll,
   isNumeric,
   removeEventListener,
@@ -22,53 +20,65 @@ import {
 
 const currentDrawer: Record<string, boolean> = {};
 
+interface IState {
+  _self: DrawerChild;
+  prevProps?: IDrawerChildProps;
+}
+
 interface Point {
   x: number;
   y: number;
 }
 
-const DrawerChild = (props: IDrawerChildProps) => {
-  const {
-    className,
-    children,
-    style,
-    width,
-    height,
-    defaultOpen,
-    open,
-    prefixCls,
-    placement,
-    level,
-    levelMove,
-    ease,
-    duration,
-    getContainer,
-    handler,
-    onChange,
-    afterVisibleChange,
-    showMask,
-    maskClosable,
-    maskStyle,
-    onClose,
-    onHandleClick,
-    keyboard,
-    getOpenCount,
-    scrollLocker,
-    contentWrapperStyle,
-    ...rest
-  } = props;
-  const { autoFocus } = props;
-  const passive = useRef<{ passive: boolean } | boolean>();
-  const levelDom = useRef<HTMLElement[]>();
-  const dom = useRef<HTMLDivElement>(null);
-  const contentWrapper = useRef<HTMLDivElement>(null);
-  const contentDom = useRef<HTMLDivElement>(null);
-  const maskDom = useRef<HTMLDivElement>(null);
-  const handlerDom = useRef<HTMLDivElement>(null);
-  const drawerId = useRef<string>();
-  const startPos = useRef<Point>(null);
+class DrawerChild extends React.Component<IDrawerChildProps, IState> {
+  public static getDerivedStateFromProps(
+    props: IDrawerChildProps,
+    { prevProps, _self }: { prevProps: IDrawerChildProps; _self: DrawerChild },
+  ) {
+    const nextState = {
+      prevProps: props,
+    };
+    if (prevProps !== undefined) {
+      const { placement, level } = props;
+      if (placement !== prevProps.placement) {
+        // test 的 bug, 有动画过场，删除 dom
+        _self.contentDom = null;
+      }
+      if (level !== prevProps.level) {
+        _self.getLevelDom(props);
+      }
+    }
+    return nextState;
+  }
 
-  useEffect(() => {
+  private levelDom: HTMLElement[];
+
+  private dom: HTMLElement;
+
+  private contentWrapper: HTMLElement;
+
+  private contentDom: HTMLElement | null;
+
+  private maskDom: HTMLElement;
+
+  private handlerDom: HTMLElement;
+
+  private drawerId: string;
+
+  private timeout: any;
+
+  private passive: { passive: boolean } | boolean;
+
+  private startPos: Point | null;
+
+  constructor(props: IDrawerChildProps) {
+    super(props);
+    this.state = {
+      _self: this,
+    };
+  }
+
+  public componentDidMount() {
     if (!windowIsUndefined) {
       let passiveSupported = false;
       try {
@@ -83,95 +93,95 @@ const DrawerChild = (props: IDrawerChildProps) => {
           }),
         );
       } catch (err) {}
-      passive.current = passiveSupported ? { passive: false } : false;
+      this.passive = passiveSupported ? { passive: false } : false;
     }
-    const container = getParent(getContainer);
-    drawerId.current = `drawer_id_${Number(
+    const { open, getContainer, showMask, autoFocus } = this.props;
+    const container = getContainer && getContainer();
+    this.drawerId = `drawer_id_${Number(
       (Date.now() + Math.random())
         .toString()
         .replace('.', Math.round(Math.random() * 9).toString()),
     ).toString(16)}`;
-    getLevelDom(props);
+    this.getLevelDom(this.props);
     if (open) {
       if (container && container.parentNode === document.body) {
-        currentDrawer[drawerId.current] = open;
+        currentDrawer[this.drawerId] = open;
       }
       // 默认打开状态时推出 level;
-      openLevelTransition();
-      if (autoFocus) {
-        domFocus();
-      }
+      this.openLevelTransition();
+      this.forceUpdate(() => {
+        if (autoFocus) {
+          this.domFocus();
+        }
+      });
       if (showMask) {
-        scrollLocker?.lock();
+        this.props.scrollLocker?.lock();
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }
 
-  useEffect(() => {
-    const container = getParent(getContainer);
-    if (container && container.parentNode === document.body) {
-      currentDrawer[drawerId.current] = !!open;
-    }
-    openLevelTransition();
-    if (open) {
-      if (autoFocus) {
-        domFocus();
+  public componentDidUpdate(prevProps: IDrawerChildProps) {
+    const { open, getContainer, scrollLocker, showMask, autoFocus } =
+      this.props;
+    const container = getContainer && getContainer();
+    if (open !== prevProps.open) {
+      if (container && container.parentNode === document.body) {
+        currentDrawer[this.drawerId] = !!open;
       }
-      if (showMask) {
-        scrollLocker?.lock();
-      }
-    } else {
-      scrollLocker?.unLock();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open]);
-
-  useEffect(() => {
-    return () => {
-      delete currentDrawer[drawerId.current];
+      this.openLevelTransition();
       if (open) {
-        setLevelTransform(false);
-        document.body.style.touchAction = '';
+        if (autoFocus) {
+          this.domFocus();
+        }
+        if (showMask) {
+          scrollLocker?.lock();
+        }
+      } else {
+        scrollLocker?.unLock();
       }
-      scrollLocker?.unLock();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    }
+  }
 
-  const forceUpdate = useState({})[1];
+  public componentWillUnmount() {
+    const { open, scrollLocker } = this.props;
+    delete currentDrawer[this.drawerId];
+    if (open) {
+      this.setLevelTransform(false);
+      document.body.style.touchAction = '';
+    }
+    scrollLocker?.unLock();
+  }
 
-  const domFocus = () => {
-    if (dom.current) {
-      dom.current.focus();
-      forceUpdate({});
+  private domFocus = () => {
+    if (this.dom) {
+      this.dom.focus();
     }
   };
 
-  const removeStartHandler = (e: React.TouchEvent | TouchEvent) => {
+  private removeStartHandler = (e: React.TouchEvent | TouchEvent) => {
     if (e.touches.length > 1) {
       // need clear the startPos when another touch event happens
-      startPos.current = null;
+      this.startPos = null;
       return;
     }
-    startPos.current = {
+    this.startPos = {
       x: e.touches[0].clientX,
       y: e.touches[0].clientY,
     };
   };
 
-  const removeMoveHandler = (e: React.TouchEvent | TouchEvent) => {
+  private removeMoveHandler = (e: React.TouchEvent | TouchEvent) => {
     // the startPos may be null or undefined
-    if (e.changedTouches.length > 1 || !startPos.current) {
+    if (e.changedTouches.length > 1 || !this.startPos) {
       return;
     }
     const currentTarget = e.currentTarget as HTMLElement;
-    const differX = e.changedTouches[0].clientX - startPos.current.x;
-    const differY = e.changedTouches[0].clientY - startPos.current.y;
+    const differX = e.changedTouches[0].clientX - this.startPos.x;
+    const differY = e.changedTouches[0].clientY - this.startPos.y;
     if (
-      (currentTarget === maskDom.current ||
-        currentTarget === handlerDom.current ||
-        (currentTarget === contentDom.current &&
+      (currentTarget === this.maskDom ||
+        currentTarget === this.handlerDom ||
+        (currentTarget === this.contentDom &&
           getTouchParentScroll(
             currentTarget,
             e.target as HTMLElement,
@@ -184,14 +194,15 @@ const DrawerChild = (props: IDrawerChildProps) => {
     }
   };
 
-  const handleTransitionEnd = (e: TransitionEvent) => {
+  private transitionEnd = (e: TransitionEvent) => {
     const dom: HTMLElement = e.target as HTMLElement;
-    removeEventListener(dom, transitionEnd, handleTransitionEnd);
+    removeEventListener(dom, transitionEnd, this.transitionEnd);
     dom.style.transition = '';
   };
 
-  const onKeyDown = (e: React.KeyboardEvent) => {
+  private onKeyDown = (e: React.KeyboardEvent) => {
     if (e.keyCode === KeyCode.ESC) {
+      const { onClose } = this.props;
       e.stopPropagation();
       if (onClose) {
         onClose(e as any);
@@ -199,17 +210,18 @@ const DrawerChild = (props: IDrawerChildProps) => {
     }
   };
 
-  const onWrapperTransitionEnd = (e: React.TransitionEvent) => {
+  private onWrapperTransitionEnd = (e: React.TransitionEvent) => {
+    const { open, afterVisibleChange } = this.props;
     if (
-      e.target === contentWrapper.current &&
+      e.target === this.contentWrapper &&
       e.propertyName.match(/transform$/)
     ) {
-      dom.current.style.transition = '';
-      if (!open && getCurrentDrawerSome()) {
+      this.dom.style.transition = '';
+      if (!open && this.getCurrentDrawerSome()) {
         document.body.style.overflowX = '';
-        if (maskDom.current) {
-          maskDom.current.style.left = '';
-          maskDom.current.style.width = '';
+        if (this.maskDom) {
+          this.maskDom.style.left = '';
+          this.maskDom.style.width = '';
         }
       }
       if (afterVisibleChange) {
@@ -218,27 +230,30 @@ const DrawerChild = (props: IDrawerChildProps) => {
     }
   };
 
-  const openLevelTransition = () => {
-    const { isHorizontal, placementName } = getHorizontalBoolAndPlacementName();
-    const contentValue = contentDom.current
-      ? contentDom.current.getBoundingClientRect()[
+  private openLevelTransition = () => {
+    const { open, width, height } = this.props;
+    const { isHorizontal, placementName } =
+      this.getHorizontalBoolAndPlacementName();
+    const contentValue = this.contentDom
+      ? this.contentDom.getBoundingClientRect()[
           isHorizontal ? 'width' : 'height'
         ]
       : 0;
     const value = (isHorizontal ? width : height) || contentValue;
-    setLevelAndScrolling(open, placementName, value);
+    this.setLevelAndScrolling(open, placementName, value);
   };
 
-  const setLevelTransform = (
+  private setLevelTransform = (
     open?: boolean,
     placementName?: string,
     value?: string | number,
     right?: number,
   ) => {
+    const { placement, levelMove, duration, ease, showMask } = this.props;
     // router 切换时可能会导至页面失去滚动条，所以需要时时获取。
-    levelDom.current?.forEach(dom => {
+    this.levelDom.forEach(dom => {
       dom.style.transition = `transform ${duration} ${ease}`;
-      addEventListener(dom, transitionEnd, handleTransitionEnd);
+      addEventListener(dom, transitionEnd, this.transitionEnd);
       let levelValue = open ? value : 0;
       if (levelMove) {
         const $levelMove = transformArguments(levelMove, { target: dom, open });
@@ -258,11 +273,12 @@ const DrawerChild = (props: IDrawerChildProps) => {
     });
   };
 
-  const setLevelAndScrolling = (
+  private setLevelAndScrolling = (
     open?: boolean,
     placementName?: string,
     value?: string | number,
   ) => {
+    const { onChange } = this.props;
     if (!windowIsUndefined) {
       const right =
         document.body.scrollHeight >
@@ -270,28 +286,29 @@ const DrawerChild = (props: IDrawerChildProps) => {
         window.innerWidth > document.body.offsetWidth
           ? getScrollBarSize(true)
           : 0;
-      setLevelTransform(open, placementName, value, right);
-      toggleScrollingToDrawerAndBody(right);
+      this.setLevelTransform(open, placementName, value, right);
+      this.toggleScrollingToDrawerAndBody(right);
     }
     if (onChange) {
       onChange(open);
     }
   };
 
-  const toggleScrollingToDrawerAndBody = (right: number) => {
-    const container = getParent(getContainer);
+  private toggleScrollingToDrawerAndBody = (right: number) => {
+    const { getContainer, showMask, open } = this.props;
+    const container = getContainer && getContainer();
     // 处理 body 滚动
     if (container && container.parentNode === document.body && showMask) {
       const eventArray = ['touchstart'];
       const domArray = [
         document.body,
-        maskDom.current,
-        handlerDom.current,
-        contentDom.current,
+        this.maskDom,
+        this.handlerDom,
+        this.contentDom,
       ];
       if (open && document.body.style.overflow !== 'hidden') {
         if (right) {
-          addScrollingEffect(right);
+          this.addScrollingEffect(right);
         }
         document.body.style.touchAction = 'none';
         // 手机禁滚
@@ -302,14 +319,14 @@ const DrawerChild = (props: IDrawerChildProps) => {
           addEventListener(
             item,
             eventArray[i] || 'touchmove',
-            i ? removeMoveHandler : removeStartHandler,
-            passive.current,
+            i ? this.removeMoveHandler : this.removeStartHandler,
+            this.passive,
           );
         });
-      } else if (getCurrentDrawerSome()) {
+      } else if (this.getCurrentDrawerSome()) {
         document.body.style.touchAction = '';
         if (right) {
-          remScrollingEffect(right);
+          this.remScrollingEffect(right);
         }
         // 恢复事件
         domArray.forEach((item, i) => {
@@ -319,96 +336,101 @@ const DrawerChild = (props: IDrawerChildProps) => {
           removeEventListener(
             item,
             eventArray[i] || 'touchmove',
-            i ? removeMoveHandler : removeStartHandler,
-            passive.current,
+            i ? this.removeMoveHandler : this.removeStartHandler,
+            this.passive,
           );
         });
       }
     }
   };
 
-  const addScrollingEffect = (right: number) => {
+  private addScrollingEffect = (right: number) => {
+    const { placement, duration, ease } = this.props;
     const widthTransition = `width ${duration} ${ease}`;
     const transformTransition = `transform ${duration} ${ease}`;
-    dom.current.style.transition = 'none';
+    this.dom.style.transition = 'none';
     switch (placement) {
       case 'right':
-        dom.current.style.transform = `translateX(-${right}px)`;
+        this.dom.style.transform = `translateX(-${right}px)`;
         break;
       case 'top':
       case 'bottom':
-        dom.current.style.width = `calc(100% - ${right}px)`;
-        dom.current.style.transform = 'translateZ(0)';
+        this.dom.style.width = `calc(100% - ${right}px)`;
+        this.dom.style.transform = 'translateZ(0)';
         break;
       default:
         break;
     }
-    setTimeout(() => {
-      if (dom.current) {
-        dom.current.style.transition = `${transformTransition},${widthTransition}`;
-        dom.current.style.width = '';
-        dom.current.style.transform = '';
+    clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => {
+      if (this.dom) {
+        this.dom.style.transition = `${transformTransition},${widthTransition}`;
+        this.dom.style.width = '';
+        this.dom.style.transform = '';
       }
     });
   };
 
-  const remScrollingEffect = (right: number) => {
+  private remScrollingEffect = (right: number) => {
+    const { placement, duration, ease } = this.props;
+
     if (transitionStr) {
       document.body.style.overflowX = 'hidden';
     }
-    dom.current.style.transition = 'none';
+    this.dom.style.transition = 'none';
     let heightTransition: string;
     let widthTransition = `width ${duration} ${ease}`;
     const transformTransition = `transform ${duration} ${ease}`;
     switch (placement) {
       case 'left': {
-        dom.current.style.width = '100%';
+        this.dom.style.width = '100%';
         widthTransition = `width 0s ${ease} ${duration}`;
         break;
       }
       case 'right': {
-        dom.current.style.transform = `translateX(${right}px)`;
-        dom.current.style.width = '100%';
+        this.dom.style.transform = `translateX(${right}px)`;
+        this.dom.style.width = '100%';
         widthTransition = `width 0s ${ease} ${duration}`;
-        if (maskDom.current) {
-          maskDom.current.style.left = `-${right}px`;
-          maskDom.current.style.width = `calc(100% + ${right}px)`;
+        if (this.maskDom) {
+          this.maskDom.style.left = `-${right}px`;
+          this.maskDom.style.width = `calc(100% + ${right}px)`;
         }
         break;
       }
       case 'top':
       case 'bottom': {
-        dom.current.style.width = `calc(100% + ${right}px)`;
-        dom.current.style.height = '100%';
-        dom.current.style.transform = 'translateZ(0)';
+        this.dom.style.width = `calc(100% + ${right}px)`;
+        this.dom.style.height = '100%';
+        this.dom.style.transform = 'translateZ(0)';
         heightTransition = `height 0s ${ease} ${duration}`;
         break;
       }
       default:
         break;
     }
-    setTimeout(() => {
-      if (dom.current) {
-        dom.current.style.transition = `${transformTransition},${
+    clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => {
+      if (this.dom) {
+        this.dom.style.transition = `${transformTransition},${
           heightTransition ? `${heightTransition},` : ''
         }${widthTransition}`;
-        dom.current.style.transform = '';
-        dom.current.style.width = '';
-        dom.current.style.height = '';
+        this.dom.style.transform = '';
+        this.dom.style.width = '';
+        this.dom.style.height = '';
       }
     });
   };
 
-  const getCurrentDrawerSome = () =>
+  private getCurrentDrawerSome = () =>
     !Object.keys(currentDrawer).some(key => currentDrawer[key]);
 
-  const getLevelDom = ({ level, getContainer }: IDrawerChildProps) => {
+  private getLevelDom = ({ level, getContainer }: IDrawerChildProps) => {
     if (windowIsUndefined) {
       return;
     }
-    const container = getParent(getContainer);
+    const container = getContainer && getContainer();
     const parent = container ? (container.parentNode as HTMLElement) : null;
-    levelDom.current = [];
+    this.levelDom = [];
     if (level === 'all') {
       const children: HTMLElement[] = parent
         ? Array.prototype.slice.call(parent.children)
@@ -420,19 +442,20 @@ const DrawerChild = (props: IDrawerChildProps) => {
           child.nodeName !== 'LINK' &&
           child !== container
         ) {
-          levelDom.current.push(child);
+          this.levelDom.push(child);
         }
       });
     } else if (level) {
       dataToArray(level).forEach(key => {
         document.querySelectorAll(key).forEach(item => {
-          levelDom.current.push(item);
+          this.levelDom.push(item);
         });
       });
     }
   };
 
-  const getHorizontalBoolAndPlacementName = () => {
+  private getHorizontalBoolAndPlacementName = () => {
+    const { placement } = this.props;
     const isHorizontal = placement === 'left' || placement === 'right';
     const placementName = `translate${isHorizontal ? 'X' : 'Y'}`;
     return {
@@ -442,74 +465,115 @@ const DrawerChild = (props: IDrawerChildProps) => {
   };
 
   // tslint:disable-next-line:member-ordering
-
-  // 首次渲染都将是关闭状态。
-  const _open = dom.current ? open : false;
-  const wrapperClassName = classnames(prefixCls, {
-    [`${prefixCls}-${placement}`]: true,
-    [`${prefixCls}-open`]: _open,
-    [className || '']: !!className,
-    'no-mask': !showMask,
-  });
-
-  const { placementName } = getHorizontalBoolAndPlacementName();
-  // 百分比与像素动画不同步，第一次打用后全用像素动画。
-  // const defaultValue = !contentDom.current || !level ? '100%' : `${value}px`;
-  const placementPos =
-    placement === 'left' || placement === 'top' ? '-100%' : '100%';
-  const transform = _open ? '' : `${placementName}(${placementPos})`;
-
-  const handlerChildren =
-    handler &&
-    React.cloneElement(handler, {
-      onClick: (e: React.MouseEvent) => {
-        if (handler.props.onClick) {
-          handler.props.onClick();
-        }
-        if (onHandleClick) {
-          onHandleClick(e);
-        }
-      },
-      ref: c => {
-        handlerDom.current = c;
-      },
+  public render() {
+    const {
+      className,
+      children,
+      style,
+      width,
+      height,
+      defaultOpen,
+      open: $open,
+      prefixCls,
+      placement,
+      level,
+      levelMove,
+      ease,
+      duration,
+      getContainer,
+      handler,
+      onChange,
+      afterVisibleChange,
+      showMask,
+      maskClosable,
+      maskStyle,
+      onClose,
+      onHandleClick,
+      keyboard,
+      getOpenCount,
+      scrollLocker,
+      contentWrapperStyle,
+      ...props
+    } = this.props;
+    // 首次渲染都将是关闭状态。
+    const open = this.dom ? $open : false;
+    const wrapperClassName = classnames(prefixCls, {
+      [`${prefixCls}-${placement}`]: true,
+      [`${prefixCls}-open`]: open,
+      [className || '']: !!className,
+      'no-mask': !showMask,
     });
-  return (
-    <div
-      {...omit(rest, ['switchScrollingEffect', 'autoFocus'])}
-      tabIndex={-1}
-      className={wrapperClassName}
-      style={style}
-      ref={dom}
-      onKeyDown={_open && keyboard ? onKeyDown : undefined}
-      onTransitionEnd={onWrapperTransitionEnd}
-    >
-      {showMask && (
-        <div
-          className={`${prefixCls}-mask`}
-          onClick={maskClosable ? onClose : undefined}
-          style={maskStyle}
-          ref={maskDom}
-        />
-      )}
+
+    const { placementName } = this.getHorizontalBoolAndPlacementName();
+    // 百分比与像素动画不同步，第一次打用后全用像素动画。
+    // const defaultValue = !this.contentDom || !level ? '100%' : `${value}px`;
+    const placementPos =
+      placement === 'left' || placement === 'top' ? '-100%' : '100%';
+    const transform = open ? '' : `${placementName}(${placementPos})`;
+
+    const handlerChildren =
+      handler &&
+      React.cloneElement(handler, {
+        onClick: (e: React.MouseEvent) => {
+          if (handler.props.onClick) {
+            handler.props.onClick();
+          }
+          if (onHandleClick) {
+            onHandleClick(e);
+          }
+        },
+        ref: (c: HTMLElement) => {
+          this.handlerDom = c;
+        },
+      });
+    return (
       <div
-        className={`${prefixCls}-content-wrapper`}
-        style={{
-          transform,
-          msTransform: transform,
-          width: isNumeric(width) ? `${width}px` : width,
-          height: isNumeric(height) ? `${height}px` : height,
-          ...contentWrapperStyle,
+        {...omit(props, ['switchScrollingEffect', 'autoFocus'])}
+        tabIndex={-1}
+        className={wrapperClassName}
+        style={style}
+        ref={(c: HTMLElement | null) => {
+          this.dom = c as HTMLElement;
         }}
-        ref={contentWrapper}
+        onKeyDown={open && keyboard ? this.onKeyDown : undefined}
+        onTransitionEnd={this.onWrapperTransitionEnd}
       >
-        <div className={`${prefixCls}-content`} ref={contentDom}>
-          {children}
+        {showMask && (
+          <div
+            className={`${prefixCls}-mask`}
+            onClick={maskClosable ? onClose : undefined}
+            style={maskStyle}
+            ref={c => {
+              this.maskDom = c as HTMLElement;
+            }}
+          />
+        )}
+        <div
+          className={`${prefixCls}-content-wrapper`}
+          style={{
+            transform,
+            msTransform: transform,
+            width: isNumeric(width) ? `${width}px` : width,
+            height: isNumeric(height) ? `${height}px` : height,
+            ...contentWrapperStyle,
+          }}
+          ref={c => {
+            this.contentWrapper = c as HTMLElement;
+          }}
+        >
+          <div
+            className={`${prefixCls}-content`}
+            ref={c => {
+              this.contentDom = c as HTMLElement;
+            }}
+          >
+            {children}
+          </div>
+          {handlerChildren}
         </div>
-        {handlerChildren}
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 export default DrawerChild;
