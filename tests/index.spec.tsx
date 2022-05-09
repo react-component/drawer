@@ -127,8 +127,8 @@ describe('rc-drawer-menu', () => {
   });
 
   it('handler is null，open=true', () => {
-    const { container } = render(<Drawer handler={null} open level={null} />);
-    expect(container.firstChild).toMatchSnapshot();
+    render(<Drawer handler={null} open level={null} />);
+    expect(document.querySelector('.drawer')).toMatchSnapshot();
   });
   it('handler is null，open=false', () => {
     const { container } = render(
@@ -228,7 +228,7 @@ describe('rc-drawer-menu', () => {
     rerender(<Drawer handler={null} levelMove={[200, 0]} open />);
     rerender(<Drawer handler={null} levelMove={() => 200} open={false} />);
     rerender(<Drawer handler={null} levelMove={[200]} open />);
-    expect(container.firstChild).toMatchSnapshot();
+    expect(document.querySelector('.drawer')).toMatchSnapshot();
   });
   it('handler is null, render is null', () => {
     const { container } = render(<Drawer handler={null} levelMove={200} />);

@@ -51,11 +51,45 @@ exports[`rc-drawer-menu handler is null, render is null 1`] = `null`;
 
 exports[`rc-drawer-menu handler is null，open=false 1`] = `null`;
 
-exports[`rc-drawer-menu handler is null，open=true 1`] = `null`;
+exports[`rc-drawer-menu handler is null，open=true 1`] = `
+<div
+  class="drawer drawer-left drawer-open"
+  tabindex="-1"
+>
+  <div
+    class="drawer-mask"
+  />
+  <div
+    class="drawer-content-wrapper"
+    style=""
+  >
+    <div
+      class="drawer-content"
+    />
+  </div>
+</div>
+`;
 
 exports[`rc-drawer-menu levelMove is Array 1`] = `null`;
 
-exports[`rc-drawer-menu levelMove is Array 2`] = `null`;
+exports[`rc-drawer-menu levelMove is Array 2`] = `
+<div
+  class="drawer drawer-left drawer-open"
+  tabindex="-1"
+>
+  <div
+    class="drawer-mask"
+  />
+  <div
+    class="drawer-content-wrapper"
+    style=""
+  >
+    <div
+      class="drawer-content"
+    />
+  </div>
+</div>
+`;
 
 exports[`rc-drawer-menu switch open drawer 1`] = `
 <div
