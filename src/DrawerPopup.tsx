@@ -88,7 +88,7 @@ export default function DrawerPopup(props: DrawerPopupProps) {
 
   // ============================ Mask ============================
   const maskNode: React.ReactNode = mask && (
-    <CSSMotion {...maskMotion} visible={open}>
+    <CSSMotion key="mask" {...maskMotion} visible={open}>
       {({ className: motionMaskClassName, style: motionMaskStyle }) => {
         return (
           <div
@@ -114,6 +114,7 @@ export default function DrawerPopup(props: DrawerPopupProps) {
   const panelNode: React.ReactNode = (
     <div className={`${prefixCls}-panel-wrapper`}>
       <CSSMotion
+        key="panel"
         {...motionProps}
         visible={open}
         onVisibleChanged={nextVisible => {
@@ -122,6 +123,8 @@ export default function DrawerPopup(props: DrawerPopupProps) {
             scrollLocker?.unLock();
           }
         }}
+        removeOnLeave={false}
+        leavedClassName={`${prefixCls}-panel-wrapper-hidden`}
       >
         {({ className: motionClassName, style: motionStyle }) => {
           return (

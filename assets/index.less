@@ -4,22 +4,26 @@
 @zIndex: 1050;
 
 .@{prefixCls} {
-  // position: fixed;
-  // inset: 0;
-  // z-index: @zIndex;
-  // pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: @zIndex;
+  pointer-events: none;
 
   &-mask {
     position: absolute;
     z-index: @zIndex;
     background: rgba(0, 0, 0, 0.5);
     inset: 0;
-    // pointer-events: auto;
+    pointer-events: auto;
   }
 
   &-panel-wrapper {
     position: absolute;
     z-index: @zIndex;
+
+    &-hidden {
+      display: none;
+    }
 
     // Placement
     .@{prefixCls}-left & {
@@ -36,10 +40,10 @@
   }
 
   &-panel {
-    background: #fff;
     width: 100%;
     height: 100%;
-    // pointer-events: auto;
+    background: #fff;
+    pointer-events: auto;
   }
 }
 

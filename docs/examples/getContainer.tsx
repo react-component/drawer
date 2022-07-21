@@ -1,4 +1,8 @@
-import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
+import {
+  AppstoreOutlined,
+  MailOutlined,
+  SettingOutlined,
+} from '@ant-design/icons';
 import { Menu } from 'antd';
 import * as React from 'react';
 
@@ -26,8 +30,26 @@ class DrawerTester extends React.Component {
   public render() {
     return (
       <div>
-        <div ref={this.saveContainer} id="container" />
-        <Drawer width="20vw" getContainer={this.getContainer}>
+        <div
+          ref={this.saveContainer}
+          id="container"
+          style={{
+            height: 300,
+            background: 'rgba(0,0,0,0.05)',
+            overflow: 'auto',
+          }}
+        >
+          <div
+            style={{
+              display: 'inline-block',
+              height: 1000,
+              boxShadow: `0 0 1px red`,
+            }}
+          >
+            Hello World
+          </div>
+        </div>
+        <Drawer width="20vw" getContainer={this.getContainer} open>
           <Menu
             defaultSelectedKeys={['1']}
             defaultOpenKeys={['sub1']}
