@@ -4,6 +4,8 @@ import CSSMotion from 'rc-motion';
 import type { CSSMotionProps } from 'rc-motion';
 import DrawerPanel from './DrawerPanel';
 import type ScrollLocker from 'rc-util/lib/Dom/scrollLocker';
+import DrawerContext from './context';
+import type { DrawerContextProps } from './context';
 
 export type Placement = 'left' | 'right' | 'top' | 'bottom';
 
@@ -12,6 +14,7 @@ export interface DrawerPopupProps {
   open?: boolean;
   placement?: Placement;
   inline?: boolean;
+  push?: { distance?: number | string };
 
   // MISC
   scrollLocker?: ScrollLocker;
@@ -47,6 +50,7 @@ export default function DrawerPopup(props: DrawerPopupProps) {
     open,
     placement = 'left',
     inline,
+    push,
 
     // MISC
     scrollLocker,
@@ -74,16 +78,40 @@ export default function DrawerPopup(props: DrawerPopupProps) {
     onClose,
   } = props;
 
+  // ============================ Push ============================
+  const { distance } = push || {};
+  const [pushed, setPushed] = React.useState(false);
+
+  const parentContext = React.useContext(DrawerContext);
+  const pushDistance = distance ?? parentContext?.pushDistance ?? 180;
+
+  const mergedContext = React.useMemo<DrawerContextProps>(
+    () => ({
+      pushDistance,
+      push: () => {
+        setPushed(true);
+      },
+      pull: () => {
+        setPushed(false);
+      },
+    }),
+    [pushDistance],
+  );
+
   // ========================= ScrollLock =========================
   React.useEffect(() => {
     if (open) {
       scrollLocker?.lock();
+      parentContext?.push?.();
+    } else {
+      parentContext?.pull?.();
     }
   }, [open]);
 
   React.useEffect(
     () => () => {
       scrollLocker?.unLock();
+      parentContext?.pull?.();
     },
     [],
   );
@@ -114,7 +142,12 @@ export default function DrawerPopup(props: DrawerPopupProps) {
   const motionProps = typeof motion === 'function' ? motion(placement) : motion;
 
   const panelNode: React.ReactNode = (
-    <div className={classNames(`${prefixCls}-panel-wrapper`)}>
+    <div
+      className={classNames(`${prefixCls}-panel-wrapper`)}
+      style={{
+        transform: pushed ? `translateX(${-pushDistance}px)` : '',
+      }}
+    >
       <CSSMotion
         key="panel"
         {...motionProps}
@@ -150,19 +183,21 @@ export default function DrawerPopup(props: DrawerPopupProps) {
 
   // =========================== Render ===========================
   return (
-    <div
-      className={classNames(
-        prefixCls,
-        `${prefixCls}-${placement}`,
-        rootClassName,
-        {
-          [`${prefixCls}-inline`]: inline,
-        },
-      )}
-      style={rootStyle}
-    >
-      {maskNode}
-      {panelNode}
-    </div>
+    <DrawerContext.Provider value={mergedContext}>
+      <div
+        className={classNames(
+          prefixCls,
+          `${prefixCls}-${placement}`,
+          rootClassName,
+          {
+            [`${prefixCls}-inline`]: inline,
+          },
+        )}
+        style={rootStyle}
+      >
+        {maskNode}
+        {panelNode}
+      </div>
+    </DrawerContext.Provider>
   );
 }
