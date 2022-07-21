@@ -15,6 +15,7 @@ export interface DrawerPopupProps {
   placement?: Placement;
   inline?: boolean;
   push?: { distance?: number | string };
+  forceRender?: boolean;
 
   // MISC
   scrollLocker?: ScrollLocker;
@@ -48,9 +49,10 @@ export default function DrawerPopup(props: DrawerPopupProps) {
   const {
     prefixCls,
     open,
-    placement = 'left',
+    placement = 'right',
     inline,
     push,
+    forceRender,
 
     // MISC
     scrollLocker,
@@ -152,6 +154,7 @@ export default function DrawerPopup(props: DrawerPopupProps) {
         key="panel"
         {...motionProps}
         visible={open}
+        forceRender={forceRender}
         onVisibleChanged={nextVisible => {
           afterOpenChange?.(nextVisible);
           if (!nextVisible) {

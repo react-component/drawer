@@ -6,31 +6,21 @@ import type { DrawerPopupProps } from './DrawerPopup';
 
 export type Placement = 'left' | 'top' | 'right' | 'bottom';
 
-type LevelMove = number | [number, number];
-
 export interface DrawerProps extends Omit<DrawerPopupProps, 'prefixCls'> {
   prefixCls?: string;
 
   width?: string | number;
   height?: string | number;
   open?: boolean;
-  handler?: React.ReactElement | null | false;
   placement?: Placement;
-  level?: null | string | string[];
-  levelMove?:
-    | LevelMove
-    | ((e: { target: HTMLElement; open: boolean }) => LevelMove);
   duration?: string;
-  ease?: string;
-  showMask?: boolean;
-  onChange?: (open?: boolean) => void;
-  onHandleClick?: (e: React.MouseEvent | React.KeyboardEvent) => void;
   onClose?: (e: React.MouseEvent | React.KeyboardEvent) => void;
   keyboard?: boolean;
   contentWrapperStyle?: React.CSSProperties;
   autoFocus?: boolean;
   wrapperClassName?: string;
-  forceRender?: boolean;
+  destroyOnClose?: boolean;
+
   getContainer?: GetContainer | false;
 }
 
@@ -43,15 +33,32 @@ export default function Drawer(props: DrawerProps) {
     forceRender,
     wrapperClassName,
     prefixCls = 'rc-drawer',
+    afterOpenChange,
+    destroyOnClose,
   } = props;
 
+  const [animatedVisible, setAnimatedVisible] = React.useState(false);
+
+  // ============================= Open =============================
+  const internalAfterOpenChange: DrawerProps['afterOpenChange'] =
+    nextVisible => {
+      setAnimatedVisible(nextVisible);
+      afterOpenChange?.(nextVisible);
+    };
+
+  // ============================ Render ============================
   const sharedDrawerProps = {
     ...props,
     prefixCls,
+    afterOpenChange: internalAfterOpenChange,
   };
 
   if (getContainer === false) {
     return <DrawerPopup {...sharedDrawerProps} inline />;
+  }
+
+  if (!forceRender && !animatedVisible && !open && destroyOnClose) {
+    return null;
   }
 
   return (
