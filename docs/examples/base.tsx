@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
 import Drawer from 'rc-drawer';
+import motionProps from './motion';
 
 const Demo = () => {
   const [open, setOpen] = useState(false);
@@ -22,11 +23,13 @@ const Demo = () => {
         onClose={onTouchEnd}
         handler={false}
         level={null}
-        afterVisibleChange={(c: boolean) => {
-          // console.log('transitionEnd: ', c);
+        afterOpenChange={(c: boolean) => {
+          console.log('transitionEnd: ', c);
         }}
         placement="right"
         width={400}
+        // Motion
+        {...motionProps}
       >
         content
       </Drawer>
