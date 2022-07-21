@@ -2,6 +2,7 @@ import * as React from 'react';
 import classNames from 'classnames';
 import CSSMotion from 'rc-motion';
 import type { CSSMotionProps } from 'rc-motion';
+import type { DrawerPanelRef } from './DrawerPanel';
 import DrawerPanel from './DrawerPanel';
 import type ScrollLocker from 'rc-util/lib/Dom/scrollLocker';
 import DrawerContext from './context';
@@ -16,6 +17,7 @@ export interface DrawerPopupProps {
   inline?: boolean;
   push?: { distance?: number | string };
   forceRender?: boolean;
+  autoFocus?: boolean;
 
   // MISC
   scrollLocker?: ScrollLocker;
@@ -53,6 +55,7 @@ export default function DrawerPopup(props: DrawerPopupProps) {
     inline,
     push,
     forceRender,
+    autoFocus = true,
 
     // MISC
     scrollLocker,
@@ -101,6 +104,8 @@ export default function DrawerPopup(props: DrawerPopupProps) {
   );
 
   // ========================= ScrollLock =========================
+  const panelRef = React.useRef<DrawerPanelRef>();
+
   React.useEffect(() => {
     if (open) {
       scrollLocker?.lock();
@@ -109,6 +114,13 @@ export default function DrawerPopup(props: DrawerPopupProps) {
       parentContext?.pull?.();
     }
   }, [open]);
+
+  // Auto Focus
+  React.useEffect(() => {
+    if (open && autoFocus) {
+      panelRef.current?.focus();
+    }
+  }, [open, autoFocus]);
 
   React.useEffect(
     () => () => {
@@ -167,6 +179,7 @@ export default function DrawerPopup(props: DrawerPopupProps) {
         {({ className: motionClassName, style: motionStyle }) => {
           return (
             <DrawerPanel
+              ref={panelRef}
               prefixCls={prefixCls}
               className={classNames(className, motionClassName)}
               style={{
