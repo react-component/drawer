@@ -44,7 +44,9 @@ export interface DrawerPopupProps {
   maskMotion?: CSSMotionProps;
 
   // Events
-  onClose?: React.MouseEventHandler<HTMLElement>;
+  onClose?: (
+    event: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>,
+  ) => void;
 }
 
 export default function DrawerPopup(props: DrawerPopupProps) {
@@ -115,13 +117,6 @@ export default function DrawerPopup(props: DrawerPopupProps) {
     }
   }, [open]);
 
-  // Auto Focus
-  React.useEffect(() => {
-    if (open && autoFocus) {
-      panelRef.current?.focus();
-    }
-  }, [open, autoFocus]);
-
   React.useEffect(
     () => () => {
       scrollLocker?.unLock();
@@ -129,6 +124,20 @@ export default function DrawerPopup(props: DrawerPopupProps) {
     },
     [],
   );
+
+  // ========================== Control ===========================
+  // Auto Focus
+  React.useEffect(() => {
+    if (open && autoFocus) {
+      panelRef.current?.focus();
+    }
+  }, [open, autoFocus]);
+
+  const onPanelClose: React.KeyboardEventHandler<HTMLDivElement> = event => {
+    if (onClose) {
+      onClose(event);
+    }
+  };
 
   // ============================ Mask ============================
   const maskNode: React.ReactNode = mask && (
@@ -188,6 +197,7 @@ export default function DrawerPopup(props: DrawerPopupProps) {
               }}
               width={width}
               placement={placement}
+              onClose={onPanelClose}
             >
               {children}
             </DrawerPanel>

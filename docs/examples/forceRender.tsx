@@ -24,7 +24,9 @@ export default () => {
         forceRender
         {...motionProps}
       >
-        Hello World!
+        <input />
+        <input />
+        <input />
       </Drawer>
       <Drawer
         width="20vw"

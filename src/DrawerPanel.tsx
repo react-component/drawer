@@ -14,6 +14,7 @@ export interface DrawerPanelProps {
   width?: number | string;
   placement: Placement;
   children?: React.ReactNode;
+  onClose?: React.KeyboardEventHandler<HTMLElement>;
 }
 
 const sentinelStyle: React.CSSProperties = {
@@ -26,7 +27,8 @@ const sentinelStyle: React.CSSProperties = {
 
 const DrawerPanel = React.forwardRef<DrawerPanelRef, DrawerPanelProps>(
   (props, ref) => {
-    const { prefixCls, className, style, placement, width, children } = props;
+    const { prefixCls, className, style, placement, width, children, onClose } =
+      props;
 
     // ================================ Refs ================================
     const panelRef = React.useRef<HTMLDivElement>();
@@ -41,20 +43,34 @@ const DrawerPanel = React.forwardRef<DrawerPanelRef, DrawerPanelProps>(
       },
     }));
 
-    const onPanelKeyDown: React.KeyboardEventHandler<HTMLDivElement> = ({
-      keyCode,
-      shiftKey,
-    }) => {
+    const onPanelKeyDown: React.KeyboardEventHandler<
+      HTMLDivElement
+    > = event => {
+      const { keyCode, shiftKey } = event;
+
       switch (keyCode) {
+        // Tab active
         case KeyCode.TAB: {
-          if (!shiftKey && document.activeElement === sentinelEndRef.current) {
-            sentinelStartRef.current?.focus({ preventScroll: true });
-          } else if (
-            shiftKey &&
-            document.activeElement === sentinelStartRef.current
-          ) {
-            sentinelEndRef.current?.focus({ preventScroll: true });
+          if (keyCode === KeyCode.TAB) {
+            if (
+              !shiftKey &&
+              document.activeElement === sentinelEndRef.current
+            ) {
+              sentinelStartRef.current?.focus({ preventScroll: true });
+            } else if (
+              shiftKey &&
+              document.activeElement === sentinelStartRef.current
+            ) {
+              sentinelEndRef.current?.focus({ preventScroll: true });
+            }
           }
+          break;
+        }
+
+        // Close
+        case KeyCode.ESC: {
+          onClose(event);
+          break;
         }
       }
     };
