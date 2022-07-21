@@ -19,17 +19,36 @@ const { SubMenu } = Menu;
 const MenuItemGroup = Menu.ItemGroup;
 
 export default () => {
-  const containerRef = React.useRef<HTMLDivElement>();
   const [open, setOpen] = React.useState(false);
 
   return (
-    <div>
-      <div ref={containerRef} id="container">
-        <button onClick={() => setOpen(true)}>Open</button>
+    <div style={{ position: 'relative' }}>
+      <div
+        id="container"
+        style={{
+          height: 300,
+          background: 'rgba(0,0,0,0.05)',
+          overflow: 'auto',
+          position: 'relative',
+        }}
+      >
+        <div
+          style={{
+            display: 'inline-block',
+            height: 1000,
+            boxShadow: `0 0 1px red`,
+          }}
+        >
+          <button onClick={() => setOpen(true)} style={{ height: 100 }}>
+            Open
+          </button>
+        </div>
       </div>
+
       <Drawer
         width="20vw"
-        getContainer={() => containerRef.current}
+        getContainer={false}
+        placement="right"
         open={open}
         onClose={() => setOpen(false)}
         {...motionProps}

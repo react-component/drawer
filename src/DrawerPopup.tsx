@@ -11,6 +11,7 @@ export interface DrawerPopupProps {
   prefixCls: string;
   open?: boolean;
   placement?: Placement;
+  inline?: boolean;
 
   // MISC
   scrollLocker?: ScrollLocker;
@@ -45,6 +46,7 @@ export default function DrawerPopup(props: DrawerPopupProps) {
     prefixCls,
     open,
     placement = 'left',
+    inline,
 
     // MISC
     scrollLocker,
@@ -112,7 +114,7 @@ export default function DrawerPopup(props: DrawerPopupProps) {
   const motionProps = typeof motion === 'function' ? motion(placement) : motion;
 
   const panelNode: React.ReactNode = (
-    <div className={`${prefixCls}-panel-wrapper`}>
+    <div className={classNames(`${prefixCls}-panel-wrapper`)}>
       <CSSMotion
         key="panel"
         {...motionProps}
@@ -153,6 +155,9 @@ export default function DrawerPopup(props: DrawerPopupProps) {
         prefixCls,
         `${prefixCls}-${placement}`,
         rootClassName,
+        {
+          [`${prefixCls}-inline`]: inline,
+        },
       )}
       style={rootStyle}
     >

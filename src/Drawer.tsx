@@ -31,7 +31,7 @@ export interface DrawerProps extends Omit<DrawerPopupProps, 'prefixCls'> {
   autoFocus?: boolean;
   wrapperClassName?: string;
   forceRender?: boolean;
-  getContainer?: GetContainer;
+  getContainer?: GetContainer | false;
 }
 
 const defaultGetContainer = () => document.body;
@@ -45,6 +45,15 @@ export default function Drawer(props: DrawerProps) {
     prefixCls = 'rc-drawer',
   } = props;
 
+  const sharedDrawerProps = {
+    ...props,
+    prefixCls,
+  };
+
+  if (getContainer === false) {
+    return <DrawerPopup {...sharedDrawerProps} inline />;
+  }
+
   return (
     <Portal
       visible={open}
@@ -53,11 +62,7 @@ export default function Drawer(props: DrawerProps) {
       wrapperClassName={wrapperClassName}
     >
       {({ scrollLocker }) => (
-        <DrawerPopup
-          {...props}
-          prefixCls={prefixCls}
-          scrollLocker={scrollLocker}
-        />
+        <DrawerPopup {...sharedDrawerProps} scrollLocker={scrollLocker} />
       )}
     </Portal>
   );

@@ -5,21 +5,26 @@
 
 .@{prefixCls} {
   position: fixed;
-  inset: 0;
   z-index: @zIndex;
   pointer-events: none;
+  inset: 0;
+
+  &-inline {
+    position: absolute;
+  }
 
   &-mask {
     position: absolute;
     z-index: @zIndex;
     background: rgba(0, 0, 0, 0.5);
-    inset: 0;
     pointer-events: auto;
+    inset: 0;
   }
 
   &-panel-wrapper {
     position: absolute;
     z-index: @zIndex;
+    overflow: hidden;
 
     &-hidden {
       display: none;
@@ -44,6 +49,7 @@
     height: 100%;
     background: #fff;
     pointer-events: auto;
+    overflow: auto;
   }
 }
 
