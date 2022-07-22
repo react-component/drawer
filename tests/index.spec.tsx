@@ -105,6 +105,20 @@ describe('rc-drawer-menu', () => {
         },
       );
     });
+
+    it('truthy', () => {
+      const { container } = render(
+        <Drawer push open getContainer={false}>
+          <Drawer open />
+        </Drawer>,
+      );
+
+      expect(container.querySelector('.rc-drawer-content-wrapper')).toHaveStyle(
+        {
+          transform: 'translateX(-180px)',
+        },
+      );
+    });
   });
 
   describe('mask', () => {
