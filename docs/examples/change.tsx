@@ -1,4 +1,8 @@
-import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
+import {
+  AppstoreOutlined,
+  MailOutlined,
+  SettingOutlined,
+} from '@ant-design/icons';
 import { Menu } from 'antd';
 import * as React from 'react';
 
@@ -9,6 +13,7 @@ import 'antd/lib/style';
 
 import '../../assets/index.less';
 import './assets/index.less';
+import motionProps from './motion';
 
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
@@ -49,6 +54,8 @@ class Demo extends React.Component {
             console.log('transitionEnd: ', c);
           }}
           width="20vw"
+          // Motion
+          {...motionProps}
         >
           <Menu
             defaultSelectedKeys={['1']}

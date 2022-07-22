@@ -1,4 +1,8 @@
-import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
+import {
+  AppstoreOutlined,
+  MailOutlined,
+  SettingOutlined,
+} from '@ant-design/icons';
 import { Menu } from 'antd';
 import * as React from 'react';
 
@@ -6,6 +10,7 @@ import Drawer from 'rc-drawer';
 
 import '../../assets/index.less';
 import './assets/index.less';
+import motionProps from './motion';
 
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
@@ -24,7 +29,12 @@ class Demo extends React.Component<any, { show: boolean }> {
     return (
       <div>
         {this.state.show && (
-          <Drawer wrapperClassName="drawer-wrapper" width="20vw">
+          <Drawer
+            wrapperClassName="drawer-wrapper"
+            width="20vw"
+            open
+            {...motionProps}
+          >
             <Menu
               defaultSelectedKeys={['1']}
               defaultOpenKeys={['sub1']}

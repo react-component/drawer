@@ -1,4 +1,8 @@
-import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
+import {
+  AppstoreOutlined,
+  MailOutlined,
+  SettingOutlined,
+} from '@ant-design/icons';
 import { Menu } from 'antd';
 import * as React from 'react';
 
@@ -27,7 +31,37 @@ class Demo extends React.Component {
   public render() {
     return (
       <div>
-        <Drawer width="250px" showMask={false}>
+        <div
+          style={{
+            width: '100%',
+            height: 667,
+            background: '#fff000',
+            color: '#fff',
+            textAlign: 'center',
+            lineHeight: '667px',
+          }}
+        >
+          内容区块
+          <button
+            onClick={this.onSwitch}
+            style={{
+              height: 24,
+              width: 100,
+              marginLeft: 20,
+              color: '#000',
+              lineHeight: '24px',
+            }}
+          >
+            {!this.state.open ? '打开' : '关闭'}
+          </button>
+        </div>
+
+        <Drawer
+          width="250px"
+          mask={false}
+          open={this.state.open}
+          placement="right"
+        >
           <Menu
             style={{ height: '200%', width: 'calc(100% - 1px)' }} // 选中的线超出
             defaultSelectedKeys={['1']}
@@ -84,18 +118,6 @@ class Demo extends React.Component {
             </SubMenu>
           </Menu>
         </Drawer>
-        <div
-          style={{
-            width: '100%',
-            height: 667,
-            background: '#fff000',
-            color: '#fff',
-            textAlign: 'center',
-            lineHeight: '667px',
-          }}
-        >
-          内容区块
-        </div>
       </div>
     );
   }

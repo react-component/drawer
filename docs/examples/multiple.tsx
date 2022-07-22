@@ -9,6 +9,7 @@ import 'antd/lib/style';
 
 import '../../assets/index.less';
 import './assets/index.less';
+import motionProps from './motion';
 
 class Demo extends React.Component {
   public state = {
@@ -63,6 +64,8 @@ class Demo extends React.Component {
           onClose={this.onClick}
           className="drawer1"
           placement="right"
+          push={{ distance: 64 }}
+          {...motionProps}
         >
           <div>
             <Button onClick={this.onChildClick}>打开子级</Button>
@@ -73,7 +76,7 @@ class Demo extends React.Component {
               className="drawer2"
               level=".drawer1"
               placement="right"
-              levelMove={100}
+              {...motionProps}
             >
               <div style={{ width: 200 }}>
                 二级抽屉
@@ -85,6 +88,7 @@ class Demo extends React.Component {
                   level={['.drawer1', '.drawer2']}
                   placement="right"
                   levelMove={this.getLevelMove}
+                  {...motionProps}
                 >
                   <div style={{ width: 200 }}>三级抽屉</div>
                 </Drawer>
