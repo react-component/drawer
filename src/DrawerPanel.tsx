@@ -128,7 +128,7 @@ const DrawerPanel = React.forwardRef<DrawerPanelRef, DrawerPanelProps>(
   },
 );
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV !== 'production') {
   DrawerPanel.displayName = 'DrawerPanel';
 }
 

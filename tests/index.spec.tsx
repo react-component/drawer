@@ -1,5 +1,7 @@
 import { cleanup, fireEvent, render, act } from '@testing-library/react';
+import KeyCode from 'rc-util/lib/KeyCode';
 import React from 'react';
+import type { DrawerProps } from '../src';
 import Drawer from '../src';
 
 describe('rc-drawer-menu', () => {
@@ -34,29 +36,60 @@ describe('rc-drawer-menu', () => {
     expect(document.querySelector('.rc-drawer-content-hidden')).toBeTruthy();
   });
 
-  it('push', () => {
-    const { unmount } = render(
-      <Drawer push={{ distance: 903 }} rootClassName="outer" open>
-        <Drawer open />
-      </Drawer>,
-    );
+  describe('push', () => {
+    const placementList: {
+      placement: DrawerProps['placement'];
+      transform: string;
+    }[] = [
+      {
+        placement: 'left',
+        transform: 'translateX(903px)',
+      },
+      {
+        placement: 'right',
+        transform: 'translateX(-903px)',
+      },
+      {
+        placement: 'top',
+        transform: 'translateY(903px)',
+      },
+      {
+        placement: 'bottom',
+        transform: 'translateY(-903px)',
+      },
+    ];
 
-    expect(
-      document.body
-        .querySelector('.outer')
-        .querySelector('.rc-drawer-content-wrapper'),
-    ).toHaveStyle({
-      transform: 'translateX(-903px)',
-    });
+    placementList.forEach(({ placement, transform }) => {
+      it(placement, () => {
+        const { unmount } = render(
+          <Drawer
+            push={{ distance: 903 }}
+            rootClassName="outer"
+            open
+            placement={placement}
+          >
+            <Drawer open />
+          </Drawer>,
+        );
 
-    expect(document.body).toHaveStyle({
-      overflow: 'hidden',
-    });
+        expect(
+          document.body
+            .querySelector('.outer')
+            .querySelector('.rc-drawer-content-wrapper'),
+        ).toHaveStyle({
+          transform,
+        });
 
-    unmount();
+        expect(document.body).toHaveStyle({
+          overflow: 'hidden',
+        });
 
-    expect(document.body).not.toHaveStyle({
-      overflow: 'hidden',
+        unmount();
+
+        expect(document.body).not.toHaveStyle({
+          overflow: 'hidden',
+        });
+      });
     });
   });
 
@@ -166,5 +199,60 @@ describe('rc-drawer-menu', () => {
     });
 
     expect(container.contains(document.activeElement)).toBeTruthy();
+  });
+
+  it('tab should always in the content', () => {
+    const { container } = render(
+      <Drawer open getContainer={false}>
+        <div>Hello World</div>
+      </Drawer>,
+    );
+
+    const list = Array.from(
+      container.querySelector('.rc-drawer-content').children,
+    ) as HTMLElement[];
+
+    const firstSentinel = list[0];
+    const lastSentinel = list[2];
+
+    // First shift to last
+    firstSentinel.focus();
+    fireEvent.keyDown(firstSentinel, {
+      shiftKey: true,
+      keyCode: KeyCode.TAB,
+      which: KeyCode.TAB,
+    });
+    expect(document.activeElement).toBe(lastSentinel);
+
+    // Last tab to first
+    fireEvent.keyDown(lastSentinel, {
+      keyCode: KeyCode.TAB,
+      which: KeyCode.TAB,
+    });
+    expect(document.activeElement).toBe(firstSentinel);
+  });
+
+  describe('keyboard', () => {
+    it('ESC to exit', () => {
+      const onClose = jest.fn();
+      const { container } = render(
+        <Drawer open getContainer={false} onClose={onClose} />,
+      );
+      fireEvent.keyDown(container.querySelector('.rc-drawer-content'), {
+        keyCode: KeyCode.ESC,
+      });
+      expect(onClose).toHaveBeenCalled();
+    });
+
+    it('disable ESC to exit', () => {
+      const onClose = jest.fn();
+      const { container } = render(
+        <Drawer open getContainer={false} onClose={onClose} keyboard={false} />,
+      );
+      fireEvent.keyDown(container.querySelector('.rc-drawer-content'), {
+        keyCode: KeyCode.ESC,
+      });
+      expect(onClose).not.toHaveBeenCalled();
+    });
   });
 });
