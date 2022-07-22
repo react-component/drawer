@@ -6,6 +6,6 @@ export interface DrawerContextProps {
   pull: VoidFunction;
 }
 
-const DrawerContext = React.createContext<DrawerContextProps>({});
+const DrawerContext = React.createContext<DrawerContextProps>(null);
 
 export default DrawerContext;
