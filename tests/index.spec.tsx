@@ -91,6 +91,20 @@ describe('rc-drawer-menu', () => {
         });
       });
     });
+
+    it('disable push', () => {
+      const { container } = render(
+        <Drawer push={false} open getContainer={false}>
+          <Drawer open />
+        </Drawer>,
+      );
+
+      expect(container.querySelector('.rc-drawer-content-wrapper')).toHaveStyle(
+        {
+          transform: '',
+        },
+      );
+    });
   });
 
   describe('mask', () => {
