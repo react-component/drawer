@@ -10,11 +10,15 @@ import type { DrawerContextProps } from './context';
 
 export type Placement = 'left' | 'right' | 'top' | 'bottom';
 
+export interface PushConfig {
+  distance?: number | string;
+}
+
 export interface DrawerPopupProps {
   prefixCls: string;
   open?: boolean;
   inline?: boolean;
-  push?: { distance?: number | string };
+  push?: boolean | PushConfig;
   forceRender?: boolean;
   autoFocus?: boolean;
   keyboard?: boolean;
@@ -94,11 +98,23 @@ export default function DrawerPopup(props: DrawerPopupProps) {
   } = props;
 
   // ============================ Push ============================
-  const { distance } = push || {};
   const [pushed, setPushed] = React.useState(false);
 
   const parentContext = React.useContext(DrawerContext);
-  const pushDistance = distance ?? parentContext?.pushDistance ?? 180;
+
+  // Merge push distance
+  let pushConfig: PushConfig;
+  if (push === false) {
+    pushConfig = {
+      distance: 0,
+    };
+  } else if (push === true) {
+    pushConfig = {};
+  } else {
+    pushConfig = push || {};
+  }
+  const pushDistance =
+    pushConfig?.distance ?? parentContext?.pushDistance ?? 180;
 
   const mergedContext = React.useMemo<DrawerContextProps>(
     () => ({
