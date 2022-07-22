@@ -13,11 +13,11 @@ export type Placement = 'left' | 'right' | 'top' | 'bottom';
 export interface DrawerPopupProps {
   prefixCls: string;
   open?: boolean;
-  placement?: Placement;
   inline?: boolean;
   push?: { distance?: number | string };
   forceRender?: boolean;
   autoFocus?: boolean;
+  keyboard?: boolean;
 
   // MISC
   scrollLocker?: ScrollLocker;
@@ -27,11 +27,13 @@ export interface DrawerPopupProps {
   rootStyle?: React.CSSProperties;
 
   // Drawer
+  placement?: Placement;
   className?: string;
   style?: React.CSSProperties;
   children?: React.ReactNode;
   width?: number | string;
-  afterOpenChange?: (open: boolean) => void;
+  height?: number | string;
+  contentWrapperStyle?: React.CSSProperties;
 
   // Mask
   mask?: boolean;
@@ -44,6 +46,7 @@ export interface DrawerPopupProps {
   maskMotion?: CSSMotionProps;
 
   // Events
+  afterOpenChange?: (open: boolean) => void;
   onClose?: (
     event: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>,
   ) => void;
@@ -53,11 +56,12 @@ export default function DrawerPopup(props: DrawerPopupProps) {
   const {
     prefixCls,
     open,
-    placement = 'right',
+    placement,
     inline,
     push,
     forceRender,
-    autoFocus = true,
+    autoFocus,
+    keyboard,
 
     // MISC
     scrollLocker,
@@ -70,18 +74,20 @@ export default function DrawerPopup(props: DrawerPopupProps) {
     className,
     style,
     motion,
-    width = 378,
+    width,
+    height,
     children,
-    afterOpenChange,
+    contentWrapperStyle,
 
     // Mask
-    mask = true,
-    maskClosable = true,
+    mask,
+    maskClosable,
     maskMotion,
     maskClassName,
     maskStyle,
 
     // Events
+    afterOpenChange,
     onClose,
   } = props;
 
@@ -108,15 +114,23 @@ export default function DrawerPopup(props: DrawerPopupProps) {
   // ========================= ScrollLock =========================
   const panelRef = React.useRef<DrawerPanelRef>();
 
+  // Tell parent to push
   React.useEffect(() => {
     if (open) {
-      scrollLocker?.lock();
       parentContext?.push?.();
     } else {
       parentContext?.pull?.();
     }
   }, [open]);
 
+  // Lock window scroll
+  React.useEffect(() => {
+    if (open && mask) {
+      scrollLocker?.lock();
+    }
+  }, [open, mask]);
+
+  // Clean up
   React.useEffect(
     () => () => {
       scrollLocker?.unLock();
@@ -134,7 +148,7 @@ export default function DrawerPopup(props: DrawerPopupProps) {
   }, [open, autoFocus]);
 
   const onPanelClose: React.KeyboardEventHandler<HTMLDivElement> = event => {
-    if (onClose) {
+    if (onClose && keyboard) {
       onClose(event);
     }
   };
@@ -164,11 +178,31 @@ export default function DrawerPopup(props: DrawerPopupProps) {
   // =========================== Panel ============================
   const motionProps = typeof motion === 'function' ? motion(placement) : motion;
 
+  const wrapperStyle: React.CSSProperties = {};
+
+  if (pushed && pushDistance) {
+    switch (placement) {
+      case 'top':
+        wrapperStyle.transform = `translateY(${pushDistance}px)`;
+        break;
+      case 'bottom':
+        wrapperStyle.transform = `translateY(${-pushDistance}px)`;
+        break;
+      case 'left':
+        wrapperStyle.transform = `translateX(${pushDistance}px)`;
+        break;
+      default:
+        wrapperStyle.transform = `translateX(${-pushDistance}px)`;
+        break;
+    }
+  }
+
   const panelNode: React.ReactNode = (
     <div
-      className={classNames(`${prefixCls}-panel-wrapper`)}
+      className={classNames(`${prefixCls}-content-wrapper`)}
       style={{
-        transform: pushed ? `translateX(${-pushDistance}px)` : '',
+        ...wrapperStyle,
+        ...contentWrapperStyle,
       }}
     >
       <CSSMotion
@@ -183,7 +217,7 @@ export default function DrawerPopup(props: DrawerPopupProps) {
           }
         }}
         removeOnLeave={false}
-        leavedClassName={`${prefixCls}-panel-wrapper-hidden`}
+        leavedClassName={`${prefixCls}-content-hidden`}
       >
         {({ className: motionClassName, style: motionStyle }) => {
           return (
@@ -196,6 +230,7 @@ export default function DrawerPopup(props: DrawerPopupProps) {
                 ...style,
               }}
               width={width}
+              height={height}
               placement={placement}
               onClose={onPanelClose}
             >

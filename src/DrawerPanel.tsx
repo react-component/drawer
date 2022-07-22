@@ -12,6 +12,7 @@ export interface DrawerPanelProps {
   className?: string;
   style?: React.CSSProperties;
   width?: number | string;
+  height?: number | string;
   placement: Placement;
   children?: React.ReactNode;
   onClose?: React.KeyboardEventHandler<HTMLElement>;
@@ -27,8 +28,16 @@ const sentinelStyle: React.CSSProperties = {
 
 const DrawerPanel = React.forwardRef<DrawerPanelRef, DrawerPanelProps>(
   (props, ref) => {
-    const { prefixCls, className, style, placement, width, children, onClose } =
-      props;
+    const {
+      prefixCls,
+      className,
+      style,
+      placement,
+      width,
+      height,
+      children,
+      onClose,
+    } = props;
 
     // ================================ Refs ================================
     const panelRef = React.useRef<HTMLDivElement>();
@@ -76,13 +85,20 @@ const DrawerPanel = React.forwardRef<DrawerPanelRef, DrawerPanelProps>(
     };
 
     // =============================== Render ===============================
+    const panelStyle: React.CSSProperties = {};
+
+    if (placement === 'left' || placement === 'right') {
+      panelStyle.width = width;
+    } else {
+      panelStyle.height = height;
+    }
+
     return (
       <>
         <div
-          className={classNames(`${prefixCls}-panel`, className)}
+          className={classNames(`${prefixCls}-content`, className)}
           style={{
-            width:
-              placement === 'left' || placement === 'right' ? width : '100%',
+            ...panelStyle,
             ...style,
           }}
           aria-modal="true"

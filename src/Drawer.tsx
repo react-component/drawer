@@ -9,30 +9,23 @@ export type Placement = 'left' | 'top' | 'right' | 'bottom';
 export interface DrawerProps extends Omit<DrawerPopupProps, 'prefixCls'> {
   prefixCls?: string;
 
-  width?: string | number;
-  height?: string | number;
   open?: boolean;
-  placement?: Placement;
-  duration?: string;
   onClose?: (e: React.MouseEvent | React.KeyboardEvent) => void;
-  keyboard?: boolean;
-  contentWrapperStyle?: React.CSSProperties;
-  autoFocus?: boolean;
+  /** @deprecated Only work on Portal mode. You can replace with rootClassName instead */
   wrapperClassName?: string;
   destroyOnClose?: boolean;
-
   getContainer?: GetContainer | false;
 }
 
 const defaultGetContainer = () => document.body;
 
-export default function Drawer(props: DrawerProps) {
+const Drawer: React.FC<DrawerProps> = props => {
   const {
     open,
-    getContainer = defaultGetContainer,
+    getContainer,
     forceRender,
     wrapperClassName,
-    prefixCls = 'rc-drawer',
+    prefixCls,
     afterOpenChange,
     destroyOnClose,
   } = props;
@@ -73,4 +66,25 @@ export default function Drawer(props: DrawerProps) {
       )}
     </Portal>
   );
+};
+
+// Default Value.
+// Since spread with default value will make this all over components.
+// Let's maintain this in one place.
+Drawer.defaultProps = {
+  open: false,
+  getContainer: defaultGetContainer,
+  prefixCls: 'rc-drawer',
+  placement: 'right',
+  autoFocus: true,
+  keyboard: true,
+  width: 378,
+  mask: true,
+  maskClosable: true,
+};
+
+if (process.env.NODE_ENV !== 'production') {
+  Drawer.displayName = 'Drawer';
 }
+
+export default Drawer;

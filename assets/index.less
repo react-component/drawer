@@ -21,15 +21,11 @@
     inset: 0;
   }
 
-  &-panel-wrapper {
+  &-content-wrapper {
     position: absolute;
     z-index: @zIndex;
     overflow: hidden;
     transition: transform @duration;
-
-    &-hidden {
-      display: none;
-    }
 
     // Placement
     .@{prefixCls}-left & {
@@ -45,12 +41,16 @@
     }
   }
 
-  &-panel {
+  &-content {
     width: 100%;
     height: 100%;
+    overflow: auto;
     background: #fff;
     pointer-events: auto;
-    overflow: auto;
+
+    &-hidden {
+      display: none;
+    }
   }
 }
 
