@@ -25,6 +25,7 @@ export interface DrawerPopupProps {
   // Root
   rootClassName?: string;
   rootStyle?: React.CSSProperties;
+  zIndex?: number;
 
   // Drawer
   placement?: Placement;
@@ -69,6 +70,7 @@ export default function DrawerPopup(props: DrawerPopupProps) {
     // Root
     rootClassName,
     rootStyle,
+    zIndex,
 
     // Drawer
     className,
@@ -153,6 +155,12 @@ export default function DrawerPopup(props: DrawerPopupProps) {
     }
   };
 
+  // =========================== zIndex ===========================
+  const zIndexStyle: React.CSSProperties = {};
+  if (zIndex) {
+    zIndexStyle.zIndex = zIndex;
+  }
+
   // ============================ Mask ============================
   const maskNode: React.ReactNode = mask && (
     <CSSMotion key="mask" {...maskMotion} visible={open}>
@@ -167,6 +175,7 @@ export default function DrawerPopup(props: DrawerPopupProps) {
             style={{
               ...motionMaskStyle,
               ...maskStyle,
+              ...zIndexStyle,
             }}
             onClick={maskClosable && onClose}
           />
@@ -203,6 +212,7 @@ export default function DrawerPopup(props: DrawerPopupProps) {
       style={{
         ...wrapperStyle,
         ...contentWrapperStyle,
+        ...zIndexStyle,
       }}
     >
       <CSSMotion

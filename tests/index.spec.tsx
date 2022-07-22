@@ -255,4 +255,17 @@ describe('rc-drawer-menu', () => {
       expect(onClose).not.toHaveBeenCalled();
     });
   });
+
+  it('zIndex', () => {
+    const { container } = render(
+      <Drawer zIndex={93} open getContainer={false} />,
+    );
+
+    expect(container.querySelector('.rc-drawer-mask')).toHaveStyle({
+      zIndex: 93,
+    });
+    expect(container.querySelector('.rc-drawer-content-wrapper')).toHaveStyle({
+      zIndex: 93,
+    });
+  });
 });
