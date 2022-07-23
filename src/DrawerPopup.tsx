@@ -5,6 +5,7 @@ import type { CSSMotionProps } from 'rc-motion';
 import type { DrawerPanelRef } from './DrawerPanel';
 import DrawerPanel from './DrawerPanel';
 import type ScrollLocker from 'rc-util/lib/Dom/scrollLocker';
+import { composeRef } from 'rc-util/lib/ref';
 import DrawerContext from './context';
 import type { DrawerContextProps } from './context';
 
@@ -180,7 +181,10 @@ export default function DrawerPopup(props: DrawerPopupProps) {
   // ============================ Mask ============================
   const maskNode: React.ReactNode = mask && (
     <CSSMotion key="mask" {...maskMotion} visible={open}>
-      {({ className: motionMaskClassName, style: motionMaskStyle }) => {
+      {(
+        { className: motionMaskClassName, style: motionMaskStyle },
+        maskRef,
+      ) => {
         return (
           <div
             className={classNames(
@@ -194,6 +198,7 @@ export default function DrawerPopup(props: DrawerPopupProps) {
               ...zIndexStyle,
             }}
             onClick={maskClosable && onClose}
+            ref={maskRef}
           />
         );
       }}
@@ -245,10 +250,10 @@ export default function DrawerPopup(props: DrawerPopupProps) {
         removeOnLeave={false}
         leavedClassName={`${prefixCls}-content-hidden`}
       >
-        {({ className: motionClassName, style: motionStyle }) => {
+        {({ className: motionClassName, style: motionStyle }, motionRef) => {
           return (
             <DrawerPanel
-              ref={panelRef}
+              ref={composeRef(motionRef, panelRef)}
               prefixCls={prefixCls}
               className={classNames(className, motionClassName)}
               style={{
