@@ -2,6 +2,7 @@ import * as React from 'react';
 import classNames from 'classnames';
 import type { Placement } from './Drawer';
 import KeyCode from 'rc-util/lib/KeyCode';
+import { composeRef } from 'rc-util/lib/ref';
 
 export interface DrawerPanelRef {
   focus: VoidFunction;
@@ -16,6 +17,7 @@ export interface DrawerPanelProps {
   placement: Placement;
   children?: React.ReactNode;
   onClose?: React.KeyboardEventHandler<HTMLElement>;
+  containerRef?: React.Ref<HTMLDivElement>;
 }
 
 const sentinelStyle: React.CSSProperties = {
@@ -37,6 +39,7 @@ const DrawerPanel = React.forwardRef<DrawerPanelRef, DrawerPanelProps>(
       height,
       children,
       onClose,
+      containerRef,
     } = props;
 
     // ================================ Refs ================================
@@ -104,7 +107,7 @@ const DrawerPanel = React.forwardRef<DrawerPanelRef, DrawerPanelProps>(
           aria-modal="true"
           role="dialog"
           tabIndex={-1}
-          ref={panelRef}
+          ref={composeRef(panelRef, containerRef)}
           onKeyDown={onPanelKeyDown}
         >
           <div

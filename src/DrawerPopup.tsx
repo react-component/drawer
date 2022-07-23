@@ -5,7 +5,6 @@ import type { CSSMotionProps } from 'rc-motion';
 import type { DrawerPanelRef } from './DrawerPanel';
 import DrawerPanel from './DrawerPanel';
 import type ScrollLocker from 'rc-util/lib/Dom/scrollLocker';
-import { composeRef } from 'rc-util/lib/ref';
 import DrawerContext from './context';
 import type { DrawerContextProps } from './context';
 
@@ -253,7 +252,8 @@ export default function DrawerPopup(props: DrawerPopupProps) {
         {({ className: motionClassName, style: motionStyle }, motionRef) => {
           return (
             <DrawerPanel
-              ref={composeRef(motionRef, panelRef)}
+              ref={panelRef}
+              containerRef={motionRef}
               prefixCls={prefixCls}
               className={classNames(className, motionClassName)}
               style={{
