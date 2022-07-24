@@ -2,11 +2,19 @@ import * as React from 'react';
 import classNames from 'classnames';
 import CSSMotion from 'rc-motion';
 import type { CSSMotionProps } from 'rc-motion';
-import type { DrawerPanelRef } from './DrawerPanel';
 import DrawerPanel from './DrawerPanel';
 import type ScrollLocker from 'rc-util/lib/Dom/scrollLocker';
 import DrawerContext from './context';
 import type { DrawerContextProps } from './context';
+import KeyCode from 'rc-util/lib/KeyCode';
+
+const sentinelStyle: React.CSSProperties = {
+  width: 0,
+  height: 0,
+  overflow: 'hidden',
+  outline: 'none',
+  position: 'absolute',
+};
 
 export type Placement = 'left' | 'right' | 'top' | 'bottom';
 
@@ -97,6 +105,48 @@ export default function DrawerPopup(props: DrawerPopupProps) {
     onClose,
   } = props;
 
+  // ================================ Refs ================================
+  const panelRef = React.useRef<HTMLDivElement>();
+  const sentinelStartRef = React.useRef<HTMLDivElement>();
+  const sentinelEndRef = React.useRef<HTMLDivElement>();
+
+  const onPanelKeyDown: React.KeyboardEventHandler<HTMLDivElement> = event => {
+    const { keyCode, shiftKey } = event;
+
+    switch (keyCode) {
+      // Tab active
+      case KeyCode.TAB: {
+        if (keyCode === KeyCode.TAB) {
+          if (!shiftKey && document.activeElement === sentinelEndRef.current) {
+            sentinelStartRef.current?.focus({ preventScroll: true });
+          } else if (
+            shiftKey &&
+            document.activeElement === sentinelStartRef.current
+          ) {
+            sentinelEndRef.current?.focus({ preventScroll: true });
+          }
+        }
+        break;
+      }
+
+      // Close
+      case KeyCode.ESC: {
+        if (onClose && keyboard) {
+          onClose(event);
+        }
+        break;
+      }
+    }
+  };
+
+  // ========================== Control ===========================
+  // Auto Focus
+  React.useEffect(() => {
+    if (open && autoFocus) {
+      panelRef.current?.focus({ preventScroll: true });
+    }
+  }, [open, autoFocus]);
+
   // ============================ Push ============================
   const [pushed, setPushed] = React.useState(false);
 
@@ -130,8 +180,6 @@ export default function DrawerPopup(props: DrawerPopupProps) {
   );
 
   // ========================= ScrollLock =========================
-  const panelRef = React.useRef<DrawerPanelRef>();
-
   // Tell parent to push
   React.useEffect(() => {
     if (open) {
@@ -156,20 +204,6 @@ export default function DrawerPopup(props: DrawerPopupProps) {
     },
     [],
   );
-
-  // ========================== Control ===========================
-  // Auto Focus
-  React.useEffect(() => {
-    if (open && autoFocus) {
-      panelRef.current?.focus();
-    }
-  }, [open, autoFocus]);
-
-  const onPanelClose: React.KeyboardEventHandler<HTMLDivElement> = event => {
-    if (onClose && keyboard) {
-      onClose(event);
-    }
-  };
 
   // =========================== zIndex ===========================
   const zIndexStyle: React.CSSProperties = {};
@@ -252,7 +286,6 @@ export default function DrawerPopup(props: DrawerPopupProps) {
         {({ className: motionClassName, style: motionStyle }, motionRef) => {
           return (
             <DrawerPanel
-              ref={panelRef}
               containerRef={motionRef}
               prefixCls={prefixCls}
               className={classNames(className, motionClassName)}
@@ -263,7 +296,6 @@ export default function DrawerPopup(props: DrawerPopupProps) {
               width={width}
               height={height}
               placement={placement}
-              onClose={onPanelClose}
             >
               {children}
             </DrawerPanel>
@@ -286,9 +318,26 @@ export default function DrawerPopup(props: DrawerPopupProps) {
           },
         )}
         style={rootStyle}
+        tabIndex={-1}
+        ref={panelRef}
+        onKeyDown={onPanelKeyDown}
       >
         {maskNode}
+        <div
+          tabIndex={0}
+          ref={sentinelStartRef}
+          style={sentinelStyle}
+          aria-hidden="true"
+          data-sentinel="start"
+        />
         {panelNode}
+        <div
+          tabIndex={0}
+          ref={sentinelEndRef}
+          style={sentinelStyle}
+          aria-hidden="true"
+          data-sentinel="end"
+        />
       </div>
     </DrawerContext.Provider>
   );
