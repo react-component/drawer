@@ -236,12 +236,12 @@ describe('rc-drawer-menu', () => {
       </Drawer>,
     );
 
-    const list = Array.from(
-      container.querySelector('.rc-drawer-content').children,
-    ) as HTMLElement[];
-
-    const firstSentinel = list[0];
-    const lastSentinel = list[2];
+    const firstSentinel = container.querySelector<HTMLElement>(
+      '[data-sentinel="start"]',
+    );
+    const lastSentinel = container.querySelector<HTMLElement>(
+      '[data-sentinel="end"]',
+    );
 
     // First shift to last
     firstSentinel.focus();
