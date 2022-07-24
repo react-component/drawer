@@ -230,7 +230,7 @@ export default function DrawerPopup(props: DrawerPopupProps) {
               ...maskStyle,
               ...zIndexStyle,
             }}
-            onClick={maskClosable && onClose}
+            onClick={maskClosable ? onClose : undefined}
             ref={maskRef}
           />
         );
