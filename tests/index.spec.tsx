@@ -159,11 +159,23 @@ describe('rc-drawer-menu', () => {
     render(<Drawer forceRender />);
     expect(document.querySelector('.rc-drawer')).toBeTruthy();
   });
-  it('destroyOnClose', () => {
-    const { rerender } = render(<Drawer destroyOnClose open />);
-    expect(document.querySelector('.rc-drawer')).toBeTruthy();
-    rerender(<Drawer destroyOnClose />);
-    expect(document.querySelector('.rc-drawer')).toBeFalsy();
+
+  describe('destroyOnClose', () => {
+    it('basic', () => {
+      const { rerender } = render(<Drawer destroyOnClose open />);
+      expect(document.querySelector('.rc-drawer')).toBeTruthy();
+      rerender(<Drawer destroyOnClose />);
+      expect(document.querySelector('.rc-drawer')).toBeFalsy();
+    });
+
+    it('inline', () => {
+      const { container, rerender } = render(
+        <Drawer destroyOnClose open getContainer={false} />,
+      );
+      expect(container.querySelector('.rc-drawer')).toBeTruthy();
+      rerender(<Drawer destroyOnClose getContainer={false} />);
+      expect(container.querySelector('.rc-drawer')).toBeFalsy();
+    });
   });
 
   describe('placement', () => {
