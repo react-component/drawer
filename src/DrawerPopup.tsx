@@ -314,6 +314,7 @@ export default function DrawerPopup(props: DrawerPopupProps) {
           `${prefixCls}-${placement}`,
           rootClassName,
           {
+            [`${prefixCls}-open`]: open,
             [`${prefixCls}-inline`]: inline,
           },
         )}

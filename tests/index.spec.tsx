@@ -18,6 +18,7 @@ describe('rc-drawer-menu', () => {
     const { unmount } = render(<Drawer open />);
     const drawer = document.querySelector('.rc-drawer');
     expect(drawer).toBeTruthy();
+    expect(document.querySelector('.rc-drawer-open')).toBeTruthy();
     expect(document.body.contains(drawer)).toBeTruthy();
     unmount();
   });
