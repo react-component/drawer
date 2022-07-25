@@ -40,6 +40,10 @@ const Drawer: React.FC<DrawerProps> = props => {
     };
 
   // ============================ Render ============================
+  if (!forceRender && !animatedVisible && !open && destroyOnClose) {
+    return null;
+  }
+
   const sharedDrawerProps = {
     ...props,
     prefixCls,
@@ -48,10 +52,6 @@ const Drawer: React.FC<DrawerProps> = props => {
 
   if (getContainer === false) {
     return <DrawerPopup {...sharedDrawerProps} inline />;
-  }
-
-  if (!forceRender && !animatedVisible && !open && destroyOnClose) {
-    return null;
   }
 
   return (
