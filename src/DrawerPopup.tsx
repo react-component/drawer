@@ -268,45 +268,46 @@ export default function DrawerPopup(props: DrawerPopupProps) {
   }
 
   const panelNode: React.ReactNode = (
-    <div
-      className={classNames(`${prefixCls}-content-wrapper`)}
-      style={{
-        ...wrapperStyle,
-        ...contentWrapperStyle,
-        ...zIndexStyle,
+    <CSSMotion
+      key="panel"
+      {...motionProps}
+      visible={open}
+      forceRender={forceRender}
+      onVisibleChanged={nextVisible => {
+        afterOpenChange?.(nextVisible);
+        if (!nextVisible) {
+          scrollLocker?.unLock();
+        }
       }}
+      removeOnLeave={false}
+      leavedClassName={`${prefixCls}-content-hidden`}
     >
-      <CSSMotion
-        key="panel"
-        {...motionProps}
-        visible={open}
-        forceRender={forceRender}
-        onVisibleChanged={nextVisible => {
-          afterOpenChange?.(nextVisible);
-          if (!nextVisible) {
-            scrollLocker?.unLock();
-          }
-        }}
-        removeOnLeave={false}
-        leavedClassName={`${prefixCls}-content-hidden`}
-      >
-        {({ className: motionClassName, style: motionStyle }, motionRef) => {
-          return (
+      {({ className: motionClassName, style: motionStyle }, motionRef) => {
+        return (
+          <div
+            className={classNames(
+              `${prefixCls}-content-wrapper`,
+              motionClassName,
+            )}
+            style={{
+              ...wrapperStyle,
+              ...motionStyle,
+              ...contentWrapperStyle,
+              ...zIndexStyle,
+            }}
+          >
             <DrawerPanel
               containerRef={motionRef}
               prefixCls={prefixCls}
-              className={classNames(className, motionClassName)}
-              style={{
-                ...motionStyle,
-                ...style,
-              }}
+              className={className}
+              style={style}
             >
               {children}
             </DrawerPanel>
-          );
-        }}
-      </CSSMotion>
-    </div>
+          </div>
+        );
+      }}
+    </CSSMotion>
   );
 
   // =========================== Render ===========================
