@@ -309,4 +309,14 @@ describe('rc-drawer-menu', () => {
       zIndex: 93,
     });
   });
+
+  it('width on the correct element', () => {
+    const { container } = render(
+      <Drawer width="93%" open getContainer={false} />,
+    );
+
+    expect(container.querySelector('.rc-drawer-content-wrapper')).toHaveStyle({
+      width: '93%',
+    });
+  });
 });
