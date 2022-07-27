@@ -27,7 +27,8 @@ const Demo = () => {
           console.log('transitionEnd: ', c);
         }}
         placement="right"
-        width={400}
+        // width={400}
+        width="60%"
         // Motion
         {...motionProps}
       >

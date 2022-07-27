@@ -253,11 +253,18 @@ export default function DrawerPopup(props: DrawerPopupProps) {
         break;
       case 'left':
         wrapperStyle.transform = `translateX(${pushDistance}px)`;
+
         break;
       default:
         wrapperStyle.transform = `translateX(${-pushDistance}px)`;
         break;
     }
+  }
+
+  if (placement === 'left' || placement === 'right') {
+    wrapperStyle.width = width;
+  } else {
+    wrapperStyle.height = height;
   }
 
   const panelNode: React.ReactNode = (
@@ -293,9 +300,6 @@ export default function DrawerPopup(props: DrawerPopupProps) {
                 ...motionStyle,
                 ...style,
               }}
-              width={width}
-              height={height}
-              placement={placement}
             >
               {children}
             </DrawerPanel>
