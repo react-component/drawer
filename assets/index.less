@@ -27,6 +27,10 @@
     overflow: hidden;
     transition: transform @duration;
 
+    &-hidden {
+      display: none;
+    }
+
     // Placement
     .@{prefixCls}-left & {
       top: 0;
@@ -47,10 +51,6 @@
     overflow: auto;
     background: #fff;
     pointer-events: auto;
-
-    &-hidden {
-      display: none;
-    }
   }
 }
 

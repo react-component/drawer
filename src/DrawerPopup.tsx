@@ -280,7 +280,7 @@ export default function DrawerPopup(props: DrawerPopupProps) {
         }
       }}
       removeOnLeave={false}
-      leavedClassName={`${prefixCls}-content-hidden`}
+      leavedClassName={`${prefixCls}-content-wrapper-hidden`}
     >
       {({ className: motionClassName, style: motionStyle }, motionRef) => {
         return (
