@@ -1,5 +1,6 @@
 import { cleanup, fireEvent, render, act } from '@testing-library/react';
 import KeyCode from 'rc-util/lib/KeyCode';
+import { resetWarned } from 'rc-util/lib/warning';
 import React from 'react';
 import type { DrawerProps } from '../src';
 import Drawer from '../src';
@@ -34,7 +35,9 @@ describe('rc-drawer-menu', () => {
     act(() => {
       jest.runAllTimers();
     });
-    expect(document.querySelector('.rc-drawer-content-hidden')).toBeTruthy();
+    expect(
+      document.querySelector('.rc-drawer-content-wrapper-hidden'),
+    ).toBeTruthy();
   });
 
   describe('push', () => {
@@ -311,6 +314,8 @@ describe('rc-drawer-menu', () => {
   });
 
   it('width on the correct element', () => {
+    resetWarned();
+    const errSpy = jest.spyOn(console, 'error');
     const { container } = render(
       <Drawer width="93%" open getContainer={false} />,
     );
@@ -318,5 +323,25 @@ describe('rc-drawer-menu', () => {
     expect(container.querySelector('.rc-drawer-content-wrapper')).toHaveStyle({
       width: '93%',
     });
+
+    expect(errSpy).not.toHaveBeenCalled();
+    errSpy.mockRestore();
+  });
+
+  it('warning for string width', () => {
+    resetWarned();
+    const errSpy = jest.spyOn(console, 'error');
+    const { container } = render(
+      <Drawer width="93" open getContainer={false} />,
+    );
+
+    expect(container.querySelector('.rc-drawer-content-wrapper')).toHaveStyle({
+      width: '93px',
+    });
+
+    expect(errSpy).toHaveBeenCalledWith(
+      'Warning: Invalid value type of `width` or `height` which should be number type instead.',
+    );
+    errSpy.mockRestore();
   });
 });

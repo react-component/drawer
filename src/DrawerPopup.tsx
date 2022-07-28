@@ -7,6 +7,7 @@ import type ScrollLocker from 'rc-util/lib/Dom/scrollLocker';
 import DrawerContext from './context';
 import type { DrawerContextProps } from './context';
 import KeyCode from 'rc-util/lib/KeyCode';
+import { parseWidthHeight } from './util';
 
 const sentinelStyle: React.CSSProperties = {
   width: 0,
@@ -262,9 +263,9 @@ export default function DrawerPopup(props: DrawerPopupProps) {
   }
 
   if (placement === 'left' || placement === 'right') {
-    wrapperStyle.width = width;
+    wrapperStyle.width = parseWidthHeight(width);
   } else {
-    wrapperStyle.height = height;
+    wrapperStyle.height = parseWidthHeight(height);
   }
 
   const panelNode: React.ReactNode = (
