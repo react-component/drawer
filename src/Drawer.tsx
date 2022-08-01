@@ -6,7 +6,8 @@ import type { DrawerPopupProps } from './DrawerPopup';
 
 export type Placement = 'left' | 'top' | 'right' | 'bottom';
 
-export interface DrawerProps extends Omit<DrawerPopupProps, 'prefixCls'> {
+export interface DrawerProps
+  extends Omit<DrawerPopupProps, 'prefixCls' | 'inline' | 'scrollLocker'> {
   prefixCls?: string;
 
   open?: boolean;
