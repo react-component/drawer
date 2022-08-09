@@ -305,10 +305,7 @@ describe('rc-drawer-menu', () => {
       <Drawer zIndex={93} open getContainer={false} />,
     );
 
-    expect(container.querySelector('.rc-drawer-mask')).toHaveStyle({
-      zIndex: 93,
-    });
-    expect(container.querySelector('.rc-drawer-content-wrapper')).toHaveStyle({
+    expect(container.querySelector('.rc-drawer')).toHaveStyle({
       zIndex: 93,
     });
   });
