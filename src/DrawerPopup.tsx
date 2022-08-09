@@ -206,12 +206,6 @@ export default function DrawerPopup(props: DrawerPopupProps) {
     [],
   );
 
-  // =========================== zIndex ===========================
-  const zIndexStyle: React.CSSProperties = {};
-  if (zIndex) {
-    zIndexStyle.zIndex = zIndex;
-  }
-
   // ============================ Mask ============================
   const maskNode: React.ReactNode = mask && (
     <CSSMotion key="mask" {...maskMotion} visible={open}>
@@ -229,7 +223,6 @@ export default function DrawerPopup(props: DrawerPopupProps) {
             style={{
               ...motionMaskStyle,
               ...maskStyle,
-              ...zIndexStyle,
             }}
             onClick={maskClosable ? onClose : undefined}
             ref={maskRef}
@@ -294,7 +287,6 @@ export default function DrawerPopup(props: DrawerPopupProps) {
               ...wrapperStyle,
               ...motionStyle,
               ...contentWrapperStyle,
-              ...zIndexStyle,
             }}
           >
             <DrawerPanel
@@ -312,6 +304,14 @@ export default function DrawerPopup(props: DrawerPopupProps) {
   );
 
   // =========================== Render ===========================
+  const containerStyle: React.CSSProperties = {
+    ...rootStyle,
+  };
+
+  if (zIndex) {
+    containerStyle.zIndex = zIndex;
+  }
+
   return (
     <DrawerContext.Provider value={mergedContext}>
       <div
@@ -324,7 +324,7 @@ export default function DrawerPopup(props: DrawerPopupProps) {
             [`${prefixCls}-inline`]: inline,
           },
         )}
-        style={rootStyle}
+        style={containerStyle}
         tabIndex={-1}
         ref={panelRef}
         onKeyDown={onPanelKeyDown}

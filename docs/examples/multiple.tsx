@@ -32,16 +32,7 @@ class Demo extends React.Component {
       openChildren: !this.state.openChildren,
     });
   };
-  public getLevelMove = (e: {
-    target: HTMLElement;
-    open: boolean;
-  }): number | [number, number] => {
-    const target = e.target as HTMLElement;
-    if (target.className.indexOf('drawer1') >= 0) {
-      return [200, 100];
-    }
-    return 100;
-  };
+
   public render() {
     return (
       <div>
@@ -59,35 +50,31 @@ class Demo extends React.Component {
         </div>
         <Drawer
           width="20vw"
-          handler={false}
           open={this.state.open}
           onClose={this.onClick}
           className="drawer1"
           placement="right"
           push={{ distance: 64 }}
+          // zIndex={99999}
           {...motionProps}
         >
           <div>
             <Button onClick={this.onChildClick}>打开子级</Button>
             <Drawer
-              handler={false}
               open={this.state.openChild}
               onClose={this.onChildClick}
               className="drawer2"
-              level=".drawer1"
               placement="right"
+              // zIndex={88888}
               {...motionProps}
             >
               <div style={{ width: 200 }}>
                 二级抽屉
-                <Button onClick={this.onChildrenClick}>打开子级</Button>
+                <Button onClick={this.onChildrenClick}>打开子子级</Button>
                 <Drawer
-                  handler={false}
                   open={this.state.openChildren}
                   onClose={this.onChildrenClick}
-                  level={['.drawer1', '.drawer2']}
                   placement="right"
-                  levelMove={this.getLevelMove}
                   {...motionProps}
                 >
                   <div style={{ width: 200 }}>三级抽屉</div>
