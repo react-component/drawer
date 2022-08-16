@@ -213,6 +213,10 @@ export default function DrawerPopup(props: DrawerPopupProps) {
         { className: motionMaskClassName, style: motionMaskStyle },
         maskRef,
       ) => {
+        // opacity 是 CSSMotion组件的关键属性 不应该由coder设置,这里把opacity筛掉 
+        if(maskStyle&&maskStyle.opacity){
+          Reflect.deleteProperty(maskStyle ,"opacity")
+        }
         return (
           <div
             className={classNames(
