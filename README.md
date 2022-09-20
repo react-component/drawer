@@ -50,7 +50,6 @@ ReactDom.render(
 | height      |  string \| number  |  null  | drawer content wrapper height, drawer level transition height  |
 | open        | boolean  | false |  open or close menu  |
 | defaultOpen | boolean  | false | default open menu |
-| handler   | boolean \| ReactElement | true | true or false or ReactElement, default:  `<divclassName="drawer-handle"><i className="drawer-handle-icon" /></div>`;  |
 | placement  | string   |  `left` | `left` `top` `right` `bottom` |
 | level     | string \| array | `all` | With the drawer level element. `all`/ null / className / id / tagName / array |
 | levelMove | number \| array \| func | null |level move value. default is drawer width |
@@ -63,7 +62,6 @@ ReactDom.render(
 | onChange  | func | null | change callback(open) |
 | afterVisibleChange  | func | null | transition end callback(open) |
 | onClose | func | null | close click function |
-| onHandleClick | func | nul  | handle icon click function |
 | keyboard | Boolean | true |  Whether support press esc to close |
 | contentWrapperStyle | CSSProperties | null |  content wrapper style |
 | autoFocus | Boolean | true |  Whether focusing on the drawer after it opened |
