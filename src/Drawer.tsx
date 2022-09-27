@@ -15,9 +15,6 @@ export interface DrawerProps
   onClose?: (e: React.MouseEvent | React.KeyboardEvent) => void;
   destroyOnClose?: boolean;
   getContainer?: PortalProps['getContainer'];
-
-  /** TODO: Remove this */
-  debug?: string;
 }
 
 const Drawer: React.FC<DrawerProps> = props => {
@@ -28,7 +25,6 @@ const Drawer: React.FC<DrawerProps> = props => {
     prefixCls,
     afterOpenChange,
     destroyOnClose,
-    debug,
   } = props;
 
   const [animatedVisible, setAnimatedVisible] = React.useState(false);
@@ -58,11 +54,10 @@ const Drawer: React.FC<DrawerProps> = props => {
 
   return (
     <Portal
-      open={open || forceRender}
+      open={open || forceRender || animatedVisible}
       autoDestroy={false}
       getContainer={getContainer}
       autoLock={open || animatedVisible}
-      debug={debug}
     >
       <DrawerPopup {...sharedDrawerProps} inline={getContainer === false} />
     </Portal>
