@@ -48,7 +48,6 @@ const Drawer: React.FC<DrawerProps> = props => {
     return null;
   }
 
-
   const sharedDrawerProps = {
     ...props,
     prefixCls,
@@ -61,7 +60,7 @@ const Drawer: React.FC<DrawerProps> = props => {
 
   return (
     <Portal
-      open={open}
+      open={open || forceRender}
       autoDestroy={false}
       // forceRender={forceRender}
       getContainer={getContainer}
