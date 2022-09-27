@@ -1,8 +1,9 @@
 import * as React from 'react';
-import type { GetContainer } from 'rc-util/lib/PortalWrapper';
-import Portal from 'rc-util/lib/PortalWrapper';
+import Portal from '@rc-component/portal';
+import type { PortalProps } from '@rc-component/portal';
 import DrawerPopup from './DrawerPopup';
 import type { DrawerPopupProps } from './DrawerPopup';
+import { warnCheck } from './util';
 
 export type Placement = 'left' | 'top' | 'right' | 'bottom';
 
@@ -12,10 +13,8 @@ export interface DrawerProps
 
   open?: boolean;
   onClose?: (e: React.MouseEvent | React.KeyboardEvent) => void;
-  /** @deprecated Only work on Portal mode. You can replace with rootClassName instead */
-  wrapperClassName?: string;
   destroyOnClose?: boolean;
-  getContainer?: GetContainer | false;
+  getContainer?: PortalProps['getContainer'];
 }
 
 const defaultGetContainer = () => document.body;
@@ -25,13 +24,17 @@ const Drawer: React.FC<DrawerProps> = props => {
     open,
     getContainer,
     forceRender,
-    wrapperClassName,
     prefixCls,
     afterOpenChange,
     destroyOnClose,
   } = props;
 
   const [animatedVisible, setAnimatedVisible] = React.useState(false);
+
+  // ============================= Warn =============================
+  if (process.env.NODE_ENV !== 'production') {
+    warnCheck(props);
+  }
 
   // ============================= Open =============================
   const internalAfterOpenChange: DrawerProps['afterOpenChange'] =
@@ -51,20 +54,22 @@ const Drawer: React.FC<DrawerProps> = props => {
     afterOpenChange: internalAfterOpenChange,
   };
 
-  if (getContainer === false) {
-    return <DrawerPopup {...sharedDrawerProps} inline />;
-  }
+  // if (getContainer === false) {
+  //   return <DrawerPopup {...sharedDrawerProps} inline />;
+  // }
 
   return (
     <Portal
-      visible={open}
-      forceRender={forceRender}
+      // open={open}
+      open
+      // forceRender={forceRender}
       getContainer={getContainer}
-      wrapperClassName={wrapperClassName}
+      // wrapperClassName={wrapperClassName}
+      autoLock={open || animatedVisible}
     >
-      {({ scrollLocker }) => (
-        <DrawerPopup {...sharedDrawerProps} scrollLocker={scrollLocker} />
-      )}
+      {/* {({ scrollLocker }) => ( */}
+      <DrawerPopup {...sharedDrawerProps} inline={getContainer === false} />
+      {/* )} */}
     </Portal>
   );
 };

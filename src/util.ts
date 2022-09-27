@@ -1,4 +1,5 @@
 import warning from 'rc-util/lib/warning';
+import type { DrawerProps } from './Drawer';
 
 export function parseWidthHeight(value?: number | string) {
   if (typeof value === 'string' && String(Number(value)) === value) {
@@ -10,4 +11,11 @@ export function parseWidthHeight(value?: number | string) {
   }
 
   return value;
+}
+
+export function warnCheck(props: DrawerProps) {
+  warning(
+    !('wrapperClassName' in props),
+    `'wrapperClassName' is removed. Please use 'rootClassName' instead.`,
+  );
 }
