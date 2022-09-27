@@ -15,9 +15,10 @@ export interface DrawerProps
   onClose?: (e: React.MouseEvent | React.KeyboardEvent) => void;
   destroyOnClose?: boolean;
   getContainer?: PortalProps['getContainer'];
-}
 
-const defaultGetContainer = () => document.body;
+  /** TODO: Remove this */
+  debug?: string;
+}
 
 const Drawer: React.FC<DrawerProps> = props => {
   const {
@@ -27,6 +28,7 @@ const Drawer: React.FC<DrawerProps> = props => {
     prefixCls,
     afterOpenChange,
     destroyOnClose,
+    debug,
   } = props;
 
   const [animatedVisible, setAnimatedVisible] = React.useState(false);
@@ -54,22 +56,15 @@ const Drawer: React.FC<DrawerProps> = props => {
     afterOpenChange: internalAfterOpenChange,
   };
 
-  // if (getContainer === false) {
-  //   return <DrawerPopup {...sharedDrawerProps} inline />;
-  // }
-
   return (
     <Portal
       open={open || forceRender}
       autoDestroy={false}
-      // forceRender={forceRender}
       getContainer={getContainer}
-      // wrapperClassName={wrapperClassName}
       autoLock={open || animatedVisible}
+      debug={debug}
     >
-      {/* {({ scrollLocker }) => ( */}
       <DrawerPopup {...sharedDrawerProps} inline={getContainer === false} />
-      {/* )} */}
     </Portal>
   );
 };
@@ -79,7 +74,6 @@ const Drawer: React.FC<DrawerProps> = props => {
 // Let's maintain this in one place.
 Drawer.defaultProps = {
   open: false,
-  getContainer: defaultGetContainer,
   prefixCls: 'rc-drawer',
   placement: 'right',
   autoFocus: true,
