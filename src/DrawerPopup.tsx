@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import CSSMotion from 'rc-motion';
 import type { CSSMotionProps } from 'rc-motion';
 import DrawerPanel from './DrawerPanel';
-import type ScrollLocker from 'rc-util/lib/Dom/scrollLocker';
+// import type ScrollLocker from 'rc-util/lib/Dom/scrollLocker';
 import DrawerContext from './context';
 import type { DrawerContextProps } from './context';
 import KeyCode from 'rc-util/lib/KeyCode';
@@ -32,9 +32,6 @@ export interface DrawerPopupProps {
   autoFocus?: boolean;
   keyboard?: boolean;
 
-  // MISC
-  scrollLocker?: ScrollLocker;
-
   // Root
   rootClassName?: string;
   rootStyle?: React.CSSProperties;
@@ -52,7 +49,7 @@ export interface DrawerPopupProps {
   // Mask
   mask?: boolean;
   maskClosable?: boolean;
-  maskClassName?: React.CSSProperties;
+  maskClassName?: string;
   maskStyle?: React.CSSProperties;
 
   // Motion
@@ -76,9 +73,6 @@ export default function DrawerPopup(props: DrawerPopupProps) {
     forceRender,
     autoFocus,
     keyboard,
-
-    // MISC
-    scrollLocker,
 
     // Root
     rootClassName,
@@ -190,17 +184,9 @@ export default function DrawerPopup(props: DrawerPopupProps) {
     }
   }, [open]);
 
-  // Lock window scroll
-  React.useEffect(() => {
-    if (open && mask) {
-      scrollLocker?.lock();
-    }
-  }, [open, mask]);
-
   // Clean up
   React.useEffect(
     () => () => {
-      scrollLocker?.unLock();
       parentContext?.pull?.();
     },
     [],
@@ -269,9 +255,6 @@ export default function DrawerPopup(props: DrawerPopupProps) {
       forceRender={forceRender}
       onVisibleChanged={nextVisible => {
         afterOpenChange?.(nextVisible);
-        if (!nextVisible) {
-          scrollLocker?.unLock();
-        }
       }}
       removeOnLeave={false}
       leavedClassName={`${prefixCls}-content-wrapper-hidden`}

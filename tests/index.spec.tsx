@@ -85,13 +85,13 @@ describe('rc-drawer-menu', () => {
         });
 
         expect(document.body).toHaveStyle({
-          overflow: 'hidden',
+          overflowY: 'hidden',
         });
 
         unmount();
 
         expect(document.body).not.toHaveStyle({
-          overflow: 'hidden',
+          overflowY: 'hidden',
         });
       });
     });

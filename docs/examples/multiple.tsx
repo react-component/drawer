@@ -13,9 +13,9 @@ import motionProps from './motion';
 
 class Demo extends React.Component {
   public state = {
-    open: false,
-    openChild: false,
-    openChildren: false,
+    open: true,
+    openChild: true,
+    openChildren: true,
   };
   public onClick = () => {
     this.setState({
