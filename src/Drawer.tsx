@@ -25,6 +25,7 @@ const Drawer: React.FC<DrawerProps> = props => {
     prefixCls,
     afterOpenChange,
     destroyOnClose,
+    mask,
   } = props;
 
   const [animatedVisible, setAnimatedVisible] = React.useState(false);
@@ -57,7 +58,7 @@ const Drawer: React.FC<DrawerProps> = props => {
       open={open || forceRender || animatedVisible}
       autoDestroy={false}
       getContainer={getContainer}
-      autoLock={open || animatedVisible}
+      autoLock={mask && (open || animatedVisible)}
     >
       <DrawerPopup {...sharedDrawerProps} inline={getContainer === false} />
     </Portal>
