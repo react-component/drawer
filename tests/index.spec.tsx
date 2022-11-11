@@ -131,7 +131,9 @@ describe('rc-drawer-menu', () => {
       const drawer = document.querySelector('.rc-drawer');
       expect(drawer).toBeTruthy();
       expect(document.body.contains(drawer)).toBeTruthy();
-      expect(document.body.style.overflow).toBe('');
+      expect(document.body).not.toHaveStyle({
+        overflowY: 'hidden',
+      });
       unmount();
     });
 
