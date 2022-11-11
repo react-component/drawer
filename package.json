@@ -62,7 +62,7 @@
     "@types/react-dom": "^17.0.6",
     "@types/warning": "^3.0.0",
     "@umijs/fabric": "^2.0.0",
-    "@umijs/test": "^3.5.23",
+    "@umijs/test": "^4.0.30",
     "antd": "^4.20.2",
     "dumi": "^1.1.40",
     "eslint": "^7.0.0",
