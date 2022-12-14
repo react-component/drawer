@@ -17,25 +17,7 @@ export interface DrawerProps
   getContainer?: PortalProps['getContainer'];
 }
 
-// Default Value.
-// Since spread with default value will make this all over components.
-// Let's maintain this in one place.
-const defaultProps = {
-  open: false,
-  prefixCls: 'rc-drawer',
-  placement: 'right' as Placement,
-  autoFocus: true,
-  keyboard: true,
-  width: 378,
-  mask: true,
-  maskClosable: true,
-};
-
-const Drawer: React.FC<DrawerProps> = drawerProps => {
-  const props = {
-    ...defaultProps,
-    ...drawerProps,
-  };
+const Drawer: React.FC<DrawerProps> = props => {
   const {
     open,
     getContainer,
@@ -81,6 +63,20 @@ const Drawer: React.FC<DrawerProps> = drawerProps => {
       <DrawerPopup {...sharedDrawerProps} inline={getContainer === false} />
     </Portal>
   );
+};
+
+// Default Value.
+// Since spread with default value will make this all over components.
+// Let's maintain this in one place.
+Drawer.defaultProps = {
+  open: false,
+  prefixCls: 'rc-drawer',
+  placement: 'right',
+  autoFocus: true,
+  keyboard: true,
+  width: 378,
+  mask: true,
+  maskClosable: true,
 };
 
 if (process.env.NODE_ENV !== 'production') {
