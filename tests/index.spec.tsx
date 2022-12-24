@@ -40,6 +40,22 @@ describe('rc-drawer-menu', () => {
     ).toBeTruthy();
   });
 
+  it('default props should work', () => {
+    const { container, unmount } = render(
+      <Drawer
+        open
+        placement={undefined}
+        width={undefined}
+        getContainer={false}
+      />,
+    );
+    expect(container.querySelector('.rc-drawer-right')).toBeTruthy();
+    expect(
+      container.querySelector('.rc-drawer-content-wrapper').style.width,
+    ).toBe('378px');
+    unmount();
+  });
+
   describe('push', () => {
     const placementList: {
       placement: DrawerProps['placement'];

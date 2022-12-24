@@ -10,40 +10,26 @@ export type Placement = 'left' | 'top' | 'right' | 'bottom';
 export interface DrawerProps
   extends Omit<DrawerPopupProps, 'prefixCls' | 'inline' | 'scrollLocker'> {
   prefixCls?: string;
-
   open?: boolean;
   onClose?: (e: React.MouseEvent | React.KeyboardEvent) => void;
   destroyOnClose?: boolean;
   getContainer?: PortalProps['getContainer'];
 }
 
-// Default Value.
-// Since spread with default value will make this all over components.
-// Let's maintain this in one place.
-const defaultProps = {
-  open: false,
-  prefixCls: 'rc-drawer',
-  placement: 'right' as Placement,
-  autoFocus: true,
-  keyboard: true,
-  width: 378,
-  mask: true,
-  maskClosable: true,
-};
-
-const Drawer: React.FC<DrawerProps> = drawerProps => {
-  const props = {
-    ...defaultProps,
-    ...drawerProps,
-  };
+const Drawer: React.FC<DrawerProps> = props => {
   const {
-    open,
+    open = false,
+    prefixCls = 'rc-drawer',
+    placement = 'right' as Placement,
+    autoFocus = true,
+    keyboard = true,
+    width = 378,
+    mask = true,
+    maskClosable = true,
     getContainer,
     forceRender,
-    prefixCls,
     afterOpenChange,
     destroyOnClose,
-    mask,
   } = props;
 
   const [animatedVisible, setAnimatedVisible] = React.useState(false);
@@ -65,9 +51,17 @@ const Drawer: React.FC<DrawerProps> = drawerProps => {
     return null;
   }
 
-  const sharedDrawerProps = {
+  const drawerPopupProps = {
     ...props,
+    open,
     prefixCls,
+    placement,
+    autoFocus,
+    keyboard,
+    width,
+    mask,
+    maskClosable,
+    inline: getContainer === false,
     afterOpenChange: internalAfterOpenChange,
   };
 
@@ -78,7 +72,7 @@ const Drawer: React.FC<DrawerProps> = drawerProps => {
       getContainer={getContainer}
       autoLock={mask && (open || animatedVisible)}
     >
-      <DrawerPopup {...sharedDrawerProps} inline={getContainer === false} />
+      <DrawerPopup {...drawerPopupProps} />
     </Portal>
   );
 };
