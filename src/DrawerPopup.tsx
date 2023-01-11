@@ -105,6 +105,19 @@ export default function DrawerPopup(props: DrawerPopupProps) {
   const sentinelStartRef = React.useRef<HTMLDivElement>();
   const sentinelEndRef = React.useRef<HTMLDivElement>();
 
+  // ========================== Control ===========================
+  // Auto Focus
+  React.useEffect(() => {
+    if (open && autoFocus) {
+      panelRef.current?.focus({ preventScroll: true });
+    }
+  }, [open, autoFocus]);
+
+  // ============================ Push ============================
+  const [pushed, setPushed] = React.useState(false);
+
+  const parentContext = React.useContext(DrawerContext);
+
   const onPanelKeyDown: React.KeyboardEventHandler<HTMLDivElement> = event => {
     const { keyCode, shiftKey } = event;
 
@@ -126,26 +139,13 @@ export default function DrawerPopup(props: DrawerPopupProps) {
 
       // Close
       case KeyCode.ESC: {
-        if (onClose && keyboard) {
+        if (!pushed && onClose && keyboard) {
           onClose(event);
         }
         break;
       }
     }
   };
-
-  // ========================== Control ===========================
-  // Auto Focus
-  React.useEffect(() => {
-    if (open && autoFocus) {
-      panelRef.current?.focus({ preventScroll: true });
-    }
-  }, [open, autoFocus]);
-
-  // ============================ Push ============================
-  const [pushed, setPushed] = React.useState(false);
-
-  const parentContext = React.useContext(DrawerContext);
 
   // Merge push distance
   let pushConfig: PushConfig;
