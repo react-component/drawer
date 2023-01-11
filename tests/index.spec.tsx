@@ -316,6 +316,22 @@ describe('rc-drawer-menu', () => {
       });
       expect(onClose).not.toHaveBeenCalled();
     });
+
+    it('ESC to exit child draw otherwise parent and child all closed', () => { // https://github.com/ant-design/ant-design/issues/40146
+      const onClose1 = jest.fn();
+      const onClose2 = jest.fn();
+      const {unmount} = render(
+        <Drawer open onClose={onClose1} >
+          <Drawer open onClose={onClose2} rootClassName='test' />
+        </Drawer>,
+      );
+      fireEvent.keyDown(document.body.querySelector('.test').querySelector('.rc-drawer-content'), {
+        keyCode: KeyCode.ESC,
+      });
+      expect(onClose2).toHaveBeenCalled();
+      expect(onClose1).not.toHaveBeenCalled();
+      unmount();
+    })
   });
 
   it('zIndex', () => {
