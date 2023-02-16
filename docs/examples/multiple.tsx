@@ -27,9 +27,9 @@ class Demo extends React.Component {
       openChild: !this.state.openChild,
     });
   };
-  public onChildrenClick = () => {
+  public onChildrenClick = e => {
     this.setState({
-      openChildren: !this.state.openChildren,
+      openChildren: e.currentTarget instanceof HTMLButtonElement,
     });
   };
 
@@ -55,6 +55,7 @@ class Demo extends React.Component {
           className="drawer1"
           placement="right"
           push={{ distance: 64 }}
+          rootClassName="level-0"
           // zIndex={99999}
           {...motionProps}
         >
@@ -66,6 +67,7 @@ class Demo extends React.Component {
               className="drawer2"
               placement="right"
               // zIndex={88888}
+              rootClassName="level-1"
               {...motionProps}
             >
               <div style={{ width: 200 }}>
@@ -75,6 +77,7 @@ class Demo extends React.Component {
                   open={this.state.openChildren}
                   onClose={this.onChildrenClick}
                   placement="right"
+                  rootClassName="level-2"
                   {...motionProps}
                 >
                   <div style={{ width: 200 }}>三级抽屉</div>

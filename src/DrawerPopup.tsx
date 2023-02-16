@@ -3,7 +3,6 @@ import classNames from 'classnames';
 import CSSMotion from 'rc-motion';
 import type { CSSMotionProps } from 'rc-motion';
 import DrawerPanel from './DrawerPanel';
-// import type ScrollLocker from 'rc-util/lib/Dom/scrollLocker';
 import DrawerContext from './context';
 import type { DrawerContextProps } from './context';
 import KeyCode from 'rc-util/lib/KeyCode';
@@ -63,7 +62,7 @@ export interface DrawerPopupProps {
   ) => void;
 }
 
-export default function DrawerPopup(props: DrawerPopupProps) {
+function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
   const {
     prefixCls,
     open,
@@ -105,6 +104,8 @@ export default function DrawerPopup(props: DrawerPopupProps) {
   const sentinelStartRef = React.useRef<HTMLDivElement>();
   const sentinelEndRef = React.useRef<HTMLDivElement>();
 
+  React.useImperativeHandle(ref, () => panelRef.current);
+
   const onPanelKeyDown: React.KeyboardEventHandler<HTMLDivElement> = event => {
     const { keyCode, shiftKey } = event;
 
@@ -127,6 +128,7 @@ export default function DrawerPopup(props: DrawerPopupProps) {
       // Close
       case KeyCode.ESC: {
         if (onClose && keyboard) {
+          event.stopPropagation();
           onClose(event);
         }
         break;
@@ -140,7 +142,7 @@ export default function DrawerPopup(props: DrawerPopupProps) {
     if (open && autoFocus) {
       panelRef.current?.focus({ preventScroll: true });
     }
-  }, [open, autoFocus]);
+  }, [open]);
 
   // ============================ Push ============================
   const [pushed, setPushed] = React.useState(false);
@@ -332,3 +334,11 @@ export default function DrawerPopup(props: DrawerPopupProps) {
     </DrawerContext.Provider>
   );
 }
+
+const RefDrawerPopup = React.forwardRef(DrawerPopup);
+
+if (process.env.NODE_ENV !== 'production') {
+  RefDrawerPopup.displayName = 'DrawerPopup';
+}
+
+export default RefDrawerPopup;
