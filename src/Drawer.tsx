@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Portal from '@rc-component/portal';
 import type { PortalProps } from '@rc-component/portal';
+import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
 import DrawerPopup from './DrawerPopup';
 import type { DrawerPopupProps } from './DrawerPopup';
 import { warnCheck } from './util';
@@ -39,11 +40,29 @@ const Drawer: React.FC<DrawerProps> = props => {
     warnCheck(props);
   }
 
+  // ============================ Focus =============================
+  const panelRef = React.useRef<HTMLDivElement>();
+
+  const lastActiveRef = React.useRef<HTMLElement>();
+  useLayoutEffect(() => {
+    if (open) {
+      lastActiveRef.current = document.activeElement as HTMLElement;
+    }
+  }, [open]);
+
   // ============================= Open =============================
   const internalAfterOpenChange: DrawerProps['afterOpenChange'] =
     nextVisible => {
       setAnimatedVisible(nextVisible);
       afterOpenChange?.(nextVisible);
+
+      if (
+        !nextVisible &&
+        lastActiveRef.current &&
+        !panelRef.current?.contains(lastActiveRef.current)
+      ) {
+        lastActiveRef.current?.focus();
+      }
     };
 
   // ============================ Render ============================
@@ -63,6 +82,7 @@ const Drawer: React.FC<DrawerProps> = props => {
     maskClosable,
     inline: getContainer === false,
     afterOpenChange: internalAfterOpenChange,
+    ref: panelRef,
   };
 
   return (
