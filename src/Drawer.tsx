@@ -40,15 +40,22 @@ const Drawer: React.FC<DrawerProps> = props => {
     warnCheck(props);
   }
 
+  // ============================= Open =============================
+  const [internalOpen, setInternalOpen] = React.useState(false);
+
+  useLayoutEffect(() => {
+    setInternalOpen(open);
+  }, [open]);
+
   // ============================ Focus =============================
   const panelRef = React.useRef<HTMLDivElement>();
 
   const lastActiveRef = React.useRef<HTMLElement>();
   useLayoutEffect(() => {
-    if (open) {
+    if (internalOpen) {
       lastActiveRef.current = document.activeElement as HTMLElement;
     }
-  }, [open]);
+  }, [internalOpen]);
 
   // ============================= Open =============================
   const internalAfterOpenChange: DrawerProps['afterOpenChange'] =
@@ -66,13 +73,13 @@ const Drawer: React.FC<DrawerProps> = props => {
     };
 
   // ============================ Render ============================
-  if (!forceRender && !animatedVisible && !open && destroyOnClose) {
+  if (!forceRender && !animatedVisible && !internalOpen && destroyOnClose) {
     return null;
   }
 
   const drawerPopupProps = {
     ...props,
-    open,
+    open: internalOpen,
     prefixCls,
     placement,
     autoFocus,
@@ -87,10 +94,10 @@ const Drawer: React.FC<DrawerProps> = props => {
 
   return (
     <Portal
-      open={open || forceRender || animatedVisible}
+      open={internalOpen || forceRender || animatedVisible}
       autoDestroy={false}
       getContainer={getContainer}
-      autoLock={mask && (open || animatedVisible)}
+      autoLock={mask && (internalOpen || animatedVisible)}
     >
       <DrawerPopup {...drawerPopupProps} />
     </Portal>
