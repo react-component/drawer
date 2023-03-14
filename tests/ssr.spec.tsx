@@ -1,5 +1,6 @@
+import { render } from '@testing-library/react';
 import { renderToString } from 'react-dom/server';
-import { hydrateRoot } from 'react-dom';
+import { hydrateRoot } from 'react-dom/client';
 import React from 'react';
 import Drawer from '../src';
 // import canUseDom from 'rc-util/lib/Dom/canUseDom'
@@ -31,11 +32,14 @@ describe('SSR', () => {
     global.canUseDom = false;
     const html = renderToString(<Demo />);
 
-    console.log(html);
+    expect(html).toBeFalsy();
 
     global.canUseDom = true;
 
     const container = document.createElement('div');
-    hydrateRoot(container, <Demo />);
+    container.innerHTML = html;
+    document.body.appendChild(container);
+
+    render(<Demo />, { container, hydrate: true });
   });
 });
