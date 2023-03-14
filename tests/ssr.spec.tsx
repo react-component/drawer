@@ -1,6 +1,5 @@
 import { render } from '@testing-library/react';
 import { renderToString } from 'react-dom/server';
-import { hydrateRoot } from 'react-dom/client';
 import React from 'react';
 import Drawer from '../src';
 // import canUseDom from 'rc-util/lib/Dom/canUseDom'
