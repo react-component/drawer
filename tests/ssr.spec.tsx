@@ -23,6 +23,8 @@ describe('SSR', () => {
   });
 
   it('hydrate should not crash', () => {
+    const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
     const Demo = () => (
       <Drawer open>
         <div className="bamboo" />
@@ -41,5 +43,9 @@ describe('SSR', () => {
     document.body.appendChild(container);
 
     render(<Demo />, { container, hydrate: true });
+
+    expect(errSpy).not.toHaveBeenCalled();
+
+    errSpy.mockRestore();
   });
 });
