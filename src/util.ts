@@ -1,4 +1,5 @@
 import warning from 'rc-util/lib/warning';
+import canUseDom from 'rc-util/lib/Dom/canUseDom';
 import type { DrawerProps } from './Drawer';
 
 export function parseWidthHeight(value?: number | string) {
@@ -17,5 +18,10 @@ export function warnCheck(props: DrawerProps) {
   warning(
     !('wrapperClassName' in props),
     `'wrapperClassName' is removed. Please use 'rootClassName' instead.`,
+  );
+
+  warning(
+    canUseDom() || !props.open,
+    `Drawer with 'open' in SSR is not work since no place to createPortal. Please move to 'useEffect' instead.`,
   );
 }
