@@ -41,21 +41,23 @@ const Drawer: React.FC<DrawerProps> = props => {
   }
 
   // ============================= Open =============================
-  const [internalOpen, setInternalOpen] = React.useState(false);
+  const [mounted, setMounted] = React.useState(false);
 
   useLayoutEffect(() => {
-    setInternalOpen(open);
-  }, [open]);
+    setMounted(true);
+  }, []);
+
+  const mergedOpen = mounted ? open : false;
 
   // ============================ Focus =============================
   const panelRef = React.useRef<HTMLDivElement>();
 
   const lastActiveRef = React.useRef<HTMLElement>();
   useLayoutEffect(() => {
-    if (internalOpen) {
+    if (mergedOpen) {
       lastActiveRef.current = document.activeElement as HTMLElement;
     }
-  }, [internalOpen]);
+  }, [mergedOpen]);
 
   // ============================= Open =============================
   const internalAfterOpenChange: DrawerProps['afterOpenChange'] =
@@ -73,13 +75,13 @@ const Drawer: React.FC<DrawerProps> = props => {
     };
 
   // ============================ Render ============================
-  if (!forceRender && !animatedVisible && !internalOpen && destroyOnClose) {
+  if (!forceRender && !animatedVisible && !mergedOpen && destroyOnClose) {
     return null;
   }
 
   const drawerPopupProps = {
     ...props,
-    open: internalOpen,
+    open: mergedOpen,
     prefixCls,
     placement,
     autoFocus,
@@ -94,10 +96,10 @@ const Drawer: React.FC<DrawerProps> = props => {
 
   return (
     <Portal
-      open={internalOpen || forceRender || animatedVisible}
+      open={mergedOpen || forceRender || animatedVisible}
       autoDestroy={false}
       getContainer={getContainer}
-      autoLock={mask && (internalOpen || animatedVisible)}
+      autoLock={mask && (mergedOpen || animatedVisible)}
     >
       <DrawerPopup {...drawerPopupProps} />
     </Portal>
