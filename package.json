@@ -28,7 +28,7 @@
     "assets/*.css",
     "es"
   ],
-  "licenses": "MIT",
+  "license": "MIT",
   "main": "./lib/index",
   "module": "./es/index",
   "scripts": {
