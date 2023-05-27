@@ -70,7 +70,7 @@ const Drawer: React.FC<DrawerProps> = props => {
         lastActiveRef.current &&
         !panelRef.current?.contains(lastActiveRef.current)
       ) {
-        lastActiveRef.current?.focus();
+        lastActiveRef.current?.focus({ preventScroll: true });
       }
     };
 
