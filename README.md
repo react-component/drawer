@@ -61,15 +61,15 @@ ReactDom.render(
 | maskStyle | CSSProperties | null | mask style |
 | afterVisibleChange  | func | null | transition end callback(open) |
 | onClose | func | null | close click function |
-| keyboard | Boolean | true |  Whether support press esc to close |
+| keyboard | boolean | true |  Whether support press esc to close |
 | contentWrapperStyle | CSSProperties | null |  content wrapper style |
-| autoFocus | Boolean | true |  Whether focusing on the drawer after it opened |
-| onMouseEnter | (e: Event) => void | - | Trigger when mouse enter drawer panel |
-| onMouseOver | (e: Event) => void | - | Trigger when mouse over drawer panel |
-| onMouseLeave | (e: Event) => void | - | Trigger when mouse leave drawer panel |
-| onClick | (e: Event) => void | - | Trigger when mouse click drawer panel |
-| onKeyDown | (e: Event) => void | - | Trigger when mouse keydown on drawer panel |
-| onKeyUp | (e: Event) => void | - | Trigger when mouse keyup on drawer panel |
+| autoFocus | boolean | true |  Whether focusing on the drawer after it opened |
+| onMouseEnter | React.MouseEventHandler\<HTMLDivElement\> | - | Trigger when mouse enter drawer panel |
+| onMouseOver | React.MouseEventHandler\<HTMLDivElement\> | - | Trigger when mouse over drawer panel |
+| onMouseLeave | React.MouseEventHandler\<HTMLDivElement\> | - | Trigger when mouse leave drawer panel |
+| onClick | React.MouseEventHandler\<HTMLDivElement\> | - | Trigger when mouse click drawer panel |
+| onKeyDown | React.MouseEventHandler\<HTMLDivElement\> | - | Trigger when mouse keydown on drawer panel |
+| onKeyUp | React.MouseEventHandler\<HTMLDivElement\> | - | Trigger when mouse keyup on drawer panel |
 
 > 2.0 Rename `onMaskClick` -> `onClose`, add `maskClosable`.
 

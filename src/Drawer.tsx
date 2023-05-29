@@ -32,7 +32,12 @@ const Drawer: React.FC<DrawerProps> = props => {
     forceRender,
     afterOpenChange,
     destroyOnClose,
-    ...restProps
+    onMouseEnter,
+    onMouseOver,
+    onMouseLeave,
+    onClick,
+    onKeyDown,
+    onKeyUp,
   } = props;
 
   const [animatedVisible, setAnimatedVisible] = React.useState(false);
@@ -81,6 +86,14 @@ const Drawer: React.FC<DrawerProps> = props => {
     return null;
   }
 
+  const eventHandlers = {
+    onMouseEnter,
+    onMouseOver,
+    onMouseLeave,
+    onClick,
+    onKeyDown,
+    onKeyUp,
+  };
   const drawerPopupProps = {
     ...props,
     open: mergedOpen,
@@ -94,7 +107,7 @@ const Drawer: React.FC<DrawerProps> = props => {
     inline: getContainer === false,
     afterOpenChange: internalAfterOpenChange,
     ref: panelRef,
-    ...restProps,
+    ...eventHandlers,
   };
 
   return (

@@ -1,5 +1,5 @@
-import * as React from 'react';
 import classNames from 'classnames';
+import * as React from 'react';
 
 export interface DrawerPanelRef {
   focus: VoidFunction;
@@ -23,8 +23,28 @@ export interface DrawerPanelProps extends DrawerPanelEvents {
 }
 
 const DrawerPanel = (props: DrawerPanelProps) => {
-  const { prefixCls, className, style, children, containerRef, ...restProps } = props;
+  const {
+    prefixCls,
+    className,
+    style,
+    children,
+    containerRef,
+    onMouseEnter,
+    onMouseOver,
+    onMouseLeave,
+    onClick,
+    onKeyDown,
+    onKeyUp,
+  } = props;
 
+  const eventHandlers = {
+    onMouseEnter,
+    onMouseOver,
+    onMouseLeave,
+    onClick,
+    onKeyDown,
+    onKeyUp,
+  };
 
   // =============================== Render ===============================
 
@@ -38,7 +58,7 @@ const DrawerPanel = (props: DrawerPanelProps) => {
         aria-modal="true"
         role="dialog"
         ref={containerRef}
-        {...restProps}
+        {...eventHandlers}
       >
         {children}
       </div>
