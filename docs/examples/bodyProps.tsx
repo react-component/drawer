@@ -25,13 +25,11 @@ const Demo = () => {
         width="60%"
         // Motion
         {...motionProps}
-        bodyProps={{
-          onMouseOver: () => {
-            console.log('鼠标移入');
-          },
-          onMouseLeave: () => {
-            console.log('鼠标移出');
-          },
+        onMouseEnter={() => {
+          console.log('mouseEnter');
+        }}
+        onMouseLeave={() => {
+          console.log('mouseLeave');
         }}
       >
         content

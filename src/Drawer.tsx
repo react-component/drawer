@@ -5,17 +5,17 @@ import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
 import DrawerPopup from './DrawerPopup';
 import type { DrawerPopupProps } from './DrawerPopup';
 import { warnCheck } from './util';
+import type { DrawerPanelEvents } from './DrawerPanel';
 
 export type Placement = 'left' | 'top' | 'right' | 'bottom';
 
 export interface DrawerProps
-  extends Omit<DrawerPopupProps, 'prefixCls' | 'inline' | 'scrollLocker'> {
+  extends Omit<DrawerPopupProps, 'prefixCls' | 'inline' | 'scrollLocker'>, DrawerPanelEvents {
   prefixCls?: string;
   open?: boolean;
   onClose?: (e: React.MouseEvent | React.KeyboardEvent) => void;
   destroyOnClose?: boolean;
   getContainer?: PortalProps['getContainer'];
-  bodyProps?: React.HTMLAttributes<HTMLDivElement>;
 }
 
 const Drawer: React.FC<DrawerProps> = props => {
@@ -32,7 +32,7 @@ const Drawer: React.FC<DrawerProps> = props => {
     forceRender,
     afterOpenChange,
     destroyOnClose,
-    bodyProps = {},
+    ...restProps
   } = props;
 
   const [animatedVisible, setAnimatedVisible] = React.useState(false);
@@ -94,7 +94,7 @@ const Drawer: React.FC<DrawerProps> = props => {
     inline: getContainer === false,
     afterOpenChange: internalAfterOpenChange,
     ref: panelRef,
-    bodyProps,
+    ...restProps,
   };
 
   return (

@@ -369,20 +369,18 @@ describe('rc-drawer-menu', () => {
   });
   
   it('support bodyProps', () => {
-    const over = jest.fn();
+    const enter = jest.fn();
     const leave = jest.fn();
     const { baseElement } = render(
       <Drawer
         width="93"
         open
-        bodyProps={{
-          onMouseOver: over,
-          onMouseLeave: leave,
-        }}
+        onMouseEnter={enter}
+        onMouseLeave={leave}
       />,
     );
     fireEvent.mouseOver(baseElement.querySelector('.rc-drawer-content'));
-    expect(over).toHaveBeenCalled();
+    expect(enter).toHaveBeenCalled();
     fireEvent.mouseLeave(baseElement.querySelector('.rc-drawer-content'));
     expect(leave).toHaveBeenCalled();
   });

@@ -64,6 +64,12 @@ ReactDom.render(
 | keyboard | Boolean | true |  Whether support press esc to close |
 | contentWrapperStyle | CSSProperties | null |  content wrapper style |
 | autoFocus | Boolean | true |  Whether focusing on the drawer after it opened |
+| onMouseEnter | (e: Event) => void | - | Trigger when mouse enter drawer panel |
+| onMouseOver | (e: Event) => void | - | Trigger when mouse over drawer panel |
+| onMouseLeave | (e: Event) => void | - | Trigger when mouse leave drawer panel |
+| onClick | (e: Event) => void | - | Trigger when mouse click drawer panel |
+| onKeyDown | (e: Event) => void | - | Trigger when mouse keydown on drawer panel |
+| onKeyUp | (e: Event) => void | - | Trigger when mouse keyup on drawer panel |
 
 > 2.0 Rename `onMaskClick` -> `onClose`, add `maskClosable`.
 

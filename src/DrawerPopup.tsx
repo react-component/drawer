@@ -2,7 +2,7 @@ import * as React from 'react';
 import classNames from 'classnames';
 import CSSMotion from 'rc-motion';
 import type { CSSMotionProps } from 'rc-motion';
-import DrawerPanel from './DrawerPanel';
+import DrawerPanel, { DrawerPanelEvents } from './DrawerPanel';
 import DrawerContext from './context';
 import type { DrawerContextProps } from './context';
 import KeyCode from 'rc-util/lib/KeyCode';
@@ -23,7 +23,7 @@ export interface PushConfig {
   distance?: number | string;
 }
 
-export interface DrawerPopupProps {
+export interface DrawerPopupProps extends DrawerPanelEvents {
   prefixCls: string;
   open?: boolean;
   inline?: boolean;
@@ -61,9 +61,6 @@ export interface DrawerPopupProps {
   onClose?: (
     event: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>,
   ) => void;
-
-  // Drawer body props
-  bodyProps?: React.HTMLAttributes<HTMLDivElement>;
 }
 
 function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
@@ -101,7 +98,7 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
     // Events
     afterOpenChange,
     onClose,
-    bodyProps,
+    ...restProps
   } = props;
 
   // ================================ Refs ================================
@@ -285,7 +282,7 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
               prefixCls={prefixCls}
               className={className}
               style={style}
-              bodyProps={bodyProps}
+              {...restProps}
             >
               {children}
             </DrawerPanel>

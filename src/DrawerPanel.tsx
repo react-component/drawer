@@ -5,35 +5,35 @@ export interface DrawerPanelRef {
   focus: VoidFunction;
 }
 
-export interface DrawerPanelProps {
+export interface DrawerPanelEvents {
+  onMouseEnter?: React.MouseEventHandler<HTMLDivElement>;
+  onMouseOver?: React.MouseEventHandler<HTMLDivElement>;
+  onMouseLeave?: React.MouseEventHandler<HTMLDivElement>;
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
+  onKeyDown?: React.KeyboardEventHandler<HTMLDivElement>;
+  onKeyUp?: React.KeyboardEventHandler<HTMLDivElement>;
+}
+
+export interface DrawerPanelProps extends DrawerPanelEvents {
   prefixCls: string;
   className?: string;
   style?: React.CSSProperties;
   children?: React.ReactNode;
   containerRef?: React.Ref<HTMLDivElement>;
-  bodyProps?: React.HTMLAttributes<HTMLDivElement>;
 }
 
 const DrawerPanel = (props: DrawerPanelProps) => {
-  const { prefixCls, className, style, children, containerRef, bodyProps } = props;
+  const { prefixCls, className, style, children, containerRef, ...restProps } = props;
 
-  const {
-    className: bodyClassName,
-    style: bodyStyle,
-    ...restProps
-  } = bodyProps;
-
-  const mergedClassName = classNames(`${prefixCls}-content`, className, bodyClassName);
 
   // =============================== Render ===============================
 
   return (
     <>
       <div
-        className={mergedClassName}
+        className={classNames(`${prefixCls}-content`, className)}
         style={{
           ...style,
-          ...bodyStyle,
         }}
         aria-modal="true"
         role="dialog"
