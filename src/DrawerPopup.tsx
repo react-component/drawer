@@ -60,6 +60,9 @@ export interface DrawerPopupProps {
   onClose?: (
     event: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>,
   ) => void;
+
+  // Drawer body props
+  bodyProps?: React.HTMLAttributes<HTMLDivElement>;
 }
 
 function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
@@ -97,6 +100,7 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
     // Events
     afterOpenChange,
     onClose,
+    bodyProps,
   } = props;
 
   // ================================ Refs ================================
@@ -279,6 +283,7 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
               prefixCls={prefixCls}
               className={className}
               style={style}
+              bodyProps={bodyProps}
             >
               {children}
             </DrawerPanel>

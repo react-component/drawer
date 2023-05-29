@@ -15,6 +15,7 @@ export interface DrawerProps
   onClose?: (e: React.MouseEvent | React.KeyboardEvent) => void;
   destroyOnClose?: boolean;
   getContainer?: PortalProps['getContainer'];
+  bodyProps?: React.HTMLAttributes<HTMLDivElement>;
 }
 
 const Drawer: React.FC<DrawerProps> = props => {
@@ -31,6 +32,7 @@ const Drawer: React.FC<DrawerProps> = props => {
     forceRender,
     afterOpenChange,
     destroyOnClose,
+    bodyProps = {},
   } = props;
 
   const [animatedVisible, setAnimatedVisible] = React.useState(false);
@@ -92,6 +94,7 @@ const Drawer: React.FC<DrawerProps> = props => {
     inline: getContainer === false,
     afterOpenChange: internalAfterOpenChange,
     ref: panelRef,
+    bodyProps,
   };
 
   return (

@@ -11,41 +11,35 @@ import 'antd/lib/style';
 
 import '../../assets/index.less';
 import './assets/index.less';
+import type { Placement } from '@/Drawer';
 
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
 const Option = Select.Option;
 
-class Demo extends React.Component {
-  public state = {
-    placement: 'right',
-    childShow: true,
-    width: '20vw',
-    height: null,
-  };
-  public onChange = (value: string) => {
-    this.setState(
-      {
-        placement: value,
-        width: value === 'right' || value === 'left' ? '20vw' : null,
-        height: value === 'right' || value === 'left' ? null : '20vh',
-        childShow: false, // 删除子级，删除切换时的过渡动画。。。
-      },
-      () => {
-        this.setState({
-          childShow: true,
-        });
-      },
-    );
-  };
-  public render() {
-    return (
-      <div>
-        {this.state.childShow && (
+function Demo() {
+  const [placement, setPlacement] = React.useState<Placement>('right');
+  const [childShow, setChildShow] = React.useState(true);
+  const [width, setWidth] = React.useState('20vw');
+  const [height, setHeight] = React.useState<string | null>(null);
+
+  const onChange = (value: string) => {
+    setPlacement(value as Placement);
+    setWidth(value === 'right' || value === 'left' ? '20vw' : null);
+    setHeight(value === 'right' || value === 'left' ? null : '20vh');
+    setChildShow(false); // 删除子级，删除切换时的过渡动画。。。
+    setTimeout(() => {
+      setChildShow(true);
+    });
+  }
+
+  return (
+    <div>
+        {childShow && (
           <Drawer
-            placement={this.state.placement}
-            width={this.state.width}
-            height={this.state.height}
+            placement={placement}
+            width={width}
+            height={height}
           >
             <Menu
               defaultSelectedKeys={['1']}
@@ -116,8 +110,8 @@ class Demo extends React.Component {
           选择位置：
           <Select
             style={{ width: 120, marginLeft: 20 }}
-            defaultValue={this.state.placement}
-            onChange={this.onChange}
+            defaultValue={placement}
+            onChange={onChange}
           >
             <Option value="left">左边 left</Option>
             <Option value="top">上面 top</Option>
@@ -126,8 +120,7 @@ class Demo extends React.Component {
           </Select>
         </div>
       </div>
-    );
-  }
+  );
 }
 
 export default Demo;

@@ -11,16 +11,18 @@ export interface DrawerPanelProps {
   style?: React.CSSProperties;
   children?: React.ReactNode;
   containerRef?: React.Ref<HTMLDivElement>;
+  bodyProps?: React.HTMLAttributes<HTMLDivElement>;
 }
 
 const DrawerPanel = (props: DrawerPanelProps) => {
-  const { prefixCls, className, style, children, containerRef } = props;
+  const { prefixCls, className, style, children, containerRef, bodyProps } = props;
 
   // =============================== Render ===============================
 
   return (
     <>
       <div
+        {...bodyProps}
         className={classNames(`${prefixCls}-content`, className)}
         style={{
           ...style,

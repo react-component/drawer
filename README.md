@@ -59,7 +59,6 @@ ReactDom.render(
 | showMask    |  boolean  | true | mask is show |
 | maskClosable | boolean  | true | Clicking on the mask (area outside the Drawer) to close the Drawer or not. |
 | maskStyle | CSSProperties | null | mask style |
-| onChange  | func | null | change callback(open) |
 | afterVisibleChange  | func | null | transition end callback(open) |
 | onClose | func | null | close click function |
 | keyboard | Boolean | true |  Whether support press esc to close |
