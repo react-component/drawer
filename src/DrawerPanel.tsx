@@ -17,19 +17,28 @@ export interface DrawerPanelProps {
 const DrawerPanel = (props: DrawerPanelProps) => {
   const { prefixCls, className, style, children, containerRef, bodyProps } = props;
 
+  const {
+    className: bodyClassName,
+    style: bodyStyle,
+    ...restProps
+  } = bodyProps;
+
+  const mergedClassName = classNames(`${prefixCls}-content`, className, bodyClassName);
+
   // =============================== Render ===============================
 
   return (
     <>
       <div
-        {...bodyProps}
-        className={classNames(`${prefixCls}-content`, className)}
+        className={mergedClassName}
         style={{
           ...style,
+          ...bodyStyle,
         }}
         aria-modal="true"
         role="dialog"
         ref={containerRef}
+        {...restProps}
       >
         {children}
       </div>
