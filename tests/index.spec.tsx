@@ -359,4 +359,11 @@ describe('rc-drawer-menu', () => {
     );
     errSpy.mockRestore();
   });
+
+  it('pass data props to internal div', () => {
+    const value = 'bamboo';
+    const { unmount } = render(<Drawer open data-attr={value} />);
+    expect(document.querySelector('.rc-drawer-content-wrapper')).toHaveAttribute('data-attr',value);
+    unmount();
+  });
 });

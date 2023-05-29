@@ -6,6 +6,7 @@ import DrawerPanel from './DrawerPanel';
 import DrawerContext from './context';
 import type { DrawerContextProps } from './context';
 import KeyCode from 'rc-util/lib/KeyCode';
+import pickAttrs from 'rc-util/lib/pickAttrs';
 import { parseWidthHeight } from './util';
 
 const sentinelStyle: React.CSSProperties = {
@@ -273,6 +274,7 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
               ...motionStyle,
               ...contentWrapperStyle,
             }}
+            {...pickAttrs(props, { data: true })}
           >
             <DrawerPanel
               containerRef={motionRef}
