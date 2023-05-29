@@ -359,4 +359,23 @@ describe('rc-drawer-menu', () => {
     );
     errSpy.mockRestore();
   });
+
+  it('support bodyProps', () => {
+    const over = jest.fn();
+    const leave = jest.fn();
+    const { baseElement } = render(
+      <Drawer
+        width="93"
+        open
+        bodyProps={{
+          onMouseOver: over,
+          onMouseLeave: leave,
+        }}
+      />,
+    );
+    fireEvent.mouseOver(baseElement.querySelector('.rc-drawer-content'));
+    expect(over).toHaveBeenCalled();
+    fireEvent.mouseLeave(baseElement.querySelector('.rc-drawer-content'));
+    expect(leave).toHaveBeenCalled();
+  });
 });
