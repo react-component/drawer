@@ -5,9 +5,6 @@ import motionProps from './motion';
 
 const Demo = () => {
   const [open, setOpen] = useState(false);
-  const onChange = (bool: boolean) => {
-    // console.log('change: ', bool);
-  };
   const onTouchEnd = () => {
     setOpen(false);
   };
@@ -17,12 +14,9 @@ const Demo = () => {
   return (
     <div>
       <Drawer
-        onChange={onChange}
         open={open}
         // defaultOpen
         onClose={onTouchEnd}
-        handler={false}
-        level={null}
         afterOpenChange={(c: boolean) => {
           console.log('transitionEnd: ', c);
         }}
