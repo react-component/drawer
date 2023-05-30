@@ -17,40 +17,30 @@ import motionProps from './motion';
 
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
-class Demo extends React.Component {
-  public state = {
-    open: true,
-  };
-  public componentDidMount() {
+
+function Demo() {
+  const [open, setOpen] = React.useState(true);
+
+  React.useEffect(() => {
     setTimeout(() => {
-      this.setState({
-        open: false,
-      });
+      setOpen(false);
     }, 2000);
+  }, []);
+
+  const onTouchEnd = () => {
+    setOpen(false);
+  };
+
+  const onSwitch = () => {
+    this.setState(p => !p);
   }
-  public onChange = (bool: boolean) => {
-    console.log('change: ', bool);
-  };
-  public onTouchEnd = () => {
-    this.setState({
-      open: false,
-    });
-  };
-  public onSwitch = () => {
-    this.setState({
-      open: !this.state.open,
-    });
-  };
-  public render() {
-    return (
-      <div>
+
+  return (
+    <div>
         <Drawer
-          onChange={this.onChange}
-          open={this.state.open}
-          onClose={this.onTouchEnd}
-          handler={false}
-          level={null}
-          afterVisibleChange={(c: boolean) => {
+          open={open}
+          onClose={onTouchEnd}
+          afterOpenChange={(c: boolean) => {
             console.log('transitionEnd: ', c);
           }}
           width="20vw"
@@ -124,7 +114,7 @@ class Demo extends React.Component {
         >
           内容区块
           <button
-            onClick={this.onSwitch}
+            onClick={onSwitch}
             style={{
               height: 24,
               width: 100,
@@ -137,7 +127,7 @@ class Demo extends React.Component {
           </button>
         </div>
       </div>
-    );
-  }
+  );
 }
+
 export default Demo;

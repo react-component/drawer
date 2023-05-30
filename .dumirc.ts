@@ -9,7 +9,7 @@ export default defineConfig({
   mfsu: false,
   favicons: ['https://avatars0.githubusercontent.com/u/9441414?s=200&v=4'],
   themeConfig: {
-    name: 'Image',
+    name: 'Drawer',
     logo: 'https://avatars0.githubusercontent.com/u/9441414?s=200&v=4',
   },
 });

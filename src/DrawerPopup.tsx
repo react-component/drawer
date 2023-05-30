@@ -1,12 +1,12 @@
-import * as React from 'react';
 import classNames from 'classnames';
-import CSSMotion from 'rc-motion';
 import type { CSSMotionProps } from 'rc-motion';
-import DrawerPanel from './DrawerPanel';
-import DrawerContext from './context';
-import type { DrawerContextProps } from './context';
+import CSSMotion from 'rc-motion';
 import KeyCode from 'rc-util/lib/KeyCode';
 import pickAttrs from 'rc-util/lib/pickAttrs';
+import * as React from 'react';
+import type { DrawerContextProps } from './context';
+import DrawerContext from './context';
+import DrawerPanel, { DrawerPanelEvents } from './DrawerPanel';
 import { parseWidthHeight } from './util';
 
 const sentinelStyle: React.CSSProperties = {
@@ -23,7 +23,7 @@ export interface PushConfig {
   distance?: number | string;
 }
 
-export interface DrawerPopupProps {
+export interface DrawerPopupProps extends DrawerPanelEvents {
   prefixCls: string;
   open?: boolean;
   inline?: boolean;
@@ -98,6 +98,12 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
     // Events
     afterOpenChange,
     onClose,
+    onMouseEnter,
+    onMouseOver,
+    onMouseLeave,
+    onClick,
+    onKeyDown,
+    onKeyUp,
   } = props;
 
   // ================================ Refs ================================
@@ -250,6 +256,15 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
     wrapperStyle.height = parseWidthHeight(height);
   }
 
+  const eventHandlers = {
+    onMouseEnter,
+    onMouseOver,
+    onMouseLeave,
+    onClick,
+    onKeyDown,
+    onKeyUp,
+  };
+
   const panelNode: React.ReactNode = (
     <CSSMotion
       key="panel"
@@ -281,6 +296,7 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
               prefixCls={prefixCls}
               className={className}
               style={style}
+              {...eventHandlers}
             >
               {children}
             </DrawerPanel>

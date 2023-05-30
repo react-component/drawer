@@ -359,11 +359,29 @@ describe('rc-drawer-menu', () => {
     );
     errSpy.mockRestore();
   });
-
+  
+  
   it('pass data props to internal div', () => {
     const value = 'bamboo';
     const { unmount } = render(<Drawer open data-attr={value} />);
     expect(document.querySelector('.rc-drawer-content-wrapper')).toHaveAttribute('data-attr',value);
     unmount();
+  });
+  
+  it('support bodyProps', () => {
+    const enter = jest.fn();
+    const leave = jest.fn();
+    const { baseElement } = render(
+      <Drawer
+        width="93"
+        open
+        onMouseEnter={enter}
+        onMouseLeave={leave}
+      />,
+    );
+    fireEvent.mouseOver(baseElement.querySelector('.rc-drawer-content'));
+    expect(enter).toHaveBeenCalled();
+    fireEvent.mouseLeave(baseElement.querySelector('.rc-drawer-content'));
+    expect(leave).toHaveBeenCalled();
   });
 });

@@ -1,3 +1,3 @@
 # ChangeLog
 
-<embed src="../ChangeLog.md"></embed>
+<embed src="../CHANGELOG.md"></embed>

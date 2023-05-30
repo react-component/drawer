@@ -5,11 +5,12 @@ import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
 import DrawerPopup from './DrawerPopup';
 import type { DrawerPopupProps } from './DrawerPopup';
 import { warnCheck } from './util';
+import type { DrawerPanelEvents } from './DrawerPanel';
 
 export type Placement = 'left' | 'top' | 'right' | 'bottom';
 
 export interface DrawerProps
-  extends Omit<DrawerPopupProps, 'prefixCls' | 'inline' | 'scrollLocker'> {
+  extends Omit<DrawerPopupProps, 'prefixCls' | 'inline' | 'scrollLocker'>, DrawerPanelEvents {
   prefixCls?: string;
   open?: boolean;
   onClose?: (e: React.MouseEvent | React.KeyboardEvent) => void;
@@ -31,6 +32,12 @@ const Drawer: React.FC<DrawerProps> = props => {
     forceRender,
     afterOpenChange,
     destroyOnClose,
+    onMouseEnter,
+    onMouseOver,
+    onMouseLeave,
+    onClick,
+    onKeyDown,
+    onKeyUp,
   } = props;
 
   const [animatedVisible, setAnimatedVisible] = React.useState(false);
@@ -79,6 +86,14 @@ const Drawer: React.FC<DrawerProps> = props => {
     return null;
   }
 
+  const eventHandlers = {
+    onMouseEnter,
+    onMouseOver,
+    onMouseLeave,
+    onClick,
+    onKeyDown,
+    onKeyUp,
+  };
   const drawerPopupProps = {
     ...props,
     open: mergedOpen,
@@ -92,6 +107,7 @@ const Drawer: React.FC<DrawerProps> = props => {
     inline: getContainer === false,
     afterOpenChange: internalAfterOpenChange,
     ref: panelRef,
+    ...eventHandlers,
   };
 
   return (

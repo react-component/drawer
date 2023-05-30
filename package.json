@@ -54,7 +54,7 @@
   "devDependencies": {
     "@ant-design/icons": "^4.7.0",
     "@testing-library/jest-dom": "^5.11.9",
-    "@testing-library/react": "^13.0.0",
+    "@testing-library/react": "^14.0.0",
     "@types/classnames": "^2.2.9",
     "@types/jest": "^27.0.2",
     "@types/raf": "^3.4.0",
