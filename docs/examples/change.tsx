@@ -32,7 +32,7 @@ function Demo() {
   };
 
   const onSwitch = () => {
-    this.setState(p => !p);
+    setOpen(c => !c);
   }
 
   return (
@@ -123,7 +123,7 @@ function Demo() {
               lineHeight: '24px',
             }}
           >
-            {!this.state.open ? '打开' : '关闭'}
+            {!open ? '打开' : '关闭'}
           </button>
         </div>
       </div>
