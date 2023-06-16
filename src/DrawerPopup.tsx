@@ -6,7 +6,8 @@ import pickAttrs from 'rc-util/lib/pickAttrs';
 import * as React from 'react';
 import type { DrawerContextProps } from './context';
 import DrawerContext from './context';
-import DrawerPanel, { DrawerPanelEvents } from './DrawerPanel';
+import type { DrawerPanelEvents } from './DrawerPanel';
+import DrawerPanel from './DrawerPanel';
 import { parseWidthHeight } from './util';
 
 const sentinelStyle: React.CSSProperties = {
@@ -39,6 +40,7 @@ export interface DrawerPopupProps extends DrawerPanelEvents {
 
   // Drawer
   placement?: Placement;
+  id?: string;
   className?: string;
   style?: React.CSSProperties;
   children?: React.ReactNode;
@@ -81,6 +83,7 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
 
     // Drawer
     className,
+    id,
     style,
     motion,
     width,
@@ -318,6 +321,7 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
   return (
     <DrawerContext.Provider value={mergedContext}>
       <div
+        id={id}
         className={classNames(
           prefixCls,
           `${prefixCls}-${placement}`,
