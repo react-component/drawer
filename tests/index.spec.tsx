@@ -384,4 +384,12 @@ describe('rc-drawer-menu', () => {
     fireEvent.mouseLeave(baseElement.querySelector('.rc-drawer-content'));
     expect(leave).toHaveBeenCalled();
   });
+
+  it('pass id props to Drawer', () => {
+    const { unmount } = render(<Drawer prefixCls='customer-prefixCls' id="muxin" open/>);
+    expect(
+      document.querySelector('.customer-prefixCls')
+    ).toHaveAttribute('id', 'muxin');
+    unmount();
+  });
 });
