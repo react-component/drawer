@@ -17,6 +17,7 @@ export interface DrawerPanelEvents {
 export interface DrawerPanelProps extends DrawerPanelEvents {
   prefixCls: string;
   className?: string;
+  id?: string;
   style?: React.CSSProperties;
   children?: React.ReactNode;
   containerRef?: React.Ref<HTMLDivElement>;
@@ -29,6 +30,7 @@ const DrawerPanel = (props: DrawerPanelProps) => {
     style,
     children,
     containerRef,
+    id,
     onMouseEnter,
     onMouseOver,
     onMouseLeave,
@@ -51,6 +53,7 @@ const DrawerPanel = (props: DrawerPanelProps) => {
   return (
     <>
       <div
+        id={id}
         className={classNames(`${prefixCls}-content`, className)}
         style={{
           ...style,

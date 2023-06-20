@@ -384,4 +384,15 @@ describe('rc-drawer-menu', () => {
     fireEvent.mouseLeave(baseElement.querySelector('.rc-drawer-content'));
     expect(leave).toHaveBeenCalled();
   });
+
+  it('pass id & className props to Panel', () => {
+    const { unmount } = render(<Drawer className='customer-className' id="customer-id" open/>);
+    expect(
+      document.querySelector('.rc-drawer-content')
+    ).toHaveClass('customer-className');
+    expect(
+      document.querySelector('.rc-drawer-content')
+    ).toHaveAttribute('id', 'customer-id');
+    unmount();
+  });
 });
