@@ -385,11 +385,14 @@ describe('rc-drawer-menu', () => {
     expect(leave).toHaveBeenCalled();
   });
 
-  it('pass id props to Drawer', () => {
-    const { unmount } = render(<Drawer prefixCls='customer-prefixCls' id="muxin" open/>);
+  it('pass id & className props to Panel', () => {
+    const { unmount } = render(<Drawer className='customer-className' id="customer-id" open/>);
     expect(
-      document.querySelector('.customer-prefixCls')
-    ).toHaveAttribute('id', 'muxin');
+      document.querySelector('.rc-drawer-content')
+    ).toHaveClass('customer-className');
+    expect(
+      document.querySelector('.rc-drawer-content')
+    ).toHaveAttribute('id', 'customer-id');
     unmount();
   });
 });

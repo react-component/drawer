@@ -295,6 +295,7 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
             {...pickAttrs(props, { data: true })}
           >
             <DrawerPanel
+              id={id}
               containerRef={motionRef}
               prefixCls={prefixCls}
               className={className}
@@ -321,7 +322,6 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
   return (
     <DrawerContext.Provider value={mergedContext}>
       <div
-        id={id}
         className={classNames(
           prefixCls,
           `${prefixCls}-${placement}`,
