@@ -8,4 +8,10 @@ export interface DrawerContextProps {
 
 const DrawerContext = React.createContext<DrawerContextProps>(null);
 
+export interface RefContextProps {
+  panel?: React.Ref<HTMLDivElement>;
+}
+
+export const RefContext = React.createContext<RefContextProps>({});
+
 export default DrawerContext;

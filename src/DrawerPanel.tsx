@@ -1,5 +1,7 @@
 import classNames from 'classnames';
+import { useComposeRef } from 'rc-util';
 import * as React from 'react';
+import { RefContext } from './context';
 
 export interface DrawerPanelRef {
   focus: VoidFunction;
@@ -48,6 +50,9 @@ const DrawerPanel = (props: DrawerPanelProps) => {
     onKeyUp,
   };
 
+  const { panel: panelRef } = React.useContext(RefContext);
+  const mergedRef = useComposeRef(panelRef, containerRef);
+
   // =============================== Render ===============================
 
   return (
@@ -60,7 +65,7 @@ const DrawerPanel = (props: DrawerPanelProps) => {
         }}
         aria-modal="true"
         role="dialog"
-        ref={containerRef}
+        ref={mergedRef}
         {...eventHandlers}
       >
         {children}
