@@ -1,21 +1,24 @@
-import * as React from 'react';
-import Portal from '@rc-component/portal';
 import type { PortalProps } from '@rc-component/portal';
+import Portal from '@rc-component/portal';
 import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
-import DrawerPopup from './DrawerPopup';
-import type { DrawerPopupProps } from './DrawerPopup';
-import { warnCheck } from './util';
+import * as React from 'react';
+import { RefContext } from './context';
 import type { DrawerPanelEvents } from './DrawerPanel';
+import type { DrawerPopupProps } from './DrawerPopup';
+import DrawerPopup from './DrawerPopup';
+import { warnCheck } from './util';
 
 export type Placement = 'left' | 'top' | 'right' | 'bottom';
 
 export interface DrawerProps
-  extends Omit<DrawerPopupProps, 'prefixCls' | 'inline' | 'scrollLocker'>, DrawerPanelEvents {
+  extends Omit<DrawerPopupProps, 'prefixCls' | 'inline' | 'scrollLocker'>,
+    DrawerPanelEvents {
   prefixCls?: string;
   open?: boolean;
   onClose?: (e: React.MouseEvent | React.KeyboardEvent) => void;
   destroyOnClose?: boolean;
   getContainer?: PortalProps['getContainer'];
+  panelRef?: React.Ref<HTMLDivElement>;
 }
 
 const Drawer: React.FC<DrawerProps> = props => {
@@ -38,6 +41,9 @@ const Drawer: React.FC<DrawerProps> = props => {
     onClick,
     onKeyDown,
     onKeyUp,
+
+    // Refs
+    panelRef,
   } = props;
 
   const [animatedVisible, setAnimatedVisible] = React.useState(false);
@@ -57,7 +63,7 @@ const Drawer: React.FC<DrawerProps> = props => {
   const mergedOpen = mounted ? open : false;
 
   // ============================ Focus =============================
-  const panelRef = React.useRef<HTMLDivElement>();
+  const popupRef = React.useRef<HTMLDivElement>();
 
   const lastActiveRef = React.useRef<HTMLElement>();
   useLayoutEffect(() => {
@@ -75,11 +81,19 @@ const Drawer: React.FC<DrawerProps> = props => {
       if (
         !nextVisible &&
         lastActiveRef.current &&
-        !panelRef.current?.contains(lastActiveRef.current)
+        !popupRef.current?.contains(lastActiveRef.current)
       ) {
         lastActiveRef.current?.focus({ preventScroll: true });
       }
     };
+
+  // =========================== Context ============================
+  const refContext = React.useMemo(
+    () => ({
+      panel: panelRef,
+    }),
+    [panelRef],
+  );
 
   // ============================ Render ============================
   if (!forceRender && !animatedVisible && !mergedOpen && destroyOnClose) {
@@ -106,19 +120,21 @@ const Drawer: React.FC<DrawerProps> = props => {
     maskClosable,
     inline: getContainer === false,
     afterOpenChange: internalAfterOpenChange,
-    ref: panelRef,
+    ref: popupRef,
     ...eventHandlers,
   };
 
   return (
-    <Portal
-      open={mergedOpen || forceRender || animatedVisible}
-      autoDestroy={false}
-      getContainer={getContainer}
-      autoLock={mask && (mergedOpen || animatedVisible)}
-    >
-      <DrawerPopup {...drawerPopupProps} />
-    </Portal>
+    <RefContext.Provider value={refContext}>
+      <Portal
+        open={mergedOpen || forceRender || animatedVisible}
+        autoDestroy={false}
+        getContainer={getContainer}
+        autoLock={mask && (mergedOpen || animatedVisible)}
+      >
+        <DrawerPopup {...drawerPopupProps} />
+      </Portal>
+    </RefContext.Provider>
   );
 };
 
