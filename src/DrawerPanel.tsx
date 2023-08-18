@@ -16,7 +16,14 @@ export interface DrawerPanelEvents {
   onKeyUp?: React.KeyboardEventHandler<HTMLDivElement>;
 }
 
-export interface DrawerPanelProps extends DrawerPanelEvents {
+export type DrawerPanelAccessibility = Pick<
+  React.DialogHTMLAttributes<HTMLDivElement>,
+  'aria-labelledby' | 'aria-describedby'
+>;
+
+export interface DrawerPanelProps
+  extends DrawerPanelEvents,
+    DrawerPanelAccessibility {
   prefixCls: string;
   className?: string;
   id?: string;
@@ -64,6 +71,8 @@ const DrawerPanel = (props: DrawerPanelProps) => {
           ...style,
         }}
         aria-modal="true"
+        aria-labelledby={props['aria-labelledby']}
+        aria-describedby={props['aria-describedby']}
         role="dialog"
         ref={mergedRef}
         {...eventHandlers}

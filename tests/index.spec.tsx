@@ -395,4 +395,25 @@ describe('rc-drawer-menu', () => {
     ).toHaveAttribute('id', 'customer-id');
     unmount();
   });
+
+  it('passes aria-describedby to the Panel', () => {
+    const description = 'some meaningful description';
+    const { unmount, getByRole } = render(<Drawer open aria-describedby={description} />);
+    expect(getByRole('dialog')).toHaveAttribute('aria-describedby', description);
+    unmount();
+  });
+
+  it('passes aria-labelledby to the Panel', () => {
+    const titleId = 'some-id';
+    const { unmount, getByRole } = render(
+      <Drawer open aria-labelledby={titleId}>
+        <h1 id={titleId}>Some Title</h1>
+      </Drawer>
+    );
+    expect(getByRole('dialog')).toHaveAttribute('aria-labelledby', titleId);
+    expect(getByRole('dialog', {
+      name: 'Some Title'
+    })).toBeVisible();
+    unmount();
+  });
 });

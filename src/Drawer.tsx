@@ -3,7 +3,10 @@ import Portal from '@rc-component/portal';
 import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
 import * as React from 'react';
 import { RefContext } from './context';
-import type { DrawerPanelEvents } from './DrawerPanel';
+import type {
+  DrawerPanelAccessibility,
+  DrawerPanelEvents,
+} from './DrawerPanel';
 import type { DrawerPopupProps } from './DrawerPopup';
 import DrawerPopup from './DrawerPopup';
 import { warnCheck } from './util';
@@ -12,7 +15,8 @@ export type Placement = 'left' | 'top' | 'right' | 'bottom';
 
 export interface DrawerProps
   extends Omit<DrawerPopupProps, 'prefixCls' | 'inline' | 'scrollLocker'>,
-    DrawerPanelEvents {
+    DrawerPanelEvents,
+    DrawerPanelAccessibility {
   prefixCls?: string;
   open?: boolean;
   onClose?: (e: React.MouseEvent | React.KeyboardEvent) => void;
