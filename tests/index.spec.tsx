@@ -395,4 +395,20 @@ describe('rc-drawer-menu', () => {
     ).toHaveAttribute('id', 'customer-id');
     unmount();
   });
+
+  it('should support classNames', () => {
+    const { unmount } = render(
+      <Drawer classNames={{
+        wrapper: 'customer-wrapper',
+        mask: 'customer-mask',
+      }} open/>
+    );
+    expect(
+      document.querySelector('.rc-drawer-content-wrapper')
+    ).toHaveClass('customer-wrapper');
+    expect(
+      document.querySelector('.rc-drawer-mask')
+    ).toHaveClass('customer-mask');
+    unmount();
+  });
 });
