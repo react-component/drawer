@@ -44,6 +44,7 @@ ReactDom.render(
 | props      | type           | default | description    |
 |------------|----------------|---------|----------------|
 | className       | string | null | - |
+| classNames       | { mask?: string; wrapper?: string; } | - | pass className to target area |
 | prefixCls     |  string  | 'drawer' | prefix class |
 | wrapperClassName | string | null | wrapper class name |
 | width       |  string \| number  |  null  | drawer content wrapper width, drawer level transition width  |
