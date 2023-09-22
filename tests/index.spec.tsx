@@ -61,23 +61,23 @@ describe('rc-drawer-menu', () => {
       placement: DrawerProps['placement'];
       transform: string;
     }[] = [
-      {
-        placement: 'left',
-        transform: 'translateX(903px)',
-      },
-      {
-        placement: 'right',
-        transform: 'translateX(-903px)',
-      },
-      {
-        placement: 'top',
-        transform: 'translateY(903px)',
-      },
-      {
-        placement: 'bottom',
-        transform: 'translateY(-903px)',
-      },
-    ];
+        {
+          placement: 'left',
+          transform: 'translateX(903px)',
+        },
+        {
+          placement: 'right',
+          transform: 'translateX(-903px)',
+        },
+        {
+          placement: 'top',
+          transform: 'translateY(903px)',
+        },
+        {
+          placement: 'bottom',
+          transform: 'translateY(-903px)',
+        },
+      ];
 
     placementList.forEach(({ placement, transform }) => {
       it(placement, () => {
@@ -359,15 +359,15 @@ describe('rc-drawer-menu', () => {
     );
     errSpy.mockRestore();
   });
-  
-  
+
+
   it('pass data props to internal div', () => {
     const value = 'bamboo';
     const { unmount } = render(<Drawer open data-attr={value} />);
-    expect(document.querySelector('.rc-drawer-content-wrapper')).toHaveAttribute('data-attr',value);
+    expect(document.querySelector('.rc-drawer-content-wrapper')).toHaveAttribute('data-attr', value);
     unmount();
   });
-  
+
   it('support bodyProps', () => {
     const enter = jest.fn();
     const leave = jest.fn();
@@ -386,7 +386,7 @@ describe('rc-drawer-menu', () => {
   });
 
   it('pass id & className props to Panel', () => {
-    const { unmount } = render(<Drawer className='customer-className' id="customer-id" open/>);
+    const { unmount } = render(<Drawer className='customer-className' id="customer-id" open />);
     expect(
       document.querySelector('.rc-drawer-content')
     ).toHaveClass('customer-className');
@@ -401,7 +401,7 @@ describe('rc-drawer-menu', () => {
       <Drawer classNames={{
         wrapper: 'customer-wrapper',
         mask: 'customer-mask',
-      }} open/>
+      }} open />
     );
     expect(
       document.querySelector('.rc-drawer-content-wrapper')
@@ -409,6 +409,21 @@ describe('rc-drawer-menu', () => {
     expect(
       document.querySelector('.rc-drawer-mask')
     ).toHaveClass('customer-mask');
+    unmount();
+  });
+  it('should support styles', () => {
+    const { unmount } = render(
+      <Drawer styles={{
+        wrapper: { background: 'red' },
+        mask: { background: 'blue' },
+      }} open />
+    );
+    expect(
+      document.querySelector('.rc-drawer-content-wrapper')
+    ).toHaveStyle('background: red');
+    expect(
+      document.querySelector('.rc-drawer-mask')
+    ).toHaveStyle('background: blue');
     unmount();
   });
 });

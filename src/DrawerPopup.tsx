@@ -9,7 +9,7 @@ import DrawerContext from './context';
 import type { DrawerPanelEvents } from './DrawerPanel';
 import DrawerPanel from './DrawerPanel';
 import { parseWidthHeight } from './util';
-import type { DrawerClassNames } from './inter';
+import type { DrawerClassNames, DrawerStyles } from './inter';
 
 const sentinelStyle: React.CSSProperties = {
   width: 0,
@@ -67,6 +67,9 @@ export interface DrawerPopupProps extends DrawerPanelEvents {
 
   // classNames
   classNames?: DrawerClassNames;
+
+  // styles
+  styles?: DrawerStyles;
 }
 
 function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
@@ -113,6 +116,8 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
     onClick,
     onKeyDown,
     onKeyUp,
+
+    styles,
   } = props;
 
   // ================================ Refs ================================
@@ -228,6 +233,7 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
             style={{
               ...motionMaskStyle,
               ...maskStyle,
+              ...styles?.mask,
             }}
             onClick={maskClosable && open ? onClose : undefined}
             ref={maskRef}
@@ -299,6 +305,7 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
               ...wrapperStyle,
               ...motionStyle,
               ...contentWrapperStyle,
+              ...styles?.wrapper,
             }}
             {...pickAttrs(props, { data: true })}
           >
