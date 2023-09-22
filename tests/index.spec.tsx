@@ -401,6 +401,7 @@ describe('rc-drawer-menu', () => {
       <Drawer classNames={{
         wrapper: 'customer-wrapper',
         mask: 'customer-mask',
+        content: 'customer-content',
       }} open />
     );
     expect(
@@ -409,6 +410,9 @@ describe('rc-drawer-menu', () => {
     expect(
       document.querySelector('.rc-drawer-mask')
     ).toHaveClass('customer-mask');
+    expect(
+      document.querySelector('.rc-drawer-content')
+    ).toHaveClass('customer-content');
     unmount();
   });
   it('should support styles', () => {
@@ -416,6 +420,7 @@ describe('rc-drawer-menu', () => {
       <Drawer styles={{
         wrapper: { background: 'red' },
         mask: { background: 'blue' },
+        content: { background: 'green' },
       }} open />
     );
     expect(
@@ -424,6 +429,9 @@ describe('rc-drawer-menu', () => {
     expect(
       document.querySelector('.rc-drawer-mask')
     ).toHaveStyle('background: blue');
+    expect(
+      document.querySelector('.rc-drawer-content')
+    ).toHaveStyle('background: green');
     unmount();
   });
 });

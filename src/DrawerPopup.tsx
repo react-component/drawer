@@ -313,8 +313,11 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
               id={id}
               containerRef={motionRef}
               prefixCls={prefixCls}
-              className={className}
-              style={style}
+              className={classNames(className, drawerClassNames?.content)}
+              style={{
+                ...style,
+                ...styles?.content,
+              }}
               {...eventHandlers}
             >
               {children}
