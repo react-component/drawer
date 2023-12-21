@@ -44,8 +44,9 @@ ReactDom.render(
 | props      | type           | default | description    |
 |------------|----------------|---------|----------------|
 | className       | string | null | - |
+| classNames       | { mask?: string; wrapper?: string; } | - | pass className to target area |
+| styles       | { mask?: CSSProperties; wrapper?: CSSProperties; } | - | pass style to target area |
 | prefixCls     |  string  | 'drawer' | prefix class |
-| wrapperClassName | string | null | wrapper class name |
 | width       |  string \| number  |  null  | drawer content wrapper width, drawer level transition width  |
 | height      |  string \| number  |  null  | drawer content wrapper height, drawer level transition height  |
 | open        | boolean  | false |  open or close menu  |
@@ -59,12 +60,17 @@ ReactDom.render(
 | showMask    |  boolean  | true | mask is show |
 | maskClosable | boolean  | true | Clicking on the mask (area outside the Drawer) to close the Drawer or not. |
 | maskStyle | CSSProperties | null | mask style |
-| onChange  | func | null | change callback(open) |
 | afterVisibleChange  | func | null | transition end callback(open) |
 | onClose | func | null | close click function |
-| keyboard | Boolean | true |  Whether support press esc to close |
+| keyboard | boolean | true |  Whether support press esc to close |
 | contentWrapperStyle | CSSProperties | null |  content wrapper style |
-| autoFocus | Boolean | true |  Whether focusing on the drawer after it opened |
+| autoFocus | boolean | true |  Whether focusing on the drawer after it opened |
+| onMouseEnter | React.MouseEventHandler\<HTMLDivElement\> | - | Trigger when mouse enter drawer panel |
+| onMouseOver | React.MouseEventHandler\<HTMLDivElement\> | - | Trigger when mouse over drawer panel |
+| onMouseLeave | React.MouseEventHandler\<HTMLDivElement\> | - | Trigger when mouse leave drawer panel |
+| onClick | React.MouseEventHandler\<HTMLDivElement\> | - | Trigger when mouse click drawer panel |
+| onKeyDown | React.MouseEventHandler\<HTMLDivElement\> | - | Trigger when mouse keydown on drawer panel |
+| onKeyUp | React.MouseEventHandler\<HTMLDivElement\> | - | Trigger when mouse keyup on drawer panel |
 
 > 2.0 Rename `onMaskClick` -> `onClose`, add `maskClosable`.
 

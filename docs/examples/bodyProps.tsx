@@ -25,6 +25,12 @@ const Demo = () => {
         width="60%"
         // Motion
         {...motionProps}
+        onMouseEnter={() => {
+          console.log('mouseEnter');
+        }}
+        onMouseLeave={() => {
+          console.log('mouseLeave');
+        }}
       >
         content
       </Drawer>

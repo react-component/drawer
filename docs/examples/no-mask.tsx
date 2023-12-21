@@ -16,21 +16,16 @@ import './assets/index.less';
 
 const { SubMenu } = Menu;
 const MenuItemGroup = Menu.ItemGroup;
-class Demo extends React.Component {
-  public state = {
-    open: false,
-  };
 
-  public onSwitch = () => {
-    const { open } = this.state;
-    this.setState({
-      open: !open,
-    });
-  };
+function Demo() {
+  const [open, setOpen] = React.useState(true);
 
-  public render() {
-    return (
-      <div>
+  const onSwitch = () => {
+    setOpen(!open);
+  }
+
+  return (
+    <div>
         <div
           style={{
             width: '100%',
@@ -43,7 +38,7 @@ class Demo extends React.Component {
         >
           内容区块
           <button
-            onClick={this.onSwitch}
+            onClick={onSwitch}
             style={{
               height: 24,
               width: 100,
@@ -52,14 +47,14 @@ class Demo extends React.Component {
               lineHeight: '24px',
             }}
           >
-            {!this.state.open ? '打开' : '关闭'}
+            {!open ? '打开' : '关闭'}
           </button>
         </div>
 
         <Drawer
           width="250px"
           mask={false}
-          open={this.state.open}
+          open={open}
           placement="right"
         >
           <Menu
@@ -119,8 +114,7 @@ class Demo extends React.Component {
           </Menu>
         </Drawer>
       </div>
-    );
-  }
+  );
 }
 
 export default Demo;

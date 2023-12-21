@@ -61,23 +61,23 @@ describe('rc-drawer-menu', () => {
       placement: DrawerProps['placement'];
       transform: string;
     }[] = [
-      {
-        placement: 'left',
-        transform: 'translateX(903px)',
-      },
-      {
-        placement: 'right',
-        transform: 'translateX(-903px)',
-      },
-      {
-        placement: 'top',
-        transform: 'translateY(903px)',
-      },
-      {
-        placement: 'bottom',
-        transform: 'translateY(-903px)',
-      },
-    ];
+        {
+          placement: 'left',
+          transform: 'translateX(903px)',
+        },
+        {
+          placement: 'right',
+          transform: 'translateX(-903px)',
+        },
+        {
+          placement: 'top',
+          transform: 'translateY(903px)',
+        },
+        {
+          placement: 'bottom',
+          transform: 'translateY(-903px)',
+        },
+      ];
 
     placementList.forEach(({ placement, transform }) => {
       it(placement, () => {
@@ -358,5 +358,80 @@ describe('rc-drawer-menu', () => {
       'Warning: Invalid value type of `width` or `height` which should be number type instead.',
     );
     errSpy.mockRestore();
+  });
+
+
+  it('pass data props to internal div', () => {
+    const value = 'bamboo';
+    const { unmount } = render(<Drawer open data-attr={value} />);
+    expect(document.querySelector('.rc-drawer-content-wrapper')).toHaveAttribute('data-attr', value);
+    unmount();
+  });
+
+  it('support bodyProps', () => {
+    const enter = jest.fn();
+    const leave = jest.fn();
+    const { baseElement } = render(
+      <Drawer
+        width="93"
+        open
+        onMouseEnter={enter}
+        onMouseLeave={leave}
+      />,
+    );
+    fireEvent.mouseOver(baseElement.querySelector('.rc-drawer-content'));
+    expect(enter).toHaveBeenCalled();
+    fireEvent.mouseLeave(baseElement.querySelector('.rc-drawer-content'));
+    expect(leave).toHaveBeenCalled();
+  });
+
+  it('pass id & className props to Panel', () => {
+    const { unmount } = render(<Drawer className='customer-className' id="customer-id" open />);
+    expect(
+      document.querySelector('.rc-drawer-content')
+    ).toHaveClass('customer-className');
+    expect(
+      document.querySelector('.rc-drawer-content')
+    ).toHaveAttribute('id', 'customer-id');
+    unmount();
+  });
+
+  it('should support classNames', () => {
+    const { unmount } = render(
+      <Drawer classNames={{
+        wrapper: 'customer-wrapper',
+        mask: 'customer-mask',
+        content: 'customer-content',
+      }} open />
+    );
+    expect(
+      document.querySelector('.rc-drawer-content-wrapper')
+    ).toHaveClass('customer-wrapper');
+    expect(
+      document.querySelector('.rc-drawer-mask')
+    ).toHaveClass('customer-mask');
+    expect(
+      document.querySelector('.rc-drawer-content')
+    ).toHaveClass('customer-content');
+    unmount();
+  });
+  it('should support styles', () => {
+    const { unmount } = render(
+      <Drawer styles={{
+        wrapper: { background: 'red' },
+        mask: { background: 'blue' },
+        content: { background: 'green' },
+      }} open />
+    );
+    expect(
+      document.querySelector('.rc-drawer-content-wrapper')
+    ).toHaveStyle('background: red');
+    expect(
+      document.querySelector('.rc-drawer-mask')
+    ).toHaveStyle('background: blue');
+    expect(
+      document.querySelector('.rc-drawer-content')
+    ).toHaveStyle('background: green');
+    unmount();
   });
 });

@@ -1,12 +1,15 @@
-import * as React from 'react';
 import classNames from 'classnames';
-import CSSMotion from 'rc-motion';
 import type { CSSMotionProps } from 'rc-motion';
-import DrawerPanel from './DrawerPanel';
-import DrawerContext from './context';
-import type { DrawerContextProps } from './context';
+import CSSMotion from 'rc-motion';
 import KeyCode from 'rc-util/lib/KeyCode';
+import pickAttrs from 'rc-util/lib/pickAttrs';
+import * as React from 'react';
+import type { DrawerContextProps } from './context';
+import DrawerContext from './context';
+import type { DrawerPanelEvents } from './DrawerPanel';
+import DrawerPanel from './DrawerPanel';
 import { parseWidthHeight } from './util';
+import type { DrawerClassNames, DrawerStyles } from './inter';
 
 const sentinelStyle: React.CSSProperties = {
   width: 0,
@@ -22,7 +25,7 @@ export interface PushConfig {
   distance?: number | string;
 }
 
-export interface DrawerPopupProps {
+export interface DrawerPopupProps extends DrawerPanelEvents {
   prefixCls: string;
   open?: boolean;
   inline?: boolean;
@@ -38,6 +41,7 @@ export interface DrawerPopupProps {
 
   // Drawer
   placement?: Placement;
+  id?: string;
   className?: string;
   style?: React.CSSProperties;
   children?: React.ReactNode;
@@ -60,6 +64,12 @@ export interface DrawerPopupProps {
   onClose?: (
     event: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>,
   ) => void;
+
+  // classNames
+  classNames?: DrawerClassNames;
+
+  // styles
+  styles?: DrawerStyles;
 }
 
 function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
@@ -73,6 +83,8 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
     autoFocus,
     keyboard,
 
+    // classNames
+    classNames: drawerClassNames,
     // Root
     rootClassName,
     rootStyle,
@@ -80,6 +92,7 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
 
     // Drawer
     className,
+    id,
     style,
     motion,
     width,
@@ -97,6 +110,14 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
     // Events
     afterOpenChange,
     onClose,
+    onMouseEnter,
+    onMouseOver,
+    onMouseLeave,
+    onClick,
+    onKeyDown,
+    onKeyUp,
+
+    styles,
   } = props;
 
   // ================================ Refs ================================
@@ -206,11 +227,13 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
             className={classNames(
               `${prefixCls}-mask`,
               motionMaskClassName,
+              drawerClassNames?.mask,
               maskClassName,
             )}
             style={{
               ...motionMaskStyle,
               ...maskStyle,
+              ...styles?.mask,
             }}
             onClick={maskClosable && open ? onClose : undefined}
             ref={maskRef}
@@ -249,6 +272,15 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
     wrapperStyle.height = parseWidthHeight(height);
   }
 
+  const eventHandlers = {
+    onMouseEnter,
+    onMouseOver,
+    onMouseLeave,
+    onClick,
+    onKeyDown,
+    onKeyUp,
+  };
+
   const panelNode: React.ReactNode = (
     <CSSMotion
       key="panel"
@@ -266,19 +298,27 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
           <div
             className={classNames(
               `${prefixCls}-content-wrapper`,
+              drawerClassNames?.wrapper,
               motionClassName,
             )}
             style={{
               ...wrapperStyle,
               ...motionStyle,
               ...contentWrapperStyle,
+              ...styles?.wrapper,
             }}
+            {...pickAttrs(props, { data: true })}
           >
             <DrawerPanel
+              id={id}
               containerRef={motionRef}
               prefixCls={prefixCls}
-              className={className}
-              style={style}
+              className={classNames(className, drawerClassNames?.content)}
+              style={{
+                ...style,
+                ...styles?.content,
+              }}
+              {...eventHandlers}
             >
               {children}
             </DrawerPanel>

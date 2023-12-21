@@ -35,3 +35,7 @@ storybook
 .umi-production
 .umi-test
 .env.local
+
+# dumi
+.dumi/tmp
+.dumi/tmp-production
