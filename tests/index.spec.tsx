@@ -243,8 +243,8 @@ describe('rc-drawer-menu', () => {
     });
   });
 
-  it('contentWrapperStyle', () => {
-    render(<Drawer contentWrapperStyle={{ background: '#f00' }} open />);
+  it('styles.wrapper', () => {
+    render(<Drawer styles={{ wrapper: { background: '#f00' } }} open />);
 
     expect(document.querySelector('.rc-drawer-content-wrapper')).toHaveStyle({
       background: '#f00',

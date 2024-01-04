@@ -47,7 +47,6 @@ export interface DrawerPopupProps extends DrawerPanelEvents {
   children?: React.ReactNode;
   width?: number | string;
   height?: number | string;
-  contentWrapperStyle?: React.CSSProperties;
 
   // Mask
   mask?: boolean;
@@ -98,7 +97,6 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
     width,
     height,
     children,
-    contentWrapperStyle,
 
     // Mask
     mask,
@@ -304,7 +302,6 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
             style={{
               ...wrapperStyle,
               ...motionStyle,
-              ...contentWrapperStyle,
               ...styles?.wrapper,
             }}
             {...pickAttrs(props, { data: true })}
