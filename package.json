@@ -50,7 +50,7 @@
   "devDependencies": {
     "@ant-design/icons": "^4.7.0",
     "@rc-component/father-plugin": "^1.0.0",
-    "@testing-library/jest-dom": "^5.11.9",
+    "@testing-library/jest-dom": "^6.2.0",
     "@testing-library/react": "^14.0.0",
     "@types/classnames": "^2.2.9",
     "@types/jest": "^29.5.11",
