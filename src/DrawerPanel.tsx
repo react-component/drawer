@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import { useComposeRef } from 'rc-util';
 import * as React from 'react';
 import { RefContext } from './context';
+import { getAriaProps } from './util';
 
 export interface DrawerPanelRef {
   focus: VoidFunction;
@@ -18,7 +19,7 @@ export interface DrawerPanelEvents {
 
 export type DrawerPanelAccessibility = Pick<
   React.DialogHTMLAttributes<HTMLDivElement>,
-  'aria-labelledby' | 'aria-describedby'
+  keyof React.AriaAttributes
 >;
 
 export interface DrawerPanelProps
@@ -48,6 +49,8 @@ const DrawerPanel = (props: DrawerPanelProps) => {
     onKeyUp,
   } = props;
 
+  const ariaProps = getAriaProps(props);
+
   const eventHandlers = {
     onMouseEnter,
     onMouseOver,
@@ -70,11 +73,10 @@ const DrawerPanel = (props: DrawerPanelProps) => {
         style={{
           ...style,
         }}
-        aria-modal="true"
-        aria-labelledby={props['aria-labelledby']}
-        aria-describedby={props['aria-describedby']}
         role="dialog"
         ref={mergedRef}
+        {...ariaProps}
+        aria-modal="true"
         {...eventHandlers}
       >
         {children}

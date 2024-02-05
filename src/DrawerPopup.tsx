@@ -11,7 +11,7 @@ import type {
   DrawerPanelEvents,
 } from './DrawerPanel';
 import DrawerPanel from './DrawerPanel';
-import { parseWidthHeight } from './util';
+import { getAriaProps, parseWidthHeight } from './util';
 import type { DrawerClassNames, DrawerStyles } from './inter';
 
 const sentinelStyle: React.CSSProperties = {
@@ -121,10 +121,6 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
     onKeyUp,
 
     styles,
-    
-    // Accessibility
-    'aria-describedby': ariaDescribedBy,
-    'aria-labelledby': ariaLabelledBy,
   } = props;
 
   // ================================ Refs ================================
@@ -288,6 +284,8 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
     onKeyUp,
   };
 
+  const ariaProps = getAriaProps(props);
+
   const panelNode: React.ReactNode = (
     <CSSMotion
       key="panel"
@@ -324,8 +322,7 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
                 ...style,
                 ...styles?.content,
               }}
-              aria-describedby={ariaDescribedBy}
-              aria-labelledby={ariaLabelledBy}
+              {...ariaProps}
               {...eventHandlers}
             >
               {children}
