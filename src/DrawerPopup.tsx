@@ -12,6 +12,7 @@ import type {
 } from './DrawerPanel';
 import DrawerPanel from './DrawerPanel';
 import { parseWidthHeight } from './util';
+import type { DrawerClassNames, DrawerStyles } from './inter';
 
 const sentinelStyle: React.CSSProperties = {
   width: 0,
@@ -51,7 +52,6 @@ export interface DrawerPopupProps
   children?: React.ReactNode;
   width?: number | string;
   height?: number | string;
-  contentWrapperStyle?: React.CSSProperties;
 
   // Mask
   mask?: boolean;
@@ -68,6 +68,12 @@ export interface DrawerPopupProps
   onClose?: (
     event: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>,
   ) => void;
+
+  // classNames
+  classNames?: DrawerClassNames;
+
+  // styles
+  styles?: DrawerStyles;
 }
 
 function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
@@ -81,6 +87,8 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
     autoFocus,
     keyboard,
 
+    // classNames
+    classNames: drawerClassNames,
     // Root
     rootClassName,
     rootStyle,
@@ -94,7 +102,6 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
     width,
     height,
     children,
-    contentWrapperStyle,
 
     // Mask
     mask,
@@ -113,6 +120,8 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
     onKeyDown,
     onKeyUp,
 
+    styles,
+    
     // Accessibility
     'aria-describedby': ariaDescribedBy,
     'aria-labelledby': ariaLabelledBy,
@@ -225,11 +234,13 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
             className={classNames(
               `${prefixCls}-mask`,
               motionMaskClassName,
+              drawerClassNames?.mask,
               maskClassName,
             )}
             style={{
               ...motionMaskStyle,
               ...maskStyle,
+              ...styles?.mask,
             }}
             onClick={maskClosable && open ? onClose : undefined}
             ref={maskRef}
@@ -294,12 +305,13 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
           <div
             className={classNames(
               `${prefixCls}-content-wrapper`,
+              drawerClassNames?.wrapper,
               motionClassName,
             )}
             style={{
               ...wrapperStyle,
               ...motionStyle,
-              ...contentWrapperStyle,
+              ...styles?.wrapper,
             }}
             {...pickAttrs(props, { data: true })}
           >
@@ -307,8 +319,11 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
               id={id}
               containerRef={motionRef}
               prefixCls={prefixCls}
-              className={className}
-              style={style}
+              className={classNames(className, drawerClassNames?.content)}
+              style={{
+                ...style,
+                ...styles?.content,
+              }}
               aria-describedby={ariaDescribedBy}
               aria-labelledby={ariaLabelledBy}
               {...eventHandlers}

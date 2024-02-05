@@ -44,8 +44,9 @@ ReactDom.render(
 | props      | type           | default | description    |
 |------------|----------------|---------|----------------|
 | className       | string | null | - |
+| classNames       | { mask?: string; content?: string; wrapper?: string; } | - | pass className to target area |
+| styles       | { mask?: CSSProperties; content?: CSSProperties; wrapper?: CSSProperties; } | - | pass style to target area |
 | prefixCls     |  string  | 'drawer' | prefix class |
-| wrapperClassName | string | null | wrapper class name |
 | width       |  string \| number  |  null  | drawer content wrapper width, drawer level transition width  |
 | height      |  string \| number  |  null  | drawer content wrapper height, drawer level transition height  |
 | open        | boolean  | false |  open or close menu  |
@@ -62,7 +63,6 @@ ReactDom.render(
 | afterVisibleChange  | func | null | transition end callback(open) |
 | onClose | func | null | close click function |
 | keyboard | boolean | true |  Whether support press esc to close |
-| contentWrapperStyle | CSSProperties | null |  content wrapper style |
 | autoFocus | boolean | true |  Whether focusing on the drawer after it opened |
 | onMouseEnter | React.MouseEventHandler\<HTMLDivElement\> | - | Trigger when mouse enter drawer panel |
 | onMouseOver | React.MouseEventHandler\<HTMLDivElement\> | - | Trigger when mouse over drawer panel |

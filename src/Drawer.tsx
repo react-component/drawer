@@ -10,6 +10,7 @@ import type {
 import type { DrawerPopupProps } from './DrawerPopup';
 import DrawerPopup from './DrawerPopup';
 import { warnCheck } from './util';
+import type { DrawerClassNames, DrawerStyles } from './inter';
 
 export type Placement = 'left' | 'top' | 'right' | 'bottom';
 
@@ -23,6 +24,8 @@ export interface DrawerProps
   destroyOnClose?: boolean;
   getContainer?: PortalProps['getContainer'];
   panelRef?: React.Ref<HTMLDivElement>;
+  classNames?: DrawerClassNames;
+  styles?: DrawerStyles;
 }
 
 const Drawer: React.FC<DrawerProps> = props => {

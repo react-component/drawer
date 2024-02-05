@@ -17,7 +17,7 @@ describe('motion', () => {
     jest.useRealTimers();
   });
 
-  // zombieJ: Do not modify patch dom since user use `contentWrapperStyle` for override style
+  // zombieJ: Do not modify patch dom since user use `styles.wrapper` for override style
   it('motion patch on the correct element', () => {
     const { container } = render(
       <Drawer
@@ -25,7 +25,7 @@ describe('motion', () => {
         open
         getContainer={false}
         motion={{ motionName: 'bamboo', motionAppear: true }}
-        contentWrapperStyle={{ background: 'red' }}
+        styles={{ wrapper: { background: 'red' } }}
       />,
     );
 

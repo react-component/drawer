@@ -1,6 +1,6 @@
 {
   "name": "rc-drawer",
-  "version": "6.4.1",
+  "version": "7.0.0",
   "description": "drawer component for react",
   "keywords": [
     "react",
@@ -48,28 +48,30 @@
     "rc-util": "^5.36.0"
   },
   "devDependencies": {
-    "@rc-component/father-plugin": "^1.0.0",
     "@ant-design/icons": "^4.7.0",
-    "@testing-library/jest-dom": "^5.11.9",
+    "@rc-component/father-plugin": "^1.0.0",
+    "@testing-library/jest-dom": "^6.2.0",
     "@testing-library/react": "^14.0.0",
     "@types/classnames": "^2.2.9",
-    "@types/jest": "^27.0.2",
+    "@types/jest": "^29.5.11",
     "@types/raf": "^3.4.0",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "@types/warning": "^3.0.0",
-    "rc-test": "^7.0.9",
-    "antd": "^4.20.2",
+    "antd": "^5.12.7",
     "dumi": "^2.2.0",
-    "eslint": "^7.0.0",
+    "eslint": "^8.56.0",
+    "eslint-plugin-jest": "^27.6.0",
+    "eslint-plugin-unicorn": "^50.0.1",
     "father": "^4.0.0",
-    "glob": "^7.1.6",
-    "less": "^3.10.3",
-    "np": "^7.5.0",
+    "glob": "^10.3.10",
+    "less": "^4.2.0",
+    "np": "^9.2.0",
     "prettier": "^3.0.0",
+    "rc-test": "^7.0.9",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "typescript": "^4.6.4"
+    "typescript": "^5.3.3"
   },
   "peerDependencies": {
     "react": ">=16.9.0",
