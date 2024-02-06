@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { useComposeRef } from 'rc-util';
 import * as React from 'react';
 import { RefContext } from './context';
-import { getAriaProps } from './util';
+import pickAttrs from 'rc-util/lib/pickAttrs';
 
 export interface DrawerPanelRef {
   focus: VoidFunction;
@@ -49,8 +49,6 @@ const DrawerPanel = (props: DrawerPanelProps) => {
     onKeyUp,
   } = props;
 
-  const ariaProps = getAriaProps(props);
-
   const eventHandlers = {
     onMouseEnter,
     onMouseOver,
@@ -75,7 +73,7 @@ const DrawerPanel = (props: DrawerPanelProps) => {
         }}
         role="dialog"
         ref={mergedRef}
-        {...ariaProps}
+        {...pickAttrs(props, { aria: true })}
         aria-modal="true"
         {...eventHandlers}
       >

@@ -25,14 +25,3 @@ export function warnCheck(props: DrawerProps) {
     `Drawer with 'open' in SSR is not work since no place to createPortal. Please move to 'useEffect' instead.`,
   );
 }
-
-export function getAriaProps<TProps extends Record<string, any>>(
-  props: TProps,
-) {
-  return Object.keys(props || {}).reduce((props, key) => {
-    if (key.toLowerCase().startsWith('aria-')) {
-      props[key] = props[key];
-    }
-    return props;
-  }, {} as Partial<React.AriaAttributes>);
-}
