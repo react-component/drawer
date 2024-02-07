@@ -33,7 +33,7 @@ export default () => {
         open={open2}
         onClose={() => setOpen2(false)}
         destroyOnClose
-        placement='left'
+        placement="left"
         {...motionProps}
       >
         Hello World!

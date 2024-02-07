@@ -22,7 +22,9 @@ export type DrawerPanelAccessibility = Pick<
   keyof React.AriaAttributes
 >;
 
-export interface DrawerPanelProps extends DrawerPanelEvents, DrawerPanelAccessibility {
+export interface DrawerPanelProps
+  extends DrawerPanelEvents,
+    DrawerPanelAccessibility {
   prefixCls: string;
   className?: string;
   id?: string;
@@ -32,12 +34,7 @@ export interface DrawerPanelProps extends DrawerPanelEvents, DrawerPanelAccessib
 }
 
 const DrawerPanel = (props: DrawerPanelProps) => {
-  const {
-    prefixCls,
-    className,
-    containerRef,
-    ...restProps
-  } = props;
+  const { prefixCls, className, containerRef, ...restProps } = props;
 
   const { panel: panelRef } = React.useContext(RefContext);
   const mergedRef = useComposeRef(panelRef, containerRef);

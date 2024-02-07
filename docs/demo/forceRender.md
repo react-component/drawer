@@ -5,5 +5,4 @@ nav:
   path: /demo
 ---
 
-
 <code src="../examples/forceRender.tsx"></code>

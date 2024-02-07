@@ -39,6 +39,7 @@
     "prepublishOnly": "npm run compile && np --no-cleanup --yolo --no-publish",
     "start": "dumi dev",
     "test": "rc-test",
+    "prettier": "prettier --write .",
     "prepare": "husky"
   },
   "dependencies": {
@@ -75,6 +76,7 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "stylelint": "^16.2.1",
+    "stylelint-config-standard-less": "^3.0.1",
     "typescript": "^5.3.3"
   },
   "peerDependencies": {

@@ -3,12 +3,14 @@
   .ant-menu-vertical {
     border-right: none;
   }
+
   &-content {
     padding-top: 40px;
   }
+
   &-left {
-    .ant-menu-inline .ant-menu-item:after,
-    .ant-menu-vertical .ant-menu-item:after {
+    .ant-menu-inline .ant-menu-item::after,
+    .ant-menu-vertical .ant-menu-item::after {
       left: 0;
       right: auto;
     }
@@ -17,13 +19,13 @@
 
 .drawer-wrapper {
   .drawer {
-    animation: AlphaTo .3s ease-out .3s;
+    animation: alpha-to 0.3s ease-out 0.3s;
     animation-fill-mode: forwards;
     opacity: 0;
   }
 }
 
-@keyframes AlphaTo {
+@keyframes alpha-to {
   to {
     opacity: 1;
     left: 0;
@@ -33,6 +35,7 @@
 .parent-demo {
   position: relative;
   overflow: hidden;
+
   .drawer {
     position: absolute;
   }
