@@ -1,15 +1,15 @@
-declare module "rc-util/lib/KeyCode" {
-  var Ret: { ESC: any; TAB: any; };
+declare module 'rc-util/lib/KeyCode' {
+  const Ret: { ESC: any; TAB: any };
   export default Ret;
 }
 
 declare module 'rc-util/lib/getScrollBarSize' {
-  var Ret: (b: boolean) => number;
+  const Ret: (b: boolean) => number;
   export default Ret;
 }
 
 declare module 'rc-util/lib/*' {
-  var Ret: any;
+  const Ret: any;
   export default Ret;
 }
 

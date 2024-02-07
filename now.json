@@ -1,4 +1,3 @@
-
 {
   "version": 2,
   "name": "rc-drawer",
@@ -9,7 +8,5 @@
       "config": { "distDir": "dist" }
     }
   ],
-  "routes": [
-    { "src": "/(.*)", "dest": "/dist/$1" }
-  ]
+  "routes": [{ "src": "/(.*)", "dest": "/dist/$1" }]
 }

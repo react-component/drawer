@@ -4,14 +4,12 @@
 @zIndex: 1050;
 
 .inset-0() {
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  inset: 0;
 }
 
 .@{prefixCls} {
   .inset-0;
+
   position: fixed;
   z-index: @zIndex;
   pointer-events: none;
@@ -22,9 +20,10 @@
 
   &-mask {
     .inset-0;
+
     position: absolute;
     z-index: @zIndex;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgb(0 0 0 / 50%);
     pointer-events: auto;
   }
 

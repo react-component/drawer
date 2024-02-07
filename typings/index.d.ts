@@ -1,1 +1,1 @@
-/// <reference path="custom.d.ts" />
+export * from 'custom';
