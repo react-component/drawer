@@ -175,12 +175,8 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
 
   // Merge push distance
   let pushConfig: PushConfig;
-  if (push === false) {
-    pushConfig = {
-      distance: 0,
-    };
-  } else if (push === true) {
-    pushConfig = {};
+  if (typeof push === 'boolean') {
+    pushConfig = push ? {} : { distance: 0 };
   } else {
     pushConfig = push || {};
   }
@@ -224,25 +220,23 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
       {(
         { className: motionMaskClassName, style: motionMaskStyle },
         maskRef,
-      ) => {
-        return (
-          <div
-            className={classNames(
-              `${prefixCls}-mask`,
-              motionMaskClassName,
-              drawerClassNames?.mask,
-              maskClassName,
-            )}
-            style={{
-              ...motionMaskStyle,
-              ...maskStyle,
-              ...styles?.mask,
-            }}
-            onClick={maskClosable && open ? onClose : undefined}
-            ref={maskRef}
-          />
-        );
-      }}
+      ) => (
+        <div
+          className={classNames(
+            `${prefixCls}-mask`,
+            motionMaskClassName,
+            drawerClassNames?.mask,
+            maskClassName,
+          )}
+          style={{
+            ...motionMaskStyle,
+            ...maskStyle,
+            ...styles?.mask,
+          }}
+          onClick={maskClosable && open ? onClose : undefined}
+          ref={maskRef}
+        />
+      )}
     </CSSMotion>
   );
 
