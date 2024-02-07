@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import { useComposeRef } from 'rc-util';
 import * as React from 'react';
 import { RefContext } from './context';
+import pickAttrs from 'rc-util/lib/pickAttrs';
 
 export interface DrawerPanelRef {
   focus: VoidFunction;
@@ -16,7 +17,14 @@ export interface DrawerPanelEvents {
   onKeyUp?: React.KeyboardEventHandler<HTMLDivElement>;
 }
 
-export interface DrawerPanelProps extends DrawerPanelEvents {
+export type DrawerPanelAccessibility = Pick<
+  React.DialogHTMLAttributes<HTMLDivElement>,
+  keyof React.AriaAttributes
+>;
+
+export interface DrawerPanelProps
+  extends DrawerPanelEvents,
+    DrawerPanelAccessibility {
   prefixCls: string;
   className?: string;
   id?: string;
@@ -63,9 +71,10 @@ const DrawerPanel = (props: DrawerPanelProps) => {
         style={{
           ...style,
         }}
-        aria-modal="true"
         role="dialog"
         ref={mergedRef}
+        {...pickAttrs(props, { aria: true })}
+        aria-modal="true"
         {...eventHandlers}
       >
         {children}

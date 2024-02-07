@@ -6,7 +6,10 @@ import pickAttrs from 'rc-util/lib/pickAttrs';
 import * as React from 'react';
 import type { DrawerContextProps } from './context';
 import DrawerContext from './context';
-import type { DrawerPanelEvents } from './DrawerPanel';
+import type {
+  DrawerPanelAccessibility,
+  DrawerPanelEvents,
+} from './DrawerPanel';
 import DrawerPanel from './DrawerPanel';
 import { parseWidthHeight } from './util';
 import type { DrawerClassNames, DrawerStyles } from './inter';
@@ -25,7 +28,9 @@ export interface PushConfig {
   distance?: number | string;
 }
 
-export interface DrawerPopupProps extends DrawerPanelEvents {
+export interface DrawerPopupProps
+  extends DrawerPanelEvents,
+    DrawerPanelAccessibility {
   prefixCls: string;
   open?: boolean;
   inline?: boolean;
@@ -315,6 +320,7 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
                 ...style,
                 ...styles?.content,
               }}
+              {...pickAttrs(props, { aria: true })}
               {...eventHandlers}
             >
               {children}
