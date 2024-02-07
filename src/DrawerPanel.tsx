@@ -1,8 +1,8 @@
 import classNames from 'classnames';
-import { useComposeRef } from 'rc-util';
 import * as React from 'react';
 import { RefContext } from './context';
 import pickAttrs from 'rc-util/lib/pickAttrs';
+import { useComposeRef } from 'rc-util/lib/ref';
 
 export interface DrawerPanelRef {
   focus: VoidFunction;
@@ -22,9 +22,7 @@ export type DrawerPanelAccessibility = Pick<
   keyof React.AriaAttributes
 >;
 
-export interface DrawerPanelProps
-  extends DrawerPanelEvents,
-    DrawerPanelAccessibility {
+export interface DrawerPanelProps extends DrawerPanelEvents, DrawerPanelAccessibility {
   prefixCls: string;
   className?: string;
   id?: string;
@@ -37,26 +35,9 @@ const DrawerPanel = (props: DrawerPanelProps) => {
   const {
     prefixCls,
     className,
-    style,
-    children,
     containerRef,
-    id,
-    onMouseEnter,
-    onMouseOver,
-    onMouseLeave,
-    onClick,
-    onKeyDown,
-    onKeyUp,
+    ...restProps
   } = props;
-
-  const eventHandlers = {
-    onMouseEnter,
-    onMouseOver,
-    onMouseLeave,
-    onClick,
-    onKeyDown,
-    onKeyUp,
-  };
 
   const { panel: panelRef } = React.useContext(RefContext);
   const mergedRef = useComposeRef(panelRef, containerRef);
@@ -64,22 +45,14 @@ const DrawerPanel = (props: DrawerPanelProps) => {
   // =============================== Render ===============================
 
   return (
-    <>
-      <div
-        id={id}
-        className={classNames(`${prefixCls}-content`, className)}
-        style={{
-          ...style,
-        }}
-        role="dialog"
-        ref={mergedRef}
-        {...pickAttrs(props, { aria: true })}
-        aria-modal="true"
-        {...eventHandlers}
-      >
-        {children}
-      </div>
-    </>
+    <div
+      className={classNames(`${prefixCls}-content`, className)}
+      role="dialog"
+      ref={mergedRef}
+      {...pickAttrs(props, { aria: true })}
+      aria-modal="true"
+      {...restProps}
+    />
   );
 };
 
