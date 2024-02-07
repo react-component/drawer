@@ -43,11 +43,11 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@babel/runtime": "^7.10.1",
+    "@babel/runtime": "^7.23.9",
     "@rc-component/portal": "^1.1.1",
     "classnames": "^2.2.6",
     "rc-motion": "^2.6.1",
-    "rc-util": "^5.36.0"
+    "rc-util": "^5.38.1"
   },
   "devDependencies": {
     "@ant-design/icons": "^4.7.0",
