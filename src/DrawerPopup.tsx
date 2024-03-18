@@ -13,6 +13,7 @@ import type {
 import DrawerPanel from './DrawerPanel';
 import { parseWidthHeight } from './util';
 import type { DrawerClassNames, DrawerStyles } from './inter';
+import { useDrag } from '@use-gesture/react';
 
 const sentinelStyle: React.CSSProperties = {
   width: 0,
@@ -66,7 +67,10 @@ export interface DrawerPopupProps
   // Events
   afterOpenChange?: (open: boolean) => void;
   onClose?: (
-    event: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>,
+    event:
+      | React.MouseEvent<HTMLElement>
+      | React.KeyboardEvent<HTMLElement>
+      | CustomEvent<HTMLElement>,
   ) => void;
 
   // classNames
@@ -127,6 +131,7 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
   const panelRef = React.useRef<HTMLDivElement>();
   const sentinelStartRef = React.useRef<HTMLDivElement>();
   const sentinelEndRef = React.useRef<HTMLDivElement>();
+  const contentWrapperRef = React.useRef<HTMLDivElement>();
 
   React.useImperativeHandle(ref, () => panelRef.current);
 
@@ -240,6 +245,30 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
     </CSSMotion>
   );
 
+  // =========================== Swipe ============================
+  const bind = useDrag(
+    ({ down, swipe: [swipeX], cancel }) => {
+      if (
+        (placement === 'left' && swipeX === 1) ||
+        (placement === 'right' && swipeX === -1)
+      ) {
+        cancel();
+      } else {
+        if (swipeX !== 0 && down === false) {
+          const event = new CustomEvent(
+            'touchSwipeEvent',
+          ) as CustomEvent<HTMLElement>;
+          onClose(event);
+        }
+      }
+    },
+    {
+      filterTaps: true,
+      axis: 'x',
+      swipe: { distance: 5, velocity: [0.3, 0.3] },
+    },
+  );
+
   // =========================== Panel ============================
   const motionProps = typeof motion === 'function' ? motion(placement) : motion;
 
@@ -303,6 +332,7 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
               ...motionStyle,
               ...styles?.wrapper,
             }}
+            ref={contentWrapperRef}
             {...pickAttrs(props, { data: true })}
           >
             <DrawerPanel
@@ -314,6 +344,9 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
                 ...style,
                 ...styles?.content,
               }}
+              placement={placement}
+              drawerWidth={contentWrapperRef?.current?.clientWidth || 0}
+              onClose={onClose}
               {...pickAttrs(props, { aria: true })}
               {...eventHandlers}
             >
@@ -350,6 +383,7 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
         tabIndex={-1}
         ref={panelRef}
         onKeyDown={onPanelKeyDown}
+        {...bind()}
       >
         {maskNode}
         <div

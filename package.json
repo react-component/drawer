@@ -45,6 +45,8 @@
   "dependencies": {
     "@babel/runtime": "^7.23.9",
     "@rc-component/portal": "^1.1.1",
+    "@react-spring/web": "^9.7.3",
+    "@use-gesture/react": "^10.3.0",
     "classnames": "^2.2.6",
     "rc-motion": "^2.6.1",
     "rc-util": "^5.38.1"
