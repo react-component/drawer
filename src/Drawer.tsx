@@ -26,6 +26,7 @@ export interface DrawerProps
   panelRef?: React.Ref<HTMLDivElement>;
   classNames?: DrawerClassNames;
   styles?: DrawerStyles;
+  loading?: React.ReactNode;
 }
 
 const Drawer: React.FC<DrawerProps> = props => {

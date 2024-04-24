@@ -38,6 +38,7 @@ export interface DrawerPopupProps
   forceRender?: boolean;
   autoFocus?: boolean;
   keyboard?: boolean;
+  loading?: React.ReactNode;
 
   // Root
   rootClassName?: string;
@@ -86,6 +87,7 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
     forceRender,
     autoFocus,
     keyboard,
+    loading,
 
     // classNames
     classNames: drawerClassNames,
@@ -317,7 +319,7 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
               {...pickAttrs(props, { aria: true })}
               {...eventHandlers}
             >
-              {children}
+              {loading ? loading : children}
             </DrawerPanel>
           </div>
         );

@@ -51,6 +51,7 @@ ReactDom.render(
 | height             | string \| number                                                            | null                                   | drawer content wrapper height, drawer level transition height                 |
 | open               | boolean                                                                     | false                                  | open or close menu                                                            |
 | defaultOpen        | boolean                                                                     | false                                  | default open menu                                                             |
+| loading            | HTMLElement \| null                                                         | null                                   | loading element                                                               |
 | placement          | string                                                                      | `left`                                 | `left` `top` `right` `bottom`                                                 |
 | level              | string \| array                                                             | `all`                                  | With the drawer level element. `all`/ null / className / id / tagName / array |
 | levelMove          | number \| array \| func                                                     | null                                   | level move value. default is drawer width                                     |
