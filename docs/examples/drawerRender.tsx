@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
 import Drawer from 'rc-drawer';
+import motionProps from './motion';
 
 const Demo = () => {
   const [open, setOpen] = useState(false);
@@ -19,6 +21,8 @@ const Demo = () => {
             {dom}
           </div>
         )}
+        // Motion
+        {...motionProps}
       >
         content
       </Drawer>
