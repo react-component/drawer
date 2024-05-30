@@ -39,3 +39,4 @@ storybook
 # dumi
 .dumi/tmp
 .dumi/tmp-production
+pnpm-lock.yaml

@@ -467,4 +467,11 @@ describe('rc-drawer-menu', () => {
     );
     unmount();
   });
+  it('should support drawerRender', () => {
+    const { unmount } = render(
+      <Drawer drawerRender={dom => <div id="test">{dom}</div>} open />,
+    );
+    expect(document.querySelector('#test')).toBeTruthy();
+    unmount();
+  });
 });

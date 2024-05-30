@@ -74,6 +74,7 @@ export interface DrawerPopupProps
 
   // styles
   styles?: DrawerStyles;
+  drawerRender?: (node: React.ReactNode) => React.ReactNode;
 }
 
 function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
@@ -121,6 +122,7 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
     onKeyUp,
 
     styles,
+    drawerRender,
   } = props;
 
   // ================================ Refs ================================
@@ -291,6 +293,22 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
       leavedClassName={`${prefixCls}-content-wrapper-hidden`}
     >
       {({ className: motionClassName, style: motionStyle }, motionRef) => {
+        const content = (
+          <DrawerPanel
+            id={id}
+            containerRef={motionRef}
+            prefixCls={prefixCls}
+            className={classNames(className, drawerClassNames?.content)}
+            style={{
+              ...style,
+              ...styles?.content,
+            }}
+            {...pickAttrs(props, { aria: true })}
+            {...eventHandlers}
+          >
+            {children}
+          </DrawerPanel>
+        );
         return (
           <div
             className={classNames(
@@ -305,20 +323,7 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
             }}
             {...pickAttrs(props, { data: true })}
           >
-            <DrawerPanel
-              id={id}
-              containerRef={motionRef}
-              prefixCls={prefixCls}
-              className={classNames(className, drawerClassNames?.content)}
-              style={{
-                ...style,
-                ...styles?.content,
-              }}
-              {...pickAttrs(props, { aria: true })}
-              {...eventHandlers}
-            >
-              {children}
-            </DrawerPanel>
+            {drawerRender ? drawerRender(content) : content}
           </div>
         );
       }}
