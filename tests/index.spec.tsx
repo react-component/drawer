@@ -51,7 +51,8 @@ describe('rc-drawer-menu', () => {
     );
     expect(container.querySelector('.rc-drawer-right')).toBeTruthy();
     expect(
-      container.querySelector('.rc-drawer-content-wrapper').style.width,
+      container.querySelector<HTMLDivElement>('.rc-drawer-content-wrapper')
+        .style.width,
     ).toBe('378px');
     unmount();
   });
