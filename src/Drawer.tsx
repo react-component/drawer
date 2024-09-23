@@ -125,7 +125,7 @@ const Drawer: React.FC<DrawerProps> = props => {
     width,
     mask,
     maskClosable,
-    inline: getContainer === false,
+    inline: getContainer !== undefined,
     afterOpenChange: internalAfterOpenChange,
     ref: popupRef,
     ...eventHandlers,
