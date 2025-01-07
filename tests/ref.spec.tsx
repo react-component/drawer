@@ -20,6 +20,6 @@ describe('Drawer.ref', () => {
       jest.runAllTimers();
     });
 
-    expect(panelRef.current).toHaveClass('rc-drawer-content');
+    expect(panelRef.current).toHaveClass('rc-drawer-section');
   });
 });

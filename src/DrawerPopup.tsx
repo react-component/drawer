@@ -298,10 +298,10 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
             id={id}
             containerRef={motionRef}
             prefixCls={prefixCls}
-            className={classNames(className, drawerClassNames?.content)}
+            className={classNames(className, drawerClassNames?.section)}
             style={{
               ...style,
-              ...styles?.content,
+              ...styles?.section,
             }}
             {...pickAttrs(props, { aria: true })}
             {...eventHandlers}

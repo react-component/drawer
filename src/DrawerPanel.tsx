@@ -43,7 +43,7 @@ const DrawerPanel = (props: DrawerPanelProps) => {
 
   return (
     <div
-      className={classNames(`${prefixCls}-content`, className)}
+      className={classNames(`${prefixCls}-section`, className)}
       role="dialog"
       ref={mergedRef}
       {...pickAttrs(props, { aria: true })}
