@@ -301,7 +301,7 @@ describe('rc-drawer-menu', () => {
       const { container } = render(
         <Drawer open getContainer={false} onClose={onClose} />,
       );
-      fireEvent.keyDown(container.querySelector('.rc-drawer-content'), {
+      fireEvent.keyDown(container.querySelector('.rc-drawer-section'), {
         keyCode: KeyCode.ESC,
       });
       expect(onClose).toHaveBeenCalled();
@@ -312,7 +312,7 @@ describe('rc-drawer-menu', () => {
       const { container } = render(
         <Drawer open getContainer={false} onClose={onClose} keyboard={false} />,
       );
-      fireEvent.keyDown(container.querySelector('.rc-drawer-content'), {
+      fireEvent.keyDown(container.querySelector('.rc-drawer-section'), {
         keyCode: KeyCode.ESC,
       });
       expect(onClose).not.toHaveBeenCalled();
@@ -376,9 +376,9 @@ describe('rc-drawer-menu', () => {
     const { baseElement } = render(
       <Drawer width="93" open onMouseEnter={enter} onMouseLeave={leave} />,
     );
-    fireEvent.mouseOver(baseElement.querySelector('.rc-drawer-content'));
+    fireEvent.mouseOver(baseElement.querySelector('.rc-drawer-section'));
     expect(enter).toHaveBeenCalled();
-    fireEvent.mouseLeave(baseElement.querySelector('.rc-drawer-content'));
+    fireEvent.mouseLeave(baseElement.querySelector('.rc-drawer-section'));
     expect(leave).toHaveBeenCalled();
   });
 
@@ -386,10 +386,10 @@ describe('rc-drawer-menu', () => {
     const { unmount } = render(
       <Drawer className="customer-className" id="customer-id" open />,
     );
-    expect(document.querySelector('.rc-drawer-content')).toHaveClass(
+    expect(document.querySelector('.rc-drawer-section')).toHaveClass(
       'customer-className',
     );
-    expect(document.querySelector('.rc-drawer-content')).toHaveAttribute(
+    expect(document.querySelector('.rc-drawer-section')).toHaveAttribute(
       'id',
       'customer-id',
     );
@@ -430,7 +430,7 @@ describe('rc-drawer-menu', () => {
         classNames={{
           wrapper: 'customer-wrapper',
           mask: 'customer-mask',
-          content: 'customer-content',
+          section: 'customer-section',
         }}
         open
       />,
@@ -441,8 +441,8 @@ describe('rc-drawer-menu', () => {
     expect(document.querySelector('.rc-drawer-mask')).toHaveClass(
       'customer-mask',
     );
-    expect(document.querySelector('.rc-drawer-content')).toHaveClass(
-      'customer-content',
+    expect(document.querySelector('.rc-drawer-section')).toHaveClass(
+      'customer-section',
     );
     unmount();
   });
@@ -452,7 +452,7 @@ describe('rc-drawer-menu', () => {
         styles={{
           wrapper: { background: 'red' },
           mask: { background: 'blue' },
-          content: { background: 'green' },
+          section: { background: 'green' },
         }}
         open
       />,
@@ -463,7 +463,7 @@ describe('rc-drawer-menu', () => {
     expect(document.querySelector('.rc-drawer-mask')).toHaveStyle(
       'background: blue',
     );
-    expect(document.querySelector('.rc-drawer-content')).toHaveStyle(
+    expect(document.querySelector('.rc-drawer-section')).toHaveStyle(
       'background: green',
     );
     unmount();
