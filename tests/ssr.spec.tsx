@@ -55,7 +55,7 @@ describe('SSR', () => {
   // This may affect ref call. Let's check this also.
   it('should not block ref', done => {
     const Demo = ({ open }: any = {}) => {
-      const ref = React.useRef<HTMLDivElement>();
+      const ref = React.useRef<HTMLDivElement>(null);
 
       React.useEffect(() => {
         if (open) {
