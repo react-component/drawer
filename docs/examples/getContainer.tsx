@@ -19,7 +19,7 @@ const { SubMenu } = Menu;
 const MenuItemGroup = Menu.ItemGroup;
 
 export default () => {
-  const containerRef = React.useRef<HTMLDivElement>();
+  const containerRef = React.useRef<HTMLDivElement>(null);
   const [open, setOpen] = React.useState(false);
 
   return (
