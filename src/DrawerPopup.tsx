@@ -126,9 +126,9 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
   } = props;
 
   // ================================ Refs ================================
-  const panelRef = React.useRef<HTMLDivElement>();
-  const sentinelStartRef = React.useRef<HTMLDivElement>();
-  const sentinelEndRef = React.useRef<HTMLDivElement>();
+  const panelRef = React.useRef<HTMLDivElement>(null);
+  const sentinelStartRef = React.useRef<HTMLDivElement>(null);
+  const sentinelEndRef = React.useRef<HTMLDivElement>(null);
 
   React.useImperativeHandle(ref, () => panelRef.current);
 

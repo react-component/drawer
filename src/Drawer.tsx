@@ -70,9 +70,9 @@ const Drawer: React.FC<DrawerProps> = props => {
   const mergedOpen = mounted ? open : false;
 
   // ============================ Focus =============================
-  const popupRef = React.useRef<HTMLDivElement>();
+  const popupRef = React.useRef<HTMLDivElement>(null);
 
-  const lastActiveRef = React.useRef<HTMLElement>();
+  const lastActiveRef = React.useRef<HTMLElement>(null);
   useLayoutEffect(() => {
     if (mergedOpen) {
       lastActiveRef.current = document.activeElement as HTMLElement;
