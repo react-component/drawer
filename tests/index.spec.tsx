@@ -1,6 +1,6 @@
 import { cleanup, fireEvent, render, act } from '@testing-library/react';
-import KeyCode from 'rc-util/lib/KeyCode';
-import { resetWarned } from 'rc-util/lib/warning';
+import KeyCode from '@rc-component/util/lib/KeyCode';
+import { resetWarned } from '@rc-component/util/lib/warning';
 import React from 'react';
 import type { DrawerProps } from '../src';
 import Drawer from '../src';

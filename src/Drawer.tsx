@@ -1,6 +1,6 @@
 import type { PortalProps } from '@rc-component/portal';
 import Portal from '@rc-component/portal';
-import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
+import useLayoutEffect from '@rc-component/util/lib/hooks/useLayoutEffect';
 import * as React from 'react';
 import { RefContext } from './context';
 import type {
