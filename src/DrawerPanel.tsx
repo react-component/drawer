@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import * as React from 'react';
 import { RefContext } from './context';
-import pickAttrs from 'rc-util/lib/pickAttrs';
-import { useComposeRef } from 'rc-util/lib/ref';
+import pickAttrs from '@rc-component/util/lib/pickAttrs';
+import { useComposeRef } from '@rc-component/util/lib/ref';
 
 export interface DrawerPanelRef {
   focus: VoidFunction;

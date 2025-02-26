@@ -1,8 +1,8 @@
 import classNames from 'classnames';
-import type { CSSMotionProps } from 'rc-motion';
-import CSSMotion from 'rc-motion';
-import KeyCode from 'rc-util/lib/KeyCode';
-import pickAttrs from 'rc-util/lib/pickAttrs';
+import type { CSSMotionProps } from '@rc-component/motion';
+import CSSMotion from '@rc-component/motion';
+import KeyCode from '@rc-component/util/lib/KeyCode';
+import pickAttrs from '@rc-component/util/lib/pickAttrs';
 import * as React from 'react';
 import type { DrawerContextProps } from './context';
 import DrawerContext from './context';
@@ -126,9 +126,9 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
   } = props;
 
   // ================================ Refs ================================
-  const panelRef = React.useRef<HTMLDivElement>();
-  const sentinelStartRef = React.useRef<HTMLDivElement>();
-  const sentinelEndRef = React.useRef<HTMLDivElement>();
+  const panelRef = React.useRef<HTMLDivElement>(null);
+  const sentinelStartRef = React.useRef<HTMLDivElement>(null);
+  const sentinelEndRef = React.useRef<HTMLDivElement>(null);
 
   React.useImperativeHandle(ref, () => panelRef.current);
 

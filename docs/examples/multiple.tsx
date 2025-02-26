@@ -2,7 +2,7 @@
 import { Button } from 'antd';
 import * as React from 'react';
 
-import Drawer from 'rc-drawer';
+import Drawer from '@rc-component/drawer';
 
 import 'antd/lib/button/style';
 import 'antd/lib/style';

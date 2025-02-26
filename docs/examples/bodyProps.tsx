@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
-import Drawer from 'rc-drawer';
+import Drawer from '@rc-component/drawer';
 import motionProps from './motion';
 
 const Demo = () => {

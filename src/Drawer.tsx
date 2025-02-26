@@ -1,6 +1,6 @@
 import type { PortalProps } from '@rc-component/portal';
 import Portal from '@rc-component/portal';
-import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
+import useLayoutEffect from '@rc-component/util/lib/hooks/useLayoutEffect';
 import * as React from 'react';
 import { RefContext } from './context';
 import type {
@@ -70,9 +70,9 @@ const Drawer: React.FC<DrawerProps> = props => {
   const mergedOpen = mounted ? open : false;
 
   // ============================ Focus =============================
-  const popupRef = React.useRef<HTMLDivElement>();
+  const popupRef = React.useRef<HTMLDivElement>(null);
 
-  const lastActiveRef = React.useRef<HTMLElement>();
+  const lastActiveRef = React.useRef<HTMLElement>(null);
   useLayoutEffect(() => {
     if (mergedOpen) {
       lastActiveRef.current = document.activeElement as HTMLElement;

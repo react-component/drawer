@@ -2,8 +2,10 @@ import { render, fireEvent } from '@testing-library/react';
 import React from 'react';
 import Drawer from '../src';
 
-jest.mock('rc-motion', () => {
-  const { genCSSMotion } = jest.requireActual('rc-motion/lib/CSSMotion');
+jest.mock('@rc-component/motion', () => {
+  const { genCSSMotion } = jest.requireActual(
+    '@rc-component/motion/lib/CSSMotion',
+  );
   const CSSMotion = genCSSMotion(true);
   return CSSMotion;
 });

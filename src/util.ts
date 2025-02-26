@@ -1,5 +1,5 @@
-import warning from 'rc-util/lib/warning';
-import canUseDom from 'rc-util/lib/Dom/canUseDom';
+import warning from '@rc-component/util/lib/warning';
+import canUseDom from '@rc-component/util/lib/Dom/canUseDom';
 import type { DrawerProps } from './Drawer';
 
 export function parseWidthHeight(value?: number | string) {
