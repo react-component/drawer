@@ -21,7 +21,7 @@ export interface DrawerProps
   prefixCls?: string;
   open?: boolean;
   onClose?: (e: React.MouseEvent | React.KeyboardEvent) => void;
-  destroyOnClose?: boolean;
+  destroyOnHidden?: boolean;
   getContainer?: PortalProps['getContainer'];
   panelRef?: React.Ref<HTMLDivElement>;
   classNames?: DrawerClassNames;
@@ -41,7 +41,7 @@ const Drawer: React.FC<DrawerProps> = props => {
     getContainer,
     forceRender,
     afterOpenChange,
-    destroyOnClose,
+    destroyOnHidden,
     onMouseEnter,
     onMouseOver,
     onMouseLeave,
@@ -95,15 +95,10 @@ const Drawer: React.FC<DrawerProps> = props => {
     };
 
   // =========================== Context ============================
-  const refContext = React.useMemo(
-    () => ({
-      panel: panelRef,
-    }),
-    [panelRef],
-  );
+  const refContext = React.useMemo(() => ({ panel: panelRef }), [panelRef]);
 
   // ============================ Render ============================
-  if (!forceRender && !animatedVisible && !mergedOpen && destroyOnClose) {
+  if (!forceRender && !animatedVisible && !mergedOpen && destroyOnHidden) {
     return null;
   }
 
@@ -115,6 +110,7 @@ const Drawer: React.FC<DrawerProps> = props => {
     onKeyDown,
     onKeyUp,
   };
+
   const drawerPopupProps = {
     ...props,
     open: mergedOpen,

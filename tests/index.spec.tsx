@@ -183,20 +183,20 @@ describe('rc-drawer-menu', () => {
     expect(document.querySelector('.rc-drawer')).toBeTruthy();
   });
 
-  describe('destroyOnClose', () => {
+  describe('destroyOnHidden', () => {
     it('basic', () => {
-      const { rerender } = render(<Drawer destroyOnClose open />);
+      const { rerender } = render(<Drawer destroyOnHidden open />);
       expect(document.querySelector('.rc-drawer')).toBeTruthy();
-      rerender(<Drawer destroyOnClose />);
+      rerender(<Drawer destroyOnHidden />);
       expect(document.querySelector('.rc-drawer')).toBeFalsy();
     });
 
     it('inline', () => {
       const { container, rerender } = render(
-        <Drawer destroyOnClose open getContainer={false} />,
+        <Drawer destroyOnHidden open getContainer={false} />,
       );
       expect(container.querySelector('.rc-drawer')).toBeTruthy();
-      rerender(<Drawer destroyOnClose getContainer={false} />);
+      rerender(<Drawer destroyOnHidden getContainer={false} />);
       expect(container.querySelector('.rc-drawer')).toBeFalsy();
     });
   });
