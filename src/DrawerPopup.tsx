@@ -77,7 +77,10 @@ export interface DrawerPopupProps
   drawerRender?: (node: React.ReactNode) => React.ReactNode;
 }
 
-function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
+const DrawerPopup: React.ForwardRefRenderFunction<
+  HTMLDivElement,
+  DrawerPopupProps
+> = (props, ref) => {
   const {
     prefixCls,
     open,
@@ -375,7 +378,7 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
       </div>
     </DrawerContext.Provider>
   );
-}
+};
 
 const RefDrawerPopup = React.forwardRef(DrawerPopup);
 

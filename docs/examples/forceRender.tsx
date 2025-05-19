@@ -32,7 +32,7 @@ export default () => {
         width="20vw"
         open={open2}
         onClose={() => setOpen2(false)}
-        destroyOnClose
+        destroyOnHidden
         placement="left"
         {...motionProps}
       >

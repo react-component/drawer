@@ -33,7 +33,7 @@ export interface DrawerPanelProps
   containerRef?: React.Ref<HTMLDivElement>;
 }
 
-const DrawerPanel = (props: DrawerPanelProps) => {
+const DrawerPanel: React.FC<Readonly<DrawerPanelProps>> = props => {
   const { prefixCls, className, containerRef, ...restProps } = props;
 
   const { panel: panelRef } = React.useContext(RefContext);
