@@ -6,7 +6,7 @@ import {
 import { Menu } from 'antd';
 import * as React from 'react';
 
-import Drawer from 'rc-drawer';
+import Drawer from '@rc-component/drawer';
 
 import 'antd/lib/menu/style';
 import 'antd/lib/style';

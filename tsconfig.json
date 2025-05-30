@@ -10,7 +10,7 @@
     "paths": {
       "@/*": ["src/*"],
       "@@/*": ["src/.umi/*"],
-      "rc-drawer": ["src/index.ts"]
+      "@rc-component/drawer": ["src/index.ts"]
     }
   },
   "include": [".dumi/**/*", ".dumirc.ts", "**/*.ts", "**/*.tsx"]

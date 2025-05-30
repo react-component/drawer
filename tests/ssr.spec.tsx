@@ -2,12 +2,12 @@ import { render } from '@testing-library/react';
 import { renderToString } from 'react-dom/server';
 import React from 'react';
 import Drawer from '../src';
-// import canUseDom from 'rc-util/lib/Dom/canUseDom'
+// import canUseDom from '@rc-component/util/lib/Dom/canUseDom'
 
 global.canUseDom = true;
 
-jest.mock('rc-util/lib/Dom/canUseDom', () => {
-  // const canUseDom = jest.requireActual('rc-util/lib/Dom/canUseDom');
+jest.mock('@rc-component/util/lib/Dom/canUseDom', () => {
+  // const canUseDom = jest.requireActual('@rc-component/util/lib/Dom/canUseDom');
   return () => global.canUseDom;
 });
 
@@ -55,7 +55,7 @@ describe('SSR', () => {
   // This may affect ref call. Let's check this also.
   it('should not block ref', done => {
     const Demo = ({ open }: any = {}) => {
-      const ref = React.useRef<HTMLDivElement>();
+      const ref = React.useRef<HTMLDivElement>(null);
 
       React.useEffect(() => {
         if (open) {

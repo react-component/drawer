@@ -1,8 +1,8 @@
 import classNames from 'classnames';
-import type { CSSMotionProps } from 'rc-motion';
-import CSSMotion from 'rc-motion';
-import KeyCode from 'rc-util/lib/KeyCode';
-import pickAttrs from 'rc-util/lib/pickAttrs';
+import type { CSSMotionProps } from '@rc-component/motion';
+import CSSMotion from '@rc-component/motion';
+import KeyCode from '@rc-component/util/lib/KeyCode';
+import pickAttrs from '@rc-component/util/lib/pickAttrs';
 import * as React from 'react';
 import type { DrawerContextProps } from './context';
 import DrawerContext from './context';
@@ -77,7 +77,10 @@ export interface DrawerPopupProps
   drawerRender?: (node: React.ReactNode) => React.ReactNode;
 }
 
-function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
+const DrawerPopup: React.ForwardRefRenderFunction<
+  HTMLDivElement,
+  DrawerPopupProps
+> = (props, ref) => {
   const {
     prefixCls,
     open,
@@ -126,9 +129,9 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
   } = props;
 
   // ================================ Refs ================================
-  const panelRef = React.useRef<HTMLDivElement>();
-  const sentinelStartRef = React.useRef<HTMLDivElement>();
-  const sentinelEndRef = React.useRef<HTMLDivElement>();
+  const panelRef = React.useRef<HTMLDivElement>(null);
+  const sentinelStartRef = React.useRef<HTMLDivElement>(null);
+  const sentinelEndRef = React.useRef<HTMLDivElement>(null);
 
   React.useImperativeHandle(ref, () => panelRef.current);
 
@@ -217,8 +220,8 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
   );
 
   // ============================ Mask ============================
-  const maskNode: React.ReactNode = mask && (
-    <CSSMotion key="mask" {...maskMotion} visible={open}>
+  const maskNode: React.ReactNode = (
+    <CSSMotion key="mask" {...maskMotion} visible={mask && open}>
       {(
         { className: motionMaskClassName, style: motionMaskStyle },
         maskRef,
@@ -298,10 +301,10 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
             id={id}
             containerRef={motionRef}
             prefixCls={prefixCls}
-            className={classNames(className, drawerClassNames?.content)}
+            className={classNames(className, drawerClassNames?.section)}
             style={{
               ...style,
-              ...styles?.content,
+              ...styles?.section,
             }}
             {...pickAttrs(props, { aria: true })}
             {...eventHandlers}
@@ -375,7 +378,7 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
       </div>
     </DrawerContext.Provider>
   );
-}
+};
 
 const RefDrawerPopup = React.forwardRef(DrawerPopup);
 

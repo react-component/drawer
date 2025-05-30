@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import * as React from 'react';
 import { RefContext } from './context';
-import pickAttrs from 'rc-util/lib/pickAttrs';
-import { useComposeRef } from 'rc-util/lib/ref';
+import pickAttrs from '@rc-component/util/lib/pickAttrs';
+import { useComposeRef } from '@rc-component/util/lib/ref';
 
 export interface DrawerPanelRef {
   focus: VoidFunction;
@@ -33,7 +33,7 @@ export interface DrawerPanelProps
   containerRef?: React.Ref<HTMLDivElement>;
 }
 
-const DrawerPanel = (props: DrawerPanelProps) => {
+const DrawerPanel: React.FC<Readonly<DrawerPanelProps>> = props => {
   const { prefixCls, className, containerRef, ...restProps } = props;
 
   const { panel: panelRef } = React.useContext(RefContext);
@@ -43,7 +43,7 @@ const DrawerPanel = (props: DrawerPanelProps) => {
 
   return (
     <div
-      className={classNames(`${prefixCls}-content`, className)}
+      className={classNames(`${prefixCls}-section`, className)}
       role="dialog"
       ref={mergedRef}
       {...pickAttrs(props, { aria: true })}

@@ -1,6 +1,6 @@
 import type { PortalProps } from '@rc-component/portal';
 import Portal from '@rc-component/portal';
-import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
+import useLayoutEffect from '@rc-component/util/lib/hooks/useLayoutEffect';
 import * as React from 'react';
 import { RefContext } from './context';
 import type {
@@ -21,7 +21,7 @@ export interface DrawerProps
   prefixCls?: string;
   open?: boolean;
   onClose?: (e: React.MouseEvent | React.KeyboardEvent) => void;
-  destroyOnClose?: boolean;
+  destroyOnHidden?: boolean;
   getContainer?: PortalProps['getContainer'];
   panelRef?: React.Ref<HTMLDivElement>;
   classNames?: DrawerClassNames;
@@ -41,7 +41,7 @@ const Drawer: React.FC<DrawerProps> = props => {
     getContainer,
     forceRender,
     afterOpenChange,
-    destroyOnClose,
+    destroyOnHidden,
     onMouseEnter,
     onMouseOver,
     onMouseLeave,
@@ -70,9 +70,9 @@ const Drawer: React.FC<DrawerProps> = props => {
   const mergedOpen = mounted ? open : false;
 
   // ============================ Focus =============================
-  const popupRef = React.useRef<HTMLDivElement>();
+  const popupRef = React.useRef<HTMLDivElement>(null);
 
-  const lastActiveRef = React.useRef<HTMLElement>();
+  const lastActiveRef = React.useRef<HTMLElement>(null);
   useLayoutEffect(() => {
     if (mergedOpen) {
       lastActiveRef.current = document.activeElement as HTMLElement;
@@ -95,15 +95,10 @@ const Drawer: React.FC<DrawerProps> = props => {
     };
 
   // =========================== Context ============================
-  const refContext = React.useMemo(
-    () => ({
-      panel: panelRef,
-    }),
-    [panelRef],
-  );
+  const refContext = React.useMemo(() => ({ panel: panelRef }), [panelRef]);
 
   // ============================ Render ============================
-  if (!forceRender && !animatedVisible && !mergedOpen && destroyOnClose) {
+  if (!forceRender && !animatedVisible && !mergedOpen && destroyOnHidden) {
     return null;
   }
 
@@ -115,6 +110,7 @@ const Drawer: React.FC<DrawerProps> = props => {
     onKeyDown,
     onKeyUp,
   };
+
   const drawerPopupProps = {
     ...props,
     open: mergedOpen,

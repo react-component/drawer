@@ -1,7 +1,7 @@
 import { Button } from 'antd';
 import * as React from 'react';
 
-import Drawer from 'rc-drawer';
+import Drawer from '@rc-component/drawer';
 
 import 'antd/lib/button/style';
 import 'antd/lib/menu/style';
@@ -32,7 +32,7 @@ export default () => {
         width="20vw"
         open={open2}
         onClose={() => setOpen2(false)}
-        destroyOnClose
+        destroyOnHidden
         placement="left"
         {...motionProps}
       >

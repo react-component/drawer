@@ -40,3 +40,5 @@ storybook
 .dumi/tmp
 .dumi/tmp-production
 pnpm-lock.yaml
+
+bun.lockb
