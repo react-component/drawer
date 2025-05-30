@@ -155,6 +155,7 @@ describe('rc-drawer-menu', () => {
       });
       unmount();
     });
+
     it('lock body scroll when getContainer give document.body', () => {
       const { unmount } = render(
         <Drawer open getContainer={() => document.body} />,
