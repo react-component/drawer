@@ -217,8 +217,8 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
   );
 
   // ============================ Mask ============================
-  const maskNode: React.ReactNode = mask && (
-    <CSSMotion key="mask" {...maskMotion} visible={open}>
+  const maskNode: React.ReactNode = (
+    <CSSMotion key="mask" {...maskMotion} visible={mask && open}>
       {(
         { className: motionMaskClassName, style: motionMaskStyle },
         maskRef,
