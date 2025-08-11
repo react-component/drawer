@@ -11,6 +11,7 @@ import type {
   DrawerPanelEvents,
 } from './DrawerPanel';
 import DrawerPanel from './DrawerPanel';
+import ResizableLine from './ResizableLine';
 import { parseWidthHeight } from './util';
 import type { DrawerClassNames, DrawerStyles } from './inter';
 
@@ -75,6 +76,12 @@ export interface DrawerPopupProps
   // styles
   styles?: DrawerStyles;
   drawerRender?: (node: React.ReactNode) => React.ReactNode;
+
+  // resizable
+  resizable?: boolean;
+  onResize?: (size: number) => void;
+  onResizeStart?: () => void;
+  onResizeEnd?: () => void;
 }
 
 function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
@@ -120,9 +127,13 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
     onClick,
     onKeyDown,
     onKeyUp,
+    onResize,
+    onResizeStart,
+    onResizeEnd,
 
     styles,
     drawerRender,
+    resizable,
   } = props;
 
   // ================================ Refs ================================
@@ -280,6 +291,64 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
     onKeyUp,
   };
 
+  // ============================ Resizable ============================
+  const [currentSize, setCurrentSize] = React.useState<number>();
+  const [isDragging, setIsDragging] = React.useState(false);
+
+  const handleResize = React.useCallback(
+    (size: number) => {
+      setCurrentSize(size);
+      onResize?.(size);
+    },
+    [onResize],
+  );
+
+  const handleResizeStart = React.useCallback(() => {
+    setIsDragging(true);
+    onResizeStart?.();
+  }, [onResizeStart]);
+
+  const handleResizeEnd = React.useCallback(() => {
+    setIsDragging(false);
+    onResizeEnd?.();
+  }, [onResizeEnd]);
+
+  // 动态计算容器样式
+  const dynamicWrapperStyle = React.useMemo(() => {
+    const style: React.CSSProperties = { ...wrapperStyle };
+
+    if (currentSize !== undefined && resizable) {
+      if (placement === 'left' || placement === 'right') {
+        style.width = currentSize;
+      } else {
+        style.height = currentSize;
+      }
+    }
+
+    // 根据 resizable 和 placement 设置 overflow
+    if (resizable) {
+      style.overflow = 'none';
+    } else {
+      // 没有设置 resizable，允许所有方向滚动
+      style.overflow = 'auto';
+    }
+
+    return style;
+  }, [wrapperStyle, currentSize, resizable, placement]);
+
+  const wrapperRef = React.useRef<HTMLDivElement>(null);
+  const [maxSize, setMaxSize] = React.useState(0);
+  React.useEffect(() => {
+    if (wrapperRef.current) {
+      const rect = wrapperRef.current.parentElement?.getBoundingClientRect();
+      setMaxSize(
+        placement === 'left' || placement === 'right'
+          ? (rect?.width ?? 0)
+          : (rect?.height ?? 0),
+      );
+    }
+  }, [wrapperRef.current]);
+
   const panelNode: React.ReactNode = (
     <CSSMotion
       key="panel"
@@ -311,18 +380,32 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
         );
         return (
           <div
+            ref={wrapperRef}
             className={classNames(
               `${prefixCls}-content-wrapper`,
               drawerClassNames?.wrapper,
-              motionClassName,
+              // 拖拽时移除动画类名，避免与 transition 冲突
+              !isDragging && motionClassName,
             )}
             style={{
-              ...wrapperStyle,
+              ...dynamicWrapperStyle,
               ...motionStyle,
               ...styles?.wrapper,
             }}
             {...pickAttrs(props, { data: true })}
           >
+            <ResizableLine
+              prefixCls={`${prefixCls}-resizable`}
+              direction={placement}
+              resizable={resizable}
+              className={drawerClassNames?.resizableLine}
+              style={styles?.resizableLine}
+              minSize={0}
+              maxSize={maxSize}
+              onResize={handleResize}
+              onResizeStart={handleResizeStart}
+              onResizeEnd={handleResizeEnd}
+            />
             {drawerRender ? drawerRender(content) : content}
           </div>
         );
