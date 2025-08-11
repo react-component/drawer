@@ -313,7 +313,6 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
     onResizeEnd?.();
   }, [onResizeEnd]);
 
-  // 动态计算容器样式
   const dynamicWrapperStyle = React.useMemo(() => {
     const style: React.CSSProperties = { ...wrapperStyle };
 
@@ -325,11 +324,9 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
       }
     }
 
-    // 根据 resizable 和 placement 设置 overflow
     if (resizable) {
       style.overflow = 'none';
     } else {
-      // 没有设置 resizable，允许所有方向滚动
       style.overflow = 'auto';
     }
 
@@ -384,7 +381,6 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
             className={classNames(
               `${prefixCls}-content-wrapper`,
               drawerClassNames?.wrapper,
-              // 拖拽时移除动画类名，避免与 transition 冲突
               !isDragging && motionClassName,
             )}
             style={{

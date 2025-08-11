@@ -4,25 +4,15 @@ import * as React from 'react';
 export type ResizeDirection = 'left' | 'right' | 'top' | 'bottom';
 
 export interface ResizableLineProps {
-  /** 样式类名前缀 */
   prefixCls?: string;
-  /** 调整大小的方向 */
   direction: ResizeDirection;
-  /** 是否启用调整大小功能 */
   resizable?: boolean;
-  /** 自定义类名 */
   className?: string;
-  /** 自定义样式 */
   style?: React.CSSProperties;
-  /** 最小尺寸限制 */
   minSize?: number;
-  /** 最大尺寸限制 */
   maxSize?: number;
-  /** 调整大小时的回调 */
   onResize?: (size: number) => void;
-  /** 调整大小结束时的回调 */
   onResizeEnd?: (size: number) => void;
-  /** 开始调整大小时的回调 */
   onResizeStart?: (size: number) => void;
 }
 
@@ -58,7 +48,7 @@ const ResizableLine: React.FC<ResizableLineProps> = ({
         setStartPos(e.clientY);
       }
 
-      // 获取父容器当前大小
+      // Get the current size of the parent container
       const parentElement = lineRef.current?.parentElement;
       if (parentElement) {
         const rect = parentElement.getBoundingClientRect();
@@ -77,17 +67,18 @@ const ResizableLine: React.FC<ResizableLineProps> = ({
       const currentPos = isHorizontal ? e.clientX : e.clientY;
       let delta = currentPos - startPos;
 
-      // 根据方向调整增量方向
+      // Adjust delta direction based on placement
       if (direction === 'right' || direction === 'bottom') {
         delta = -delta;
       }
 
       let newSize = startSize + delta;
 
-      // 应用最小最大值限制
+      // Apply min/max size limits
       if (newSize < minSize) {
         newSize = minSize;
       }
+      // Only apply maxSize if it's a valid positive number
       if (maxSize !== undefined && maxSize > 0 && newSize > maxSize) {
         newSize = maxSize;
       }
@@ -110,7 +101,7 @@ const ResizableLine: React.FC<ResizableLineProps> = ({
     if (isDragging) {
       setIsDragging(false);
 
-      // 获取最终大小
+      // Get the final size after resize
       const parentElement = lineRef.current?.parentElement;
       if (parentElement) {
         const rect = parentElement.getBoundingClientRect();
@@ -122,12 +113,14 @@ const ResizableLine: React.FC<ResizableLineProps> = ({
 
   React.useEffect(() => {
     if (isDragging) {
+      // Add global mouse event listeners during drag
       document.addEventListener('mousemove', handleMouseMove);
       document.addEventListener('mouseup', handleMouseUp);
       document.body.style.cursor = isHorizontal ? 'col-resize' : 'row-resize';
       document.body.style.userSelect = 'none';
 
       return () => {
+        // Clean up event listeners and styles
         document.removeEventListener('mousemove', handleMouseMove);
         document.removeEventListener('mouseup', handleMouseUp);
         document.body.style.cursor = '';
@@ -136,7 +129,7 @@ const ResizableLine: React.FC<ResizableLineProps> = ({
     }
   }, [isDragging, handleMouseMove, handleMouseUp, isHorizontal]);
 
-  // 如果没有启用 resizable，不渲染
+  // Don't render if resizable is disabled
   if (!resizable) {
     return null;
   }
@@ -152,7 +145,7 @@ const ResizableLine: React.FC<ResizableLineProps> = ({
 
   const resizeLineStyle: React.CSSProperties = {
     position: 'absolute',
-    zIndex: 1, // 提高 z-index 确保在最顶层
+    zIndex: 1,
     ...style,
   };
 
