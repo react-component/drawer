@@ -1,5 +1,5 @@
 ---
-title: Resizable
+title: resizable
 nav:
   title: Resizable
   path: /resizable

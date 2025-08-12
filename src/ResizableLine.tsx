@@ -145,7 +145,7 @@ const ResizableLine: React.FC<ResizableLineProps> = ({
 
   const resizeLineStyle: React.CSSProperties = {
     position: 'absolute',
-    zIndex: 1,
+    zIndex: 2,
     ...style,
   };
 

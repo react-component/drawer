@@ -338,6 +338,8 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
   React.useEffect(() => {
     if (wrapperRef.current) {
       const rect = wrapperRef.current.parentElement?.getBoundingClientRect();
+      console.log(rect, 'rect');
+
       setMaxSize(
         placement === 'left' || placement === 'right'
           ? (rect?.width ?? 0)
