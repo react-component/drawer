@@ -1,35 +1,35 @@
 import classNames from 'classnames';
 import * as React from 'react';
-
-export type ResizeDirection = 'left' | 'right' | 'top' | 'bottom';
+import type { Placement } from './Drawer';
 
 export interface ResizableLineProps {
   prefixCls?: string;
-  direction: ResizeDirection;
-  resizable?: boolean;
+  direction: Placement;
   className?: string;
   style?: React.CSSProperties;
   minSize?: number;
   maxSize?: number;
+  isDragging?: boolean;
   onResize?: (size: number) => void;
   onResizeEnd?: (size: number) => void;
   onResizeStart?: (size: number) => void;
+  onDraggingChange?: (dragging: boolean) => void;
 }
 
 const ResizableLine: React.FC<ResizableLineProps> = ({
   prefixCls = 'resizable',
   direction,
-  resizable = false,
   className,
   style,
   minSize = 100,
   maxSize,
+  isDragging = false,
   onResize,
   onResizeEnd,
   onResizeStart,
+  onDraggingChange,
 }) => {
   const lineRef = React.useRef<HTMLDivElement>(null);
-  const [isDragging, setIsDragging] = React.useState(false);
   const [startPos, setStartPos] = React.useState(0);
   const [startSize, setStartSize] = React.useState(0);
 
@@ -40,7 +40,7 @@ const ResizableLine: React.FC<ResizableLineProps> = ({
       e.preventDefault();
       e.stopPropagation();
 
-      setIsDragging(true);
+      onDraggingChange?.(true);
 
       if (isHorizontal) {
         setStartPos(e.clientX);
@@ -57,7 +57,7 @@ const ResizableLine: React.FC<ResizableLineProps> = ({
         onResizeStart?.(currentSize);
       }
     },
-    [isHorizontal, onResizeStart],
+    [isHorizontal, onResizeStart, onDraggingChange],
   );
 
   const handleMouseMove = React.useCallback(
@@ -99,7 +99,7 @@ const ResizableLine: React.FC<ResizableLineProps> = ({
 
   const handleMouseUp = React.useCallback(() => {
     if (isDragging) {
-      setIsDragging(false);
+      onDraggingChange?.(false);
 
       // Get the final size after resize
       const parentElement = lineRef.current?.parentElement;
@@ -109,7 +109,7 @@ const ResizableLine: React.FC<ResizableLineProps> = ({
         onResizeEnd?.(finalSize);
       }
     }
-  }, [isDragging, onResizeEnd, isHorizontal]);
+  }, [isDragging, onResizeEnd, isHorizontal, onDraggingChange]);
 
   React.useEffect(() => {
     if (isDragging) {
@@ -128,11 +128,6 @@ const ResizableLine: React.FC<ResizableLineProps> = ({
       };
     }
   }, [isDragging, handleMouseMove, handleMouseUp, isHorizontal]);
-
-  // Don't render if resizable is disabled
-  if (!resizable) {
-    return null;
-  }
 
   const resizeLineClassName = classNames(
     `${prefixCls}-line`,

@@ -64,12 +64,16 @@ ReactDom.render(
 | onClose            | func                                                                        | null                                   | close click function                                                          |
 | keyboard           | boolean                                                                     | true                                   | Whether support press esc to close                                            |
 | autoFocus          | boolean                                                                     | true                                   | Whether focusing on the drawer after it opened                                |
+| resizable          | boolean                                                                     | false                                  | Whether the drawer can be resized by dragging                                 |
 | onMouseEnter       | React.MouseEventHandler\<HTMLDivElement\>                                   | -                                      | Trigger when mouse enter drawer panel                                         |
 | onMouseOver        | React.MouseEventHandler\<HTMLDivElement\>                                   | -                                      | Trigger when mouse over drawer panel                                          |
 | onMouseLeave       | React.MouseEventHandler\<HTMLDivElement\>                                   | -                                      | Trigger when mouse leave drawer panel                                         |
 | onClick            | React.MouseEventHandler\<HTMLDivElement\>                                   | -                                      | Trigger when mouse click drawer panel                                         |
 | onKeyDown          | React.MouseEventHandler\<HTMLDivElement\>                                   | -                                      | Trigger when mouse keydown on drawer panel                                    |
 | onKeyUp            | React.MouseEventHandler\<HTMLDivElement\>                                   | -                                      | Trigger when mouse keyup on drawer panel                                      |
+| onResize           | (size: number) => void                                                      | -                                      | Callback when drawer is being resized                                         |
+| onResizeStart      | () => void                                                                  | -                                      | Callback when resize starts                                                   |
+| onResizeEnd        | () => void                                                                  | -                                      | Callback when resize ends                                                     |
 
 > 2.0 Rename `onMaskClick` -> `onClose`, add `maskClosable`.
 

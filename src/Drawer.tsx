@@ -26,7 +26,7 @@ export interface DrawerProps
   panelRef?: React.Ref<HTMLDivElement>;
   classNames?: DrawerClassNames;
   styles?: DrawerStyles;
-  /** 是否启用调整大小功能 */
+  /** Whether to enable width resize */
   resizable?: boolean;
   onResize?: (size: number) => void;
   onResizeStart?: () => void;

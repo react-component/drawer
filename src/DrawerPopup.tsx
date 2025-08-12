@@ -304,14 +304,16 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
   );
 
   const handleResizeStart = React.useCallback(() => {
-    setIsDragging(true);
     onResizeStart?.();
   }, [onResizeStart]);
 
   const handleResizeEnd = React.useCallback(() => {
-    setIsDragging(false);
     onResizeEnd?.();
   }, [onResizeEnd]);
+
+  const handleDraggingChange = React.useCallback((dragging: boolean) => {
+    setIsDragging(dragging);
+  }, []);
 
   const dynamicWrapperStyle = React.useMemo(() => {
     const style: React.CSSProperties = { ...wrapperStyle };
@@ -338,8 +340,6 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
   React.useEffect(() => {
     if (wrapperRef.current) {
       const rect = wrapperRef.current.parentElement?.getBoundingClientRect();
-      console.log(rect, 'rect');
-
       setMaxSize(
         placement === 'left' || placement === 'right'
           ? (rect?.width ?? 0)
@@ -392,18 +392,21 @@ function DrawerPopup(props: DrawerPopupProps, ref: React.Ref<HTMLDivElement>) {
             }}
             {...pickAttrs(props, { data: true })}
           >
-            <ResizableLine
-              prefixCls={`${prefixCls}-resizable`}
-              direction={placement}
-              resizable={resizable}
-              className={drawerClassNames?.resizableLine}
-              style={styles?.resizableLine}
-              minSize={0}
-              maxSize={maxSize}
-              onResize={handleResize}
-              onResizeStart={handleResizeStart}
-              onResizeEnd={handleResizeEnd}
-            />
+            {resizable && (
+              <ResizableLine
+                prefixCls={`${prefixCls}-resizable`}
+                direction={placement}
+                className={drawerClassNames?.resizableLine}
+                style={styles?.resizableLine}
+                minSize={0}
+                maxSize={maxSize}
+                isDragging={isDragging}
+                onResize={handleResize}
+                onResizeStart={handleResizeStart}
+                onResizeEnd={handleResizeEnd}
+                onDraggingChange={handleDraggingChange}
+              />
+            )}
             {drawerRender ? drawerRender(content) : content}
           </div>
         );
