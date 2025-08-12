@@ -28,7 +28,7 @@ export default () => {
         <span>Placement: </span>
         <select
           value={placement}
-          onChange={e => setPlacement(e.target.value as any)}
+          onChange={e => setPlacement(e.target.value as Placement)}
         >
           <option value="left">Left</option>
           <option value="right">Right</option>
