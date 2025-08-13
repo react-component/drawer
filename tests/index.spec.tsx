@@ -475,4 +475,43 @@ describe('rc-drawer-menu', () => {
     expect(document.querySelector('#test')).toBeTruthy();
     unmount();
   });
+
+  it('should support resizable', () => {
+    const { unmount } = render(
+      <Drawer resizable open placement="left" width={200} />,
+    );
+
+    // Mock getBoundingClientRect for the content wrapper to simulate real DOM dimensions
+    const contentWrapper = document.querySelector(
+      '.rc-drawer-content-wrapper',
+    ) as HTMLElement;
+    const mockGetBoundingClientRect = jest.fn(
+      () =>
+        ({
+          width: 200,
+          height: 400,
+          top: 0,
+          left: 0,
+          bottom: 400,
+          right: 200,
+          x: 0,
+          y: 0,
+          toJSON: () => ({}),
+        }) as DOMRect,
+    );
+    contentWrapper.getBoundingClientRect = mockGetBoundingClientRect;
+
+    const resizableLine = document.querySelector('.rc-drawer-resizable-line');
+    expect(resizableLine).toBeTruthy();
+
+    // Simulate drag from 200px to 100px (should reduce width by 100px)
+    fireEvent.mouseDown(resizableLine, { clientX: 200 });
+    fireEvent.mouseMove(document, { clientX: 100, clientY: 0 });
+    fireEvent.mouseUp(document, { clientX: 100, clientY: 0 });
+
+    expect(document.querySelector('.rc-drawer-content-wrapper')).toHaveStyle({
+      width: '100px',
+    });
+    unmount();
+  });
 });

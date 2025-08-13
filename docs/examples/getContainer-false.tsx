@@ -52,6 +52,7 @@ export default () => {
         open={open}
         onClose={() => setOpen(false)}
         {...motionProps}
+        resizable
       >
         <Menu
           defaultSelectedKeys={['1']}

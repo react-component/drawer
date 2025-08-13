@@ -26,6 +26,11 @@ export interface DrawerProps
   panelRef?: React.Ref<HTMLDivElement>;
   classNames?: DrawerClassNames;
   styles?: DrawerStyles;
+  /** Whether to enable width resize */
+  resizable?: boolean;
+  onResize?: (size: number) => void;
+  onResizeStart?: () => void;
+  onResizeEnd?: () => void;
 }
 
 const Drawer: React.FC<DrawerProps> = props => {
@@ -48,6 +53,9 @@ const Drawer: React.FC<DrawerProps> = props => {
     onClick,
     onKeyDown,
     onKeyUp,
+    onResize,
+    onResizeStart,
+    onResizeEnd,
 
     // Refs
     panelRef,
@@ -109,6 +117,9 @@ const Drawer: React.FC<DrawerProps> = props => {
     onClick,
     onKeyDown,
     onKeyUp,
+    onResize,
+    onResizeStart,
+    onResizeEnd,
   };
 
   const drawerPopupProps = {
