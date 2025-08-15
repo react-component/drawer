@@ -356,9 +356,9 @@ const DrawerPopup: React.ForwardRefRenderFunction<
     }
 
     if (resizable) {
-      style.overflow = 'none';
+      style.overflow = 'visible';
     } else {
-      style.overflow = 'auto';
+      style.overflow = 'hidden';
     }
 
     return style;
