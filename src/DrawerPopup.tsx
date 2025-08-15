@@ -312,12 +312,10 @@ const DrawerPopup: React.ForwardRefRenderFunction<
     }
   }, [isHorizontal, width, height]);
 
-  // Initialize and update currentSize
   React.useEffect(() => {
     updateCurrentSize();
   }, [updateCurrentSize]);
 
-  // Calculate maxSize based on container dimensions
   const calculateMaxSize = React.useCallback(() => {
     if (wrapperRef.current) {
       const rect = wrapperRef.current.parentElement?.getBoundingClientRect();
@@ -337,7 +335,6 @@ const DrawerPopup: React.ForwardRefRenderFunction<
   );
 
   const handleResizeStart = React.useCallback(() => {
-    // Recalculate maxSize to get the latest container size
     calculateMaxSize();
     onResizeStart?.();
   }, [onResizeStart, calculateMaxSize]);
@@ -346,7 +343,6 @@ const DrawerPopup: React.ForwardRefRenderFunction<
     onResizeEnd?.();
   }, [onResizeEnd]);
 
-  // Use drag hook for resizable functionality
   const { dragElementProps, isDragging } = useDrag({
     prefixCls: `${prefixCls}-resizable`,
     direction: placement,
@@ -373,7 +369,6 @@ const DrawerPopup: React.ForwardRefRenderFunction<
     return style;
   }, [wrapperStyle, resizable]);
 
-  // Initialize maxSize calculation
   React.useEffect(() => {
     calculateMaxSize();
   }, [calculateMaxSize]);
