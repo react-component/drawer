@@ -3,13 +3,12 @@ import classNames from 'classnames';
 import type { Placement } from '../Drawer';
 
 export interface UseDragOptions {
-  prefixCls?: string;
+  prefixCls: string;
   direction: Placement;
   className?: string;
   style?: React.CSSProperties;
-  minSize?: number;
+  minSize: number;
   maxSize?: number;
-  disabled?: boolean;
   containerRef?: React.RefObject<HTMLElement>;
   currentSize?: number;
   onResize?: (size: number) => void;
@@ -28,13 +27,12 @@ export interface UseDragReturn {
 
 export default function useDrag(options: UseDragOptions): UseDragReturn {
   const {
-    prefixCls = 'resizable',
+    prefixCls,
     direction,
     className,
     style,
-    minSize = 100,
+    minSize,
     maxSize,
-    disabled = false,
     containerRef,
     currentSize,
     onResize,
@@ -50,8 +48,6 @@ export default function useDrag(options: UseDragOptions): UseDragReturn {
 
   const handleMouseDown = React.useCallback(
     (e: React.MouseEvent) => {
-      if (disabled) return;
-
       e.preventDefault();
       e.stopPropagation();
 
@@ -70,19 +66,17 @@ export default function useDrag(options: UseDragOptions): UseDragReturn {
       } else if (containerRef?.current) {
         const rect = containerRef.current.getBoundingClientRect();
         startSize = isHorizontal ? rect.width : rect.height;
-      } else {
-        return; // No size information available
       }
 
       setStartSize(startSize);
       onResizeStart?.(startSize);
     },
-    [disabled, isHorizontal, containerRef, currentSize, onResizeStart],
+    [isHorizontal, containerRef, currentSize, onResizeStart],
   );
 
   const handleMouseMove = React.useCallback(
     (e: MouseEvent) => {
-      if (!isDragging || disabled) return;
+      if (!isDragging) return;
 
       const currentPos = isHorizontal ? e.clientX : e.clientY;
       let delta = currentPos - startPos;
@@ -107,7 +101,6 @@ export default function useDrag(options: UseDragOptions): UseDragReturn {
     },
     [
       isDragging,
-      disabled,
       startPos,
       startSize,
       direction,
@@ -119,7 +112,7 @@ export default function useDrag(options: UseDragOptions): UseDragReturn {
   );
 
   const handleMouseUp = React.useCallback(() => {
-    if (isDragging && !disabled) {
+    if (isDragging) {
       setIsDragging(false);
 
       // Get the final size after resize
@@ -129,7 +122,7 @@ export default function useDrag(options: UseDragOptions): UseDragReturn {
         onResizeEnd?.(finalSize);
       }
     }
-  }, [isDragging, disabled, containerRef, onResizeEnd, isHorizontal]);
+  }, [isDragging, containerRef, onResizeEnd, isHorizontal]);
 
   React.useEffect(() => {
     if (isDragging) {
@@ -154,14 +147,10 @@ export default function useDrag(options: UseDragOptions): UseDragReturn {
     className,
   );
 
-  const dragElementStyle: React.CSSProperties = {
-    ...style,
-  };
-
   return {
     dragElementProps: {
       className: dragElementClassName,
-      style: dragElementStyle,
+      style,
       onMouseDown: handleMouseDown,
     },
     isDragging,

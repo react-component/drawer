@@ -261,6 +261,7 @@ const DrawerPopup: React.ForwardRefRenderFunction<
 
   // ============================ Resizable ============================
   const [currentSize, setCurrentSize] = React.useState<number>();
+  const isHorizontal = placement === 'left' || placement === 'right';
 
   const wrapperStyle: React.CSSProperties = {};
 
@@ -281,13 +282,11 @@ const DrawerPopup: React.ForwardRefRenderFunction<
         break;
     }
   }
-
-  if (placement === 'left' || placement === 'right') {
-    // Use currentSize if available (from resizing), otherwise use original width
+  // Use currentSize if available (from resizing), otherwise use original height / width
+  if (isHorizontal) {
     const finalWidth = currentSize !== undefined ? currentSize : width;
     wrapperStyle.width = parseWidthHeight(finalWidth);
   } else {
-    // Use currentSize if available (from resizing), otherwise use original height
     const finalHeight = currentSize !== undefined ? currentSize : height;
     wrapperStyle.height = parseWidthHeight(finalHeight);
   }
@@ -305,14 +304,13 @@ const DrawerPopup: React.ForwardRefRenderFunction<
 
   // Update currentSize based on width/height and current placement
   const updateCurrentSize = React.useCallback(() => {
-    const isHorizontal = placement === 'left' || placement === 'right';
     const targetSize = isHorizontal ? width : height;
     if (typeof targetSize === 'number') {
       setCurrentSize(targetSize);
     } else {
       setCurrentSize(undefined);
     }
-  }, [placement, width, height]);
+  }, [isHorizontal, width, height]);
 
   // Initialize and update currentSize
   React.useEffect(() => {
@@ -323,13 +321,12 @@ const DrawerPopup: React.ForwardRefRenderFunction<
   const calculateMaxSize = React.useCallback(() => {
     if (wrapperRef.current) {
       const rect = wrapperRef.current.parentElement?.getBoundingClientRect();
-      const newMaxSize =
-        placement === 'left' || placement === 'right'
-          ? (rect?.width ?? 0)
-          : (rect?.height ?? 0);
+      const newMaxSize = isHorizontal
+        ? (rect?.width ?? 0)
+        : (rect?.height ?? 0);
       setMaxSize(newMaxSize);
     }
-  }, [placement]);
+  }, [isHorizontal]);
 
   const handleResize = React.useCallback(
     (size: number) => {
@@ -357,7 +354,6 @@ const DrawerPopup: React.ForwardRefRenderFunction<
     style: styles?.dragger,
     minSize: 0,
     maxSize,
-    disabled: !resizable,
     containerRef: wrapperRef,
     currentSize,
     onResize: handleResize,
