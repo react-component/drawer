@@ -9,30 +9,32 @@ import type { Placement } from '@/index';
 
 export default () => {
   const [open, setOpen] = React.useState(false);
-  const [placement, setPlacement] = React.useState('right');
-  const [resizable, setResizable] = React.useState(true);
+  const [placement, setPlacement] = React.useState<Placement>('right');
+
+  const buttons = [
+    { placement: 'left' as Placement, label: 'Left Drawer' },
+    { placement: 'right' as Placement, label: 'Right Drawer' },
+    { placement: 'top' as Placement, label: 'Top Drawer' },
+    { placement: 'bottom' as Placement, label: 'Bottom Drawer' },
+  ];
+
+  const openDrawer = (direction: Placement) => {
+    setPlacement(direction);
+    setOpen(true);
+  };
 
   return (
     <div>
-      <div style={{ marginBottom: 16 }}>
-        <button onClick={() => setOpen(true)} style={{ marginRight: 8 }}>
-          Open Drawer
-        </button>
-        <label style={{ marginRight: 8 }}>
-          <input
-            type="checkbox"
-            checked={resizable}
-            onChange={e => setResizable(e.target.checked)}
-          />
-          Resizable
-        </label>
-        <span>Placement: </span>
-        <select value={placement} onChange={e => setPlacement(e.target.value)}>
-          <option value="left">Left</option>
-          <option value="right">Right</option>
-          <option value="top">Top</option>
-          <option value="bottom">Bottom</option>
-        </select>
+      <div style={{ marginBottom: 16, display: 'flex', gap: 8 }}>
+        {buttons.map(({ placement, label }) => (
+          <button
+            key={placement}
+            onClick={() => openDrawer(placement)}
+            style={{ padding: '8px 16px' }}
+          >
+            {label}
+          </button>
+        ))}
       </div>
       <Drawer
         width={placement === 'left' || placement === 'right' ? 320 : undefined}
@@ -41,14 +43,11 @@ export default () => {
         open={open}
         key={placement}
         onClose={() => setOpen(false)}
-        resizable={resizable}
+        resizable
         {...motionProps}
       >
         <div style={{ marginTop: 24, color: '#888' }}>
-          <p>
-            You can drag the drawer edge to resize (only works when
-            &quot;Resizable&quot; is checked).
-          </p>
+          <p>You can drag the drawer edge to resize.</p>
         </div>
       </Drawer>
     </div>

@@ -501,11 +501,11 @@ describe('rc-drawer-menu', () => {
     );
     contentWrapper.getBoundingClientRect = mockGetBoundingClientRect;
 
-    const resizableLine = document.querySelector('.rc-drawer-resizable-line');
-    expect(resizableLine).toBeTruthy();
+    const dragger = document.querySelector('.rc-drawer-resizable-dragger');
+    expect(dragger).toBeTruthy();
 
     // Simulate drag from 200px to 100px (should reduce width by 100px)
-    fireEvent.mouseDown(resizableLine, { clientX: 200 });
+    fireEvent.mouseDown(dragger, { clientX: 200 });
     fireEvent.mouseMove(document, { clientX: 100, clientY: 0 });
     fireEvent.mouseUp(document, { clientX: 100, clientY: 0 });
 

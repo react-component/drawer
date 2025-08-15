@@ -11,7 +11,7 @@ import type {
   DrawerPanelEvents,
 } from './DrawerPanel';
 import DrawerPanel from './DrawerPanel';
-import ResizableLine from './ResizableLine';
+import useDrag from './hooks/useDrag';
 import { parseWidthHeight } from './util';
 import type { DrawerClassNames, DrawerStyles } from './inter';
 
@@ -296,7 +296,6 @@ const DrawerPopup: React.ForwardRefRenderFunction<
 
   // ============================ Resizable ============================
   const [currentSize, setCurrentSize] = React.useState<number>();
-  const [isDragging, setIsDragging] = React.useState(false);
   const [maxSize, setMaxSize] = React.useState(0);
   const wrapperRef = React.useRef<HTMLDivElement>(null);
 
@@ -330,9 +329,20 @@ const DrawerPopup: React.ForwardRefRenderFunction<
     onResizeEnd?.();
   }, [onResizeEnd]);
 
-  const handleDraggingChange = React.useCallback((dragging: boolean) => {
-    setIsDragging(dragging);
-  }, []);
+  // Use drag hook for resizable functionality
+  const { dragElementProps, isDragging } = useDrag({
+    prefixCls: `${prefixCls}-resizable`,
+    direction: placement,
+    className: drawerClassNames?.dragger,
+    style: styles?.dragger,
+    minSize: 0,
+    maxSize,
+    disabled: !resizable,
+    container: wrapperRef.current,
+    onResize: handleResize,
+    onResizeStart: handleResizeStart,
+    onResizeEnd: handleResizeEnd,
+  });
 
   const dynamicWrapperStyle = React.useMemo(() => {
     const style: React.CSSProperties = { ...wrapperStyle };
@@ -403,21 +413,7 @@ const DrawerPopup: React.ForwardRefRenderFunction<
             }}
             {...pickAttrs(props, { data: true })}
           >
-            {resizable && (
-              <ResizableLine
-                prefixCls={`${prefixCls}-resizable`}
-                direction={placement}
-                className={drawerClassNames?.resizableLine}
-                style={styles?.resizableLine}
-                minSize={0}
-                maxSize={maxSize}
-                isDragging={isDragging}
-                onResize={handleResize}
-                onResizeStart={handleResizeStart}
-                onResizeEnd={handleResizeEnd}
-                onDraggingChange={handleDraggingChange}
-              />
-            )}
+            {resizable && <div {...dragElementProps} />}
             {drawerRender ? drawerRender(content) : content}
           </div>
         );

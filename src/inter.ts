@@ -2,12 +2,12 @@ export interface DrawerClassNames {
   mask?: string;
   wrapper?: string;
   section?: string;
-  resizableLine?: string;
+  dragger?: string;
 }
 
 export interface DrawerStyles {
   mask?: React.CSSProperties;
   wrapper?: React.CSSProperties;
   section?: React.CSSProperties;
-  resizableLine?: React.CSSProperties;
+  dragger?: React.CSSProperties;
 }
