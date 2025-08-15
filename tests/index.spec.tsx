@@ -476,9 +476,144 @@ describe('rc-drawer-menu', () => {
     unmount();
   });
 
-  it('should support resizable', () => {
+  it('should support resizable horizontal', () => {
     const { unmount } = render(
-      <Drawer resizable open placement="left" width={200} />,
+      <div
+        id="container"
+        style={{ width: '400px', height: '400px', position: 'relative' }}
+      >
+        <Drawer
+          getContainer={false}
+          resizable
+          open
+          placement="left"
+          width={200}
+        />
+      </div>,
+    );
+
+    // Mock getBoundingClientRect for the container and content wrapper
+    const container = document.querySelector('#container') as HTMLElement;
+    const contentWrapper = document.querySelector(
+      '.rc-drawer-content-wrapper',
+    ) as HTMLElement;
+
+    const mockContainerGetBoundingClientRect = jest.fn(
+      () =>
+        ({
+          width: 400,
+          height: 400,
+          top: 0,
+          left: 0,
+          bottom: 400,
+          right: 400,
+          x: 0,
+          y: 0,
+          toJSON: () => ({}),
+        }) as DOMRect,
+    );
+
+    const mockWrapperGetBoundingClientRect = jest.fn(
+      () =>
+        ({
+          width: 200,
+          height: 400,
+          top: 0,
+          left: 0,
+          bottom: 400,
+          right: 200,
+          x: 0,
+          y: 0,
+          toJSON: () => ({}),
+        }) as DOMRect,
+    );
+
+    container.getBoundingClientRect = mockContainerGetBoundingClientRect;
+    contentWrapper.getBoundingClientRect = mockWrapperGetBoundingClientRect;
+
+    const dragger = document.querySelector('.rc-drawer-resizable-dragger');
+    expect(dragger).toBeTruthy();
+
+    // Simulate drag from 200px to 100px (should reduce width by 100px)
+    fireEvent.mouseDown(dragger, { clientX: 200 });
+    fireEvent.mouseMove(document, { clientX: 100, clientY: 0 });
+    fireEvent.mouseUp(document, { clientX: 100, clientY: 0 });
+
+    expect(document.querySelector('.rc-drawer-content-wrapper')).toHaveStyle({
+      width: '100px',
+    });
+
+    unmount();
+  });
+
+  it('should respect minSize and maxSize constraints', () => {
+    const { unmount } = render(
+      <div style={{ width: '500px', height: '400px', position: 'relative' }}>
+        <Drawer
+          getContainer={false}
+          resizable
+          open
+          placement="left"
+          width={200}
+        />
+      </div>,
+    );
+
+    // Helper to create mock getBoundingClientRect
+    const createMockRect = (width: number): (() => DOMRect) =>
+      jest.fn(
+        () =>
+          ({
+            width,
+            height: 400,
+            top: 0,
+            left: 0,
+            bottom: 400,
+            right: width,
+            x: 0,
+            y: 0,
+            toJSON: () => ({}),
+          }) as DOMRect,
+      );
+
+    // Mock wrapper (for useDrag) and its parent (for calculateMaxSize)
+    const contentWrapper = document.querySelector(
+      '.rc-drawer-content-wrapper',
+    ) as HTMLElement;
+    const wrapperParent = contentWrapper.parentElement as HTMLElement;
+
+    contentWrapper.getBoundingClientRect = createMockRect(200);
+    if (wrapperParent) {
+      wrapperParent.getBoundingClientRect = createMockRect(500);
+    }
+
+    const dragger = document.querySelector('.rc-drawer-resizable-dragger');
+    expect(dragger).toBeTruthy();
+
+    // Test minSize constraint (minSize = 0)
+    fireEvent.mouseDown(dragger, { clientX: 200 });
+    fireEvent.mouseMove(document, { clientX: -100 });
+    fireEvent.mouseUp(document, { clientX: -100 });
+
+    expect(document.querySelector('.rc-drawer-content-wrapper')).toHaveStyle({
+      width: '0px',
+    });
+
+    // Test maxSize constraint (maxSize = 500px from parent container)
+    fireEvent.mouseDown(dragger, { clientX: 200 });
+    fireEvent.mouseMove(document, { clientX: 800 });
+    fireEvent.mouseUp(document, { clientX: 800 });
+
+    expect(document.querySelector('.rc-drawer-content-wrapper')).toHaveStyle({
+      width: '500px',
+    });
+
+    unmount();
+  });
+
+  it('should support resizable vertical', () => {
+    const { unmount } = render(
+      <Drawer resizable open placement="top" height={200} />,
     );
 
     // Mock getBoundingClientRect for the content wrapper to simulate real DOM dimensions
@@ -504,13 +639,12 @@ describe('rc-drawer-menu', () => {
     const dragger = document.querySelector('.rc-drawer-resizable-dragger');
     expect(dragger).toBeTruthy();
 
-    // Simulate drag from 200px to 100px (should reduce width by 100px)
-    fireEvent.mouseDown(dragger, { clientX: 200 });
-    fireEvent.mouseMove(document, { clientX: 100, clientY: 0 });
-    fireEvent.mouseUp(document, { clientX: 100, clientY: 0 });
+    fireEvent.mouseDown(dragger, { clientY: 200 });
+    fireEvent.mouseMove(document, { clientX: 0, clientY: 100 });
+    fireEvent.mouseUp(document, { clientX: 0, clientY: 100 });
 
     expect(document.querySelector('.rc-drawer-content-wrapper')).toHaveStyle({
-      width: '100px',
+      height: '100px',
     });
     unmount();
   });

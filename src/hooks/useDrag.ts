@@ -10,7 +10,8 @@ export interface UseDragOptions {
   minSize?: number;
   maxSize?: number;
   disabled?: boolean;
-  container?: HTMLElement | null;
+  containerRef?: React.RefObject<HTMLElement>;
+  currentSize?: number;
   onResize?: (size: number) => void;
   onResizeEnd?: (size: number) => void;
   onResizeStart?: (size: number) => void;
@@ -34,15 +35,16 @@ export default function useDrag(options: UseDragOptions): UseDragReturn {
     minSize = 100,
     maxSize,
     disabled = false,
-    container,
+    containerRef,
+    currentSize,
     onResize,
     onResizeEnd,
     onResizeStart,
   } = options;
 
-  const [isDragging, setIsDragging] = React.useState(false);
-  const [startPos, setStartPos] = React.useState(0);
-  const [startSize, setStartSize] = React.useState(0);
+  const [isDragging, setIsDragging] = React.useState<boolean>(false);
+  const [startPos, setStartPos] = React.useState<number>(0);
+  const [startSize, setStartSize] = React.useState<number>(0);
 
   const isHorizontal = direction === 'left' || direction === 'right';
 
@@ -61,15 +63,21 @@ export default function useDrag(options: UseDragOptions): UseDragReturn {
         setStartPos(e.clientY);
       }
 
-      // Get the current size of the container
-      if (container) {
-        const rect = container.getBoundingClientRect();
-        const currentSize = isHorizontal ? rect.width : rect.height;
-        setStartSize(currentSize);
-        onResizeStart?.(currentSize);
+      // Use provided currentSize, or fallback to container size
+      let startSize: number;
+      if (currentSize !== undefined) {
+        startSize = currentSize;
+      } else if (containerRef?.current) {
+        const rect = containerRef.current.getBoundingClientRect();
+        startSize = isHorizontal ? rect.width : rect.height;
+      } else {
+        return; // No size information available
       }
+
+      setStartSize(startSize);
+      onResizeStart?.(startSize);
     },
-    [disabled, isHorizontal, container, onResizeStart],
+    [disabled, isHorizontal, containerRef, currentSize, onResizeStart],
   );
 
   const handleMouseMove = React.useCallback(
@@ -115,13 +123,13 @@ export default function useDrag(options: UseDragOptions): UseDragReturn {
       setIsDragging(false);
 
       // Get the final size after resize
-      if (container) {
-        const rect = container.getBoundingClientRect();
+      if (containerRef?.current) {
+        const rect = containerRef.current.getBoundingClientRect();
         const finalSize = isHorizontal ? rect.width : rect.height;
         onResizeEnd?.(finalSize);
       }
     }
-  }, [isDragging, disabled, container, onResizeEnd, isHorizontal]);
+  }, [isDragging, disabled, containerRef, onResizeEnd, isHorizontal]);
 
   React.useEffect(() => {
     if (isDragging) {

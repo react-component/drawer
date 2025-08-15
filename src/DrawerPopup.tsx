@@ -259,6 +259,9 @@ const DrawerPopup: React.ForwardRefRenderFunction<
   // =========================== Panel ============================
   const motionProps = typeof motion === 'function' ? motion(placement) : motion;
 
+  // ============================ Resizable ============================
+  const [currentSize, setCurrentSize] = React.useState<number>();
+
   const wrapperStyle: React.CSSProperties = {};
 
   if (pushed && pushDistance) {
@@ -280,9 +283,13 @@ const DrawerPopup: React.ForwardRefRenderFunction<
   }
 
   if (placement === 'left' || placement === 'right') {
-    wrapperStyle.width = parseWidthHeight(width);
+    // Use currentSize if available (from resizing), otherwise use original width
+    const finalWidth = currentSize !== undefined ? currentSize : width;
+    wrapperStyle.width = parseWidthHeight(finalWidth);
   } else {
-    wrapperStyle.height = parseWidthHeight(height);
+    // Use currentSize if available (from resizing), otherwise use original height
+    const finalHeight = currentSize !== undefined ? currentSize : height;
+    wrapperStyle.height = parseWidthHeight(finalHeight);
   }
 
   const eventHandlers = {
@@ -293,11 +300,24 @@ const DrawerPopup: React.ForwardRefRenderFunction<
     onKeyDown,
     onKeyUp,
   };
-
-  // ============================ Resizable ============================
-  const [currentSize, setCurrentSize] = React.useState<number>();
   const [maxSize, setMaxSize] = React.useState(0);
   const wrapperRef = React.useRef<HTMLDivElement>(null);
+
+  // Update currentSize based on width/height and current placement
+  const updateCurrentSize = React.useCallback(() => {
+    const isHorizontal = placement === 'left' || placement === 'right';
+    const targetSize = isHorizontal ? width : height;
+    if (typeof targetSize === 'number') {
+      setCurrentSize(targetSize);
+    } else {
+      setCurrentSize(undefined);
+    }
+  }, [placement, width, height]);
+
+  // Initialize and update currentSize
+  React.useEffect(() => {
+    updateCurrentSize();
+  }, [updateCurrentSize]);
 
   // Calculate maxSize based on container dimensions
   const calculateMaxSize = React.useCallback(() => {
@@ -338,7 +358,8 @@ const DrawerPopup: React.ForwardRefRenderFunction<
     minSize: 0,
     maxSize,
     disabled: !resizable,
-    container: wrapperRef.current,
+    containerRef: wrapperRef,
+    currentSize,
     onResize: handleResize,
     onResizeStart: handleResizeStart,
     onResizeEnd: handleResizeEnd,
@@ -347,14 +368,6 @@ const DrawerPopup: React.ForwardRefRenderFunction<
   const dynamicWrapperStyle = React.useMemo(() => {
     const style: React.CSSProperties = { ...wrapperStyle };
 
-    if (currentSize !== undefined && resizable) {
-      if (placement === 'left' || placement === 'right') {
-        style.width = currentSize;
-      } else {
-        style.height = currentSize;
-      }
-    }
-
     if (resizable) {
       style.overflow = 'visible';
     } else {
@@ -362,7 +375,7 @@ const DrawerPopup: React.ForwardRefRenderFunction<
     }
 
     return style;
-  }, [wrapperStyle, currentSize, resizable, placement]);
+  }, [wrapperStyle, resizable]);
 
   // Initialize maxSize calculation
   React.useEffect(() => {
