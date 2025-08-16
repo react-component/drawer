@@ -83,4 +83,46 @@
       }
     }
   }
+  
+  &-top {
+    .panel-motion();
+
+    &-enter,
+    &-appear {
+      transform: translateY(-100%);
+
+      &-active {
+        transform: translateY(0);
+      }
+    }
+
+    &-leave {
+      transform: translateY(0);
+
+      &-active {
+        transform: translateY(-100%) !important;
+      }
+    }
+  }
+
+  &-bottom {
+    .panel-motion();
+
+    &-enter,
+    &-appear {
+      transform: translateY(100%);
+
+      &-active {
+        transform: translateY(0);
+      }
+    }
+
+    &-leave {
+      transform: translateY(0);
+
+      &-active {
+        transform: translateY(100%) !important;
+      }
+    }
+  }
 }
