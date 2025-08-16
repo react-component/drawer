@@ -486,7 +486,7 @@ describe('rc-drawer-menu', () => {
           getContainer={false}
           resizable
           open
-          placement="left"
+          placement="right"
           width={200}
         />
       </div>,
@@ -534,10 +534,10 @@ describe('rc-drawer-menu', () => {
     const dragger = document.querySelector('.rc-drawer-resizable-dragger');
     expect(dragger).toBeTruthy();
 
-    // Simulate drag from 200px to 100px (should reduce width by 100px)
+    // Simulate drag from 200px to 300px (right placement: drag right to reduce width by 100px due to delta negation)
     fireEvent.mouseDown(dragger, { clientX: 200 });
-    fireEvent.mouseMove(document, { clientX: 100, clientY: 0 });
-    fireEvent.mouseUp(document, { clientX: 100, clientY: 0 });
+    fireEvent.mouseMove(document, { clientX: 300, clientY: 0 });
+    fireEvent.mouseUp(document, { clientX: 300, clientY: 0 });
 
     expect(document.querySelector('.rc-drawer-content-wrapper')).toHaveStyle({
       width: '100px',
@@ -554,7 +554,7 @@ describe('rc-drawer-menu', () => {
           resizable
           open
           placement="left"
-          width={200}
+          width="200px"
         />
       </div>,
     );
