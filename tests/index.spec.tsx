@@ -492,7 +492,6 @@ describe('rc-drawer-menu', () => {
       </div>,
     );
 
-    // Mock getBoundingClientRect for the container and content wrapper
     const container = document.querySelector('#container') as HTMLElement;
     const contentWrapper = document.querySelector(
       '.rc-drawer-content-wrapper',
@@ -534,7 +533,6 @@ describe('rc-drawer-menu', () => {
     const dragger = document.querySelector('.rc-drawer-resizable-dragger');
     expect(dragger).toBeTruthy();
 
-    // Simulate drag from 200px to 300px (right placement: drag right to reduce width by 100px due to delta negation)
     fireEvent.mouseDown(dragger, { clientX: 200 });
     fireEvent.mouseMove(document, { clientX: 300, clientY: 0 });
     fireEvent.mouseUp(document, { clientX: 300, clientY: 0 });
@@ -559,7 +557,6 @@ describe('rc-drawer-menu', () => {
       </div>,
     );
 
-    // Helper to create mock getBoundingClientRect
     const createMockRect = (width: number): (() => DOMRect) =>
       jest.fn(
         () =>
@@ -576,7 +573,6 @@ describe('rc-drawer-menu', () => {
           }) as DOMRect,
       );
 
-    // Mock wrapper (for useDrag) and its parent (for calculateMaxSize)
     const contentWrapper = document.querySelector(
       '.rc-drawer-content-wrapper',
     ) as HTMLElement;
@@ -590,7 +586,6 @@ describe('rc-drawer-menu', () => {
     const dragger = document.querySelector('.rc-drawer-resizable-dragger');
     expect(dragger).toBeTruthy();
 
-    // Test minSize constraint (minSize = 0)
     fireEvent.mouseDown(dragger, { clientX: 200 });
     fireEvent.mouseMove(document, { clientX: -100 });
     fireEvent.mouseUp(document, { clientX: -100 });
@@ -599,7 +594,6 @@ describe('rc-drawer-menu', () => {
       width: '0px',
     });
 
-    // Test maxSize constraint (maxSize = 500px from parent container)
     fireEvent.mouseDown(dragger, { clientX: 200 });
     fireEvent.mouseMove(document, { clientX: 800 });
     fireEvent.mouseUp(document, { clientX: 800 });
@@ -616,7 +610,6 @@ describe('rc-drawer-menu', () => {
       <Drawer resizable open placement="top" height={200} />,
     );
 
-    // Mock getBoundingClientRect for the content wrapper to simulate real DOM dimensions
     const contentWrapper = document.querySelector(
       '.rc-drawer-content-wrapper',
     ) as HTMLElement;
