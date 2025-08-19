@@ -362,18 +362,18 @@ const DrawerPopup: React.ForwardRefRenderFunction<
   const handleResize = React.useCallback(
     (size: number) => {
       setCurrentSize(size);
-      resizable?.onResize(size);
+      resizable?.onResize?.(size);
     },
     [resizable],
   );
 
   const handleResizeStart = React.useCallback(() => {
     calculateMaxSize();
-    resizable?.onResizeStart();
+    resizable?.onResizeStart?.();
   }, [resizable, calculateMaxSize]);
 
   const handleResizeEnd = React.useCallback(() => {
-    resizable?.onResizeEnd();
+    resizable?.onResizeEnd?.();
   }, [resizable]);
 
   const { dragElementProps, isDragging } = useDrag({
