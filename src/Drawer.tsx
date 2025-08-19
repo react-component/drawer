@@ -32,7 +32,7 @@ export interface DrawerProps
   defaultHeight?: number | string;
   /** Resizable configuration - object with optional callbacks */
   resizable?: {
-    onResize: (size: number) => void;
+    onResize?: (size: number) => void;
     onResizeStart?: () => void;
     onResizeEnd?: () => void;
   };

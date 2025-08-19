@@ -81,7 +81,7 @@ export interface DrawerPopupProps
   defaultWidth?: number | string;
   defaultHeight?: number | string;
   resizable?: {
-    onResize: (size: number) => void;
+    onResize?: (size: number) => void;
     onResizeStart?: () => void;
     onResizeEnd?: () => void;
   };
@@ -362,24 +362,18 @@ const DrawerPopup: React.ForwardRefRenderFunction<
   const handleResize = React.useCallback(
     (size: number) => {
       setCurrentSize(size);
-      if (resizable?.onResize) {
-        resizable.onResize(size);
-      }
+      resizable?.onResize(size);
     },
     [resizable],
   );
 
   const handleResizeStart = React.useCallback(() => {
     calculateMaxSize();
-    if (resizable?.onResizeStart) {
-      resizable.onResizeStart();
-    }
+    resizable?.onResizeStart();
   }, [resizable, calculateMaxSize]);
 
   const handleResizeEnd = React.useCallback(() => {
-    if (resizable?.onResizeEnd) {
-      resizable.onResizeEnd();
-    }
+    resizable?.onResizeEnd();
   }, [resizable]);
 
   const { dragElementProps, isDragging } = useDrag({
