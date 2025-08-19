@@ -477,6 +477,13 @@ describe('rc-drawer-menu', () => {
   });
 
   it('should support resizable horizontal', () => {
+    let currentWidth = 200;
+    const setWidth = (newWidth: number) => {
+      currentWidth = newWidth;
+    };
+    const onResizeStart = jest.fn();
+    const onResizeEnd = jest.fn();
+
     const { unmount } = render(
       <div
         id="container"
@@ -484,10 +491,14 @@ describe('rc-drawer-menu', () => {
       >
         <Drawer
           getContainer={false}
-          resizable
+          resizable={{
+            onResize: setWidth,
+            onResizeStart,
+            onResizeEnd,
+          }}
           open
           placement="right"
-          width={200}
+          width={currentWidth}
         />
       </div>,
     );
@@ -533,9 +544,21 @@ describe('rc-drawer-menu', () => {
     const dragger = document.querySelector('.rc-drawer-resizable-dragger');
     expect(dragger).toBeTruthy();
 
+    // Verify initial state
+    expect(onResizeStart).not.toHaveBeenCalled();
+    expect(onResizeEnd).not.toHaveBeenCalled();
+
     fireEvent.mouseDown(dragger, { clientX: 200 });
+
+    // onResizeStart should be called when mouse down
+    expect(onResizeStart).toHaveBeenCalledTimes(1);
+    expect(onResizeEnd).not.toHaveBeenCalled();
+
     fireEvent.mouseMove(document, { clientX: 300, clientY: 0 });
     fireEvent.mouseUp(document, { clientX: 300, clientY: 0 });
+
+    // onResizeEnd should be called when mouse up
+    expect(onResizeEnd).toHaveBeenCalledTimes(1);
 
     expect(document.querySelector('.rc-drawer-content-wrapper')).toHaveStyle({
       width: '100px',
@@ -545,14 +568,21 @@ describe('rc-drawer-menu', () => {
   });
 
   it('should respect minSize and maxSize constraints', () => {
+    let currentWidth = 200;
+    const setWidth = (newWidth: number) => {
+      currentWidth = newWidth;
+    };
+
     const { unmount } = render(
       <div style={{ width: '500px', height: '400px', position: 'relative' }}>
         <Drawer
           getContainer={false}
-          resizable
+          resizable={{
+            onResize: setWidth,
+          }}
           open
           placement="left"
-          width="200px"
+          width={currentWidth}
         />
       </div>,
     );
@@ -606,8 +636,20 @@ describe('rc-drawer-menu', () => {
   });
 
   it('should support resizable vertical', () => {
+    let currentHeight = 200;
+    const setHeight = (newHeight: number) => {
+      currentHeight = newHeight;
+    };
+
     const { unmount } = render(
-      <Drawer resizable open placement="top" height={200} />,
+      <Drawer
+        resizable={{
+          onResize: setHeight,
+        }}
+        open
+        placement="top"
+        height={currentHeight}
+      />,
     );
 
     const contentWrapper = document.querySelector(

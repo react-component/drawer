@@ -78,10 +78,13 @@ export interface DrawerPopupProps
   drawerRender?: (node: React.ReactNode) => React.ReactNode;
 
   // resizable
-  resizable?: boolean;
-  onResize?: (size: number) => void;
-  onResizeStart?: () => void;
-  onResizeEnd?: () => void;
+  defaultWidth?: number | string;
+  defaultHeight?: number | string;
+  resizable?: {
+    onResize?: (size: number) => void;
+    onResizeStart?: () => void;
+    onResizeEnd?: () => void;
+  };
 }
 
 const DrawerPopup: React.ForwardRefRenderFunction<
@@ -130,13 +133,12 @@ const DrawerPopup: React.ForwardRefRenderFunction<
     onClick,
     onKeyDown,
     onKeyUp,
-    onResize,
-    onResizeStart,
-    onResizeEnd,
 
     styles,
     drawerRender,
     resizable,
+    defaultWidth,
+    defaultHeight,
   } = props;
 
   // ================================ Refs ================================
@@ -282,12 +284,34 @@ const DrawerPopup: React.ForwardRefRenderFunction<
         break;
     }
   }
-  // Use currentSize if available (from resizing), otherwise use original height / width
+  // Use currentSize if available (from resizing), otherwise use original or default width/height
   if (isHorizontal) {
-    const finalWidth = currentSize !== undefined ? currentSize : width;
+    let finalWidth: number | string;
+    if (currentSize !== undefined) {
+      finalWidth = currentSize;
+    } else if (resizable && !resizable.onResize && defaultWidth !== undefined) {
+      // Uncontrolled mode: resizable exists but no onResize callback, use defaultWidth
+      finalWidth = defaultWidth;
+    } else {
+      // Controlled mode or no resizable: use width
+      finalWidth = width;
+    }
     wrapperStyle.width = parseWidthHeight(finalWidth);
   } else {
-    const finalHeight = currentSize !== undefined ? currentSize : height;
+    let finalHeight: number | string;
+    if (currentSize !== undefined) {
+      finalHeight = currentSize;
+    } else if (
+      resizable &&
+      !resizable.onResize &&
+      defaultHeight !== undefined
+    ) {
+      // Uncontrolled mode: resizable exists but no onResize callback, use defaultHeight
+      finalHeight = defaultHeight;
+    } else {
+      // Controlled mode or no resizable: use height
+      finalHeight = height;
+    }
     wrapperStyle.height = parseWidthHeight(finalHeight);
   }
 
@@ -304,13 +328,22 @@ const DrawerPopup: React.ForwardRefRenderFunction<
 
   // Update currentSize based on width/height and current placement
   const updateCurrentSize = React.useCallback(() => {
-    const targetSize = isHorizontal ? width : height;
+    let targetSize = isHorizontal ? width : height;
+
+    // In uncontrolled mode, use default values if targetSize is not a number
+    if (typeof targetSize !== 'number' && resizable && !resizable.onResize) {
+      const defaultSize = isHorizontal ? defaultWidth : defaultHeight;
+      if (typeof defaultSize === 'number') {
+        targetSize = defaultSize;
+      }
+    }
+
     if (typeof targetSize === 'number') {
       setCurrentSize(targetSize);
     } else {
       setCurrentSize(undefined);
     }
-  }, [isHorizontal, width, height]);
+  }, [isHorizontal, width, height, resizable, defaultWidth, defaultHeight]);
 
   React.useEffect(() => {
     updateCurrentSize();
@@ -329,19 +362,25 @@ const DrawerPopup: React.ForwardRefRenderFunction<
   const handleResize = React.useCallback(
     (size: number) => {
       setCurrentSize(size);
-      onResize?.(size);
+      if (resizable?.onResize) {
+        resizable.onResize(size);
+      }
     },
-    [onResize],
+    [resizable],
   );
 
   const handleResizeStart = React.useCallback(() => {
     calculateMaxSize();
-    onResizeStart?.();
-  }, [onResizeStart, calculateMaxSize]);
+    if (resizable?.onResizeStart) {
+      resizable.onResizeStart();
+    }
+  }, [resizable, calculateMaxSize]);
 
   const handleResizeEnd = React.useCallback(() => {
-    onResizeEnd?.();
-  }, [onResizeEnd]);
+    if (resizable?.onResizeEnd) {
+      resizable.onResizeEnd();
+    }
+  }, [resizable]);
 
   const { dragElementProps, isDragging } = useDrag({
     prefixCls: `${prefixCls}-resizable`,
@@ -361,7 +400,8 @@ const DrawerPopup: React.ForwardRefRenderFunction<
     const style: React.CSSProperties = { ...wrapperStyle };
 
     if (resizable) {
-      style.overflow = 'visible';
+      // Allow dragger to be visible outside wrapper bounds
+      style.overflow = 'hidden';
     } else {
       style.overflow = 'hidden';
     }
@@ -411,9 +451,9 @@ const DrawerPopup: React.ForwardRefRenderFunction<
               !isDragging && motionClassName,
             )}
             style={{
-              ...dynamicWrapperStyle,
               ...motionStyle,
               ...styles?.wrapper,
+              ...dynamicWrapperStyle,
             }}
             {...pickAttrs(props, { data: true })}
           >

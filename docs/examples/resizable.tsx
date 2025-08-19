@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import Drawer from 'rc-drawer';
+import Drawer from '@rc-component/drawer';
 
 import '../../assets/index.less';
 import './assets/index.less';
@@ -10,6 +10,8 @@ import type { Placement } from '@/index';
 export default () => {
   const [open, setOpen] = React.useState(false);
   const [placement, setPlacement] = React.useState<Placement>('right');
+  const [width, setWidth] = React.useState(320);
+  const [height, setHeight] = React.useState(240);
 
   const buttons = [
     { placement: 'left' as Placement, label: 'Left Drawer' },
@@ -22,6 +24,8 @@ export default () => {
     setPlacement(direction);
     setOpen(true);
   };
+
+  const isHorizontal = placement === 'left' || placement === 'right';
 
   return (
     <div>
@@ -37,18 +41,30 @@ export default () => {
         ))}
       </div>
       <Drawer
-        width={placement === 'left' || placement === 'right' ? 320 : undefined}
-        height={placement === 'top' || placement === 'bottom' ? 240 : undefined}
+        width={isHorizontal ? width : undefined}
+        height={!isHorizontal ? height : undefined}
         placement={placement as Placement}
         open={open}
         key={placement}
         onClose={() => setOpen(false)}
-        resizable
+        resizable={{
+          onResize: size => {
+            if (isHorizontal) {
+              setWidth(size);
+            } else {
+              setHeight(size);
+            }
+          },
+          onResizeStart: () => {
+            console.log('onResizeStart');
+          },
+          onResizeEnd: () => {
+            console.log('onResizeEnd');
+          },
+        }}
         {...motionProps}
       >
-        <div style={{ marginTop: 24, color: '#888' }}>
-          <p>You can drag the drawer edge to resize.</p>
-        </div>
+        <div>Resizable Drawer</div>
       </Drawer>
     </div>
   );

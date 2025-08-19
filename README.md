@@ -17,6 +17,8 @@ https://drawer-react-component.vercel.app/
 
 ## Usage
 
+### Basic Usage
+
 ```js
 import Drawer from 'rc-drawer';
 import React from 'react';
@@ -27,6 +29,61 @@ ReactDom.render(
     {menu children}
   </Drawer>
 , mountNode);
+```
+
+### Resizable Drawer
+
+#### Controlled Mode (Recommended)
+
+```js
+import Drawer from 'rc-drawer';
+import React, { useState } from 'react';
+
+function ResizableDrawer() {
+  const [width, setWidth] = useState(320);
+  const [open, setOpen] = useState(false);
+
+  return (
+    <Drawer
+      open={open}
+      width={width}
+      placement="right"
+      onClose={() => setOpen(false)}
+      resizable={{
+        onResize: size => setWidth(size),
+        onResizeStart: () => console.log('Resize started'),
+        onResizeEnd: () => console.log('Resize ended'),
+      }}
+    >
+      <p>Current width: {width}px</p>
+      <p>Drag the edge to resize</p>
+    </Drawer>
+  );
+}
+```
+
+#### Uncontrolled Mode
+
+```js
+import Drawer from 'rc-drawer';
+import React, { useState } from 'react';
+
+function UncontrolledResizableDrawer() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <Drawer
+      open={open}
+      defaultWidth={300}
+      placement="right"
+      onClose={() => setOpen(false)}
+      resizable={{}}
+    >
+      <p>Initial width: 300px</p>
+      <p>Drag the edge to resize (internal state management)</p>
+    </Drawer>
+  );
+}
 ```
 
 ## Install
@@ -41,39 +98,38 @@ ReactDom.render(
 
 ## API
 
-| props              | type                                                                        | default                                | description                                                                   |
-| ------------------ | --------------------------------------------------------------------------- | -------------------------------------- | ----------------------------------------------------------------------------- |
-| className          | string                                                                      | null                                   | -                                                                             |
-| classNames         | { mask?: string; content?: string; wrapper?: string; }                      | -                                      | pass className to target area                                                 |
-| styles             | { mask?: CSSProperties; content?: CSSProperties; wrapper?: CSSProperties; } | -                                      | pass style to target area                                                     |
-| prefixCls          | string                                                                      | 'drawer'                               | prefix class                                                                  |
-| width              | string \| number                                                            | null                                   | drawer content wrapper width, drawer level transition width                   |
-| height             | string \| number                                                            | null                                   | drawer content wrapper height, drawer level transition height                 |
-| open               | boolean                                                                     | false                                  | open or close menu                                                            |
-| defaultOpen        | boolean                                                                     | false                                  | default open menu                                                             |
-| placement          | string                                                                      | `left`                                 | `left` `top` `right` `bottom`                                                 |
-| level              | string \| array                                                             | `all`                                  | With the drawer level element. `all`/ null / className / id / tagName / array |
-| levelMove          | number \| array \| func                                                     | null                                   | level move value. default is drawer width                                     |
-| duration           | string                                                                      | `.3s`                                  | level animation duration                                                      |
-| ease               | string                                                                      | `cubic-bezier(0.78, 0.14, 0.15, 0.86)` | level animation timing function                                               |
-| getContainer       | string \| func \| HTMLElement                                               | `body`                                 | Return the mount node for Drawer. if is `null` use React.creactElement        |
-| showMask           | boolean                                                                     | true                                   | mask is show                                                                  |
-| maskClosable       | boolean                                                                     | true                                   | Clicking on the mask (area outside the Drawer) to close the Drawer or not.    |
-| maskStyle          | CSSProperties                                                               | null                                   | mask style                                                                    |
-| afterOpenChange    | func                                                                        | null                                   | transition end callback(open)                                                 |
-| onClose            | func                                                                        | null                                   | close click function                                                          |
-| keyboard           | boolean                                                                     | true                                   | Whether support press esc to close                                            |
-| autoFocus          | boolean                                                                     | true                                   | Whether focusing on the drawer after it opened                                |
-| resizable          | boolean                                                                     | false                                  | Whether the drawer can be resized by dragging                                 |
-| onMouseEnter       | React.MouseEventHandler\<HTMLDivElement\>                                   | -                                      | Trigger when mouse enter drawer panel                                         |
-| onMouseOver        | React.MouseEventHandler\<HTMLDivElement\>                                   | -                                      | Trigger when mouse over drawer panel                                          |
-| onMouseLeave       | React.MouseEventHandler\<HTMLDivElement\>                                   | -                                      | Trigger when mouse leave drawer panel                                         |
-| onClick            | React.MouseEventHandler\<HTMLDivElement\>                                   | -                                      | Trigger when mouse click drawer panel                                         |
-| onKeyDown          | React.MouseEventHandler\<HTMLDivElement\>                                   | -                                      | Trigger when mouse keydown on drawer panel                                    |
-| onKeyUp            | React.MouseEventHandler\<HTMLDivElement\>                                   | -                                      | Trigger when mouse keyup on drawer panel                                      |
-| onResize           | (size: number) => void                                                      | -                                      | Trigger when mouse keyup on drawer panel                                      |
-| onResizeStart      | () => void                                                                  | -                                      | Trigger when resize starts                                                    |
-| onResizeEnd        | () => void                                                                  | -                                      | Trigger when resize ends                                                      |
+| props           | type                                                                                        | default                                | description                                                                   |
+| --------------- | ------------------------------------------------------------------------------------------- | -------------------------------------- | ----------------------------------------------------------------------------- |
+| className       | string                                                                                      | null                                   | -                                                                             |
+| classNames      | { mask?: string; content?: string; wrapper?: string; }                                      | -                                      | pass className to target area                                                 |
+| styles          | { mask?: CSSProperties; content?: CSSProperties; wrapper?: CSSProperties; }                 | -                                      | pass style to target area                                                     |
+| prefixCls       | string                                                                                      | 'drawer'                               | prefix class                                                                  |
+| width           | string \| number                                                                            | null                                   | drawer content wrapper width, drawer level transition width                   |
+| height          | string \| number                                                                            | null                                   | drawer content wrapper height, drawer level transition height                 |
+| defaultWidth    | string \| number                                                                            | null                                   | default width for uncontrolled resizable drawer                               |
+| defaultHeight   | string \| number                                                                            | null                                   | default height for uncontrolled resizable drawer                              |
+| open            | boolean                                                                                     | false                                  | open or close menu                                                            |
+| defaultOpen     | boolean                                                                                     | false                                  | default open menu                                                             |
+| placement       | string                                                                                      | `left`                                 | `left` `top` `right` `bottom`                                                 |
+| level           | string \| array                                                                             | `all`                                  | With the drawer level element. `all`/ null / className / id / tagName / array |
+| levelMove       | number \| array \| func                                                                     | null                                   | level move value. default is drawer width                                     |
+| duration        | string                                                                                      | `.3s`                                  | level animation duration                                                      |
+| ease            | string                                                                                      | `cubic-bezier(0.78, 0.14, 0.15, 0.86)` | level animation timing function                                               |
+| getContainer    | string \| func \| HTMLElement                                                               | `body`                                 | Return the mount node for Drawer. if is `null` use React.creactElement        |
+| showMask        | boolean                                                                                     | true                                   | mask is show                                                                  |
+| maskClosable    | boolean                                                                                     | true                                   | Clicking on the mask (area outside the Drawer) to close the Drawer or not.    |
+| maskStyle       | CSSProperties                                                                               | null                                   | mask style                                                                    |
+| afterOpenChange | func                                                                                        | null                                   | transition end callback(open)                                                 |
+| onClose         | func                                                                                        | null                                   | close click function                                                          |
+| keyboard        | boolean                                                                                     | true                                   | Whether support press esc to close                                            |
+| autoFocus       | boolean                                                                                     | true                                   | Whether focusing on the drawer after it opened                                |
+| resizable       | { onResize: (size: number) => void; onResizeStart?: () => void; onResizeEnd?: () => void; } | -                                      | Resizable configuration with callbacks                                        |
+| onMouseEnter    | React.MouseEventHandler\<HTMLDivElement\>                                                   | -                                      | Trigger when mouse enter drawer panel                                         |
+| onMouseOver     | React.MouseEventHandler\<HTMLDivElement\>                                                   | -                                      | Trigger when mouse over drawer panel                                          |
+| onMouseLeave    | React.MouseEventHandler\<HTMLDivElement\>                                                   | -                                      | Trigger when mouse leave drawer panel                                         |
+| onClick         | React.MouseEventHandler\<HTMLDivElement\>                                                   | -                                      | Trigger when mouse click drawer panel                                         |
+| onKeyDown       | React.MouseEventHandler\<HTMLDivElement\>                                                   | -                                      | Trigger when mouse keydown on drawer panel                                    |
+| onKeyUp         | React.MouseEventHandler\<HTMLDivElement\>                                                   | -                                      | Trigger when mouse keyup on drawer panel                                      |
 
 > 2.0 Rename `onMaskClick` -> `onClose`, add `maskClosable`.
 
