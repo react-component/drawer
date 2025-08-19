@@ -81,7 +81,7 @@ export interface DrawerPopupProps
   defaultWidth?: number | string;
   defaultHeight?: number | string;
   resizable?: {
-    onResize?: (size: number) => void;
+    onResize: (size: number) => void;
     onResizeStart?: () => void;
     onResizeEnd?: () => void;
   };
