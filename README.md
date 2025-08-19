@@ -31,61 +31,6 @@ ReactDom.render(
 , mountNode);
 ```
 
-### Resizable Drawer
-
-#### Controlled Mode (Recommended)
-
-```js
-import Drawer from 'rc-drawer';
-import React, { useState } from 'react';
-
-function ResizableDrawer() {
-  const [width, setWidth] = useState(320);
-  const [open, setOpen] = useState(false);
-
-  return (
-    <Drawer
-      open={open}
-      width={width}
-      placement="right"
-      onClose={() => setOpen(false)}
-      resizable={{
-        onResize: (size) => setWidth(size),
-        onResizeStart: () => console.log('Resize started'),
-        onResizeEnd: () => console.log('Resize ended'),
-      }}
-    >
-      <p>Current width: {width}px</p>
-      <p>Drag the edge to resize</p>
-    </Drawer>
-  );
-}
-```
-
-#### Uncontrolled Mode
-
-```js
-import Drawer from 'rc-drawer';
-import React, { useState } from 'react';
-
-function UncontrolledResizableDrawer() {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <Drawer
-      open={open}
-      defaultWidth={300}
-      placement="right"
-      onClose={() => setOpen(false)}
-      resizable={{}}
-    >
-      <p>Initial width: 300px</p>
-      <p>Drag the edge to resize (internal state management)</p>
-    </Drawer>
-  );
-}
-```
-
 ## Install
 
 [![rc-drawer](https://nodei.co/npm/rc-drawer.png)](https://npmjs.org/package/rc-drawer)
