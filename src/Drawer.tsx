@@ -45,7 +45,7 @@ const Drawer: React.FC<DrawerProps> = props => {
     placement = 'right' as Placement,
     autoFocus = true,
     keyboard = true,
-    width = 378,
+    width,
     mask = true,
     maskClosable = true,
     getContainer,
@@ -131,7 +131,12 @@ const Drawer: React.FC<DrawerProps> = props => {
     placement,
     autoFocus,
     keyboard,
-    width,
+    width:
+      width !== undefined
+        ? width
+        : defaultWidth !== undefined
+          ? undefined
+          : 378,
     mask,
     maskClosable,
     inline: getContainer === false,

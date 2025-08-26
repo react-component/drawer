@@ -284,33 +284,31 @@ const DrawerPopup: React.ForwardRefRenderFunction<
         break;
     }
   }
-  // Use currentSize if available (from resizing), otherwise use original or default width/height
+  // Use currentSize if available (from resizing), otherwise use width/height with proper fallback to defaults
   if (isHorizontal) {
     let finalWidth: number | string;
     if (currentSize !== undefined) {
+      // Highest priority: user dragged size
       finalWidth = currentSize;
-    } else if (resizable && !resizable.onResize && defaultWidth !== undefined) {
-      // Uncontrolled mode: resizable exists but no onResize callback, use defaultWidth
-      finalWidth = defaultWidth;
-    } else {
-      // Controlled mode or no resizable: use width
+    } else if (width !== undefined) {
+      // Second priority: explicitly provided width
       finalWidth = width;
+    } else {
+      // Lowest priority: default width fallback
+      finalWidth = defaultWidth;
     }
     wrapperStyle.width = parseWidthHeight(finalWidth);
   } else {
     let finalHeight: number | string;
     if (currentSize !== undefined) {
+      // Highest priority: user dragged size
       finalHeight = currentSize;
-    } else if (
-      resizable &&
-      !resizable.onResize &&
-      defaultHeight !== undefined
-    ) {
-      // Uncontrolled mode: resizable exists but no onResize callback, use defaultHeight
-      finalHeight = defaultHeight;
-    } else {
-      // Controlled mode or no resizable: use height
+    } else if (height !== undefined) {
+      // Second priority: explicitly provided height
       finalHeight = height;
+    } else {
+      // Lowest priority: default height fallback
+      finalHeight = defaultHeight;
     }
     wrapperStyle.height = parseWidthHeight(finalHeight);
   }
@@ -326,16 +324,15 @@ const DrawerPopup: React.ForwardRefRenderFunction<
   const [maxSize, setMaxSize] = React.useState(0);
   const wrapperRef = React.useRef<HTMLDivElement>(null);
 
-  // Update currentSize based on width/height and current placement
+  // Update currentSize based on width/height and current placement with proper priority
   const updateCurrentSize = React.useCallback(() => {
-    let targetSize = isHorizontal ? width : height;
+    let targetSize: number | string | undefined;
 
-    // In uncontrolled mode, use default values if targetSize is not a number
-    if (typeof targetSize !== 'number' && resizable && !resizable.onResize) {
-      const defaultSize = isHorizontal ? defaultWidth : defaultHeight;
-      if (typeof defaultSize === 'number') {
-        targetSize = defaultSize;
-      }
+    // Apply priority: width/height takes precedence over defaultWidth/defaultHeight
+    if (isHorizontal) {
+      targetSize = width !== undefined ? width : defaultWidth;
+    } else {
+      targetSize = height !== undefined ? height : defaultHeight;
     }
 
     if (typeof targetSize === 'number') {
@@ -343,7 +340,7 @@ const DrawerPopup: React.ForwardRefRenderFunction<
     } else {
       setCurrentSize(undefined);
     }
-  }, [isHorizontal, width, height, resizable, defaultWidth, defaultHeight]);
+  }, [isHorizontal, width, height, defaultWidth, defaultHeight]);
 
   React.useEffect(() => {
     updateCurrentSize();
