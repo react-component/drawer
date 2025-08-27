@@ -11,6 +11,7 @@ import type {
   DrawerPanelEvents,
 } from './DrawerPanel';
 import DrawerPanel from './DrawerPanel';
+import useDrag from './hooks/useDrag';
 import { parseWidthHeight } from './util';
 import type { DrawerClassNames, DrawerStyles } from './inter';
 
@@ -75,6 +76,15 @@ export interface DrawerPopupProps
   // styles
   styles?: DrawerStyles;
   drawerRender?: (node: React.ReactNode) => React.ReactNode;
+
+  // resizable
+  defaultWidth?: number | string;
+  defaultHeight?: number | string;
+  resizable?: {
+    onResize?: (size: number) => void;
+    onResizeStart?: () => void;
+    onResizeEnd?: () => void;
+  };
 }
 
 const DrawerPopup: React.ForwardRefRenderFunction<
@@ -126,6 +136,9 @@ const DrawerPopup: React.ForwardRefRenderFunction<
 
     styles,
     drawerRender,
+    resizable,
+    defaultWidth,
+    defaultHeight,
   } = props;
 
   // ================================ Refs ================================
@@ -248,6 +261,10 @@ const DrawerPopup: React.ForwardRefRenderFunction<
   // =========================== Panel ============================
   const motionProps = typeof motion === 'function' ? motion(placement) : motion;
 
+  // ============================ Resizable ============================
+  const [currentSize, setCurrentSize] = React.useState<number>();
+  const isHorizontal = placement === 'left' || placement === 'right';
+
   const wrapperStyle: React.CSSProperties = {};
 
   if (pushed && pushDistance) {
@@ -268,10 +285,30 @@ const DrawerPopup: React.ForwardRefRenderFunction<
     }
   }
 
-  if (placement === 'left' || placement === 'right') {
-    wrapperStyle.width = parseWidthHeight(width);
+  const isControlled = isHorizontal
+    ? width !== undefined
+    : height !== undefined;
+
+  if (isHorizontal) {
+    let finalWidth: number | string;
+    if (isControlled) {
+      finalWidth = width!;
+    } else if (currentSize !== undefined) {
+      finalWidth = currentSize;
+    } else {
+      finalWidth = defaultWidth;
+    }
+    wrapperStyle.width = parseWidthHeight(finalWidth);
   } else {
-    wrapperStyle.height = parseWidthHeight(height);
+    let finalHeight: number | string;
+    if (isControlled) {
+      finalHeight = height!;
+    } else if (currentSize !== undefined) {
+      finalHeight = currentSize;
+    } else {
+      finalHeight = defaultHeight;
+    }
+    wrapperStyle.height = parseWidthHeight(finalHeight);
   }
 
   const eventHandlers = {
@@ -282,6 +319,91 @@ const DrawerPopup: React.ForwardRefRenderFunction<
     onKeyDown,
     onKeyUp,
   };
+  const [maxSize, setMaxSize] = React.useState(0);
+  const wrapperRef = React.useRef<HTMLDivElement>(null);
+
+  // Update currentSize based on width/height and current placement with proper priority
+  const updateCurrentSize = React.useCallback(() => {
+    let targetSize: number | string | undefined;
+
+    // Apply priority: width/height takes precedence over defaultWidth/defaultHeight
+    if (isHorizontal) {
+      targetSize = width !== undefined ? width : defaultWidth;
+    } else {
+      targetSize = height !== undefined ? height : defaultHeight;
+    }
+
+    if (typeof targetSize === 'number') {
+      setCurrentSize(targetSize);
+    } else {
+      setCurrentSize(undefined);
+    }
+  }, [isHorizontal, width, height, defaultWidth, defaultHeight]);
+
+  React.useEffect(() => {
+    updateCurrentSize();
+  }, [updateCurrentSize]);
+
+  const calculateMaxSize = React.useCallback(() => {
+    if (wrapperRef.current) {
+      const rect = wrapperRef.current.parentElement?.getBoundingClientRect();
+      const newMaxSize = isHorizontal
+        ? (rect?.width ?? 0)
+        : (rect?.height ?? 0);
+      setMaxSize(newMaxSize);
+    }
+  }, [isHorizontal]);
+
+  const handleResize = React.useCallback(
+    (size: number) => {
+      // In controlled mode, only trigger callback without updating internal state
+      if (!isControlled) {
+        setCurrentSize(size);
+      }
+      resizable?.onResize?.(size);
+    },
+    [resizable, isControlled],
+  );
+
+  const handleResizeStart = React.useCallback(() => {
+    calculateMaxSize();
+    resizable?.onResizeStart?.();
+  }, [resizable, calculateMaxSize]);
+
+  const handleResizeEnd = React.useCallback(() => {
+    resizable?.onResizeEnd?.();
+  }, [resizable]);
+
+  const { dragElementProps, isDragging } = useDrag({
+    prefixCls: `${prefixCls}-resizable`,
+    direction: placement,
+    className: drawerClassNames?.dragger,
+    style: styles?.dragger,
+    minSize: 0,
+    maxSize,
+    containerRef: wrapperRef,
+    currentSize,
+    onResize: handleResize,
+    onResizeStart: handleResizeStart,
+    onResizeEnd: handleResizeEnd,
+  });
+
+  const dynamicWrapperStyle = React.useMemo(() => {
+    const style: React.CSSProperties = { ...wrapperStyle };
+
+    if (resizable) {
+      // Allow dragger to be visible outside wrapper bounds
+      style.overflow = 'hidden';
+    } else {
+      style.overflow = 'hidden';
+    }
+
+    return style;
+  }, [wrapperStyle, resizable]);
+
+  React.useEffect(() => {
+    calculateMaxSize();
+  }, [calculateMaxSize]);
 
   const panelNode: React.ReactNode = (
     <CSSMotion
@@ -314,18 +436,20 @@ const DrawerPopup: React.ForwardRefRenderFunction<
         );
         return (
           <div
+            ref={wrapperRef}
             className={classNames(
               `${prefixCls}-content-wrapper`,
               drawerClassNames?.wrapper,
-              motionClassName,
+              !isDragging && motionClassName,
             )}
             style={{
-              ...wrapperStyle,
               ...motionStyle,
               ...styles?.wrapper,
+              ...dynamicWrapperStyle,
             }}
             {...pickAttrs(props, { data: true })}
           >
+            {resizable && <div {...dragElementProps} />}
             {drawerRender ? drawerRender(content) : content}
           </div>
         );

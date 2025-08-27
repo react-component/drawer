@@ -1,7 +1,7 @@
 // export this package's api
 import Drawer from './Drawer';
-import type { DrawerProps } from './Drawer';
+import type { DrawerProps, Placement } from './Drawer';
 
-export type { DrawerProps };
+export type { DrawerProps, Placement };
 
 export default Drawer;
