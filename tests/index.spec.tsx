@@ -4,6 +4,7 @@ import { resetWarned } from '@rc-component/util/lib/warning';
 import React from 'react';
 import type { DrawerProps } from '../src';
 import Drawer from '../src';
+import useDrag from '../src/hooks/useDrag';
 
 describe('rc-drawer-menu', () => {
   beforeEach(() => {
@@ -477,9 +478,9 @@ describe('rc-drawer-menu', () => {
   });
 
   it('should support resizable horizontal', () => {
-    let currentWidth = 200;
+    let currentWidth = '200px';
     const setWidth = (newWidth: number) => {
-      currentWidth = newWidth;
+      currentWidth = newWidth + 'px';
     };
     const onResizeStart = jest.fn();
     const onResizeEnd = jest.fn();
@@ -682,5 +683,173 @@ describe('rc-drawer-menu', () => {
       height: '100px',
     });
     unmount();
+  });
+
+  it('should handle default size fallbacks for both directions', () => {
+    // Test horizontal default width (number type)
+    const { unmount: unmount1 } = render(
+      <Drawer open placement="right" defaultWidth={250}>
+        <div>Test content</div>
+      </Drawer>,
+    );
+    let contentWrapper = document.querySelector('.rc-drawer-content-wrapper');
+    expect(contentWrapper).toHaveStyle({ width: '250px' });
+    unmount1();
+
+    // Test vertical default height (number type)
+    const { unmount: unmount2 } = render(
+      <Drawer open placement="top" defaultHeight={150}>
+        <div>Test content</div>
+      </Drawer>,
+    );
+    contentWrapper = document.querySelector('.rc-drawer-content-wrapper');
+    expect(contentWrapper).toHaveStyle({ height: '150px' });
+    unmount2();
+
+    // Test string default width (triggers different code path)
+    const { unmount: unmount3 } = render(
+      <Drawer open placement="left" defaultWidth="300px">
+        <div>Test content</div>
+      </Drawer>,
+    );
+    contentWrapper = document.querySelector('.rc-drawer-content-wrapper');
+    expect(contentWrapper).toHaveStyle({ width: '300px' });
+    unmount3();
+  });
+
+  it('should prioritize props over defaults when currentSize is undefined', () => {
+    // Test width prop priority over defaultWidth
+    const { unmount: unmount1 } = render(
+      <Drawer
+        open
+        placement="left"
+        width={280}
+        defaultWidth="350px" // string to keep currentSize undefined
+      >
+        <div>Test content</div>
+      </Drawer>,
+    );
+    let contentWrapper = document.querySelector('.rc-drawer-content-wrapper');
+    expect(contentWrapper).toHaveStyle({ width: '280px' });
+    unmount1();
+
+    // Test height prop priority over defaultHeight
+    const { unmount: unmount2 } = render(
+      <Drawer
+        open
+        placement="top"
+        height={180}
+        defaultHeight="250px" // string to keep currentSize undefined
+      >
+        <div>Test content</div>
+      </Drawer>,
+    );
+    contentWrapper = document.querySelector('.rc-drawer-content-wrapper');
+    expect(contentWrapper).toHaveStyle({ height: '180px' });
+    unmount2();
+  });
+
+  it('should handle controlled mode for both width and height', () => {
+    // Test controlled mode for width
+    const { rerender: rerender1, unmount: unmount1 } = render(
+      <Drawer
+        open
+        placement="left"
+        width={200}
+        resizable={{ onResize: () => {} }}
+      >
+        <div>Test content</div>
+      </Drawer>,
+    );
+    rerender1(
+      <Drawer
+        open
+        placement="left"
+        width={300}
+        resizable={{ onResize: () => {} }}
+      >
+        <div>Test content</div>
+      </Drawer>,
+    );
+    let contentWrapper = document.querySelector('.rc-drawer-content-wrapper');
+    expect(contentWrapper).toHaveStyle({ width: '300px' });
+    unmount1();
+
+    // Test controlled mode for height
+    const { rerender: rerender2, unmount: unmount2 } = render(
+      <Drawer
+        open
+        placement="top"
+        height={150}
+        resizable={{ onResize: () => {} }}
+      >
+        <div>Test content</div>
+      </Drawer>,
+    );
+    rerender2(
+      <Drawer
+        open
+        placement="top"
+        height={250}
+        resizable={{ onResize: () => {} }}
+      >
+        <div>Test content</div>
+      </Drawer>,
+    );
+    contentWrapper = document.querySelector('.rc-drawer-content-wrapper');
+    expect(contentWrapper).toHaveStyle({ height: '250px' });
+    unmount2();
+  });
+
+  it('should fallback to container size when currentSize is undefined', () => {
+    const onResizeStart = jest.fn();
+    const onResize = jest.fn();
+    const onResizeEnd = jest.fn();
+
+    const mockContainer = {
+      getBoundingClientRect: jest.fn(() => ({
+        width: 350,
+        height: 250,
+        top: 0,
+        left: 0,
+        bottom: 250,
+        right: 350,
+        x: 0,
+        y: 0,
+        toJSON: () => ({}),
+      })),
+    } as any;
+
+    const TestComponent = () => {
+      const { dragElementProps } = useDrag({
+        prefixCls: 'rc-drawer-resizable',
+        direction: 'left',
+        minSize: 0,
+        containerRef: { current: mockContainer },
+        currentSize: undefined,
+        onResizeStart,
+        onResize,
+        onResizeEnd,
+      });
+
+      return <div {...dragElementProps}>Dragger</div>;
+    };
+
+    render(<TestComponent />);
+
+    const dragger = document.querySelector('.rc-drawer-resizable-dragger');
+    expect(dragger).toBeTruthy();
+
+    fireEvent.mouseDown(dragger, { clientX: 200 });
+
+    expect(mockContainer.getBoundingClientRect).toHaveBeenCalled();
+
+    expect(onResizeStart).toHaveBeenCalledWith(350);
+
+    fireEvent.mouseMove(document, { clientX: 250 });
+    expect(onResize).toHaveBeenCalledWith(400);
+
+    fireEvent.mouseUp(document, { clientX: 250 });
+    expect(onResizeEnd).toHaveBeenCalledWith(350);
   });
 });
