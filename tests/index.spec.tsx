@@ -478,10 +478,7 @@ describe('rc-drawer-menu', () => {
   });
 
   it('should support resizable horizontal', () => {
-    let currentWidth = '200px';
-    const setWidth = (newWidth: number) => {
-      currentWidth = newWidth + 'px';
-    };
+    const setWidth = jest.fn();
     const onResizeStart = jest.fn();
     const onResizeEnd = jest.fn();
 
@@ -499,7 +496,7 @@ describe('rc-drawer-menu', () => {
           }}
           open
           placement="right"
-          width={currentWidth}
+          defaultWidth="200px"
         />
       </div>,
     );
@@ -569,10 +566,7 @@ describe('rc-drawer-menu', () => {
   });
 
   it('should respect minSize and maxSize constraints', () => {
-    let currentWidth = 200;
-    const setWidth = (newWidth: number) => {
-      currentWidth = newWidth;
-    };
+    const setWidth = jest.fn();
 
     const { unmount } = render(
       <div style={{ width: '500px', height: '400px', position: 'relative' }}>
@@ -583,7 +577,7 @@ describe('rc-drawer-menu', () => {
           }}
           open
           placement="left"
-          width={currentWidth}
+          defaultWidth={200}
         />
       </div>,
     );
@@ -637,10 +631,7 @@ describe('rc-drawer-menu', () => {
   });
 
   it('should support resizable vertical', () => {
-    let currentHeight = 200;
-    const setHeight = (newHeight: number) => {
-      currentHeight = newHeight;
-    };
+    const setHeight = jest.fn();
 
     const { unmount } = render(
       <Drawer
@@ -649,7 +640,7 @@ describe('rc-drawer-menu', () => {
         }}
         open
         placement="top"
-        height={currentHeight}
+        defaultHeight={200}
       />,
     );
 

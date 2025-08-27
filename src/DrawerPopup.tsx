@@ -284,59 +284,28 @@ const DrawerPopup: React.ForwardRefRenderFunction<
         break;
     }
   }
-  // Track if props changed to detect controlled mode
-  const prevSizeRef = React.useRef<{
-    width?: number | string;
-    height?: number | string;
-  }>({});
-  const isControlledMode = React.useMemo(() => {
-    // Consider controlled if width/height changes between renders (external updates)
-    const currentSize = isHorizontal ? width : height;
-    const prevSize = isHorizontal
-      ? prevSizeRef.current.width
-      : prevSizeRef.current.height;
 
-    const hasExternalUpdate =
-      currentSize !== undefined &&
-      currentSize !== prevSize &&
-      prevSize !== undefined;
+  const isControlled = isHorizontal
+    ? width !== undefined
+    : height !== undefined;
 
-    // Update ref for next comparison
-    prevSizeRef.current = { width, height };
-
-    return hasExternalUpdate;
-  }, [width, height, isHorizontal]);
-
-  // Size calculation with controlled mode consideration
   if (isHorizontal) {
     let finalWidth: number | string;
-    if (isControlledMode) {
-      // In controlled mode, prioritize external width
-      finalWidth = width !== undefined ? width : defaultWidth;
+    if (isControlled) {
+      finalWidth = width!;
     } else if (currentSize !== undefined) {
-      // In uncontrolled mode, user dragged size takes precedence
       finalWidth = currentSize;
-    } else if (width !== undefined) {
-      // Fallback to provided width
-      finalWidth = width;
     } else {
-      // Final fallback to default
       finalWidth = defaultWidth;
     }
     wrapperStyle.width = parseWidthHeight(finalWidth);
   } else {
     let finalHeight: number | string;
-    if (isControlledMode) {
-      // In controlled mode, prioritize external height
-      finalHeight = height !== undefined ? height : defaultHeight;
+    if (isControlled) {
+      finalHeight = height!;
     } else if (currentSize !== undefined) {
-      // In uncontrolled mode, user dragged size takes precedence
       finalHeight = currentSize;
-    } else if (height !== undefined) {
-      // Fallback to provided height
-      finalHeight = height;
     } else {
-      // Final fallback to default
       finalHeight = defaultHeight;
     }
     wrapperStyle.height = parseWidthHeight(finalHeight);
@@ -388,12 +357,12 @@ const DrawerPopup: React.ForwardRefRenderFunction<
   const handleResize = React.useCallback(
     (size: number) => {
       // In controlled mode, only trigger callback without updating internal state
-      if (!isControlledMode) {
+      if (!isControlled) {
         setCurrentSize(size);
       }
       resizable?.onResize?.(size);
     },
-    [resizable, isControlledMode],
+    [resizable, isControlled],
   );
 
   const handleResizeStart = React.useCallback(() => {
