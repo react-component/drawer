@@ -26,6 +26,26 @@ export interface DrawerProps
   panelRef?: React.Ref<HTMLDivElement>;
   classNames?: DrawerClassNames;
   styles?: DrawerStyles;
+  /**
+   * @deprecated Use `size` instead. Will be removed in next major version.
+   */
+  width?: number | string;
+  /**
+   * @deprecated Use `size` instead. Will be removed in next major version.
+   */
+  height?: number | string;
+  /** Size of the drawer (width for left/right placement, height for top/bottom placement) */
+  size?: number | string;
+  /** Maximum size of the drawer */
+  maxSize?: number;
+  /** Default size for uncontrolled resizable drawer */
+  defaultSize?: number | string;
+  /** Resizable configuration - object with optional callbacks */
+  resizable?: {
+    onResize?: (size: number) => void;
+    onResizeStart?: () => void;
+    onResizeEnd?: () => void;
+  };
 }
 
 const Drawer: React.FC<DrawerProps> = props => {
@@ -35,7 +55,10 @@ const Drawer: React.FC<DrawerProps> = props => {
     placement = 'right' as Placement,
     autoFocus = true,
     keyboard = true,
-    width = 378,
+    width,
+    height,
+    size,
+    maxSize,
     mask = true,
     maskClosable = true,
     getContainer,
@@ -48,6 +71,8 @@ const Drawer: React.FC<DrawerProps> = props => {
     onClick,
     onKeyDown,
     onKeyUp,
+    resizable,
+    defaultSize,
 
     // Refs
     panelRef,
@@ -119,11 +144,16 @@ const Drawer: React.FC<DrawerProps> = props => {
     autoFocus,
     keyboard,
     width,
+    height,
+    size,
+    maxSize,
+    defaultSize,
     mask,
     maskClosable,
     inline: getContainer === false,
     afterOpenChange: internalAfterOpenChange,
     ref: popupRef,
+    resizable,
     ...eventHandlers,
   };
 
