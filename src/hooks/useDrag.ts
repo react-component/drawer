@@ -10,7 +10,7 @@ export interface UseDragOptions {
   style?: React.CSSProperties;
   maxSize?: number;
   containerRef?: React.RefObject<HTMLElement>;
-  currentSize?: number;
+  currentSize?: number | string;
   onResize?: (size: number) => void;
   onResizeEnd?: (size: number) => void;
   onResizeStart?: (size: number) => void;
@@ -59,7 +59,7 @@ export default function useDrag(options: UseDragOptions): UseDragReturn {
 
     // Use provided currentSize, or fallback to container size
     let startSize: number;
-    if (currentSize !== undefined) {
+    if (typeof currentSize === 'number') {
       startSize = currentSize;
     } else if (containerRef?.current) {
       const rect = containerRef.current.getBoundingClientRect();
