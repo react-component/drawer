@@ -347,19 +347,6 @@ const DrawerPopup: React.ForwardRefRenderFunction<
     onKeyUp,
   };
 
-  const dynamicWrapperStyle = React.useMemo(() => {
-    const style: React.CSSProperties = { ...wrapperStyle };
-
-    if (resizable) {
-      // Allow dragger to be visible outside wrapper bounds
-      style.overflow = 'hidden';
-    } else {
-      style.overflow = 'hidden';
-    }
-
-    return style;
-  }, [wrapperStyle, resizable]);
-
   // =========================== Render ==========================
   // >>>>> Panel
   const panelNode: React.ReactNode = (
@@ -396,13 +383,14 @@ const DrawerPopup: React.ForwardRefRenderFunction<
             ref={wrapperRef}
             className={classNames(
               `${prefixCls}-content-wrapper`,
+              isDragging && `${prefixCls}-content-wrapper-dragging`,
               drawerClassNames?.wrapper,
               !isDragging && motionClassName,
             )}
             style={{
               ...motionStyle,
+              ...wrapperStyle,
               ...styles?.wrapper,
-              ...dynamicWrapperStyle,
             }}
             {...pickAttrs(props, { data: true })}
           >
