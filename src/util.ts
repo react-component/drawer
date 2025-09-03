@@ -12,7 +12,6 @@ export function parseWidthHeight(value?: number | string) {
         false,
         'Invalid value type of `width` or `height` which should be number type instead.',
       );
-      return floatNum;
     }
 
     if (!Number.isNaN(num)) {
