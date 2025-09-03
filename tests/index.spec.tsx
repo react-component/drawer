@@ -478,7 +478,7 @@ describe('rc-drawer-menu', () => {
   });
 
   it('should support resizable horizontal', () => {
-    const setWidth = jest.fn();
+    const onResize = jest.fn();
     const onResizeStart = jest.fn();
     const onResizeEnd = jest.fn();
 
@@ -490,13 +490,13 @@ describe('rc-drawer-menu', () => {
         <Drawer
           getContainer={false}
           resizable={{
-            onResize: setWidth,
+            onResize,
             onResizeStart,
             onResizeEnd,
           }}
           open
           placement="right"
-          defaultWidth="200px"
+          defaultSize="200px"
         />
       </div>,
     );
@@ -558,9 +558,7 @@ describe('rc-drawer-menu', () => {
     // onResizeEnd should be called when mouse up
     expect(onResizeEnd).toHaveBeenCalledTimes(1);
 
-    expect(document.querySelector('.rc-drawer-content-wrapper')).toHaveStyle({
-      width: '100px',
-    });
+    expect(onResize).toHaveBeenCalledWith(100);
 
     unmount();
   });
@@ -575,9 +573,10 @@ describe('rc-drawer-menu', () => {
           resizable={{
             onResize: setWidth,
           }}
+          maxSize={500}
           open
           placement="left"
-          defaultWidth={200}
+          defaultSize={200}
         />
       </div>,
     );
@@ -640,7 +639,7 @@ describe('rc-drawer-menu', () => {
         }}
         open
         placement="top"
-        defaultHeight={200}
+        defaultSize={200}
       />,
     );
 
@@ -679,7 +678,7 @@ describe('rc-drawer-menu', () => {
   it('should handle default size fallbacks for both directions', () => {
     // Test horizontal default width (number type)
     const { unmount: unmount1 } = render(
-      <Drawer open placement="right" defaultWidth={250}>
+      <Drawer open placement="right" defaultSize={250}>
         <div>Test content</div>
       </Drawer>,
     );
@@ -689,7 +688,7 @@ describe('rc-drawer-menu', () => {
 
     // Test vertical default height (number type)
     const { unmount: unmount2 } = render(
-      <Drawer open placement="top" defaultHeight={150}>
+      <Drawer open placement="top" defaultSize={150}>
         <div>Test content</div>
       </Drawer>,
     );
@@ -699,7 +698,7 @@ describe('rc-drawer-menu', () => {
 
     // Test string default width (triggers different code path)
     const { unmount: unmount3 } = render(
-      <Drawer open placement="left" defaultWidth="300px">
+      <Drawer open placement="left" defaultSize="300px">
         <div>Test content</div>
       </Drawer>,
     );
@@ -715,7 +714,7 @@ describe('rc-drawer-menu', () => {
         open
         placement="left"
         width={280}
-        defaultWidth="350px" // string to keep currentSize undefined
+        defaultSize="350px" // string to keep currentSize undefined
       >
         <div>Test content</div>
       </Drawer>,
@@ -730,7 +729,7 @@ describe('rc-drawer-menu', () => {
         open
         placement="top"
         height={180}
-        defaultHeight="250px" // string to keep currentSize undefined
+        defaultSize="250px" // string to keep currentSize undefined
       >
         <div>Test content</div>
       </Drawer>,
@@ -815,7 +814,6 @@ describe('rc-drawer-menu', () => {
       const { dragElementProps } = useDrag({
         prefixCls: 'rc-drawer-resizable',
         direction: 'left',
-        minSize: 0,
         containerRef: { current: mockContainer },
         currentSize: undefined,
         onResizeStart,

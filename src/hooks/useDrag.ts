@@ -45,33 +45,30 @@ export default function useDrag(options: UseDragOptions): UseDragReturn {
 
   const isHorizontal = direction === 'left' || direction === 'right';
 
-  const handleMouseDown = React.useCallback(
-    (e: React.MouseEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
+  const handleMouseDown = useEvent((e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
 
-      setIsDragging(true);
+    setIsDragging(true);
 
-      if (isHorizontal) {
-        setStartPos(e.clientX);
-      } else {
-        setStartPos(e.clientY);
-      }
+    if (isHorizontal) {
+      setStartPos(e.clientX);
+    } else {
+      setStartPos(e.clientY);
+    }
 
-      // Use provided currentSize, or fallback to container size
-      let startSize: number;
-      if (currentSize !== undefined) {
-        startSize = currentSize;
-      } else if (containerRef?.current) {
-        const rect = containerRef.current.getBoundingClientRect();
-        startSize = isHorizontal ? rect.width : rect.height;
-      }
+    // Use provided currentSize, or fallback to container size
+    let startSize: number;
+    if (currentSize !== undefined) {
+      startSize = currentSize;
+    } else if (containerRef?.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      startSize = isHorizontal ? rect.width : rect.height;
+    }
 
-      setStartSize(startSize);
-      onResizeStart?.(startSize);
-    },
-    [isHorizontal, containerRef, currentSize, onResizeStart],
-  );
+    setStartSize(startSize);
+    onResizeStart?.(startSize);
+  });
 
   const handleMouseMove = useEvent((e: MouseEvent) => {
     if (!isDragging) return;

@@ -275,13 +275,14 @@ const DrawerPopup: React.ForwardRefRenderFunction<
   const mergedSize = React.useMemo(() => {
     const legacySize = isHorizontal ? width : height;
 
-    return (
+    const nextMergedSize =
       size ??
       legacySize ??
       currentSize ??
       defaultSize ??
-      (isHorizontal ? 378 : undefined)
-    );
+      (isHorizontal ? 378 : undefined);
+
+    return parseWidthHeight(nextMergedSize);
   }, [size, width, height, defaultSize, isHorizontal, currentSize]);
 
   // >>> Style
@@ -330,7 +331,7 @@ const DrawerPopup: React.ForwardRefRenderFunction<
     style: styles?.dragger,
     maxSize,
     containerRef: wrapperRef,
-    currentSize,
+    currentSize: mergedSize,
     onResize: onInternalResize,
     onResizeStart: resizable?.onResizeStart,
     onResizeEnd: resizable?.onResizeEnd,
