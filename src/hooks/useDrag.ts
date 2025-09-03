@@ -1,13 +1,13 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import type { Placement } from '../Drawer';
+import { useEvent } from '@rc-component/util';
 
 export interface UseDragOptions {
   prefixCls: string;
   direction: Placement;
   className?: string;
   style?: React.CSSProperties;
-  minSize: number;
   maxSize?: number;
   containerRef?: React.RefObject<HTMLElement>;
   currentSize?: number;
@@ -31,7 +31,6 @@ export default function useDrag(options: UseDragOptions): UseDragReturn {
     direction,
     className,
     style,
-    minSize,
     maxSize,
     containerRef,
     currentSize,
@@ -74,42 +73,30 @@ export default function useDrag(options: UseDragOptions): UseDragReturn {
     [isHorizontal, containerRef, currentSize, onResizeStart],
   );
 
-  const handleMouseMove = React.useCallback(
-    (e: MouseEvent) => {
-      if (!isDragging) return;
+  const handleMouseMove = useEvent((e: MouseEvent) => {
+    if (!isDragging) return;
 
-      const currentPos = isHorizontal ? e.clientX : e.clientY;
-      let delta = currentPos - startPos;
+    const currentPos = isHorizontal ? e.clientX : e.clientY;
+    let delta = currentPos - startPos;
 
-      // Adjust delta direction based on placement
-      if (direction === 'right' || direction === 'bottom') {
-        delta = -delta;
-      }
+    // Adjust delta direction based on placement
+    if (direction === 'right' || direction === 'bottom') {
+      delta = -delta;
+    }
 
-      let newSize = startSize + delta;
+    let newSize = startSize + delta;
 
-      // Apply min/max size limits
-      if (newSize < minSize) {
-        newSize = minSize;
-      }
-      // Only apply maxSize if it's a valid positive number
-      if (maxSize !== undefined && maxSize > 0 && newSize > maxSize) {
-        newSize = maxSize;
-      }
+    // Apply min/max size limits
+    if (newSize < 0) {
+      newSize = 0;
+    }
+    // Only apply maxSize if it's a valid positive number
+    if (maxSize && newSize > maxSize) {
+      newSize = maxSize;
+    }
 
-      onResize?.(newSize);
-    },
-    [
-      isDragging,
-      startPos,
-      startSize,
-      direction,
-      minSize,
-      maxSize,
-      onResize,
-      isHorizontal,
-    ],
-  );
+    onResize?.(newSize);
+  });
 
   const handleMouseUp = React.useCallback(() => {
     if (isDragging) {
