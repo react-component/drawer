@@ -40,12 +40,14 @@ export interface DrawerProps
   maxSize?: number;
   /** Default size for uncontrolled resizable drawer */
   defaultSize?: number | string;
-  /** Resizable configuration - object with optional callbacks */
-  resizable?: {
-    onResize?: (size: number) => void;
-    onResizeStart?: () => void;
-    onResizeEnd?: () => void;
-  };
+  /** Resizable configuration - boolean to enable/disable or object with optional callbacks */
+  resizable?:
+    | boolean
+    | {
+        onResize?: (size: number) => void;
+        onResizeStart?: () => void;
+        onResizeEnd?: () => void;
+      };
 }
 
 const Drawer: React.FC<DrawerProps> = props => {
