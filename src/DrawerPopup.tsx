@@ -85,11 +85,13 @@ export interface DrawerPopupProps
   // resizable
   /** Default size for uncontrolled resizable drawer */
   defaultSize?: number | string;
-  resizable?: {
-    onResize?: (size: number) => void;
-    onResizeStart?: () => void;
-    onResizeEnd?: () => void;
-  };
+  resizable?:
+    | boolean
+    | {
+        onResize?: (size: number) => void;
+        onResizeStart?: () => void;
+        onResizeEnd?: () => void;
+      };
 }
 
 const DrawerPopup: React.ForwardRefRenderFunction<
@@ -319,9 +321,12 @@ const DrawerPopup: React.ForwardRefRenderFunction<
   // =========================== Resize ===========================
   const wrapperRef = React.useRef<HTMLDivElement>(null);
 
+  const isResizable = !!resizable;
+  const resizeConfig = (typeof resizable === 'object' && resizable) || {};
+
   const onInternalResize = useEvent((size: number) => {
     setCurrentSize(size);
-    resizable?.onResize?.(size);
+    resizeConfig.onResize?.(size);
   });
 
   const { dragElementProps, isDragging } = useDrag({
@@ -333,8 +338,8 @@ const DrawerPopup: React.ForwardRefRenderFunction<
     containerRef: wrapperRef,
     currentSize: mergedSize,
     onResize: onInternalResize,
-    onResizeStart: resizable?.onResizeStart,
-    onResizeEnd: resizable?.onResizeEnd,
+    onResizeStart: resizeConfig.onResizeStart,
+    onResizeEnd: resizeConfig.onResizeEnd,
   });
 
   // =========================== Events ===========================
@@ -394,7 +399,7 @@ const DrawerPopup: React.ForwardRefRenderFunction<
             }}
             {...pickAttrs(props, { data: true })}
           >
-            {resizable && <div {...dragElementProps} />}
+            {isResizable && <div {...dragElementProps} />}
             {drawerRender ? drawerRender(content) : content}
           </div>
         );
