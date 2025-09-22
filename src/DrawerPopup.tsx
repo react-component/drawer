@@ -321,10 +321,8 @@ const DrawerPopup: React.ForwardRefRenderFunction<
   // =========================== Resize ===========================
   const wrapperRef = React.useRef<HTMLDivElement>(null);
 
-  const isResizable = typeof resizable === 'boolean' ? resizable : !!resizable;
-
-  const resizeConfig =
-    typeof resizable === 'object' && resizable !== null ? resizable : {};
+  const isResizable = !!resizable;
+  const resizeConfig = (typeof resizable === 'object' && resizable) || {};
 
   const onInternalResize = useEvent((size: number) => {
     setCurrentSize(size);
