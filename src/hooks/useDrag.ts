@@ -1,5 +1,5 @@
 import * as React from 'react';
-import classNames from 'classnames';
+import { clsx } from 'clsx';
 import type { Placement } from '../Drawer';
 import { useEvent } from '@rc-component/util';
 
@@ -120,7 +120,7 @@ export default function useDrag(options: UseDragOptions): UseDragReturn {
     }
   }, [isDragging, handleMouseMove, handleMouseUp]);
 
-  const dragElementClassName = classNames(
+  const dragElementClassName = clsx(
     `${prefixCls}-dragger`,
     `${prefixCls}-dragger-${direction}`,
     {

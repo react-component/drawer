@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import { clsx } from 'clsx';
 import * as React from 'react';
 import { RefContext } from './context';
 import pickAttrs from '@rc-component/util/lib/pickAttrs';
@@ -43,7 +43,7 @@ const DrawerPanel: React.FC<Readonly<DrawerPanelProps>> = props => {
 
   return (
     <div
-      className={classNames(`${prefixCls}-section`, className)}
+      className={clsx(`${prefixCls}-section`, className)}
       role="dialog"
       ref={mergedRef}
       {...pickAttrs(props, { aria: true })}
