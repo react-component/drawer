@@ -82,3 +82,10 @@ ReactDom.render(
 npm install
 npm start
 ```
+
+## Maintainer
+[@Kevin Li](mailto:kevinli@yourdomain.com)
+[@BANG88](mailto:bang88@yourdomain.com)
+[@masonliu](mailto:masonliu@yourdomain.com)
+[@yiminghe](mailto:yiminghe@yourdomain.com)
+[@soliury](mailto:soliury@yourdomain.com)
