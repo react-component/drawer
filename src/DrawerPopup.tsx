@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import { clsx } from 'clsx';
 import type { CSSMotionProps } from '@rc-component/motion';
 import CSSMotion from '@rc-component/motion';
 import KeyCode from '@rc-component/util/lib/KeyCode';
@@ -248,17 +248,13 @@ const DrawerPopup: React.ForwardRefRenderFunction<
         maskRef,
       ) => (
         <div
-          className={classNames(
+          className={clsx(
             `${prefixCls}-mask`,
             motionMaskClassName,
             drawerClassNames?.mask,
             maskClassName,
           )}
-          style={{
-            ...motionMaskStyle,
-            ...maskStyle,
-            ...styles?.mask,
-          }}
+          style={{ ...motionMaskStyle, ...maskStyle, ...styles?.mask }}
           onClick={maskClosable && open ? onClose : undefined}
           ref={maskRef}
         />
@@ -372,11 +368,8 @@ const DrawerPopup: React.ForwardRefRenderFunction<
             id={id}
             containerRef={motionRef}
             prefixCls={prefixCls}
-            className={classNames(className, drawerClassNames?.section)}
-            style={{
-              ...style,
-              ...styles?.section,
-            }}
+            className={clsx(className, drawerClassNames?.section)}
+            style={{ ...style, ...styles?.section }}
             {...pickAttrs(props, { aria: true })}
             {...eventHandlers}
           >
@@ -386,17 +379,13 @@ const DrawerPopup: React.ForwardRefRenderFunction<
         return (
           <div
             ref={wrapperRef}
-            className={classNames(
+            className={clsx(
               `${prefixCls}-content-wrapper`,
               isDragging && `${prefixCls}-content-wrapper-dragging`,
               drawerClassNames?.wrapper,
               !isDragging && motionClassName,
             )}
-            style={{
-              ...motionStyle,
-              ...wrapperStyle,
-              ...styles?.wrapper,
-            }}
+            style={{ ...motionStyle, ...wrapperStyle, ...styles?.wrapper }}
             {...pickAttrs(props, { data: true })}
           >
             {isResizable && <div {...dragElementProps} />}
@@ -419,15 +408,10 @@ const DrawerPopup: React.ForwardRefRenderFunction<
   return (
     <DrawerContext.Provider value={mergedContext}>
       <div
-        className={classNames(
-          prefixCls,
-          `${prefixCls}-${placement}`,
-          rootClassName,
-          {
-            [`${prefixCls}-open`]: open,
-            [`${prefixCls}-inline`]: inline,
-          },
-        )}
+        className={clsx(prefixCls, `${prefixCls}-${placement}`, rootClassName, {
+          [`${prefixCls}-open`]: open,
+          [`${prefixCls}-inline`]: inline,
+        })}
         style={containerStyle}
         tabIndex={-1}
         ref={panelRef}

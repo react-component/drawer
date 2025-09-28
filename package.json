@@ -46,7 +46,7 @@
     "@rc-component/motion": "^1.1.4",
     "@rc-component/portal": "^2.0.0",
     "@rc-component/util": "^1.2.1",
-    "classnames": "^2.2.6"
+    "clsx": "^2.1.1"
   },
   "devDependencies": {
     "@ant-design/icons": "^5.3.0",
@@ -54,7 +54,6 @@
     "@rc-component/np": "^1.0.0",
     "@testing-library/jest-dom": "^6.2.0",
     "@testing-library/react": "^16.3.0",
-    "@types/classnames": "^2.2.9",
     "@types/jest": "^29.5.11",
     "@types/node": "^24.3.0",
     "@types/raf": "^3.4.0",
