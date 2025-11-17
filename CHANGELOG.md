@@ -2,6 +2,10 @@ History
 
 ---
 
+## 4.1.0 (Upcoming)
+
+- Performance improvements and bug fixes.
+
 ## 4.0.0
 
 - Upgrade `rc-util` to `5.x`.
