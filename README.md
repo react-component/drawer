@@ -1,15 +1,15 @@
-# rc-drawer
+# @rc-component/drawer
 
 [![NPM version][npm-image]][npm-url] [![dumi](https://img.shields.io/badge/docs%20by-dumi-blue?style=flat-square)](https://github.com/umijs/dumi) [![build status][github-actions-image]][github-actions-url] [![codecov](https://codecov.io/gh/react-component/drawer/branch/master/graph/badge.svg)](https://codecov.io/gh/react-component/drawer) [![node version][node-image]][node-url] [![npm download][download-image]][download-url]
 
-[npm-image]: http://img.shields.io/npm/v/rc-drawer.svg?style=flat-square
-[npm-url]: http://npmjs.org/package/rc-drawer
-[github-actions-image]: https://github.com/react-component/drawer/workflows/CI/badge.svg
-[github-actions-url]: https://github.com/react-component/drawer/actions
+[npm-image]: http://img.shields.io/npm/v/@rc-component/drawer.svg?style=flat-square
+[npm-url]: http://npmjs.org/package/@rc-component/drawer
+[github-actions-image]: https://github.com/react-component/drawer/actions/workflows/react-component-ci.yml/badge.svg
+[github-actions-url]: https://github.com/react-component/drawer/actions/workflows/react-component-ci.yml
 [node-image]: https://img.shields.io/badge/node.js-%3E=_0.10-green.svg?style=flat-square
 [node-url]: http://nodejs.org/download/
-[download-image]: https://img.shields.io/npm/dm/rc-drawer.svg?style=flat-square
-[download-url]: https://npmjs.org/package/rc-drawer
+[download-image]: https://img.shields.io/npm/dm/@rc-component/drawer.svg?style=flat-square
+[download-url]: https://npmjs.org/package/@rc-component/drawer
 
 ## Example
 
@@ -18,7 +18,7 @@ https://drawer-react-component.vercel.app/
 ## Usage
 
 ```js
-import Drawer from 'rc-drawer';
+import Drawer from '@rc-component/drawer';
 import React from 'react';
 import ReactDom from 'react-dom';
 
@@ -31,7 +31,7 @@ ReactDom.render(
 
 ## Install
 
-[![rc-drawer](https://nodei.co/npm/rc-drawer.png)](https://npmjs.org/package/rc-drawer)
+[![@rc-component/drawer](https://nodei.co/npm/@rc-component/drawer.png)](https://npmjs.org/package/@rc-component/drawer)
 
 ## Browser Support
 
@@ -45,7 +45,7 @@ ReactDom.render(
 | ------------------ | --------------------------------------------------------------------------- | -------------------------------------- | ----------------------------------------------------------------------------- |
 | className          | string                                                                      | null                                   | -                                                                             |
 | classNames         | { mask?: string; content?: string; wrapper?: string; }                      | -                                      | pass className to target area                                                 |
-| styles             | { mask?: CSSProperties; content?: CSSProperties; wrapper?: CSSProperties; } | -                                      | pass style to target area                                                     |
+| styles             | { mask?: CSSProperties; content?: CSSProperties; wrapper?: CSSProperties; } | `rc-drawer`                            | pass style to target area                                                     |
 | prefixCls          | string                                                                      | 'drawer'                               | prefix class                                                                  |
 | width              | string \| number                                                            | null                                   | drawer content wrapper width, drawer level transition width                   |
 | height             | string \| number                                                            | null                                   | drawer content wrapper height, drawer level transition height                 |
