@@ -1,13 +1,11 @@
 # @rc-component/drawer
 
-[![NPM version][npm-image]][npm-url] [![dumi](https://img.shields.io/badge/docs%20by-dumi-blue?style=flat-square)](https://github.com/umijs/dumi) [![build status][github-actions-image]][github-actions-url] [![codecov](https://codecov.io/gh/react-component/drawer/branch/master/graph/badge.svg)](https://codecov.io/gh/react-component/drawer) [![node version][node-image]][node-url] [![npm download][download-image]][download-url]
+[![NPM version][npm-image]][npm-url] [![dumi](https://img.shields.io/badge/docs%20by-dumi-blue?style=flat-square)](https://github.com/umijs/dumi) [![build status][github-actions-image]][github-actions-url] [![codecov](https://codecov.io/gh/react-component/drawer/branch/master/graph/badge.svg)](https://codecov.io/gh/react-component/drawer) [![npm download][download-image]][download-url]
 
 [npm-image]: http://img.shields.io/npm/v/@rc-component/drawer.svg?style=flat-square
 [npm-url]: http://npmjs.org/package/@rc-component/drawer
 [github-actions-image]: https://github.com/react-component/drawer/actions/workflows/react-component-ci.yml/badge.svg
 [github-actions-url]: https://github.com/react-component/drawer/actions/workflows/react-component-ci.yml
-[node-image]: https://img.shields.io/badge/node.js-%3E=_0.10-green.svg?style=flat-square
-[node-url]: http://nodejs.org/download/
 [download-image]: https://img.shields.io/npm/dm/@rc-component/drawer.svg?style=flat-square
 [download-url]: https://npmjs.org/package/@rc-component/drawer
 
