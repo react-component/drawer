@@ -1,13 +1,22 @@
 # @rc-component/drawer
 
-[![NPM version][npm-image]][npm-url] [![dumi](https://img.shields.io/badge/docs%20by-dumi-blue?style=flat-square)](https://github.com/umijs/dumi) [![build status][github-actions-image]][github-actions-url] [![codecov](https://codecov.io/gh/react-component/drawer/branch/master/graph/badge.svg)](https://codecov.io/gh/react-component/drawer) [![npm download][download-image]][download-url]
+[![NPM version][npm-image]][npm-url]
+[![npm download][download-image]][download-url]
+[![build status][github-actions-image]][github-actions-url]
+[![codecov][codecov-image]][codecov-url]
+[![dumi][dumi-image]][dumi-url]
 
 [npm-image]: http://img.shields.io/npm/v/@rc-component/drawer.svg?style=flat-square
 [npm-url]: http://npmjs.org/package/@rc-component/drawer
+[dumi-image]: https://img.shields.io/badge/docs%20by-dumi-blue?style=flat-square
+[dumi-url]: https://github.com/umijs/dumi
 [github-actions-image]: https://github.com/react-component/drawer/actions/workflows/react-component-ci.yml/badge.svg
 [github-actions-url]: https://github.com/react-component/drawer/actions/workflows/react-component-ci.yml
 [download-image]: https://img.shields.io/npm/dm/@rc-component/drawer.svg?style=flat-square
 [download-url]: https://npmjs.org/package/@rc-component/drawer
+[codecov-image]: https://codecov.io/gh/react-component/drawer/branch/master/graph/badge.svg
+[codecov-url]: https://codecov.io/gh/react-component/drawer
+
 
 ## Example
 
