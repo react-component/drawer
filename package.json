@@ -55,7 +55,7 @@
     "@testing-library/jest-dom": "^6.2.0",
     "@testing-library/react": "^16.3.0",
     "@types/jest": "^29.5.11",
-    "@types/node": "^24.3.0",
+    "@types/node": "^25.0.0",
     "@types/raf": "^3.4.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
