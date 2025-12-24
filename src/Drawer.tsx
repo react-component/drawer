@@ -15,12 +15,13 @@ import type { DrawerClassNames, DrawerStyles } from './inter';
 export type Placement = 'left' | 'top' | 'right' | 'bottom';
 
 export interface DrawerProps
-  extends Omit<DrawerPopupProps, 'prefixCls' | 'inline' | 'scrollLocker'>,
+  extends
+    Omit<DrawerPopupProps, 'prefixCls' | 'inline' | 'scrollLocker'>,
     DrawerPanelEvents,
     DrawerPanelAccessibility {
   prefixCls?: string;
   open?: boolean;
-  onClose?: (e: React.MouseEvent | React.KeyboardEvent) => void;
+  onClose?: (e: React.MouseEvent | React.KeyboardEvent | KeyboardEvent) => void;
   destroyOnHidden?: boolean;
   getContainer?: PortalProps['getContainer'];
   panelRef?: React.Ref<HTMLDivElement>;
@@ -73,6 +74,7 @@ const Drawer: React.FC<DrawerProps> = props => {
     onClick,
     onKeyDown,
     onKeyUp,
+    onClose,
     resizable,
     defaultSize,
 
@@ -159,6 +161,13 @@ const Drawer: React.FC<DrawerProps> = props => {
     ...eventHandlers,
   };
 
+  const onEsc: PortalProps['onEsc'] = ({ top, event }) => {
+    if (top && keyboard) {
+      event.stopPropagation();
+      onClose?.(event);
+    }
+  };
+
   return (
     <RefContext.Provider value={refContext}>
       <Portal
@@ -166,6 +175,7 @@ const Drawer: React.FC<DrawerProps> = props => {
         autoDestroy={false}
         getContainer={getContainer}
         autoLock={mask && (mergedOpen || animatedVisible)}
+        onEsc={onEsc}
       >
         <DrawerPopup {...drawerPopupProps} />
       </Portal>
