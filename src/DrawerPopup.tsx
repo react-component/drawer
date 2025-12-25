@@ -31,8 +31,7 @@ export interface PushConfig {
 }
 
 export interface DrawerPopupProps
-  extends DrawerPanelEvents,
-    DrawerPanelAccessibility {
+  extends DrawerPanelEvents, DrawerPanelAccessibility {
   prefixCls: string;
   open?: boolean;
   inline?: boolean;
@@ -106,7 +105,6 @@ const DrawerPopup: React.ForwardRefRenderFunction<
     push,
     forceRender,
     autoFocus,
-    keyboard,
 
     // classNames
     classNames: drawerClassNames,
@@ -171,15 +169,6 @@ const DrawerPopup: React.ForwardRefRenderFunction<
           ) {
             sentinelEndRef.current?.focus({ preventScroll: true });
           }
-        }
-        break;
-      }
-
-      // Close
-      case KeyCode.ESC: {
-        if (onClose && keyboard) {
-          event.stopPropagation();
-          onClose(event);
         }
         break;
       }

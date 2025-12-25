@@ -299,22 +299,20 @@ describe('rc-drawer-menu', () => {
   describe('keyboard', () => {
     it('ESC to exit', () => {
       const onClose = jest.fn();
-      const { container } = render(
-        <Drawer open getContainer={false} onClose={onClose} />,
-      );
-      fireEvent.keyDown(container.querySelector('.rc-drawer-section'), {
-        keyCode: KeyCode.ESC,
+      render(<Drawer open getContainer={false} onClose={onClose} />);
+      fireEvent.keyDown(window, {
+        key: 'Escape',
       });
       expect(onClose).toHaveBeenCalled();
     });
 
     it('disable ESC to exit', () => {
       const onClose = jest.fn();
-      const { container } = render(
+      render(
         <Drawer open getContainer={false} onClose={onClose} keyboard={false} />,
       );
-      fireEvent.keyDown(container.querySelector('.rc-drawer-section'), {
-        keyCode: KeyCode.ESC,
+      fireEvent.keyDown(window, {
+        key: 'Escape',
       });
       expect(onClose).not.toHaveBeenCalled();
     });
