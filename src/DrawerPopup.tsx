@@ -14,7 +14,7 @@ import useDrag from './hooks/useDrag';
 import { parseWidthHeight } from './util';
 import type { DrawerClassNames, DrawerStyles } from './inter';
 import { useEvent } from '@rc-component/util';
-import { useLockFocus } from '@rc-component/util/lib/Dom/focus';
+import useFocusable from './hooks/useFocusable';
 
 export type Placement = 'left' | 'right' | 'top' | 'bottom';
 
@@ -23,7 +23,7 @@ export interface PushConfig {
 }
 
 export interface FocusableConfig {
-  autoFocus?: boolean | string;
+  autoFocus?: boolean;
   focusTriggerAfterClose?: boolean;
   trap?: boolean;
 }
@@ -105,7 +105,10 @@ const DrawerPopup: React.ForwardRefRenderFunction<
     inline,
     push,
     forceRender,
+
+    // Focus
     autoFocus,
+    focusable,
 
     // classNames
     classNames: drawerClassNames,
@@ -153,15 +156,8 @@ const DrawerPopup: React.ForwardRefRenderFunction<
 
   React.useImperativeHandle(ref, () => panelRef.current);
 
-  useLockFocus(open, () => panelRef.current);
-
-  // ========================== Control ===========================
-  // Auto Focus
-  React.useEffect(() => {
-    if (open && autoFocus) {
-      panelRef.current?.focus({ preventScroll: true });
-    }
-  }, [open]);
+  // ========================= Focusable ==========================
+  useFocusable(() => panelRef.current, open, focusable, autoFocus, mask);
 
   // ============================ Push ============================
   const [pushed, setPushed] = React.useState(false);

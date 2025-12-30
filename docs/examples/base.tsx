@@ -27,6 +27,8 @@ const Demo = () => {
         {...motionProps}
       >
         content
+        <button>Button 1</button>
+        <button>Button 2</button>
       </Drawer>
       <div>
         <button onClick={onSwitch}>打开</button>

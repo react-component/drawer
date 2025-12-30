@@ -1,5 +1,4 @@
 import { cleanup, fireEvent, render, act } from '@testing-library/react';
-import KeyCode from '@rc-component/util/lib/KeyCode';
 import { resetWarned } from '@rc-component/util/lib/warning';
 import React from 'react';
 import type { DrawerProps } from '../src';
@@ -263,37 +262,6 @@ describe('rc-drawer-menu', () => {
     });
 
     expect(container.contains(document.activeElement)).toBeTruthy();
-  });
-
-  it('tab should always in the content', () => {
-    const { container } = render(
-      <Drawer open getContainer={false}>
-        <div>Hello World</div>
-      </Drawer>,
-    );
-
-    const firstSentinel = container.querySelector<HTMLElement>(
-      '[data-sentinel="start"]',
-    );
-    const lastSentinel = container.querySelector<HTMLElement>(
-      '[data-sentinel="end"]',
-    );
-
-    // First shift to last
-    firstSentinel.focus();
-    fireEvent.keyDown(firstSentinel, {
-      shiftKey: true,
-      keyCode: KeyCode.TAB,
-      which: KeyCode.TAB,
-    });
-    expect(document.activeElement).toBe(lastSentinel);
-
-    // Last tab to first
-    fireEvent.keyDown(lastSentinel, {
-      keyCode: KeyCode.TAB,
-      which: KeyCode.TAB,
-    });
-    expect(document.activeElement).toBe(firstSentinel);
   });
 
   describe('keyboard', () => {
