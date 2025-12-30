@@ -22,10 +22,6 @@ export interface PushConfig {
   distance?: number | string;
 }
 
-export interface FocusableConfig {
-  autoFocus?: boolean;
-}
-
 export interface DrawerPopupProps
   extends DrawerPanelEvents, DrawerPanelAccessibility {
   prefixCls: string;
