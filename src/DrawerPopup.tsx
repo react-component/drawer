@@ -24,8 +24,6 @@ export interface PushConfig {
 
 export interface FocusableConfig {
   autoFocus?: boolean;
-  focusTriggerAfterClose?: boolean;
-  trap?: boolean;
 }
 
 export interface DrawerPopupProps
@@ -39,7 +37,7 @@ export interface DrawerPopupProps
 
   // Focus
   autoFocus?: boolean;
-  focusable?: FocusableConfig;
+  focusTrap?: boolean;
 
   // Root
   rootClassName?: string;
@@ -108,7 +106,7 @@ const DrawerPopup: React.ForwardRefRenderFunction<
 
     // Focus
     autoFocus,
-    focusable,
+    focusTrap,
 
     // classNames
     classNames: drawerClassNames,
@@ -157,7 +155,7 @@ const DrawerPopup: React.ForwardRefRenderFunction<
   React.useImperativeHandle(ref, () => panelRef.current);
 
   // ========================= Focusable ==========================
-  useFocusable(() => panelRef.current, open, focusable, autoFocus, mask);
+  useFocusable(() => panelRef.current, open, autoFocus, focusTrap, mask);
 
   // ============================ Push ============================
   const [pushed, setPushed] = React.useState(false);
@@ -321,9 +319,7 @@ const DrawerPopup: React.ForwardRefRenderFunction<
       {...motionProps}
       visible={open}
       forceRender={forceRender}
-      onVisibleChanged={nextVisible => {
-        afterOpenChange?.(nextVisible);
-      }}
+      onVisibleChanged={afterOpenChange}
       removeOnLeave={false}
       leavedClassName={`${prefixCls}-content-wrapper-hidden`}
     >

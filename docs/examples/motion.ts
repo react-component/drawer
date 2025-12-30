@@ -10,6 +10,7 @@ export const maskMotion: DrawerProps['maskMotion'] = {
 export const motion: DrawerProps['motion'] = placement => ({
   motionAppear: true,
   motionName: `panel-motion-${placement}`,
+  motionDeadline: 1000,
 });
 
 const motionProps: Partial<DrawerProps> = {

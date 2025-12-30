@@ -49,6 +49,7 @@ export interface DrawerProps
         onResizeStart?: () => void;
         onResizeEnd?: () => void;
       };
+  focusTriggerAfterClose?: boolean;
 }
 
 const Drawer: React.FC<DrawerProps> = props => {
@@ -77,6 +78,7 @@ const Drawer: React.FC<DrawerProps> = props => {
     onClose,
     resizable,
     defaultSize,
+    focusTriggerAfterClose,
 
     // Refs
     panelRef,
@@ -116,6 +118,7 @@ const Drawer: React.FC<DrawerProps> = props => {
 
       if (
         !nextVisible &&
+        focusTriggerAfterClose !== false &&
         lastActiveRef.current &&
         !popupRef.current?.contains(lastActiveRef.current)
       ) {
