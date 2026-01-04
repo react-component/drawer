@@ -1,7 +1,6 @@
 import { clsx } from 'clsx';
 import type { CSSMotionProps } from '@rc-component/motion';
 import CSSMotion from '@rc-component/motion';
-import KeyCode from '@rc-component/util/lib/KeyCode';
 import pickAttrs from '@rc-component/util/lib/pickAttrs';
 import * as React from 'react';
 import type { DrawerContextProps } from './context';
@@ -15,14 +14,7 @@ import useDrag from './hooks/useDrag';
 import { parseWidthHeight } from './util';
 import type { DrawerClassNames, DrawerStyles } from './inter';
 import { useEvent } from '@rc-component/util';
-
-const sentinelStyle: React.CSSProperties = {
-  width: 0,
-  height: 0,
-  overflow: 'hidden',
-  outline: 'none',
-  position: 'absolute',
-};
+import useFocusable from './hooks/useFocusable';
 
 export type Placement = 'left' | 'right' | 'top' | 'bottom';
 
@@ -37,8 +29,11 @@ export interface DrawerPopupProps
   inline?: boolean;
   push?: boolean | PushConfig;
   forceRender?: boolean;
-  autoFocus?: boolean;
   keyboard?: boolean;
+
+  // Focus
+  autoFocus?: boolean;
+  focusTrap?: boolean;
 
   // Root
   rootClassName?: string;
@@ -104,7 +99,10 @@ const DrawerPopup: React.ForwardRefRenderFunction<
     inline,
     push,
     forceRender,
+
+    // Focus
     autoFocus,
+    focusTrap,
 
     // classNames
     classNames: drawerClassNames,
@@ -149,39 +147,11 @@ const DrawerPopup: React.ForwardRefRenderFunction<
 
   // ================================ Refs ================================
   const panelRef = React.useRef<HTMLDivElement>(null);
-  const sentinelStartRef = React.useRef<HTMLDivElement>(null);
-  const sentinelEndRef = React.useRef<HTMLDivElement>(null);
 
   React.useImperativeHandle(ref, () => panelRef.current);
 
-  const onPanelKeyDown: React.KeyboardEventHandler<HTMLDivElement> = event => {
-    const { keyCode, shiftKey } = event;
-
-    switch (keyCode) {
-      // Tab active
-      case KeyCode.TAB: {
-        if (keyCode === KeyCode.TAB) {
-          if (!shiftKey && document.activeElement === sentinelEndRef.current) {
-            sentinelStartRef.current?.focus({ preventScroll: true });
-          } else if (
-            shiftKey &&
-            document.activeElement === sentinelStartRef.current
-          ) {
-            sentinelEndRef.current?.focus({ preventScroll: true });
-          }
-        }
-        break;
-      }
-    }
-  };
-
-  // ========================== Control ===========================
-  // Auto Focus
-  React.useEffect(() => {
-    if (open && autoFocus) {
-      panelRef.current?.focus({ preventScroll: true });
-    }
-  }, [open]);
+  // ========================= Focusable ==========================
+  useFocusable(() => panelRef.current, open, autoFocus, focusTrap, mask);
 
   // ============================ Push ============================
   const [pushed, setPushed] = React.useState(false);
@@ -345,9 +315,7 @@ const DrawerPopup: React.ForwardRefRenderFunction<
       {...motionProps}
       visible={open}
       forceRender={forceRender}
-      onVisibleChanged={nextVisible => {
-        afterOpenChange?.(nextVisible);
-      }}
+      onVisibleChanged={afterOpenChange}
       removeOnLeave={false}
       leavedClassName={`${prefixCls}-content-wrapper-hidden`}
     >
@@ -404,24 +372,9 @@ const DrawerPopup: React.ForwardRefRenderFunction<
         style={containerStyle}
         tabIndex={-1}
         ref={panelRef}
-        onKeyDown={onPanelKeyDown}
       >
         {maskNode}
-        <div
-          tabIndex={0}
-          ref={sentinelStartRef}
-          style={sentinelStyle}
-          aria-hidden="true"
-          data-sentinel="start"
-        />
         {panelNode}
-        <div
-          tabIndex={0}
-          ref={sentinelEndRef}
-          style={sentinelStyle}
-          aria-hidden="true"
-          data-sentinel="end"
-        />
       </div>
     </DrawerContext.Provider>
   );
