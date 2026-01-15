@@ -74,7 +74,7 @@
     "rc-test": "^7.0.9",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "stylelint": "^16.2.1",
+    "stylelint": "^17.0.0",
     "stylelint-config-standard-less": "^4.0.0",
     "typescript": "^5.3.3"
   },
