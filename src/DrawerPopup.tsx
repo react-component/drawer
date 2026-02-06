@@ -151,7 +151,13 @@ const DrawerPopup: React.ForwardRefRenderFunction<
   React.useImperativeHandle(ref, () => panelRef.current);
 
   // ========================= Focusable ==========================
-  useFocusable(() => panelRef.current, open, autoFocus, focusTrap, mask);
+  const ignoreElement = useFocusable(
+    () => panelRef.current,
+    open,
+    autoFocus,
+    focusTrap,
+    mask,
+  );
 
   // ============================ Push ============================
   const [pushed, setPushed] = React.useState(false);
@@ -305,6 +311,9 @@ const DrawerPopup: React.ForwardRefRenderFunction<
     onClick,
     onKeyDown,
     onKeyUp,
+    onFocus: (e: React.FocusEvent<HTMLDivElement>) => {
+      ignoreElement(e.target);
+    },
   };
 
   // =========================== Render ==========================

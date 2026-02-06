@@ -15,6 +15,7 @@ export interface DrawerPanelEvents {
   onClick?: React.MouseEventHandler<HTMLDivElement>;
   onKeyDown?: React.KeyboardEventHandler<HTMLDivElement>;
   onKeyUp?: React.KeyboardEventHandler<HTMLDivElement>;
+  onFocus?: React.FocusEventHandler<HTMLDivElement>;
 }
 
 export type DrawerPanelAccessibility = Pick<
@@ -23,8 +24,7 @@ export type DrawerPanelAccessibility = Pick<
 >;
 
 export interface DrawerPanelProps
-  extends DrawerPanelEvents,
-    DrawerPanelAccessibility {
+  extends DrawerPanelEvents, DrawerPanelAccessibility {
   prefixCls: string;
   className?: string;
   id?: string;
