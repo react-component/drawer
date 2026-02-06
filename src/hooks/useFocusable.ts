@@ -11,7 +11,7 @@ export default function useFocusable(
   const mergedFocusTrap = focusTrap ?? mask !== false;
 
   // Focus lock
-  useLockFocus(open && mergedFocusTrap, getContainer);
+  const [ignoreElement] = useLockFocus(open && mergedFocusTrap, getContainer);
 
   // Auto Focus
   React.useEffect(() => {
@@ -19,4 +19,6 @@ export default function useFocusable(
       getContainer()?.focus({ preventScroll: true });
     }
   }, [open]);
+
+  return ignoreElement;
 }
