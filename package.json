@@ -60,7 +60,7 @@
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@types/warning": "^3.0.0",
-    "antd": "^5.12.7",
+    "antd": "^6.2.3",
     "dumi": "^2.2.0",
     "eslint": "^8.56.0",
     "eslint-plugin-jest": "^29.0.1",
