@@ -304,7 +304,7 @@ const DrawerPopup: React.ForwardRefRenderFunction<
     onResizeEnd: resizeConfig.onResizeEnd,
   });
 
-  const fillWrapperRef = React.useCallback(
+  const mergeRefs = React.useCallback(
     (motionRef: React.Ref<HTMLDivElement>) => (node: HTMLDivElement) => {
       wrapperRef.current = node;
       fillRef(motionRef, node);
@@ -352,7 +352,7 @@ const DrawerPopup: React.ForwardRefRenderFunction<
         );
         return (
           <div
-            ref={fillWrapperRef(motionRef)}
+            ref={mergeRefs(motionRef)}
             className={clsx(
               `${prefixCls}-content-wrapper`,
               isDragging && `${prefixCls}-content-wrapper-dragging`,
