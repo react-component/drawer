@@ -2,6 +2,7 @@ import { clsx } from 'clsx';
 import type { CSSMotionProps } from '@rc-component/motion';
 import CSSMotion from '@rc-component/motion';
 import pickAttrs from '@rc-component/util/lib/pickAttrs';
+import { fillRef } from '@rc-component/util/lib/ref';
 import * as React from 'react';
 import type { DrawerContextProps } from './context';
 import DrawerContext from './context';
@@ -303,6 +304,14 @@ const DrawerPopup: React.ForwardRefRenderFunction<
     onResizeEnd: resizeConfig.onResizeEnd,
   });
 
+  const mergeRefs = React.useCallback(
+    (motionRef: React.Ref<HTMLDivElement>) => (node: HTMLDivElement) => {
+      wrapperRef.current = node;
+      fillRef(motionRef, node);
+    },
+    [],
+  );
+
   // =========================== Events ===========================
   const eventHandlers = {
     onMouseEnter,
@@ -332,7 +341,6 @@ const DrawerPopup: React.ForwardRefRenderFunction<
         const content = (
           <DrawerPanel
             id={id}
-            containerRef={motionRef}
             prefixCls={prefixCls}
             className={clsx(className, drawerClassNames?.section)}
             style={{ ...style, ...styles?.section }}
@@ -344,7 +352,7 @@ const DrawerPopup: React.ForwardRefRenderFunction<
         );
         return (
           <div
-            ref={wrapperRef}
+            ref={mergeRefs(motionRef)}
             className={clsx(
               `${prefixCls}-content-wrapper`,
               isDragging && `${prefixCls}-content-wrapper-dragging`,
