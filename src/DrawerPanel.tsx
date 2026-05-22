@@ -1,8 +1,7 @@
 import { clsx } from 'clsx';
 import * as React from 'react';
 import { RefContext } from './context';
-import pickAttrs from '@rc-component/util/lib/pickAttrs';
-import { useComposeRef } from '@rc-component/util/lib/ref';
+import { pickAttrs, useComposeRef } from '@rc-component/util';
 
 export interface DrawerPanelRef {
   focus: VoidFunction;

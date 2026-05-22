@@ -4,8 +4,8 @@ import ReactDOM from 'react-dom';
 import Drawer from '../src';
 
 // Mock useLockFocus to track calls
-jest.mock('@rc-component/util/lib/Dom/focus', () => {
-  const actual = jest.requireActual('@rc-component/util/lib/Dom/focus');
+jest.mock('@rc-component/util', () => {
+  const actual = jest.requireActual('@rc-component/util');
 
   const useLockFocus = (visible: boolean, ...rest: any[]) => {
     (globalThis as any).__useLockFocusVisible = visible;

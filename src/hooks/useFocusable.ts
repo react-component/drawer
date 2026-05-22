@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLockFocus } from '@rc-component/util/lib/Dom/focus';
+import { useLockFocus } from '@rc-component/util';
 
 export default function useFocusable(
   getContainer: () => HTMLElement,
