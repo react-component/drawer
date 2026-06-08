@@ -1,7 +1,7 @@
 import { clsx } from 'clsx';
 import type { CSSMotionProps } from '@rc-component/motion';
 import CSSMotion from '@rc-component/motion';
-import pickAttrs from '@rc-component/util/lib/pickAttrs';
+import { pickAttrs, useEvent } from '@rc-component/util';
 import * as React from 'react';
 import type { DrawerContextProps } from './context';
 import DrawerContext from './context';
@@ -13,7 +13,6 @@ import DrawerPanel from './DrawerPanel';
 import useDrag from './hooks/useDrag';
 import { parseWidthHeight } from './util';
 import type { DrawerClassNames, DrawerStyles } from './inter';
-import { useEvent } from '@rc-component/util';
 import useFocusable from './hooks/useFocusable';
 
 export type Placement = 'left' | 'right' | 'top' | 'bottom';
