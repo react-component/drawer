@@ -34,12 +34,13 @@
   "scripts": {
     "build": "dumi build",
     "compile": "father build && lessc assets/index.less assets/index.css",
-    "lint": "eslint src/ --ext .tsx,.ts",
+    "lint": "eslint src/ docs/ tests/ --ext .tsx,.ts,.jsx,.js",
     "now-build": "npm run build",
     "prepublishOnly": "npm run compile && rc-np",
     "start": "dumi dev",
     "test": "rc-test",
-    "prettier": "prettier --write .",
+    "tsc": "tsc --noEmit",
+    "prettier": "prettier --write --ignore-unknown .",
     "prepare": "husky"
   },
   "dependencies": {
