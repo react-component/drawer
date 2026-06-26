@@ -127,14 +127,12 @@ npm run compile
 
 ## Release
 
-This package uses `prepublishOnly` to run the compile and release checks before publishing:
-
 ```bash
-npm publish
+npm run prepublishOnly
 ```
 
-The publish lifecycle runs:
+The release flow is handled by `@rc-component/np` through the `rc-np` command after the package build.
 
-```bash
-npm run compile && rc-np
-```
+## License
+
+@rc-component/drawer is released under the [MIT](./LICENSE) license.
