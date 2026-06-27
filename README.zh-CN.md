@@ -1,8 +1,8 @@
 <div align="center">
   <h1>@rc-component/drawer</h1>
-  <p><sub>Part of the Ant Design ecosystem.</sub></p>
+  <p><sub>Ant Design 生态的一部分。</sub></p>
   <img alt="Ant Design" height="32" src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg" />
-  <p>🚪 Accessible React drawer component with portal rendering, masks, nested push behavior, keyboard close handling, focus management, and optional resizable panels.</p>
+  <p>🚪 React 抽屉组件，支持遮罩、动画、自定义容器和语义化样式。</p>
 
   <p>
     <a href="https://npmjs.org/package/@rc-component/drawer"><img alt="NPM version" src="https://img.shields.io/npm/v/@rc-component/drawer.svg?style=flat-square"></a>
@@ -14,12 +14,12 @@
   </p>
 </div>
 
-<p align="center">English | <a href="./README.zh-CN.md">简体中文</a></p>
+<p align="center"><a href="./README.md">English</a> | 简体中文</p>
 
 
-## Highlights
+## 特性
 
-| Area        | Support                                                |
+| 范围 | 支持 |
 | ----------- | ------------------------------------------------------ |
 | Placement   | Left, right, top, and bottom drawers                   |
 | Interaction | Mask click, keyboard close, focus management           |
@@ -27,13 +27,13 @@
 | Layout      | Fixed drawer size, resizable panels, custom containers |
 | Motion      | Configurable open and close transitions                |
 
-## Install
+## 安装
 
 ```bash
 npm install @rc-component/drawer
 ```
 
-## Usage
+## 使用
 
 ```tsx | pure
 import Drawer from '@rc-component/drawer';
@@ -45,13 +45,13 @@ export default () => (
 );
 ```
 
-## Examples
+## 示例
 
-Visit the [online examples](https://drawer-react-component.vercel.app/) for placement, container, nested drawer, mask, force render, and resizable demos.
+查看[在线示例](https://drawer-react-component.vercel.app/)，了解 placement, container, nested drawer, mask, force render, and resizable demos。
 
 ## API
 
-| Property               | Type                                                                                                     | Default              | Description                                                                     |
+| 参数               | 类型                                                                                                     | 默认值              | 说明                                                                     |
 | ---------------------- | -------------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------- |
 | afterOpenChange        | `(open: boolean) => void`                                                                                | -                    | Called after the open or close animation ends.                                  |
 | autoFocus              | boolean                                                                                                  | true                 | Whether to focus the drawer after it opens.                                     |
@@ -91,7 +91,7 @@ Visit the [online examples](https://drawer-react-component.vercel.app/) for plac
 
 Mouse and keyboard event handlers such as `onClick`, `onMouseEnter`, `onMouseLeave`, `onKeyDown`, and `onKeyUp` are passed to the drawer panel.
 
-## Development
+## 本地开发
 
 ```bash
 npm install
@@ -107,7 +107,7 @@ npm run tsc
 npm run compile
 ```
 
-## Release
+## 发布
 
 ```bash
 npm run prepublishOnly
@@ -115,6 +115,6 @@ npm run prepublishOnly
 
 The release flow is handled by `@rc-component/np` through the `rc-np` command after the package build.
 
-## License
+## 许可证
 
 @rc-component/drawer is released under the [MIT](./LICENSE) license.
