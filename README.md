@@ -1,5 +1,6 @@
 <div align="center">
   <h1>@rc-component/drawer</h1>
+  <p><sub>Part of the Ant Design ecosystem.</sub></p>
   <img alt="Ant Design" height="32" src="https://gw.alipayobjects.com/zos/bmw-prod/ae669a89-0c24-40ff-a91d-2b83497170f6.svg" />
   <p>🚪 Accessible React drawer component with portal rendering, masks, nested push behavior, keyboard close handling, focus management, and optional resizable panels.</p>
 
@@ -13,14 +14,6 @@
   </p>
 </div>
 
-<p align="center">
-  <sub>
-    <a href="https://ant.design">
-      <img alt="Ant Design" src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg" height="16">
-    </a>
-    Part of the Ant Design ecosystem.
-  </sub>
-</p>
 
 ## Highlights
 
@@ -42,25 +35,12 @@ npm install @rc-component/drawer
 
 ```tsx | pure
 import Drawer from '@rc-component/drawer';
-import React from 'react';
-import { createRoot } from 'react-dom/client';
 
-const App = () => {
-  const [open, setOpen] = React.useState(false);
-
-  return (
-    <>
-      <button type="button" onClick={() => setOpen(true)}>
-        Open
-      </button>
-      <Drawer open={open} onClose={() => setOpen(false)}>
-        Drawer content
-      </Drawer>
-    </>
-  );
-};
-
-createRoot(document.getElementById('root')!).render(<App />);
+export default () => (
+  <Drawer open onClose={() => {}}>
+    Drawer content
+  </Drawer>
+);
 ```
 
 ## Examples
