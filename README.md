@@ -46,7 +46,14 @@ export default () => (
 
 ## Examples
 
-Visit the [online examples](https://drawer-react-component.vercel.app/) for placement, container, nested drawer, mask, force render, and resizable demos.
+Run the local dumi site:
+
+```bash
+npm install
+npm start
+```
+
+Then open `http://localhost:8000`.
 
 ## API
 

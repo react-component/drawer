@@ -46,7 +46,14 @@ export default () => (
 
 ## 示例
 
-查看[在线示例](https://drawer-react-component.vercel.app/)，了解放置、容器、嵌套抽屉、遮罩、强制渲染和可调整大小的演示。
+运行本地 dumi 站点：
+
+```bash
+npm install
+npm start
+```
+
+然后打开 `http://localhost:8000`。
 
 ## API
 
