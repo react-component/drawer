@@ -1,7 +1,7 @@
 <div align="center">
   <h1>@rc-component/drawer</h1>
   <p><sub>Part of the Ant Design ecosystem.</sub></p>
-  <img alt="Ant Design" height="32" src="https://gw.alipayobjects.com/zos/bmw-prod/ae669a89-0c24-40ff-a91d-2b83497170f6.svg" />
+  <img alt="Ant Design" height="32" src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg" />
   <p>🚪 Accessible React drawer component with portal rendering, masks, nested push behavior, keyboard close handling, focus management, and optional resizable panels.</p>
 
   <p>
