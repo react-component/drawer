@@ -15,7 +15,6 @@
 
 <p align="center">English | <a href="./README.zh-CN.md">简体中文</a></p>
 
-
 ## Highlights
 
 | Area        | Support                                                |
@@ -103,6 +102,8 @@ Mouse and keyboard event handlers such as `onClick`, `onMouseEnter`, `onMouseLea
 npm install
 npm start
 ```
+
+The dumi site runs at `http://localhost:8000` by default.
 
 Common commands:
 
