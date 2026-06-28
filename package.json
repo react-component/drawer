@@ -83,9 +83,7 @@
     "react-dom": ">=18.0.0"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": "eslint --fix",
-    "*.{css,less}": "stylelint --fix",
-    "*.{js,jsx,ts,tsx,json,less,css,md}": "prettier --write"
+    "*": "prettier --write --ignore-unknown"
   },
   "publishConfig": {
     "access": "public"
