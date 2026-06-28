@@ -14,7 +14,7 @@
     "drawer-motion",
     "drawer-animation"
   ],
-  "homepage": "https://github.com/react-component/drawer",
+  "homepage": "https://react-component.github.io/drawer",
   "bugs": {
     "url": "https://github.com/react-component/drawer/issues"
   },
@@ -86,5 +86,8 @@
     "*.{js,jsx,ts,tsx}": "eslint --fix",
     "*.{css,less}": "stylelint --fix",
     "*.{js,jsx,ts,tsx,json,less,css,md}": "prettier --write"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
