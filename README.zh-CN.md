@@ -82,7 +82,7 @@ npm start
 | onClose                | `(event: MouseEvent \| KeyboardEvent) => void`                                                           | -                    | 当抽屉请求关闭时调用。                           |
 | open                   | boolean                                                                                                  | false                | 抽屉是否打开。                                   |
 | panelRef               | Ref<HTMLDivElement>                                                                                      | -                    | 抽屉面板参考。                                   |
-| placement              | `left` \| `right` \| `top` \| `bottom`                                                                   | `right`              | Drawer placement.                                |
+| placement              | `left` \| `right` \| `top` \| `bottom`                                                                   | `right`              | 抽屉位置。                                       |
 | prefixCls              | string                                                                                                   | `rc-drawer`          | className前缀。                                  |
 | push                   | boolean \| `{ distance?: number \| string }`                                                             | -                    | 嵌套时推动父抽屉。                               |
 | resizable              | boolean \| `{ onResize?: (size: number) => void; onResizeStart?: () => void; onResizeEnd?: () => void }` | false                | 启用调整大小和可选的调整大小回调。               |
