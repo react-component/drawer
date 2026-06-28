@@ -15,16 +15,15 @@
 
 <p align="center"><a href="./README.md">English</a> | 简体中文</p>
 
-
 ## 特性
 
-| 范围 | 支持 |
-| ----------- | ------------------------------------------------------ |
-| Placement   | 左、右、上、下四个方向的抽屉                   |
-| Interaction | 遮罩点击、键盘关闭和焦点管理           |
-| Composition | 支持带 push 行为的嵌套抽屉                      |
-| Layout      | 固定抽屉尺寸、可调整大小面板和自定义容器 |
-| 运动      | 可配置打开和关闭动画                |
+| 范围 | 支持                                     |
+| ---- | ---------------------------------------- |
+| 位置 | 左、右、上、下四个方向的抽屉             |
+| 交互 | 遮罩点击、键盘关闭和焦点管理             |
+| 组合 | 支持带 push 行为的嵌套抽屉               |
+| 布局 | 固定抽屉尺寸、可调整大小面板和自定义容器 |
+| 运动 | 可配置打开和关闭动画                     |
 
 ## 安装
 
@@ -57,43 +56,43 @@ npm start
 
 ## API
 
-| 参数               | 类型                                                                                                     | 默认值              | 说明                                                                     |
-| ---------------------- | -------------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------- |
-| afterOpenChange        | `(open: boolean) => void`                                                                                | -                    | 打开或关闭动画结束后调用。                                  |
-| autoFocus              | boolean                                                                                                  | true                 | 抽屉打开后是否聚焦。                                     |
-| children们               | ReactNode                                                                                                | -                    | 抽屉内容。                                                                 |
-| className              | string                                                                                                   | -                    | 抽屉面板的className称。                                                |
-| classNames             | `{ mask?: string; wrapper?: string; section?: string; dragger?: string }`                                | -                    | 内部抽屉元素的语义className称。                              |
-| defaultSize            | number \| string                                                                                         | -                    | 非受控可调整大小抽屉的默认尺寸。                                 |
-| destroyOnHidden        | boolean                                                                                                  | false                | 抽屉完全关闭后将其卸下。                                    |
-| drawerRender           | `(node: ReactNode) => ReactNode`                                                                         | -                    | 自定义渲染的抽屉面板内容。                                        |
-| focusTrap              | boolean                                                                                                  | -                    | 是否将焦点限制在抽屉内。                                        |
-| focusTriggerAfterClose | boolean                                                                                                  | true                 | 关闭后是否将焦点返回到触发器。                           |
-| forceRender            | boolean                                                                                                  | false                | 在抽屉打开之前对其进行渲染。                                          |
-| getContainer           | HTMLElement \| `() => HTMLElement` \| string \| false                                                    | `body`               | 返回挂载节点。设置为 `false` 时内联渲染。                         |
-| 高度                 | number \| string                                                                                         | -                    | 已废弃。顶部或底部位置请使用 `size`。                             |
-| keyboard               | boolean                                                                                                  | true                 | 按 Esc 是否关闭抽屉。                                         |
-| mask                   | boolean                                                                                                  | true                 | 是否显示遮罩。                                                       |
-| maskClassName          | string                                                                                                   | -                    | 掩码的className称。                                                        |
-| maskClosable           | boolean                                                                                                  | true                 | 单击蒙版是否会关闭抽屉。                                    |
-| maskMotion             | CSSMotionProps                                                                                           | -                    | 遮罩动画配置。                                                     |
-| maskStyle              | CSSProperties                                                                                            | -                    | 遮罩样式。                                                             |
-| maxSize                | number                                                                                                   | -                    | 可调整大小的抽屉的最大尺寸。                                            |
-| 运动                 | CSSMotionProps \| `(placement: Placement) => CSSMotionProps`                                             | -                    | 抽屉面板动画配置。                                             |
-| onClose                | `(event: MouseEvent \| KeyboardEvent) => void`                                                           | -                    | 当抽屉请求关闭时调用。                                       |
-| 打开                   | boolean                                                                                                  | false                | 抽屉是否打开。                                                     |
-| panelRef               | Ref<HTMLDivElement>                                                                                      | -                    | 抽屉面板参考。                                                       |
-| placement              | `left` \| `right` \| `top` \| `bottom`                                                                   | `right`              | Drawer placement.                                                               |
-| prefixCls              | string                                                                                                   | `rc-drawer`          | className前缀。                                                              |
-| push                   | boolean \| `{ distance?: number \| string }`                                                             | -                    | 嵌套时推动父抽屉。                                                |
-| resizable              | boolean \| `{ onResize?: (size: number) => void; onResizeStart?: () => void; onResizeEnd?: () => void }` | false                | 启用调整大小和可选的调整大小回调。                                  |
-| rootClassName          | string                                                                                                   | -                    | 根包装器的className。                                                |
-| rootStyle              | CSSProperties                                                                                            | -                    | 根包装器的样式。                                                     |
+| 参数                   | 类型                                                                                                     | 默认值               | 说明                                             |
+| ---------------------- | -------------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------ |
+| afterOpenChange        | `(open: boolean) => void`                                                                                | -                    | 打开或关闭动画结束后调用。                       |
+| autoFocus              | boolean                                                                                                  | true                 | 抽屉打开后是否聚焦。                             |
+| children们             | ReactNode                                                                                                | -                    | 抽屉内容。                                       |
+| className              | string                                                                                                   | -                    | 抽屉面板的className称。                          |
+| classNames             | `{ mask?: string; wrapper?: string; section?: string; dragger?: string }`                                | -                    | 内部抽屉元素的语义className称。                  |
+| defaultSize            | number \| string                                                                                         | -                    | 非受控可调整大小抽屉的默认尺寸。                 |
+| destroyOnHidden        | boolean                                                                                                  | false                | 抽屉完全关闭后将其卸下。                         |
+| drawerRender           | `(node: ReactNode) => ReactNode`                                                                         | -                    | 自定义渲染的抽屉面板内容。                       |
+| focusTrap              | boolean                                                                                                  | -                    | 是否将焦点限制在抽屉内。                         |
+| focusTriggerAfterClose | boolean                                                                                                  | true                 | 关闭后是否将焦点返回到触发器。                   |
+| forceRender            | boolean                                                                                                  | false                | 在抽屉打开之前对其进行渲染。                     |
+| getContainer           | HTMLElement \| `() => HTMLElement` \| string \| false                                                    | `body`               | 返回挂载节点。设置为 `false` 时内联渲染。        |
+| 高度                   | number \| string                                                                                         | -                    | 已废弃。顶部或底部位置请使用 `size`。            |
+| keyboard               | boolean                                                                                                  | true                 | 按 Esc 是否关闭抽屉。                            |
+| mask                   | boolean                                                                                                  | true                 | 是否显示遮罩。                                   |
+| maskClassName          | string                                                                                                   | -                    | 掩码的className称。                              |
+| maskClosable           | boolean                                                                                                  | true                 | 单击蒙版是否会关闭抽屉。                         |
+| maskMotion             | CSSMotionProps                                                                                           | -                    | 遮罩动画配置。                                   |
+| maskStyle              | CSSProperties                                                                                            | -                    | 遮罩样式。                                       |
+| maxSize                | number                                                                                                   | -                    | 可调整大小的抽屉的最大尺寸。                     |
+| 运动                   | CSSMotionProps \| `(placement: Placement) => CSSMotionProps`                                             | -                    | 抽屉面板动画配置。                               |
+| onClose                | `(event: MouseEvent \| KeyboardEvent) => void`                                                           | -                    | 当抽屉请求关闭时调用。                           |
+| 打开                   | boolean                                                                                                  | false                | 抽屉是否打开。                                   |
+| panelRef               | Ref<HTMLDivElement>                                                                                      | -                    | 抽屉面板参考。                                   |
+| placement              | `left` \| `right` \| `top` \| `bottom`                                                                   | `right`              | Drawer placement.                                |
+| prefixCls              | string                                                                                                   | `rc-drawer`          | className前缀。                                  |
+| push                   | boolean \| `{ distance?: number \| string }`                                                             | -                    | 嵌套时推动父抽屉。                               |
+| resizable              | boolean \| `{ onResize?: (size: number) => void; onResizeStart?: () => void; onResizeEnd?: () => void }` | false                | 启用调整大小和可选的调整大小回调。               |
+| rootClassName          | string                                                                                                   | -                    | 根包装器的className。                            |
+| rootStyle              | CSSProperties                                                                                            | -                    | 根包装器的样式。                                 |
 | size                   | number \| string                                                                                         | `378` for left/right | 抽屉尺寸。控制左/右的宽度和顶部/底部放置的高度。 |
-| 风格                  | CSSProperties                                                                                            | -                    | 抽屉面板的样式。                                                     |
-| styles                 | `{ mask?: CSSProperties; wrapper?: CSSProperties; section?: CSSProperties; dragger?: CSSProperties }`    | -                    | 内部抽屉元素的语义样式。                                   |
-| 宽度                  | number \| string                                                                                         | -                    | 已废弃。请使用 `size` 进行左侧或右侧放置。                             |
-| zIndex                 | number                                                                                                   | -                    | 根包装器 z 索引。                                                           |
+| 风格                   | CSSProperties                                                                                            | -                    | 抽屉面板的样式。                                 |
+| styles                 | `{ mask?: CSSProperties; wrapper?: CSSProperties; section?: CSSProperties; dragger?: CSSProperties }`    | -                    | 内部抽屉元素的语义样式。                         |
+| 宽度                   | number \| string                                                                                         | -                    | 已废弃。请使用 `size` 进行左侧或右侧放置。       |
+| zIndex                 | number                                                                                                   | -                    | 根包装器 z 索引。                                |
 
 鼠标和键盘事件处理程序（例如 `onClick` 、 `onMouseEnter` 、 `onMouseLeave` 、 `onKeyDown` 和 `onKeyUp`）将传递到抽屉面板。
 
