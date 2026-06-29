@@ -14,7 +14,7 @@
     "drawer-motion",
     "drawer-animation"
   ],
-  "homepage": "https://github.com/react-component/drawer",
+  "homepage": "https://react-component.github.io/drawer",
   "bugs": {
     "url": "https://github.com/react-component/drawer/issues"
   },
@@ -34,12 +34,12 @@
   "scripts": {
     "build": "dumi build",
     "compile": "father build && lessc assets/index.less assets/index.css",
-    "lint": "eslint src/ --ext .tsx,.ts",
-    "now-build": "npm run build",
+    "lint": "eslint src/ docs/ tests/ --ext .tsx,.ts,.jsx,.js",
     "prepublishOnly": "npm run compile && rc-np",
     "start": "dumi dev",
     "test": "rc-test",
-    "prettier": "prettier --write .",
+    "tsc": "tsc --noEmit",
+    "prettier": "prettier --write --ignore-unknown .",
     "prepare": "husky"
   },
   "dependencies": {
@@ -51,40 +51,42 @@
   "devDependencies": {
     "@ant-design/icons": "^6.2.5",
     "@rc-component/father-plugin": "^2.2.0",
-    "@rc-component/np": "^1.0.0",
-    "@testing-library/jest-dom": "^6.2.0",
-    "@testing-library/react": "^16.3.0",
-    "@types/jest": "^29.5.11",
-    "@types/node": "^25.0.0",
+    "@rc-component/np": "^1.0.4",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^15.0.7",
+    "@types/jest": "^29.5.14",
+    "@types/node": "^26.0.1",
     "@types/raf": "^3.4.0",
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0",
-    "@types/warning": "^3.0.0",
+    "@types/react": "^18.3.31",
+    "@types/react-dom": "^18.3.7",
+    "@types/warning": "^3.0.4",
     "antd": "^6.3.4",
-    "dumi": "^2.2.0",
-    "eslint": "^8.56.0",
-    "eslint-plugin-jest": "^29.0.1",
-    "eslint-plugin-unicorn": "^51.0.1",
-    "father": "^4.0.0",
-    "glob": "^10.3.10",
-    "husky": "^9.0.10",
-    "less": "^4.2.0",
-    "lint-staged": "^16.1.5",
-    "prettier": "^3.0.0",
-    "rc-test": "^7.0.9",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "dumi": "^2.4.35",
+    "eslint": "^8.57.1",
+    "eslint-plugin-jest": "^27.9.0",
+    "eslint-plugin-unicorn": "^56.0.1",
+    "father": "^4.6.23",
+    "glob": "^13.0.6",
+    "husky": "^9.1.7",
+    "less": "^4.6.7",
+    "lint-staged": "^16.4.0",
+    "prettier": "^3.9.0",
+    "rc-test": "^7.1.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "stylelint": "^17.1.0",
     "stylelint-config-standard-less": "^4.0.0",
-    "typescript": "^5.3.3"
+    "typescript": "^5.9.3"
   },
   "peerDependencies": {
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": "eslint --fix",
-    "*.{css,less}": "stylelint --fix",
-    "*.{js,jsx,ts,tsx,json,less,css,md}": "prettier --write"
-  }
+    "*": "prettier --write --ignore-unknown"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "types": "./es/index.d.ts"
 }

@@ -1,7 +1,13 @@
 import { defineConfig } from 'dumi';
 import path from 'path';
 
+const basePath = process.env.GH_PAGES ? '/drawer/' : '/';
+const publicPath = basePath;
+
 export default defineConfig({
+  outputPath: 'docs-dist',
+  base: basePath,
+  publicPath,
   alias: {
     'rc-drawer$': path.resolve('src'),
     'rc-drawer/es': path.resolve('src'),
