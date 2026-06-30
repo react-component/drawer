@@ -1,4 +1,5 @@
-import { cleanup, fireEvent, render, act } from '@testing-library/react';
+import { fireEvent } from '@testing-library/dom';
+import { cleanup, render, act } from '@testing-library/react';
 import { resetWarned } from '@rc-component/util';
 import React from 'react';
 import type { DrawerProps } from '../src';
