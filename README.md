@@ -48,7 +48,7 @@ export default () => (
 Run the local dumi site:
 
 ```bash
-ut install
+npm install
 npm start
 ```
 
@@ -99,7 +99,7 @@ Mouse and keyboard event handlers such as `onClick`, `onMouseEnter`, `onMouseLea
 ## Development
 
 ```bash
-ut install
+npm install
 npm start
 ```
 
