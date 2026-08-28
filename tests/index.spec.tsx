@@ -445,8 +445,8 @@ describe('rc-drawer-menu', () => {
 
   it('should support resizable horizontal', () => {
     const onResize = jest.fn();
-    const onResizeStart = jest.fn();
-    const onResizeEnd = jest.fn();
+    const onResizeStart = jest.fn((_size: number) => {});
+    const onResizeEnd = jest.fn((_size: number) => {});
 
     const { unmount } = render(
       <div
@@ -516,6 +516,7 @@ describe('rc-drawer-menu', () => {
 
     // onResizeStart should be called when mouse down
     expect(onResizeStart).toHaveBeenCalledTimes(1);
+    expect(onResizeStart).toHaveBeenCalledWith(200);
     expect(onResizeEnd).not.toHaveBeenCalled();
 
     fireEvent.mouseMove(document, { clientX: 300, clientY: 0 });
@@ -523,6 +524,7 @@ describe('rc-drawer-menu', () => {
 
     // onResizeEnd should be called when mouse up
     expect(onResizeEnd).toHaveBeenCalledTimes(1);
+    expect(onResizeEnd).toHaveBeenCalledWith(200);
 
     expect(onResize).toHaveBeenCalledWith(100);
 
