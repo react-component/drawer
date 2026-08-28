@@ -82,8 +82,8 @@ export interface DrawerPopupProps
     | boolean
     | {
         onResize?: (size: number) => void;
-        onResizeStart?: () => void;
-        onResizeEnd?: () => void;
+        onResizeStart?: (size: number) => void;
+        onResizeEnd?: (size: number) => void;
       };
 }
 
