@@ -12,6 +12,7 @@ export default () => {
   const [placement, setPlacement] = React.useState<Placement>('right');
   const [width, setWidth] = React.useState(320);
   const [height, setHeight] = React.useState(240);
+  const [resizeStatus, setResizeStatus] = React.useState('Ready to resize');
 
   const buttons = [
     { placement: 'left' as Placement, label: 'Left Drawer' },
@@ -40,6 +41,9 @@ export default () => {
           </button>
         ))}
       </div>
+      <div style={{ marginBottom: 16 }}>
+        Current size: {isHorizontal ? width : height}px. {resizeStatus}
+      </div>
       <Drawer
         width={isHorizontal ? width : undefined}
         height={!isHorizontal ? height : undefined}
@@ -55,11 +59,11 @@ export default () => {
               setHeight(size);
             }
           },
-          onResizeStart: () => {
-            console.log('onResizeStart');
+          onResizeStart: size => {
+            setResizeStatus(`Resize started at ${size}px`);
           },
-          onResizeEnd: () => {
-            console.log('onResizeEnd');
+          onResizeEnd: size => {
+            setResizeStatus(`Resize ended at ${size}px`);
           },
         }}
         {...motionProps}
