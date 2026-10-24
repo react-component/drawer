@@ -2,7 +2,7 @@ import { canUseDom, warning } from '@rc-component/util';
 import type { DrawerProps } from './Drawer';
 
 export function parseWidthHeight(value?: number | string) {
-  if (typeof value === 'string') {
+  if (typeof value === 'string' && value.trim() !== '') {
     const num = Number(value.replace(/px$/i, ''));
     const floatNum = parseFloat(value);
 

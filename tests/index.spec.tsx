@@ -328,6 +328,16 @@ describe('rc-drawer-menu', () => {
     errSpy.mockRestore();
   });
 
+  it('should not convert empty string width or height to 0', () => {
+    const { container } = render(<Drawer width="" open getContainer={false} />);
+
+    expect(
+      container.querySelector('.rc-drawer-content-wrapper'),
+    ).not.toHaveStyle({
+      width: '0px',
+    });
+  });
+
   it('pass data props to internal div', () => {
     const value = 'bamboo';
     const { unmount } = render(<Drawer open data-attr={value} />);
