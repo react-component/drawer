@@ -100,6 +100,12 @@ const Drawer: React.FC<DrawerProps> = props => {
 
   const mergedOpen = mounted ? open : false;
 
+  React.useEffect(() => {
+    if (mergedOpen) {
+      setAnimatedVisible(true);
+    }
+  }, [mergedOpen]);
+
   // ============================ Focus =============================
   const popupRef = React.useRef<HTMLDivElement>(null);
 
