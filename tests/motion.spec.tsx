@@ -75,4 +75,21 @@ describe('motion', () => {
 
     expect(closeCount).toBe(1);
   });
+
+  it('runs the leave motion when closed before the enter motion finishes', () => {
+    const motion = { motionName: 'bamboo' };
+
+    const { container, rerender } = render(
+      <Drawer destroyOnHidden open getContainer={false} motion={motion} />,
+    );
+
+    // Close right away, while the enter motion is still running.
+    rerender(<Drawer destroyOnHidden getContainer={false} motion={motion} />);
+
+    // The drawer should play the leave motion instead of unmounting immediately.
+    expect(container.querySelector('.rc-drawer')).toBeTruthy();
+    expect(container.querySelector('.rc-drawer-content-wrapper')).toHaveClass(
+      'bamboo-leave',
+    );
+  });
 });
