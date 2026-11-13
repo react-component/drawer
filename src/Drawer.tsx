@@ -100,7 +100,11 @@ const Drawer: React.FC<DrawerProps> = props => {
 
   const mergedOpen = mounted ? open : false;
 
-  React.useEffect(() => {
+  // Mark it as opened as soon as `mergedOpen` turns true. `afterOpenChange` only
+  // fires after the whole motion finished, so closing during the enter motion
+  // would otherwise unmount the drawer without playing the leave motion.
+  // Layout effect so the update is batched together with `setMounted` above.
+  useLayoutEffect(() => {
     if (mergedOpen) {
       setAnimatedVisible(true);
     }
