@@ -280,6 +280,21 @@ const DrawerPopup: React.ForwardRefRenderFunction<
 
   // =========================== Resize ===========================
   const wrapperRef = React.useRef<HTMLDivElement>(null);
+  // `CSSMotion` binds its transition listeners on the element passed through the
+  // motion ref. Motion classNames/styles are applied to the content wrapper, so the
+  // ref must point to the wrapper as well, otherwise `transitionend` never reaches
+  // the listeners and the motion can only end via `motionDeadline`.
+  const motionRefHolder = React.useRef<React.Ref<any>>(null);
+  const fillWrapperRef = React.useCallback((node: HTMLDivElement) => {
+    wrapperRef.current = node;
+
+    const motionRef = motionRefHolder.current;
+    if (typeof motionRef === 'function') {
+      motionRef(node);
+    } else if (motionRef) {
+      (motionRef as React.MutableRefObject<HTMLDivElement>).current = node;
+    }
+  }, []);
 
   const isResizable = !!resizable;
   const resizeConfig = (typeof resizable === 'object' && resizable) || {};
@@ -328,10 +343,11 @@ const DrawerPopup: React.ForwardRefRenderFunction<
       leavedClassName={`${prefixCls}-content-wrapper-hidden`}
     >
       {({ className: motionClassName, style: motionStyle }, motionRef) => {
+        motionRefHolder.current = motionRef;
+
         const content = (
           <DrawerPanel
             id={id}
-            containerRef={motionRef}
             prefixCls={prefixCls}
             className={clsx(className, drawerClassNames?.section)}
             style={{ ...style, ...styles?.section }}
@@ -343,7 +359,7 @@ const DrawerPopup: React.ForwardRefRenderFunction<
         );
         return (
           <div
-            ref={wrapperRef}
+            ref={fillWrapperRef}
             className={clsx(
               `${prefixCls}-content-wrapper`,
               isDragging && `${prefixCls}-content-wrapper-dragging`,
