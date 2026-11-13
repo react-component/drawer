@@ -1,7 +1,7 @@
 import { clsx } from 'clsx';
 import type { CSSMotionProps } from '@rc-component/motion';
 import CSSMotion from '@rc-component/motion';
-import { pickAttrs, useEvent } from '@rc-component/util';
+import { fillRef, pickAttrs, useEvent } from '@rc-component/util';
 import * as React from 'react';
 import type { DrawerContextProps } from './context';
 import DrawerContext from './context';
@@ -280,6 +280,15 @@ const DrawerPopup: React.ForwardRefRenderFunction<
 
   // =========================== Resize ===========================
   const wrapperRef = React.useRef<HTMLDivElement>(null);
+  // `CSSMotion` binds its transition listeners on the element passed through the
+  // motion ref. Motion classNames/styles are applied to the content wrapper, so the
+  // ref must point to the wrapper as well, otherwise `transitionend` never reaches
+  // the listeners and the motion can only end via `motionDeadline`.
+  const motionRefHolder = React.useRef<React.Ref<HTMLDivElement>>(null);
+  const fillWrapperRef = React.useCallback((node: HTMLDivElement) => {
+    wrapperRef.current = node;
+    fillRef(motionRefHolder.current, node);
+  }, []);
 
   const isResizable = !!resizable;
   const resizeConfig = (typeof resizable === 'object' && resizable) || {};
@@ -328,10 +337,11 @@ const DrawerPopup: React.ForwardRefRenderFunction<
       leavedClassName={`${prefixCls}-content-wrapper-hidden`}
     >
       {({ className: motionClassName, style: motionStyle }, motionRef) => {
+        motionRefHolder.current = motionRef;
+
         const content = (
           <DrawerPanel
             id={id}
-            containerRef={motionRef}
             prefixCls={prefixCls}
             className={clsx(className, drawerClassNames?.section)}
             style={{ ...style, ...styles?.section }}
@@ -343,7 +353,7 @@ const DrawerPopup: React.ForwardRefRenderFunction<
         );
         return (
           <div
-            ref={wrapperRef}
+            ref={fillWrapperRef}
             className={clsx(
               `${prefixCls}-content-wrapper`,
               isDragging && `${prefixCls}-content-wrapper-dragging`,
