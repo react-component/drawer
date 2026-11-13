@@ -1,4 +1,4 @@
-import { cleanup, render, act } from '@testing-library/react';
+import { cleanup, render, act, fireEvent } from '@testing-library/react';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Drawer from '../src';
@@ -57,5 +57,126 @@ describe('Drawer.Focus', () => {
     });
 
     expect((globalThis as any).__ignoredElement).toBe(input);
+  });
+
+  describe('focusTriggerAfterClose', () => {
+    afterEach(() => {
+      document.body.innerHTML = '';
+    });
+
+    function createTrigger(id: string) {
+      const trigger = document.createElement('button');
+      trigger.id = id;
+      document.body.appendChild(trigger);
+      trigger.focus();
+      return trigger;
+    }
+
+    it('restores focus to the trigger when the drawer stays mounted', () => {
+      const trigger = createTrigger('trigger-keep');
+
+      const { container, rerender } = render(
+        <Drawer open getContainer={false} motion={{ motionName: 'bamboo' }} />,
+      );
+      act(() => {
+        jest.runAllTimers();
+      });
+
+      rerender(
+        <Drawer
+          open={false}
+          getContainer={false}
+          motion={{ motionName: 'bamboo' }}
+        />,
+      );
+      act(() => {
+        jest.runAllTimers();
+      });
+      fireEvent.transitionEnd(
+        container.querySelector('.rc-drawer-content-wrapper')!,
+      );
+      act(() => {
+        jest.runAllTimers();
+      });
+
+      expect(document.activeElement).toBe(trigger);
+    });
+
+    it('restores focus to the trigger when destroyOnHidden unmounts the panel', () => {
+      const trigger = createTrigger('trigger-destroy');
+
+      const { rerender } = render(
+        <Drawer open destroyOnHidden getContainer={false} />,
+      );
+      act(() => {
+        jest.runAllTimers();
+      });
+
+      rerender(<Drawer open={false} destroyOnHidden getContainer={false} />);
+      act(() => {
+        jest.runAllTimers();
+      });
+
+      expect(document.activeElement).toBe(trigger);
+    });
+
+    it('restores focus to the element focused right before opening', () => {
+      const first = createTrigger('trigger-first');
+      const second = document.createElement('button');
+      second.id = 'trigger-second';
+      document.body.appendChild(second);
+
+      const { rerender } = render(
+        <Drawer open={false} destroyOnHidden getContainer={false} />,
+      );
+
+      // The drawer is closed here, so this is what should get the focus back.
+      second.focus();
+
+      rerender(<Drawer open destroyOnHidden getContainer={false} />);
+      act(() => {
+        jest.runAllTimers();
+      });
+
+      rerender(<Drawer open={false} destroyOnHidden getContainer={false} />);
+      act(() => {
+        jest.runAllTimers();
+      });
+
+      expect(document.activeElement).toBe(second);
+      expect(document.activeElement).not.toBe(first);
+    });
+
+    it('does not move focus when focusTriggerAfterClose is false', () => {
+      createTrigger('trigger-disabled');
+
+      const { rerender } = render(
+        <Drawer
+          open
+          destroyOnHidden
+          getContainer={false}
+          focusTriggerAfterClose={false}
+        />,
+      );
+      act(() => {
+        jest.runAllTimers();
+      });
+
+      rerender(
+        <Drawer
+          open={false}
+          destroyOnHidden
+          getContainer={false}
+          focusTriggerAfterClose={false}
+        />,
+      );
+      act(() => {
+        jest.runAllTimers();
+      });
+
+      expect(document.getElementById('trigger-disabled')).not.toBe(
+        document.activeElement,
+      );
+    });
   });
 });
