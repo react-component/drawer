@@ -103,13 +103,14 @@ const Drawer: React.FC<DrawerProps> = props => {
   // ============================ Focus =============================
   const popupRef = React.useRef<HTMLDivElement>(null);
 
-  // Record the last element focused outside of the drawer, so `focusTriggerAfterClose`
-  // can move the focus back there. The drawer focuses its own content in an effect
-  // (`autoFocus` / focus lock), and child effects run before parent ones, so reading
-  // `document.activeElement` at the moment `open` flips would already capture the
-  // drawer itself. Track it continuously instead and ignore our own content.
   const lastActiveRef = React.useRef<HTMLElement>(null);
   useLayoutEffect(() => {
+    // Keep the pre-open target while the drawer is open or leaving. Focus
+    // inside a child portal can be outside the drawer's DOM subtree.
+    if (mergedOpen || animatedVisible) {
+      return;
+    }
+
     const record = (element: EventTarget | null) => {
       const target = element as HTMLElement | null;
       if (
@@ -126,7 +127,7 @@ const Drawer: React.FC<DrawerProps> = props => {
 
     document.addEventListener('focusin', onFocusIn, true);
     return () => document.removeEventListener('focusin', onFocusIn, true);
-  }, []);
+  }, [mergedOpen, animatedVisible]);
 
   // ============================= Open =============================
   const internalAfterOpenChange: DrawerProps['afterOpenChange'] =

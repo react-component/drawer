@@ -1,4 +1,4 @@
-import { cleanup, render, act, fireEvent } from '@testing-library/react';
+import { cleanup, render, act } from '@testing-library/react';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Drawer from '../src';
@@ -75,26 +75,15 @@ describe('Drawer.Focus', () => {
     it('restores focus to the trigger when the drawer stays mounted', () => {
       const trigger = createTrigger('trigger-keep');
 
-      const { container, rerender } = render(
-        <Drawer open getContainer={false} motion={{ motionName: 'bamboo' }} />,
+      const motion = { motionName: 'bamboo', motionDeadline: 100 };
+      const { rerender } = render(
+        <Drawer open getContainer={false} motion={motion} />,
       );
       act(() => {
         jest.runAllTimers();
       });
 
-      rerender(
-        <Drawer
-          open={false}
-          getContainer={false}
-          motion={{ motionName: 'bamboo' }}
-        />,
-      );
-      act(() => {
-        jest.runAllTimers();
-      });
-      fireEvent.transitionEnd(
-        container.querySelector('.rc-drawer-content-wrapper')!,
-      );
+      rerender(<Drawer open={false} getContainer={false} motion={motion} />);
       act(() => {
         jest.runAllTimers();
       });
@@ -117,6 +106,38 @@ describe('Drawer.Focus', () => {
         jest.runAllTimers();
       });
 
+      expect(document.activeElement).toBe(trigger);
+    });
+
+    it('restores focus after closing with focus in a child portal', () => {
+      const trigger = createTrigger('trigger-portal');
+      const content = ReactDOM.createPortal(
+        <input aria-label="Portal input" />,
+        document.body,
+      );
+      const renderDrawer = (open: boolean) => (
+        <Drawer open={open} destroyOnHidden getContainer={false}>
+          {content}
+        </Drawer>
+      );
+
+      const { getByRole, queryByRole, rerender } = render(renderDrawer(true));
+      act(() => {
+        jest.runAllTimers();
+      });
+
+      const input = getByRole('textbox', { name: 'Portal input' });
+      act(() => {
+        input.focus();
+      });
+      expect(document.activeElement).toBe(input);
+
+      rerender(renderDrawer(false));
+      act(() => {
+        jest.runAllTimers();
+      });
+
+      expect(queryByRole('textbox', { name: 'Portal input' })).toBeNull();
       expect(document.activeElement).toBe(trigger);
     });
 
