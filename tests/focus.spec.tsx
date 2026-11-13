@@ -58,4 +58,146 @@ describe('Drawer.Focus', () => {
 
     expect((globalThis as any).__ignoredElement).toBe(input);
   });
+
+  describe('focusTriggerAfterClose', () => {
+    afterEach(() => {
+      document.body.innerHTML = '';
+    });
+
+    function createTrigger(id: string) {
+      const trigger = document.createElement('button');
+      trigger.id = id;
+      document.body.appendChild(trigger);
+      trigger.focus();
+      return trigger;
+    }
+
+    it('restores focus to the trigger when the drawer stays mounted', () => {
+      const trigger = createTrigger('trigger-keep');
+
+      const motion = { motionName: 'bamboo', motionDeadline: 100 };
+      const { rerender } = render(
+        <Drawer open getContainer={false} motion={motion} />,
+      );
+      act(() => {
+        jest.runAllTimers();
+      });
+
+      rerender(<Drawer open={false} getContainer={false} motion={motion} />);
+      act(() => {
+        jest.runAllTimers();
+      });
+
+      expect(document.activeElement).toBe(trigger);
+    });
+
+    it('restores focus to the trigger when destroyOnHidden unmounts the panel', () => {
+      const trigger = createTrigger('trigger-destroy');
+
+      const { rerender } = render(
+        <Drawer open destroyOnHidden getContainer={false} />,
+      );
+      act(() => {
+        jest.runAllTimers();
+      });
+
+      rerender(<Drawer open={false} destroyOnHidden getContainer={false} />);
+      act(() => {
+        jest.runAllTimers();
+      });
+
+      expect(document.activeElement).toBe(trigger);
+    });
+
+    it('restores focus after closing with focus in a child portal', () => {
+      const trigger = createTrigger('trigger-portal');
+      const content = ReactDOM.createPortal(
+        <input aria-label="Portal input" />,
+        document.body,
+      );
+      const renderDrawer = (open: boolean) => (
+        <Drawer open={open} destroyOnHidden getContainer={false}>
+          {content}
+        </Drawer>
+      );
+
+      const { getByRole, queryByRole, rerender } = render(renderDrawer(true));
+      act(() => {
+        jest.runAllTimers();
+      });
+
+      const input = getByRole('textbox', { name: 'Portal input' });
+      act(() => {
+        input.focus();
+      });
+      expect(document.activeElement).toBe(input);
+
+      rerender(renderDrawer(false));
+      act(() => {
+        jest.runAllTimers();
+      });
+
+      expect(queryByRole('textbox', { name: 'Portal input' })).toBeNull();
+      expect(document.activeElement).toBe(trigger);
+    });
+
+    it('restores focus to the element focused right before opening', () => {
+      const first = createTrigger('trigger-first');
+      const second = document.createElement('button');
+      second.id = 'trigger-second';
+      document.body.appendChild(second);
+
+      const { rerender } = render(
+        <Drawer open={false} destroyOnHidden getContainer={false} />,
+      );
+
+      // The drawer is closed here, so this is what should get the focus back.
+      second.focus();
+
+      rerender(<Drawer open destroyOnHidden getContainer={false} />);
+      act(() => {
+        jest.runAllTimers();
+      });
+
+      rerender(<Drawer open={false} destroyOnHidden getContainer={false} />);
+      act(() => {
+        jest.runAllTimers();
+      });
+
+      expect(document.activeElement).toBe(second);
+      expect(document.activeElement).not.toBe(first);
+    });
+
+    it('does not move focus when focusTriggerAfterClose is false', () => {
+      createTrigger('trigger-disabled');
+
+      const { rerender } = render(
+        <Drawer
+          open
+          destroyOnHidden
+          getContainer={false}
+          focusTriggerAfterClose={false}
+        />,
+      );
+      act(() => {
+        jest.runAllTimers();
+      });
+
+      rerender(
+        <Drawer
+          open={false}
+          destroyOnHidden
+          getContainer={false}
+          focusTriggerAfterClose={false}
+        />,
+      );
+      act(() => {
+        jest.runAllTimers();
+      });
+
+      expect(document.getElementById('trigger-disabled')).not.toBe(
+        document.activeElement,
+      );
+    });
+  });
 });

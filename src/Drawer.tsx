@@ -105,10 +105,29 @@ const Drawer: React.FC<DrawerProps> = props => {
 
   const lastActiveRef = React.useRef<HTMLElement>(null);
   useLayoutEffect(() => {
-    if (mergedOpen) {
-      lastActiveRef.current = document.activeElement as HTMLElement;
+    // Keep the pre-open target while the drawer is open or leaving. Focus
+    // inside a child portal can be outside the drawer's DOM subtree.
+    if (mergedOpen || animatedVisible) {
+      return;
     }
-  }, [mergedOpen]);
+
+    const record = (element: EventTarget | null) => {
+      const target = element as HTMLElement | null;
+      if (
+        target &&
+        target !== document.body &&
+        !popupRef.current?.contains(target)
+      ) {
+        lastActiveRef.current = target;
+      }
+    };
+
+    record(document.activeElement);
+    const onFocusIn = (event: FocusEvent) => record(event.target);
+
+    document.addEventListener('focusin', onFocusIn, true);
+    return () => document.removeEventListener('focusin', onFocusIn, true);
+  }, [mergedOpen, animatedVisible]);
 
   // ============================= Open =============================
   const internalAfterOpenChange: DrawerProps['afterOpenChange'] =
