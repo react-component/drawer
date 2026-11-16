@@ -3,6 +3,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Drawer from '../src';
 
+jest.mock('@rc-component/motion', () => {
+  const { genCSSMotion } = jest.requireActual(
+    '@rc-component/motion/lib/CSSMotion',
+  );
+  return genCSSMotion(true);
+});
+
 // Mock useLockFocus to track calls
 jest.mock('@rc-component/util', () => {
   const actual = jest.requireActual('@rc-component/util');
@@ -22,6 +29,7 @@ jest.mock('@rc-component/util', () => {
 
   return {
     ...actual,
+    useLayoutEffect: jest.requireActual('react').useLayoutEffect,
     useLockFocus,
   };
 });
@@ -61,7 +69,10 @@ describe('Drawer.Focus', () => {
 
   describe('focusTriggerAfterClose', () => {
     afterEach(() => {
-      document.body.innerHTML = '';
+      cleanup();
+      document.body
+        .querySelectorAll('[id^=trigger-]')
+        .forEach(node => node.remove());
     });
 
     function createTrigger(id: string) {
@@ -72,6 +83,15 @@ describe('Drawer.Focus', () => {
       return trigger;
     }
 
+    function finishMotion() {
+      act(() => {
+        jest.runAllTimers();
+      });
+      act(() => {
+        jest.runAllTimers();
+      });
+    }
+
     it('restores focus to the trigger when the drawer stays mounted', () => {
       const trigger = createTrigger('trigger-keep');
 
@@ -79,14 +99,10 @@ describe('Drawer.Focus', () => {
       const { rerender } = render(
         <Drawer open getContainer={false} motion={motion} />,
       );
-      act(() => {
-        jest.runAllTimers();
-      });
+      finishMotion();
 
       rerender(<Drawer open={false} getContainer={false} motion={motion} />);
-      act(() => {
-        jest.runAllTimers();
-      });
+      finishMotion();
 
       expect(document.activeElement).toBe(trigger);
     });
@@ -97,14 +113,63 @@ describe('Drawer.Focus', () => {
       const { rerender } = render(
         <Drawer open destroyOnHidden getContainer={false} />,
       );
-      act(() => {
-        jest.runAllTimers();
-      });
+      finishMotion();
 
       rerender(<Drawer open={false} destroyOnHidden getContainer={false} />);
+      finishMotion();
+
+      expect(document.activeElement).toBe(trigger);
+    });
+
+    it('restores focus to the trigger that reopens the drawer during leave', () => {
+      createTrigger('trigger-first-open');
+      const motion = { motionName: 'bamboo', motionDeadline: 100 };
+      const renderDrawer = (open: boolean) => (
+        <Drawer open={open} getContainer={false} motion={motion} />
+      );
+
+      const { container, rerender } = render(renderDrawer(true));
+      finishMotion();
+
+      rerender(renderDrawer(false));
+      expect(container.querySelector('.rc-drawer-content-wrapper')).toHaveClass(
+        'bamboo-leave',
+      );
+      const second = createTrigger('trigger-reopen');
+      expect(document.activeElement).toBe(second);
+      rerender(renderDrawer(true));
+      finishMotion();
+
+      rerender(renderDrawer(false));
+      finishMotion();
+
+      expect(document.activeElement).toBe(second);
+    });
+
+    it('restores focus when closing during enter with focus in a child portal', () => {
+      const trigger = createTrigger('trigger-interrupted-enter');
+      const motion = { motionName: 'bamboo', motionDeadline: 100 };
+      const renderDrawer = (open: boolean) => (
+        <Drawer open={open} getContainer={false} motion={motion}>
+          {ReactDOM.createPortal(
+            <input aria-label="Portal input" />,
+            document.body,
+          )}
+        </Drawer>
+      );
+
+      const { container, getByRole, rerender } = render(renderDrawer(true));
+      expect(container.querySelector('.rc-drawer-content-wrapper')).toHaveClass(
+        'bamboo-appear',
+      );
+      const input = getByRole('textbox', { name: 'Portal input' });
       act(() => {
-        jest.runAllTimers();
+        input.focus();
       });
+      expect(document.activeElement).toBe(input);
+
+      rerender(renderDrawer(false));
+      finishMotion();
 
       expect(document.activeElement).toBe(trigger);
     });

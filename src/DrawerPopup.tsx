@@ -25,6 +25,7 @@ export interface DrawerPopupProps
   extends DrawerPanelEvents, DrawerPanelAccessibility {
   prefixCls: string;
   open?: boolean;
+  onPopupFocus?: React.FocusEventHandler<HTMLDivElement>;
   inline?: boolean;
   push?: boolean | PushConfig;
   forceRender?: boolean;
@@ -131,6 +132,7 @@ const DrawerPopup: React.ForwardRefRenderFunction<
     // Events
     afterOpenChange,
     onClose,
+    onPopupFocus,
     onMouseEnter,
     onMouseOver,
     onMouseLeave,
@@ -380,6 +382,7 @@ const DrawerPopup: React.ForwardRefRenderFunction<
         style={containerStyle}
         tabIndex={-1}
         ref={panelRef}
+        onFocus={onPopupFocus}
       >
         {maskNode}
         {panelNode}

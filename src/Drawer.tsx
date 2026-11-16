@@ -16,7 +16,10 @@ export type Placement = 'left' | 'top' | 'right' | 'bottom';
 
 export interface DrawerProps
   extends
-    Omit<DrawerPopupProps, 'prefixCls' | 'inline' | 'scrollLocker'>,
+    Omit<
+      DrawerPopupProps,
+      'prefixCls' | 'inline' | 'scrollLocker' | 'onPopupFocus'
+    >,
     DrawerPanelEvents,
     DrawerPanelAccessibility {
   prefixCls?: string;
@@ -104,30 +107,38 @@ const Drawer: React.FC<DrawerProps> = props => {
   const popupRef = React.useRef<HTMLDivElement>(null);
 
   const lastActiveRef = React.useRef<HTMLElement>(null);
-  useLayoutEffect(() => {
-    // Keep the pre-open target while the drawer is open or leaving. Focus
-    // inside a child portal can be outside the drawer's DOM subtree.
-    if (mergedOpen || animatedVisible) {
-      return;
-    }
+  const lastOutsideFocusRef = React.useRef<HTMLElement>(null);
+  const popupFocusEventRef = React.useRef<Event>(null);
 
+  useLayoutEffect(() => {
     const record = (element: EventTarget | null) => {
-      const target = element as HTMLElement | null;
       if (
-        target &&
-        target !== document.body &&
-        !popupRef.current?.contains(target)
+        element instanceof HTMLElement &&
+        element !== document.body &&
+        !popupRef.current?.contains(element)
       ) {
-        lastActiveRef.current = target;
+        lastOutsideFocusRef.current = element;
       }
     };
 
     record(document.activeElement);
-    const onFocusIn = (event: FocusEvent) => record(event.target);
+    const onFocusIn = (event: FocusEvent) => {
+      // React focus events from child portals reach the popup before the
+      // native event bubbles to document.
+      if (event !== popupFocusEventRef.current) {
+        record(event.target);
+      }
+    };
 
-    document.addEventListener('focusin', onFocusIn, true);
-    return () => document.removeEventListener('focusin', onFocusIn, true);
-  }, [mergedOpen, animatedVisible]);
+    document.addEventListener('focusin', onFocusIn);
+    return () => document.removeEventListener('focusin', onFocusIn);
+  }, []);
+
+  useLayoutEffect(() => {
+    if (mergedOpen) {
+      lastActiveRef.current = lastOutsideFocusRef.current;
+    }
+  }, [mergedOpen]);
 
   // ============================= Open =============================
   const internalAfterOpenChange: DrawerProps['afterOpenChange'] =
@@ -179,6 +190,9 @@ const Drawer: React.FC<DrawerProps> = props => {
     inline: getContainer === false,
     afterOpenChange: internalAfterOpenChange,
     ref: popupRef,
+    onPopupFocus: (event: React.FocusEvent<HTMLDivElement>) => {
+      popupFocusEventRef.current = event.nativeEvent;
+    },
     resizable,
     ...eventHandlers,
   };
