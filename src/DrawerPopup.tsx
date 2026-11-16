@@ -382,7 +382,7 @@ const DrawerPopup: React.ForwardRefRenderFunction<
         style={containerStyle}
         tabIndex={-1}
         ref={panelRef}
-        onFocus={onPopupFocus}
+        onFocusCapture={onPopupFocus}
       >
         {maskNode}
         {panelNode}

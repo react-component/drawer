@@ -108,30 +108,29 @@ const Drawer: React.FC<DrawerProps> = props => {
 
   const openingFocusRef = React.useRef<HTMLElement>(null);
   const lastOutsideFocusRef = React.useRef<HTMLElement>(null);
-  const popupFocusEventRef = React.useRef<Event>(null);
+  const previousFocusByEvent = React.useRef(
+    new WeakMap<Event, HTMLElement | null>(),
+  );
 
   useLayoutEffect(() => {
-    const record = (element: EventTarget | null) => {
+    const record = (element: EventTarget | null, event?: FocusEvent) => {
       if (
         element instanceof HTMLElement &&
         element !== document.body &&
         !popupRef.current?.contains(element)
       ) {
+        if (event) {
+          previousFocusByEvent.current.set(event, lastOutsideFocusRef.current);
+        }
         lastOutsideFocusRef.current = element;
       }
     };
 
     record(document.activeElement);
-    const onFocusIn = (event: FocusEvent) => {
-      // React focus events from child portals reach the popup before the
-      // native event bubbles to document.
-      if (event !== popupFocusEventRef.current) {
-        record(event.target);
-      }
-    };
+    const onFocusIn = (event: FocusEvent) => record(event.target, event);
 
-    document.addEventListener('focusin', onFocusIn);
-    return () => document.removeEventListener('focusin', onFocusIn);
+    document.addEventListener('focusin', onFocusIn, true);
+    return () => document.removeEventListener('focusin', onFocusIn, true);
   }, []);
 
   useLayoutEffect(() => {
@@ -147,13 +146,28 @@ const Drawer: React.FC<DrawerProps> = props => {
       afterOpenChange?.(nextVisible);
 
       if (!nextVisible && focusTriggerAfterClose !== false) {
-        const isOutside = (target: HTMLElement | null) =>
-          target?.isConnected && !popupRef.current?.contains(target);
-        const latest = lastOutsideFocusRef.current;
-        const target = isOutside(latest) ? latest : openingFocusRef.current;
+        const restoreFocus = (target: HTMLElement | null) => {
+          if (!target?.isConnected || popupRef.current?.contains(target)) {
+            return false;
+          }
 
-        if (isOutside(target)) {
+          const view = target.ownerDocument.defaultView;
+          for (
+            let element: HTMLElement | null = target;
+            element;
+            element = element.parentElement
+          ) {
+            if (view?.getComputedStyle(element).display === 'none') {
+              return false;
+            }
+          }
+
           target.focus({ preventScroll: true });
+          return target.matches(':focus');
+        };
+
+        if (!restoreFocus(lastOutsideFocusRef.current)) {
+          restoreFocus(openingFocusRef.current);
         }
       }
     };
@@ -193,7 +207,15 @@ const Drawer: React.FC<DrawerProps> = props => {
     afterOpenChange: internalAfterOpenChange,
     ref: popupRef,
     onPopupFocus: (event: React.FocusEvent<HTMLDivElement>) => {
-      popupFocusEventRef.current = event.nativeEvent;
+      // React capture also sees focus from child portals. Undo the native
+      // document capture for this event when the target belongs to the popup.
+      const previous = previousFocusByEvent.current.get(event.nativeEvent);
+      if (
+        previous !== undefined &&
+        lastOutsideFocusRef.current === event.target
+      ) {
+        lastOutsideFocusRef.current = previous;
+      }
     },
     resizable,
     ...eventHandlers,

@@ -260,32 +260,67 @@ describe('Drawer.Focus', () => {
       expect(document.activeElement).toBe(outside);
     });
 
-    it('falls back to the trigger after a sibling drawer unmounts', () => {
-      const trigger = createTrigger('trigger-outer');
-      const renderDrawers = (firstOpen: boolean, secondOpen: boolean) => (
+    it.each([true, false])(
+      'falls back after a sibling drawer closes (destroyOnHidden: %s)',
+      destroyOnHidden => {
+        const trigger = createTrigger('trigger-outer');
+        const renderDrawers = (firstOpen: boolean, secondOpen: boolean) => (
+          <>
+            <Drawer open={firstOpen} getContainer={false}>
+              <button>Open second drawer</button>
+            </Drawer>
+            <Drawer
+              open={secondOpen}
+              destroyOnHidden={destroyOnHidden}
+              getContainer={false}
+              styles={{ wrapper: { display: secondOpen ? undefined : 'none' } }}
+            >
+              <input aria-label="Second drawer input" />
+            </Drawer>
+          </>
+        );
+
+        const { getByRole, rerender } = render(renderDrawers(true, false));
+        const secondTrigger = getByRole('button', {
+          name: 'Open second drawer',
+        });
+        secondTrigger.focus();
+
+        rerender(renderDrawers(true, true));
+        const input = getByRole('textbox', { name: 'Second drawer input' });
+        input.focus();
+
+        rerender(renderDrawers(true, false));
+        if (destroyOnHidden) {
+          expect(input).not.toBeInTheDocument();
+        } else {
+          expect(input).toBeInTheDocument();
+          expect(input).not.toBeVisible();
+        }
+        expect(document.activeElement).toBe(secondTrigger);
+
+        rerender(renderDrawers(false, false));
+        expect(document.activeElement).toBe(trigger);
+      },
+    );
+
+    it('records an outside trigger that stops focus propagation', () => {
+      createTrigger('trigger-before-stopped-focus');
+      const renderDrawer = (open: boolean) => (
         <>
-          <Drawer open={firstOpen} getContainer={false}>
-            <button>Open second drawer</button>
-          </Drawer>
-          <Drawer open={secondOpen} destroyOnHidden getContainer={false}>
-            <input aria-label="Second drawer input" />
-          </Drawer>
+          <button onFocus={event => event.stopPropagation()}>Trigger</button>
+          <Drawer open={open} getContainer={false} />
         </>
       );
 
-      const { getByRole, rerender } = render(renderDrawers(true, false));
-      const secondTrigger = getByRole('button', { name: 'Open second drawer' });
-      secondTrigger.focus();
+      const { getByRole, rerender } = render(renderDrawer(false));
+      const trigger = getByRole('button', { name: 'Trigger' });
+      trigger.focus();
 
-      rerender(renderDrawers(true, true));
-      const input = getByRole('textbox', { name: 'Second drawer input' });
-      input.focus();
+      rerender(renderDrawer(true));
+      expect(document.activeElement).not.toBe(trigger);
+      rerender(renderDrawer(false));
 
-      rerender(renderDrawers(true, false));
-      expect(input).not.toBeInTheDocument();
-      expect(document.activeElement).toBe(secondTrigger);
-
-      rerender(renderDrawers(false, false));
       expect(document.activeElement).toBe(trigger);
     });
 
