@@ -1,4 +1,4 @@
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, act } from '@testing-library/react';
 import React from 'react';
 import Drawer from '../src';
 
@@ -74,5 +74,45 @@ describe('motion', () => {
     }
 
     expect(closeCount).toBe(1);
+  });
+
+  it('ends the leave motion on the transition end of the content wrapper', () => {
+    const afterOpenChange = jest.fn();
+    const motion = { motionName: 'bamboo' };
+
+    const renderDrawer = (open: boolean, destroyOnHidden?: boolean) => (
+      <Drawer
+        open={open}
+        destroyOnHidden={destroyOnHidden}
+        getContainer={false}
+        motion={motion}
+        afterOpenChange={afterOpenChange}
+      />
+    );
+
+    const { container, rerender } = render(renderDrawer(true));
+    rerender(renderDrawer(false));
+
+    // Wait for the active step, the only phase which binds the motion events
+    act(() => {
+      jest.runAllTimers();
+    });
+
+    const wrapper = container.querySelector('.rc-drawer-content-wrapper');
+    expect(wrapper).toHaveClass('bamboo-leave-active');
+
+    // No `motionDeadline` here: only the transition end of the wrapper can settle it
+    fireEvent.transitionEnd(wrapper);
+
+    expect(afterOpenChange).toHaveBeenCalledTimes(1);
+    expect(afterOpenChange).toHaveBeenCalledWith(false);
+
+    act(() => {
+      jest.runAllTimers();
+    });
+
+    expect(container.querySelector('.rc-drawer-content-wrapper')).toHaveClass(
+      'rc-drawer-content-wrapper-hidden',
+    );
   });
 });
