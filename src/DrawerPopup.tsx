@@ -1,7 +1,7 @@
 import { clsx } from 'clsx';
 import type { CSSMotionProps } from '@rc-component/motion';
 import CSSMotion from '@rc-component/motion';
-import { pickAttrs, useEvent } from '@rc-component/util';
+import { pickAttrs, useEvent, composeRef } from '@rc-component/util';
 import * as React from 'react';
 import type { DrawerContextProps } from './context';
 import DrawerContext from './context';
@@ -331,7 +331,6 @@ const DrawerPopup: React.ForwardRefRenderFunction<
         const content = (
           <DrawerPanel
             id={id}
-            containerRef={motionRef}
             prefixCls={prefixCls}
             className={clsx(className, drawerClassNames?.section)}
             style={{ ...style, ...styles?.section }}
@@ -343,7 +342,7 @@ const DrawerPopup: React.ForwardRefRenderFunction<
         );
         return (
           <div
-            ref={wrapperRef}
+            ref={composeRef(wrapperRef, motionRef)}
             className={clsx(
               `${prefixCls}-content-wrapper`,
               isDragging && `${prefixCls}-content-wrapper-dragging`,
