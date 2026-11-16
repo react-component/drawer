@@ -106,6 +106,7 @@ const Drawer: React.FC<DrawerProps> = props => {
   // ============================ Focus =============================
   const popupRef = React.useRef<HTMLDivElement>(null);
 
+  const openingFocusRef = React.useRef<HTMLElement>(null);
   const lastOutsideFocusRef = React.useRef<HTMLElement>(null);
   const popupFocusEventRef = React.useRef<Event>(null);
 
@@ -133,19 +134,27 @@ const Drawer: React.FC<DrawerProps> = props => {
     return () => document.removeEventListener('focusin', onFocusIn);
   }, []);
 
+  useLayoutEffect(() => {
+    if (mergedOpen) {
+      openingFocusRef.current = lastOutsideFocusRef.current;
+    }
+  }, [mergedOpen]);
+
   // ============================= Open =============================
   const internalAfterOpenChange: DrawerProps['afterOpenChange'] =
     nextVisible => {
       setAnimatedVisible(nextVisible);
       afterOpenChange?.(nextVisible);
 
-      if (
-        !nextVisible &&
-        focusTriggerAfterClose !== false &&
-        lastOutsideFocusRef.current &&
-        !popupRef.current?.contains(lastOutsideFocusRef.current)
-      ) {
-        lastOutsideFocusRef.current?.focus({ preventScroll: true });
+      if (!nextVisible && focusTriggerAfterClose !== false) {
+        const isOutside = (target: HTMLElement | null) =>
+          target?.isConnected && !popupRef.current?.contains(target);
+        const latest = lastOutsideFocusRef.current;
+        const target = isOutside(latest) ? latest : openingFocusRef.current;
+
+        if (isOutside(target)) {
+          target.focus({ preventScroll: true });
+        }
       }
     };
 

@@ -260,6 +260,35 @@ describe('Drawer.Focus', () => {
       expect(document.activeElement).toBe(outside);
     });
 
+    it('falls back to the trigger after a sibling drawer unmounts', () => {
+      const trigger = createTrigger('trigger-outer');
+      const renderDrawers = (firstOpen: boolean, secondOpen: boolean) => (
+        <>
+          <Drawer open={firstOpen} getContainer={false}>
+            <button>Open second drawer</button>
+          </Drawer>
+          <Drawer open={secondOpen} destroyOnHidden getContainer={false}>
+            <input aria-label="Second drawer input" />
+          </Drawer>
+        </>
+      );
+
+      const { getByRole, rerender } = render(renderDrawers(true, false));
+      const secondTrigger = getByRole('button', { name: 'Open second drawer' });
+      secondTrigger.focus();
+
+      rerender(renderDrawers(true, true));
+      const input = getByRole('textbox', { name: 'Second drawer input' });
+      input.focus();
+
+      rerender(renderDrawers(true, false));
+      expect(input).not.toBeInTheDocument();
+      expect(document.activeElement).toBe(secondTrigger);
+
+      rerender(renderDrawers(false, false));
+      expect(document.activeElement).toBe(trigger);
+    });
+
     it('does not move focus when focusTriggerAfterClose is false', () => {
       createTrigger('trigger-disabled');
 
