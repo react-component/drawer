@@ -233,6 +233,33 @@ describe('Drawer.Focus', () => {
       expect(document.activeElement).not.toBe(first);
     });
 
+    it('restores focus to the last outside element focused while open', () => {
+      createTrigger('trigger-open');
+      const outside = document.createElement('button');
+      outside.id = 'trigger-outside';
+      document.body.appendChild(outside);
+      const renderDrawer = (open: boolean) => (
+        <Drawer
+          open={open}
+          getContainer={false}
+          mask={false}
+          focusTrap={false}
+          autoFocus={false}
+        >
+          <input aria-label="Drawer input" />
+        </Drawer>
+      );
+
+      const { getByRole, rerender } = render(renderDrawer(true));
+      outside.focus();
+      getByRole('textbox', { name: 'Drawer input' }).focus();
+
+      rerender(renderDrawer(false));
+      finishMotion();
+
+      expect(document.activeElement).toBe(outside);
+    });
+
     it('does not move focus when focusTriggerAfterClose is false', () => {
       createTrigger('trigger-disabled');
 
